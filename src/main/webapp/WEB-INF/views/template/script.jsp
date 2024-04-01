@@ -17,5 +17,15 @@
 <script src="/vendor/tinymce/tinymce.min.js"></script>
 <script src="/vendor/php-email-form/validate.js"></script>
 
+<script src=""></script>
+
+<!-- 캘린더,서머노트 라이브러리 -->
+<script src="/js/lib/index.global.js"></script>
+<script src="/js/lib/summernote-lite.js"></script>
+<script src="/js/lib/summernote-ko-KR.js"></script>
+
+
+
+
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>

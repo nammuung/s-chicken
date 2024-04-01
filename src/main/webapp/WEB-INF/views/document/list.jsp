@@ -15,8 +15,8 @@
 <!-- ======= Sidebar ======= -->
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1>전자결재</h1>
+    <div class="pagetitle" style="text-align: center;">
+        <h1>전자 결재</h1>
     </div>
     <section class="section">
         <div class="row text-nowrap justify-content-center">
@@ -30,7 +30,7 @@
                         <table class="table text-center ">
                             <thead>
                                 <tr>
-                                    <th style="width: 5%">#</th>
+                                    <th style="width: 5%">no</th>
                                     <th style="width: 70%">문서명</th>
                                 </tr>
                             </thead>
@@ -38,7 +38,25 @@
                                 <tr>
                                     <td>1</td>
                                     <td class="text-start">
-                                        <a href="#">지출결의서</a>
+                                        <a href="#" onclick="openPay()">지출결의서</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td class="text-start">
+                                        <a href="#" onclick="openbonus()">상여금신청서</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td class="text-start">
+                                        <a href="#" onclick="openretire()">퇴사신청서</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td class="text-start">
+                                        <a href="#" onclick="openvaca()">휴가계획서</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -53,6 +71,7 @@
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
+<script src="/js/document/document.js"></script>
 </body>
 
 </html>

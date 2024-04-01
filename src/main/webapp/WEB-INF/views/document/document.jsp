@@ -15,9 +15,25 @@
 <!-- ======= Sidebar ======= -->
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1>전자결재</h1>
+    <div class="pagetitle" style="text-align: center;">
+        <h1>결재상신함</h1>
     </div>
+    
+    	<div class="container mb-4" name="categorySelect">
+		<ul
+			class="nav nav-pills list-group-horizontal d-flex justify-content-center"
+			name="categorySelect">
+			<li class="nav-item px-2"><a
+				class="nav-link active BOARDCATEGORY" href="#" data-category="all">전체</a></li>
+			<li class="nav-item px-2" name="category0" id="category0"><a
+				class="nav-link BOARDCATEGORY" href="#" data-category="category0">진행</a></li>
+			<li class="nav-item px-2" name="category1" id="category1"><a
+				class="nav-link BOARDCATEGORY" href="#" data-category="category1">반려</a></li>
+			<li class="nav-item px-2" name="category2" id="category2"><a
+				class="nav-link BOARDCATEGORY" href="#" data-category="category2">완료</a></li>
+		</ul>
+	</div>
+    
     <section class="section">
         <div class="row justify-content-end p-3">
             <div class="col-auto">
@@ -25,9 +41,9 @@
                     <label>
                         <select class="form-select w-auto me-1">
                             <option value="0">제목</option>
-                            <option value="0">문서종류</option>
-                            <option value="1">내용</option>
-                            <option value="2">제목+내용</option>
+                            <option value="1">문서종류</option>
+                            <option value="2">내용</option>
+                            <option value="3">제목+내용</option>
                         </select>
                     </label>
                     <input type="text" name="query" placeholder="검색" title="Enter search keyword">
@@ -42,8 +58,8 @@
                         <table class="table text-center ">
                             <thead>
                                 <tr>
-                                    <th style="width: 5%">#</th>
-                                    <th style="width: 60%">제목</th>
+                                    <th style="width: 15%">문서번호</th>
+                                    <th style="width: 50%">제목</th>
                                     <th style="width: 10%">문서종류</th>
                                     <th style="width: 10%">상신일</th>
                                     <th style="width: 5%">상태</th>
@@ -51,7 +67,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>1</td>
+                                    <td>20240312001</td>
                                     <td class="text-start">3월 출장비 지출결의서입니다.</td>
                                     <td>지출결의서</td>
                                     <td>2024.03.12</td>

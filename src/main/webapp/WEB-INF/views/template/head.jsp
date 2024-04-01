@@ -23,5 +23,8 @@
 <link href="/vendor/remixicon/remixicon.css" rel="stylesheet">
 <link href="/vendor/simple-datatables/style.css" rel="stylesheet">
 
+<!-- 서머노트 css  -->
+<link rel="stylesheet" href="/css/lib/summernote-lite.css">
+
 <!-- Template Main CSS File -->
 <link href="/css/style.css" rel="stylesheet">

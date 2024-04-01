@@ -25,6 +25,8 @@ repositories {
 dependencies {
 //	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation group: 'org.apache.poi', name: 'poi', version: '5.0.0'
+	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 	implementation 'jakarta.servlet:jakarta.servlet-api'
