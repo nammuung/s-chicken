@@ -16,7 +16,7 @@
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>직원목록</h1>
+        <h1>${facility}예약 목록</h1>
     </div>
     <section class="section">
         <div class="row justify-content-end p-3">
@@ -24,13 +24,12 @@
                 <form class="search-form d-flex align-items-center " method="POST" action="#">
                     <label>
                         <select class="form-select w-auto me-1">
-                            <option value="0">이름</option>
-                            <option value="1">부서</option>
-                            <option value="2">직급</option>
+                            <option value="0">전체</option>
+                            <option value="1">확인</option>
+                            <option value="2">승인</option>
+                            <option value="3">거절</option>
                         </select>
                     </label>
-                    <input type="text" name="query" placeholder="검색" title="Enter search keyword">
-                    <button type="submit" title="Search"><i class="bi bi-search"></i></button>
                 </form>
             </div>
         </div>
@@ -42,17 +41,27 @@
                             <thead>
                             <tr>
                                 <th style="width: 5%">#</th>
+                                <th>예약상태</th>
+                                <th>시작일자</th>
+                                <th>종료일자</th>
+                                <th>사용시간</th>
+                                <th>제목</th>
                                 <th>부서</th>
-                                <th>직급</th>
                                 <th>이름</th>
+                                <th>예약취소</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td>1</td>
+                                <td>확인</td>
+                                <td>2024.04.02</td>
+                                <td>2024.04.02</td>
+                                <td>09:00~11:00</td>
+                                <td><a href="./">리조트</a></td>
                                 <td>영업팀</td>
-                                <td>사원</td>
-                                <td>김경모</td>
+                                <td>남명균</td>
+                                <td><input type="checkbox" value="1"/></td>
                             </tr>
                             </tbody>
                         </table>
@@ -72,7 +81,7 @@
                         </li>
                     </ul>
                 </nav>
-                <button class="btn btn-primary float-end">엑셀 변환</button>
+                <button class="btn btn-primary float-end">확인</button>
             </div>
         </div>
     </section>

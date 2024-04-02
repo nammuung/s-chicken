@@ -16,7 +16,7 @@ public class TestController {
 
     @GetMapping("/")
     public String test(){
-        return "spendingDetails/spendingAdd";
+        return "facility/list";
     }
 
 }
