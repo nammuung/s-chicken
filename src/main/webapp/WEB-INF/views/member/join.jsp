@@ -37,10 +37,20 @@
                                     <label for="email" class="form-label"><b>이메일</b></label>
                                     <input id="email" type="email" class="form-control" placeholder="이메일">
                                 </div>
-                                <div class="form-group mb-3">
+                                
                                     <label for="address" class="form-label"><b>주소</b></label>
-                                    <input id="address" type="text" class="form-control" placeholder="주소">
+								<div class="form-group mb-3 d-flex">
+    								<input type="text" id="sample6_postcode" placeholder="우편번호" class="form-control">
+    								<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn btn-primary">
+								</div>
+
+                                
+                                 <div class="form-group mb-3 d-flex">
+      						<input type="text" id="sample6_address" class="form-control" placeholder="주소">
+      						<input type="text" id="sample6_detailAddress" class="form-control ml-2" placeholder="상세주소">
                                 </div>
+      						
+                                
                                 <div class="form-group mb-3">
                                     <label for="birth" class="form-label"><b>생년월일</b></label>
                                     <input id="birth" type="date" class="form-control">
