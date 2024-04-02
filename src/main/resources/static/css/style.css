@@ -547,16 +547,17 @@ h6 {
 }
 
 /*123456*/
-.notifications .linkable{
+.linkable{
   color : #0dcaf0;
+}
+
+.notifications .linkable{
   font-weight: bold;
   text-decoration: underline;
 }
 
-.notifications .linkable:hover{
-  color : #0d9ad0;
-  font-weight: bold;
-  text-decoration: underline;
+.linkable:hover{
+  color : #7749F8;
 }
 
 .notifications {
