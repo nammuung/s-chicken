@@ -40,19 +40,13 @@
                     <span class="badge bg-primary badge-number">4</span>
                 </a><!-- End Notification Icon -->
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-                    <li class="dropdown-header">
-                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow w-22rem">
+                    <ul class="notifications">
                     <li class="notification-item">
                         <i class="bi bi-exclamation-circle text-warning"></i>
                         <div>
                             <h4>Lorem Ipsum</h4>
-                            <p><i class="fa fa-building"></i></p>
+                            <p>Quae dolorem earum veritatis oditseno</p>
                             <p>30 min. ago</p>
                         </div>
                     </li>
@@ -61,14 +55,38 @@
                         <hr class="dropdown-divider">
                     </li>
 
-                    <li class="notification-item">
+                    <li class="notification-item readed">
                         <i class="bi bi-x-circle text-danger"></i>
                         <div>
-                            <h4>Atque rerum nesciunt</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
+                            <h4>읽은 알림</h4>
+                            <p>읽은 알림 입니다.</p>
                             <p>1 hr. ago</p>
                         </div>
                     </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="notification-item readed">
+                            <i class="bi bi-x-circle text-danger"></i>
+                            <div>
+                                <h4>읽은 알림</h4>
+                                <p>읽은 알림 입니다.</p>
+                                <p>1 hr. ago</p>
+                            </div>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li class="notification-item readed">
+                            <i class="bi bi-x-circle text-danger"></i>
+                            <div>
+                                <h4>읽은 알림</h4>
+                                <p>읽은 알림 입니다.</p>
+                                <p>1 hr. ago</p>
+                            </div>
+                        </li>
 
                     <li>
                         <hr class="dropdown-divider">
@@ -95,15 +113,13 @@
                             <p>4 hrs. ago</p>
                         </div>
                     </li>
+                    </ul>
+                    <hr class="dropdown-divider">
+                    <div class="dropdown-footer">
+                        <a href="#">모든 알림 보기</a>
+                    </div>
 
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li class="dropdown-footer">
-                        <a href="#">Show all notifications</a>
-                    </li>
-
-                </ul><!-- End Notification Dropdown Items -->
+                </div><!-- End Notification Dropdown Items -->
 
             </li><!-- End Notification Nav -->
 

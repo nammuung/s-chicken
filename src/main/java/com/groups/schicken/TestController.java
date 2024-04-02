@@ -17,7 +17,7 @@ public class TestController {
 
     @GetMapping("/")
     public String test(){
-        return "orgChart/orgChart";
+        return "notification/notification";
     }
 
 }
