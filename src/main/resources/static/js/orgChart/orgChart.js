@@ -12,24 +12,7 @@ $(function (){
         {'id' : '9' , 'parent' : '4' , 'type' : 'person', 'text' : '팀원 김경모', state : {opened : true}}
     ]
 
-    $("#org-chart").on('changed.jstree', function (e,data){
-        // console.log(e);
-        // console.log(data);
-        // let root = [];
-        // root.push(data.selected);
-        // let datas2 = [...datas].filter(d => {
-        //     console.log(d.parent, root);
-        //     console.log(root.includes(d.parent))
-        //     if(root.includes(d.parent)){
-        //         root.push(d.id);
-        //         return true;
-        //     }
-        //     return false;
-        // });
-        // console.log(datas2);
-        // $('#org-chart').jstree(true).settings.core.data = datas2;
-        // $('#org-chart').jstree(true).refresh();
-    }).jstree({
+    $("#org-chart").jstree({
         'core' : {
             'data' : datas
         },
