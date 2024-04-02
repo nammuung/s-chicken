@@ -11,11 +11,16 @@
 --------------------------------------------------------------*/
 /* Your custom primary color */
 .btn-primary,
-.btn-primary:hover,
 .btn-primary:focus {
   background-color: #7749F8!important;
   border-color: #7749F8!important;
 }
+
+.btn-primary:hover {
+  background-color: #5729E8!important;
+  border-color: #5729E8!important;
+}
+
 
 :root {
   scroll-behavior: smooth;

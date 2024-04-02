@@ -15,8 +15,8 @@
 <!-- ======= Sidebar ======= -->
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
-    <div class="pagetitle" style="text-align: center;">
-        <h1>전체 게시판</h1>
+    <div class="pagetitle">
+        <h1>${facility}예약 목록</h1>
     </div>
     <section class="section">
         <div class="row justify-content-end p-3">
@@ -24,13 +24,12 @@
                 <form class="search-form d-flex align-items-center " method="POST" action="#">
                     <label>
                         <select class="form-select w-auto me-1">
-                            <option value="0">제목</option>
-                            <option value="1">내용</option>
-                            <option value="2">제목+내용</option>
+                            <option value="0">전체</option>
+                            <option value="1">확인</option>
+                            <option value="2">승인</option>
+                            <option value="3">거절</option>
                         </select>
                     </label>
-                    <input type="text" name="query" placeholder="검색" title="Enter search keyword">
-                    <button type="submit" title="Search"><i class="bi bi-search"></i></button>
                 </form>
             </div>
         </div>
@@ -41,25 +40,34 @@
                         <table class="table text-center text-nowrap">
                             <thead>
                             <tr>
-                                <th style="width: 5%">no</th>
-                                <th style="width: 70%">제목</th>
-                                <th style="width: 10%">작성일</th>
-                                <th style="width: 10%">등록자</th>
-                                <th style="width: 5%">조회수</th>
+                                <th style="width: 5%">#</th>
+                                <th>예약상태</th>
+                                <th>시작일자</th>
+                                <th>종료일자</th>
+                                <th>사용시간</th>
+                                <th>제목</th>
+                                <th>부서</th>
+                                <th>이름</th>
+                                <th>예약취소</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
                                 <td>1</td>
-                                <td class="text-start">Test</td>
-                                <td>2023.03.31</td>
-                                <td>관리자</td>
-                                <td>11</td>
+                                <td>확인</td>
+                                <td>2024.04.02</td>
+                                <td>2024.04.02</td>
+                                <td>09:00~11:00</td>
+                                <td><a href="./">리조트</a></td>
+                                <td>영업팀</td>
+                                <td>남명균</td>
+                                <td><input type="checkbox" value="1"/></td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <li class="page-item disabled">
@@ -70,19 +78,12 @@
                         <li class="page-item"><a class="page-link" href="#">3</a></li>
                         <li class="page-item">
                             <a class="page-link" href="#">다음</a>
-                        </li>                     
+                        </li>
                     </ul>
-                    
                 </nav>
-            </div>
-            
-        </div>
-        <div class="row justify-content-end p-3">
-            <div class="col-auto">            	               	
-               	<a href="./write" class="btn btn-primary">글쓰기</a>
+                <button class="btn btn-primary float-end">확인</button>
             </div>
         </div>
-        
     </section>
 </main><!-- End #main -->
 <!-- ======= Footer ======= -->
