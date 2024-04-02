@@ -23,5 +23,8 @@
 <link href="/vendor/remixicon/remixicon.css" rel="stylesheet">
 <link href="/vendor/simple-datatables/style.css" rel="stylesheet">
 
+<!-- jsTree -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
+
 <!-- Template Main CSS File -->
 <link href="/css/style.css" rel="stylesheet">

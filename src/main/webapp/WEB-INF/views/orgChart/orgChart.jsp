@@ -16,8 +16,23 @@
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>General Tables</h1>
+        <h1>조직도</h1>
     </div>
+
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="org-chart"></div>
+                </div>
+                <div class="card-body align-self-end">
+                    <button class="btn btn-primary">부서추가</button>
+                    <button class="btn btn-primary">부서수정</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 <!-- ======= 내용을 넣어주세요. ======= -->
 </main><!-- End #main -->
@@ -25,6 +40,7 @@
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
+<script src="/js/orgChart/orgChart.js"></script>
 </body>
 
 </html>
