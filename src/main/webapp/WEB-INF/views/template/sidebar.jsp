@@ -27,13 +27,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="components-accordion.html">
-                        <i class="bi bi-circle"></i><span>중요</span>
+                    <a href="/notice/impList">
+                        <i class="bi bi-circle"></i><span>대표 공지</span>
                     </a>
                 </li>
                 <li>
-                    <a href="components-badges.html">
-                        <i class="bi bi-circle"></i><span>경조사</span>
+                    <a href="/notice/cacList">
+                        <i class="bi bi-circle"></i><span>경조사 공지</span>
                     </a>
                 </li>
             </ul>

@@ -25,4 +25,14 @@ public class noticeController {
 		
 	}
 	
+	@GetMapping("impList")
+	public void getImpList() {
+		
+	}
+	
+	@GetMapping("cacList")
+	public void getcacList() {
+		
+	}
+	
 }
