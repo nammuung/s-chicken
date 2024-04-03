@@ -21,6 +21,22 @@
   border-color: #5729E8!important;
 }
 
+.chatting-content{
+  max-height: 800px;
+  overflow-y: auto;
+}
+
+.chatting-content .d-flex{
+  gap : 2rem;
+}
+
+.w-22rem{
+  width: 22rem!important;
+}
+
+.readed{
+  background-color: #F0F0F0;
+}
 
 :root {
   scroll-behavior: smooth;
@@ -510,6 +526,9 @@ h6 {
 
 .header-nav .notifications {
   inset: 8px -15px auto auto !important;
+  max-height: 430px;
+  overflow-y: auto;
+  padding-left: 0;
 }
 
 .header-nav .notifications .notification-item {
@@ -536,9 +555,50 @@ h6 {
   color: #919191;
 }
 
-.header-nav .notifications .notification-item:hover {
-  background-color: #f6f9ff;
+/*123456*/
+.chatroom-item:hover{
+  background-color : #E6E9ff!important;
 }
+
+.linkable{
+  color : #00ceff;
+}
+
+.notifications .linkable{
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.linkable:hover{
+  color : #7749F8!important;
+}
+
+.notifications {
+  inset: 8px -15px auto auto !important;
+  padding-left: 0;
+}
+
+.notifications .notification-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 10px;
+  transition: 0.3s;
+}
+
+.notifications .notification-item h4 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.notifications .notification-item p {
+  font-size: 18px;
+  color: #333;
+}
+
+.notifications .notification-item:hover {
+  background-color: #E6E9ff;
+}
+/*123456*/
 
 .header-nav .messages {
   inset: 8px -15px auto auto !important;

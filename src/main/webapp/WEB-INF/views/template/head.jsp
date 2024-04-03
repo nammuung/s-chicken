@@ -29,5 +29,8 @@
 <!-- 서머노트 css  -->
 <link rel="stylesheet" href="/css/lib/summernote-lite.css">
 
+<!-- fontawesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
+
 <!-- Template Main CSS File -->
 <link href="/css/style.css" rel="stylesheet">
