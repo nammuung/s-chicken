@@ -23,12 +23,16 @@
         <div class="row mt-5">
             <div class="col-2 border-end">
                 <button class="btn btn-primary w-100 mb-2">쪽지보내기</button>
-                <button class="btn btn-outline-primary w-100 border-0 mb-2">받은 쪽지함</button>
-                <button class="btn btn-outline-primary w-100 border-0 mb-2">쪽지 보관함</button>
-                <button class="btn btn-outline-primary w-100 border-0 mb-2">보낸 쪽지함</button>
-                <button class="btn btn-outline-primary w-100 border-0 mb-2">휴지통</button>
+                <button class="btn text-dark linkable w-100 border-0 mb-2">받은 쪽지함</button>
+                <button class="btn text-dark linkable w-100 border-0 mb-2">쪽지 보관함</button>
+                <button class="btn text-dark linkable w-100 border-0 mb-2">보낸 쪽지함</button>
+                <button class="btn text-dark linkable w-100 border-0 mb-2">휴지통</button>
             </div>
             <div class="col-10 p-4">
+                <div class="d-flex ">
+                    <button class="btn btn-primary disabled ms-1">보관</button>
+                    <button class="btn btn-danger disabled ms-1">삭제</button>
+                </div>
                 <table class="table">
                     <thead>
                         <tr>
@@ -46,8 +50,8 @@
                             </td>
                             <td class="linkable">식품개발팀 팀장 이동일</td>
                             <td class="linkable">3분기 실적보고서 아직 멀었나요? 내일까지 마무리 부..</td>
-                            <td></td>
-                            <td>03.25 16:56</td>
+                            <td><i class="fas fa-save fa-lg" style="color: #7749F8;"></i></td>
+                            <td>2024.03.25 16:56</td>
                         </tr>
                         <tr>
                             <td>
@@ -55,8 +59,8 @@
                             </td>
                             <td class="linkable">식품개발팀 팀장 이동일</td>
                             <td class="linkable">3분기 실적보고서 아직 멀었나요? 내일까지 마무리 부..</td>
-                            <td></td>
-                            <td>03.25 16:56</td>
+                            <td><i class="fas fa-save fa-lg" style="color: #7749F8;"></i></td>
+                            <td>2024.03.25 16:56</td>
                         </tr>
                         <tr>
                             <td>
@@ -64,8 +68,8 @@
                             </td>
                             <td class="linkable">식품개발팀 팀장 이동일</td>
                             <td class="linkable">3분기 실적보고서 아직 멀었나요? 내일까지 마무리 부..</td>
-                            <td></td>
-                            <td>03.25 16:56</td>
+                            <td><i class="fas fa-save fa-lg" style="color: #7749F8;"></i></td>
+                            <td>2024.03.25 16:56</td>
                         </tr>
                         <tr>
                             <td>
@@ -73,26 +77,8 @@
                             </td>
                             <td class="linkable">식품개발팀 팀장 이동일</td>
                             <td class="linkable">3분기 실적보고서 아직 멀었나요? 내일까지 마무리 부..</td>
-                            <td></td>
-                            <td>03.25 16:56</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" class="form-check">
-                            </td>
-                            <td class="linkable">식품개발팀 팀장 이동일</td>
-                            <td class="linkable">3분기 실적보고서 아직 멀었나요? 내일까지 마무리 부..</td>
-                            <td></td>
-                            <td>03.25 16:56</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox" class="form-check">
-                            </td>
-                            <td class="linkable">식품개발팀 팀장 이동일</td>
-                            <td class="linkable">3분기 실적보고서 아직 멀었나요? 내일까지 마무리 부..</td>
-                            <td></td>
-                            <td>03.25 16:56</td>
+                            <td><i class="fas fa-save fa-lg" style="color: #7749F8;"></i></td>
+                            <td>2024.03.25 16:56</td>
                         </tr>
                     </tbody>
                 </table>

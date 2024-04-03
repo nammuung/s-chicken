@@ -557,7 +557,7 @@ h6 {
 }
 
 .linkable:hover{
-  color : #7749F8;
+  color : #7749F8!important;
 }
 
 .notifications {
