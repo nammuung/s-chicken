@@ -1,4 +1,5 @@
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 
@@ -6,13 +7,20 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
     <!-- css 파일 -->
-    <link rel="stylesheet" href="상여신청서.css">
-    <script src="상여신청서.js"></script>
+    <link rel="stylesheet" href="/css/documentDetail.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>    
+	<script src="/js/document/documentDetail.js"></script>
+
+	<c:import url="../../template/head.jsp"></c:import>
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 </head>
 
 <body> 
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
     <span>
         <p style="line-height: 150%; font-family: 맑은 고딕; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;"><span
                 style="font-family: 맑은 고딕; font-size: 10pt;"></span>&nbsp;</p>
@@ -29,12 +37,13 @@
                 <tr>
                     <td style="padding: 0px !important; border: 0px currentColor; border-image: none;text-align: right;font-weight: bold; vertical-align: middle;"
                     colspan="2" class="">
-                        <button>인쇄미리보기</button>
-                        <button>상신</button>
-                        <button>취소</button>
-                        <br>
-                        <button>불러오기</button>
-                        <button>임시저장</button>
+                        <div class="mb-2">
+                            <button class="btn btn-primary">인쇄미리보기</button>
+                            <button class="btn btn-primary">상신</button>
+                            <button class="btn btn-primary">취소</button>
+                        </div>
+                        <button class="btn btn-primary">불러오기</button>
+                        <button class="btn btn-primary">임시저장</button>
                     </td>
                 </tr>
                     
@@ -46,42 +55,8 @@
                         
                             <!-- Button to Open the Modal -->
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-							  Open modal
-							</button>
-							
-							<!-- The Modal -->
-							<div class="modal fade" id="myModal">
-							  <div class="modal-dialog modal-dialog-scrollable" id="modalContent">
-							    <div class="modal-content">
-							      <!-- Modal Header -->
-							      <div class="modal-header" >
-							        <h4 class="modal-title">결재선지정</h4>
-							        <button type="button" class="close" data-dismiss="modal">&times;</button>
-							      </div>
-							      <!-- Modal body -->
-							      <div class="modal-body">
-							        <!-- 모달 내용 시작 -->
-							        <div class="container-fluid mmdd">
-							          <div class="row mmdd">
-							            <div class="col-md-4 mmdd">
-							                <div>조직도</div>
-							                <div id="org-chart"></div>
-							            </div>
-							            <div class="col-md-8 mmdd">
-							              <div id="right-top" class="row ssdd" style="background-color: lightblue;">오른쪽 컬럼 상단</div>
-							              <div id="right-bottom" class="row ssdd" style="background-color: lightgreen;">오른쪽 컬럼 하단</div>
-							            </div>
-							          </div>
-							        </div>
-							        <!-- 모달 내용 끝 -->
-							      </div>
-							      <!-- Modal footer -->
-							      <div class="modal-footer">
-							        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-							      </div>
-							    </div>
-							  </div>
-							</div>
+							  결재선지정
+							</button>		
 							
                         </div>
                     </td>
@@ -157,7 +132,7 @@
                         </table>
                     </td>
                     <td
-                        style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 293px; text-align: right; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
+                        style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 500px; text-align: right; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
                         
                         <p style="text-align: right; line-height: 150%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt; margin-top: 0px; margin-bottom: 0px;">
                             <span class="sign_type1_inline"style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
@@ -293,7 +268,7 @@
                 </tr>
                 <tr>
                     <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                        <textarea class="form-control" id="contents" rows="3" cols="107" name="contents"></textarea>
+                         <div id="editor"></div>
                     </td>
                 </tr>
                 
@@ -308,9 +283,99 @@
             style="line-height: 150%; font-family: &quot;맑은 고딕&quot;; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;">
             &nbsp;</p>
     </span>
-    <!-- <script type="text/javascript">
-        $("#contents").summernote();
-    </script> -->
+    
+    <!-- The Modal -->
+	<div class="modal fade" id="myModal">
+	  <div class="modal-dialog modal-dialog-scrollable" id="modalContent">
+	    <div class="modal-content">
+	      <!-- Modal Header -->
+	      <div class="modal-header" >
+	        <h4 class="modal-title">결재선지정</h4>
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      </div>
+	      <!-- Modal body -->
+	      <div class="modal-body">
+	        <!-- 모달 내용 시작 -->
+	        <div class="container-fluid mmdd">
+	          <div class="row mmdd">
+	            <div class="col-md-5 card mmdd">
+	                <div class="card-body">
+	                조직도
+	                	<div id="org-chart"></div>
+	                </div>
+                                 
+	            </div>
+	            <div class="col-md-2 mmdd d-flex justify-content-center align-items-center flex-column">
+                    <div class="text-center">
+				        <button class="btn btn-primary btn-sm mb-3"> >> </button>
+				    </div>
+				    <div class="text-center">
+				        <button class="btn btn-primary btn-sm mt-3"> &lt;&lt; </button>
+				    </div>
+                </div>
+	            <div class="col-md-5 mmdd">
+	              <div id="right-top" class="row ssdd" style="background-color: lightblue;">
+	                  <div style="text-align: left;">결재자</div>
+
+                      <div>
+                        <table>
+                            <colgroup>
+                                <col wid="20%"/>
+                                <col wid="50%"/>
+                                <col wid="20%"/>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>선택</th>
+                                    <th>이름</th>
+                                    <th>직책</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                      </div>
+	                  
+	                  <div class="text-right mt-2 align-self-end">
+	                      <div class="col-auto">
+	                          <div class="mb-2">
+	                          <button class="btn btn-primary btn-sm">저장하기</button>
+	                          <button class="btn btn-primary btn-sm">등록하기</button>
+	                          </div>
+	                      </div>                                         
+	                  </div>                                           
+				  </div>
+	              <div id="right-bottom" class="row ssdd" style="background-color: lightgreen;">
+                    <div style="text-align: left;">나의 결재목록</div>
+                  </div>
+	            </div>
+	          </div>
+	        </div>
+	        <!-- 모달 내용 끝 -->
+	      </div>
+	      <!-- Modal footer -->
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+    
+    <c:import url="../../template/script.jsp"></c:import>
+<script src="/js/orgChart/orgChart.js"></script>
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .then(editor => {
+            editor.editing.view.change(writer => {
+                writer.setStyle('height', '20vh', editor.editing.view.document.getRoot());
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+</script>
+    
 </body>
 
 </html>

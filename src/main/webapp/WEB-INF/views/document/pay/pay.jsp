@@ -1,4 +1,5 @@
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 
@@ -6,13 +7,18 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
     <!-- css 파일 -->
-    <link rel="stylesheet" href="상여신청서.css">
-    <script src="상여신청서.js"></script>
+    <link rel="stylesheet" href="/css/documentDetail.css">    
+	<script src="/js/document/documentDetail.js"></script>
+
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 </head>
 
 <body> 
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
     <span>
         <p style="line-height: 150%; font-family: 맑은 고딕; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;"><span
                 style="font-family: 맑은 고딕; font-size: 10pt;"></span>&nbsp;</p>
@@ -41,12 +47,12 @@
                 <tr>
                     
                     <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
-                        colspan="2" class=""> 상여금신청서  
+                        colspan="2" class=""> 지출결의서  
                         <div style="text-align: right;">
                         
                             <!-- Button to Open the Modal -->
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-							  Open modal
+							  결재선지정
 							</button>
 							
 							<!-- The Modal -->
@@ -64,7 +70,7 @@
 							        <div class="container-fluid mmdd">
 							          <div class="row mmdd">
 							            <div class="col-md-4 mmdd">
-							                <div>조직도</div>
+							                <div style="text-align: center;">조직도</div>
 							                <div id="org-chart"></div>
 							            </div>
 							            <div class="col-md-8 mmdd">
@@ -119,7 +125,7 @@
                                     </td>
                                     <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                         <div style="width: 100%; text-align: center;">
-                                            <input type="text" class="form-control" id="" name="" style="text-align: center;" value="상여신청서" readonly>
+                                            <input type="text" class="form-control" id="" name="" style="text-align: center;" value="지출결의서" readonly>
                                         </div>
                                     </td>
                                 </tr>
@@ -288,12 +294,12 @@
                 <tr>
                     <td style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;"
                         colspan="2">
-                        상여사유
+                        지출사유
                     </td>
                 </tr>
                 <tr>
                     <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                        <textarea class="form-control" id="contents" rows="3" cols="107" name="contents"></textarea>
+                         <div id="editor"></div>
                     </td>
                 </tr>
                 
@@ -308,9 +314,21 @@
             style="line-height: 150%; font-family: &quot;맑은 고딕&quot;; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;">
             &nbsp;</p>
     </span>
-    <!-- <script type="text/javascript">
-        $("#contents").summernote();
-    </script> -->
+    
+<script>
+    ClassicEditor
+        .create(document.querySelector('#editor'))
+        .then(editor => {
+            editor.editing.view.change(writer => {
+                writer.setStyle('height', '20vh', editor.editing.view.document.getRoot());
+            });
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+</script>
+    
 </body>
 
 </html>

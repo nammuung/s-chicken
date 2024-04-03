@@ -35,5 +35,13 @@ public class documentController {
 	public void documentTemp() {
 		
 	}
+	@GetMapping("bonus/bonus")
+	public void sang() {
+		
+	}
+	@GetMapping("pay/pay")
+	public void pay() {
+		
+	}
 	
 }

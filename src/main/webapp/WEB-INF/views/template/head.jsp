@@ -22,6 +22,7 @@
 <link href="/vendor/quill/quill.bubble.css" rel="stylesheet">
 <link href="/vendor/remixicon/remixicon.css" rel="stylesheet">
 <link href="/vendor/simple-datatables/style.css" rel="stylesheet">
+<link href="/css/lib/line.css" rel="stylesheet">
 
 <!-- jsTree -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
