@@ -16,7 +16,7 @@
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle" style="text-align: center;">
-        <h1>전체 게시판</h1>
+        <h1>경조사 게시판</h1>
     </div>
     <section class="section">
         <div class="row justify-content-end p-3">
@@ -70,19 +70,16 @@
                         <li class="page-item"><a class="page-link" href="#">3</a></li>
                         <li class="page-item">
                             <a class="page-link" href="#">다음</a>
-                        </li>                     
+                        </li>
                     </ul>
-                    
                 </nav>
             </div>
-            
         </div>
         <div class="row justify-content-end p-3">
             <div class="col-auto">            	               	
                	<a href="./write" class="btn btn-primary">글쓰기</a>
             </div>
         </div>
-        
     </section>
 </main><!-- End #main -->
 <!-- ======= Footer ======= -->

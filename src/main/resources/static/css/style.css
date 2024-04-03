@@ -101,6 +101,15 @@
   border-color: #5729E8!important;
 }
 
+.chatting-content{
+  max-height: 800px;
+  overflow-y: auto;
+}
+
+.chatting-content .d-flex{
+  gap : 2rem;
+}
+
 .w-22rem{
   width: 22rem!important;
 }
@@ -627,8 +636,12 @@ h6 {
 }
 
 /*123456*/
+.chatroom-item:hover{
+  background-color : #E6E9ff!important;
+}
+
 .linkable{
-  color : #0dcaf0;
+  color : #00ceff;
 }
 
 .notifications .linkable{

@@ -10,6 +10,7 @@
 </head>
 
 <body>
+
 <!-- ======= Header ======= -->
 <c:import url="template/header.jsp"/>
 <!-- ======= Sidebar ======= -->

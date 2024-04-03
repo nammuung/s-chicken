@@ -19,6 +19,15 @@
 
 <!-- jsTree -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script src=""></script>
+
+<!-- 캘린더,서머노트 라이브러리 -->
+<script src="/js/lib/index.global.js"></script>
+<script src="/js/lib/summernote-lite.js"></script>
+<script src="/js/lib/summernote-ko-KR.js"></script>
+
+
+
 
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>

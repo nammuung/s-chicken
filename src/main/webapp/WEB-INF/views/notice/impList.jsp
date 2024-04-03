@@ -16,7 +16,7 @@
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle" style="text-align: center;">
-        <h1>전체 게시판</h1>
+        <h1>대표 게시판</h1>
     </div>
     <section class="section">
         <div class="row justify-content-end p-3">

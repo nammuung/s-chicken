@@ -31,6 +31,15 @@
 
                     <div class="card-body mt-3">
                         <form class="">
+
+                            <div class="mb-3">
+                                <label for="sort" class="form-label">종류</label>
+                                <select class="form-select" style="width: 200px;">
+                                    <option value="0">경조사 게시</option>
+                                    <option value="1">대표 게시</option>
+                                </select>
+                            </div>
+                        
                             <div class="mb-3">
                                 <label for="title" class="form-label"><b>제목</b></label>
                                 <input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요.">
