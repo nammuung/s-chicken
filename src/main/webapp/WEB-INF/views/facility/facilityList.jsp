@@ -15,21 +15,7 @@
 
 </head>
 <style>
-.title {
-	font-weight: bold;
-	color: #7749f8;
-	font-size: x-large
-}
 
-.image {
-	width: 100%;
-	max-height: 200px;
-	object-fit: cover;
-}
-
-.mintitle {
-	color: gray;
-}
 
 a:link {
 	color: #7749f8;
@@ -62,8 +48,7 @@ a:hover {
 					<div class="row justify-content-center mb-5">
 
 						<div class="col-2">
-							<h4
-								style="background-color: #7749f8; border-radius: 50%; width: 50px; height: 50px; display: flex; justify-content: center; align-items: center; color: white;">
+							<h4 class="iconAll">
 								ALL</h4>
 						</div>
 
@@ -90,12 +75,12 @@ a:hover {
 								<div class="card shadow  mb-5 bg-body rounded">
 
 									<div class="facility mb-2 text-center">
-										<img style="border-radius: 2%;" class="image "
+										<img style="border-radius: 2%;" class="image_1 "
 											src="https://cdn.pixabay.com/photo/2017/03/28/12/11/chairs-2181960_1280.jpg"
 											alt="#"></a>
 									</div>
-									<span class="title ms-2"><a href="./">회의실 A</a></span>
-									<div class="mintitle mb-3 ms-2">본관 3층 A-2 구역</div>
+									<span class="title_1 ms-2"><a href="./">회의실 A</a></span>
+									<div class="mintitle_1 mb-3 ms-2">본관 3층 A-2 구역</div>
 
 								</div>
 							</div>
