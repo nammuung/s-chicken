@@ -23,7 +23,7 @@
 	margin-bottom: 0px;	
 }
 .facilityday{
-	margin-left: 60px; 
+	margin-left: 30px; 
 	margin-top: 18px;
 	margin-bottom: 1px; 
 	font-size: 120%;
@@ -75,6 +75,8 @@
 	border-bottom-right-radius: 40px 40px;
 	border-bottom-left-radius: 40px 40px;
 	margin-right: 5px;
+	margin-top: 5px;
+	margin-bottom: 10px;
 }
 
 .listcheckbox2{
@@ -84,6 +86,11 @@
 	border-bottom-right-radius: 40px 40px;
 	border-bottom-left-radius: 40px 40px;
 	margin-right: 5px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+.facilitySpan{
+	margin-top: 5px;
 }
 
 /*--------------------------------------------------------------

@@ -78,19 +78,25 @@
 						</div>
 					</div>
 
-					<div>
+					
+				</div>
+				
+				<div class="col-4">
+				<div class="card">
+				
+				<div>
 						<h4 class="facilityday">예약 일시</h4>
 					</div>
 
 
 					<div class="d-flex">
-					<div class="form-group col-5" style=" margin-left: 60px;">
+					<div class="form-group col-5" style=" margin-left: 30px;">
 						<label for="birth" class="form-label" style="font-size:80%; margin-bottom: 0;">start Date</label> 
 						<input id="birth" type="date" class="form-control mt-0">
 					</div>
 					
-					<div class="form-group col-5" style=" margin-left: 60px;">
-						<label for="birth" class="form-label" style="font-size:80%; margin-bottom: 0;">start Date</label> 
+					<div class="form-group col-5" style=" margin-left: 10px;">
+						<label for="birth" class="form-label" style="font-size:80%; margin-bottom: 0;">end Date</label> 
 						<input id="birth" type="date" class="form-control mt-0">
 					</div>
 					</div>
@@ -101,12 +107,13 @@
 					<div class="d-flex">
 					<div class="col-2"></div>
 					<div class="col-2 listcheckbox">&nbsp;</div>
-					<span>&nbsp;예약 불가</span>
+					<span class="facilitySpan">&nbsp;예약 불가</span>
 					<div class="col-2"></div>
 					<div class="col-2 listcheckbox2">&nbsp;</div>
-					<span> 예약 가능</span>
+					<span class="facilitySpan"> 예약 가능</span>
 					</div>
-					
+				
+				</div>
 				</div>
 			</div>
 		</section>
