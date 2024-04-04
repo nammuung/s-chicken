@@ -105,13 +105,39 @@
 					
 					<div class="facilityday">예약 시간</div>
 					<div class="d-flex">
-					<div class="col-2"></div>
+					<div class="col-1"></div>
 					<div class="col-2 listcheckbox">&nbsp;</div>
 					<span class="facilitySpan">&nbsp;예약 불가</span>
 					<div class="col-2"></div>
 					<div class="col-2 listcheckbox2">&nbsp;</div>
 					<span class="facilitySpan"> 예약 가능</span>
 					</div>
+				
+				<!-- 시간  비동기 식으로 구현 필요-->
+				<div class="d-flex justify-content-center">
+				<div class="col-3 listcheckbox text-center">09:00</div>
+				<div class="col-3 listcheckbox text-center">10:00</div>
+				<div class="col-3 listcheckbox text-center">11:00</div>
+				</div>
+				
+				<div class="d-flex justify-content-center ">
+				<div class="col-3 listcheckbox2 text-center">12:00</div>
+				<div class="col-3 listcheckbox2 text-center">13:00</div>
+				<div class="col-3 listcheckbox2 text-center">14:00</div>
+				</div>
+				
+				<div class="d-flex justify-content-center ">
+				<div class="col-3 listcheckbox2 text-center" >15:00</div>
+				<div class="col-3 listcheckbox2 text-center" >16:00</div>
+				<div class="col-3 listcheckbox2 text-center" >17:00</div>
+				</div>
+				
+				<div class="d-flex justify-content-center ">
+				<div class="col-3 listcheckbox2 text-center">18:00</div>
+				<div class="col-3 listcheckbox2 text-center">19:00</div>
+				<div class="col-3 listcheckbox2 text-center">20:00</div>
+				</div>
+				
 				
 				</div>
 				</div>
