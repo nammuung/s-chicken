@@ -7,6 +7,93 @@
 */
 
 /*--------------------------------------------------------------
+# Nmg
+--------------------------------------------------------------*/
+.title {
+	font-weight: bold;
+	color: #7749f8;
+	font-size: 250%;
+	margin-left: 37px
+}
+.mintitle {
+	font-weight: bold;
+	color: #7749f8;
+	font-size: 160%;
+	margin-left: 41px;
+	margin-bottom: 0px;	
+}
+.facilityday{
+	margin-left: 30px; 
+	margin-top: 18px;
+	margin-bottom: 1px; 
+	font-size: 120%;
+	font-weight: bold;
+}
+.announcement{
+	margin-left: 100px; 
+	margin-right: 67px; 
+	font-size: 100%; 
+	font-weight: bold;
+}
+.facility{
+	font-weight: bold; 
+	margin-left: 60px; 
+	margin-top: 25px;
+}
+
+/*facilityList CSS*/
+.title_1 {
+	font-weight: bold;
+	color: #7749f8;
+	font-size: x-large
+}
+
+.image_1 {
+	width: 100%;
+	max-height: 200px;
+	object-fit: cover;
+}
+
+.mintitle_1 {
+	color: gray;
+}
+
+.iconAll{
+	background-color: #7749f8; 
+	border-radius: 50%; 
+	width: 50px; 
+	height: 50px; 
+	display: flex; 
+	justify-content: center; 
+	align-items: center; 
+	color: white;
+}
+.listcheckbox{
+	background-color: #7749f8;
+	border-top-left-radius: 40px 40px;
+	border-top-right-radius: 40px 40px;
+	border-bottom-right-radius: 40px 40px;
+	border-bottom-left-radius: 40px 40px;
+	margin-right: 5px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+.listcheckbox2{
+	border: 1px solid black;
+	border-top-left-radius: 40px 40px;
+	border-top-right-radius: 40px 40px;
+	border-bottom-right-radius: 40px 40px;
+	border-bottom-left-radius: 40px 40px;
+	margin-right: 5px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+.facilitySpan{
+	margin-top: 5px;
+}
+
+/*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
 /* Your custom primary color */
