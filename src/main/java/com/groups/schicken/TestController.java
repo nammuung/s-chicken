@@ -17,8 +17,8 @@ public class TestController {
 
 
     @GetMapping("/")
-    public String test(String path){
-        return path;
+    public String test(){
+        return "facility/facilityDetail";
     }
 
 }
