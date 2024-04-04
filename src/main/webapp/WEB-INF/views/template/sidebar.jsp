@@ -22,18 +22,18 @@
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="components-alerts.html">
+                    <a href="/notice/list">
                         <i class="bi bi-circle"></i><span>전체</span>
                     </a>
                 </li>
                 <li>
-                    <a href="components-accordion.html">
-                        <i class="bi bi-circle"></i><span>중요</span>
+                    <a href="/notice/impList">
+                        <i class="bi bi-circle"></i><span>대표 공지</span>
                     </a>
                 </li>
                 <li>
-                    <a href="components-badges.html">
-                        <i class="bi bi-circle"></i><span>경조사</span>
+                    <a href="/notice/cacList">
+                        <i class="bi bi-circle"></i><span>경조사 공지</span>
                     </a>
                 </li>
             </ul>
@@ -45,27 +45,27 @@
             </a>
             <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="forms-elements.html">
+                    <a href="/document/list">
                         <i class="bi bi-circle"></i><span>결재 문서</span>
                     </a>
                 </li>
                 <li>
-                    <a href="forms-layouts.html">
+                    <a href="/document/document">
                         <i class="bi bi-circle"></i><span>상신함</span>
                     </a>
                 </li>
                 <li>
-                    <a href="forms-editors.html">
+                    <a href="/document/approvalList">
                         <i class="bi bi-circle"></i><span>결재함</span>
                     </a>
                 </li>
                 <li>
-                    <a href="forms-editors.html">
+                    <a href="/document/ref">
                         <i class="bi bi-circle"></i><span>참조함</span>
                     </a>
                 </li>
                 <li>
-                    <a href="forms-validation.html">
+                    <a href="/document/temp">
                         <i class="bi bi-circle"></i><span>임시저장</span>
                     </a>
                 </li>

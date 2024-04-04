@@ -22,9 +22,12 @@
 <link href="/vendor/quill/quill.bubble.css" rel="stylesheet">
 <link href="/vendor/remixicon/remixicon.css" rel="stylesheet">
 <link href="/vendor/simple-datatables/style.css" rel="stylesheet">
+<link href="/css/lib/line.css" rel="stylesheet">
 
 <!-- jsTree -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css"/>
+<!-- 서머노트 css  -->
+<link rel="stylesheet" href="/css/lib/summernote-lite.css">
 
 <!-- fontawesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />

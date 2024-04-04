@@ -16,7 +16,7 @@
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle" style="text-align: center;">
-        <h1>전체 게시판</h1>
+        <h1>참조 문서함</h1>
     </div>
     <section class="section">
         <div class="row justify-content-end p-3">
@@ -25,8 +25,9 @@
                     <label>
                         <select class="form-select w-auto me-1">
                             <option value="0">제목</option>
-                            <option value="1">내용</option>
-                            <option value="2">제목+내용</option>
+                            <option value="1">문서종류</option>
+                            <option value="2">내용</option>
+                            <option value="3">제목+내용</option>
                         </select>
                     </label>
                     <input type="text" name="query" placeholder="검색" title="Enter search keyword">
@@ -34,28 +35,28 @@
                 </form>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
+        <div class="row text-nowrap justify-content-center">
+            <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table text-center text-nowrap">
+                        <table class="table text-center">
                             <thead>
-                            <tr>
-                                <th style="width: 5%">no</th>
-                                <th style="width: 70%">제목</th>
-                                <th style="width: 10%">작성일</th>
-                                <th style="width: 10%">등록자</th>
-                                <th style="width: 5%">조회수</th>
-                            </tr>
+                                <tr>
+                                    <th style="width: 15%">문서번호</th>
+                                    <th style="width: 50%">제목</th>
+                                    <th style="width: 10%">문서종류</th>
+                                    <th style="width: 10%">상신일</th>
+                                    <th style="width: 5%">상태</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td class="text-start">Test</td>
-                                <td>2023.03.31</td>
-                                <td>관리자</td>
-                                <td>11</td>
-                            </tr>
+                                <tr>
+                                    <td>20240312001</td>
+                                    <td class="text-start">3월 출장비 지출결의서입니다.</td>
+                                    <td>지출결의서</td>
+                                    <td>2024.03.12</td>
+                                    <td>진행중</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -70,19 +71,11 @@
                         <li class="page-item"><a class="page-link" href="#">3</a></li>
                         <li class="page-item">
                             <a class="page-link" href="#">다음</a>
-                        </li>                     
+                        </li>
                     </ul>
-                    
                 </nav>
             </div>
-            
         </div>
-        <div class="row justify-content-end p-3">
-            <div class="col-auto">            	               	
-               	<a href="./write" class="btn btn-primary">글쓰기</a>
-            </div>
-        </div>
-        
     </section>
 </main><!-- End #main -->
 <!-- ======= Footer ======= -->
