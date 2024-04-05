@@ -4,8 +4,12 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.department.DepartmentDAO">
-    <insert id="addDepartment" parameterType="DepartmentVO">
+    <insert id="addDepartment">
         INSERT INTO department(id, name, contact_number, sort, upper_id)
         VALUES (#{id}, #{name}, #{contactNumber}, #{sort}, #{upperId})
     </insert>
+
+    <select id="getDepartment" parameterType="DepartmentVO" resultType="DepartmentVO">
+        SELECT * FROM department WHERE id=#{id}
+    </select>
 </mapper>
