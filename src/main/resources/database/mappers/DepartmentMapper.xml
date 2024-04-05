@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.department.DepartmentDAO">
+    <insert id="addDepartment" parameterType="DepartmentVO">
+        INSERT INTO department(id, name, contact_number, sort, upper_id)
+        VALUES (#{id}, #{name}, #{contactNumber}, #{sort}, #{upperId})
+    </insert>
+</mapper>
