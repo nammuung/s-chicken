@@ -25,4 +25,13 @@ class DepartmentServiceTest {
         System.out.println("result = " + result);
         assertEquals(1, result);
     }
+
+    @Test
+    void getDepartment() {
+        DepartmentVO departmentVO = new DepartmentVO();
+        departmentVO.setId(1L);
+        departmentVO = departmentDAO.getDepartment(departmentVO);
+
+        System.out.println("departmentVO = " + departmentVO);
+    }
 }

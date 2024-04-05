@@ -6,4 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface DepartmentDAO {
 
     int addDepartment(DepartmentVO department);
+
+    DepartmentVO getDepartment(DepartmentVO department);
 }
