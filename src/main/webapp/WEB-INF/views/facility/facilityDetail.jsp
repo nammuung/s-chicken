@@ -8,9 +8,18 @@
 <title>S치킨-그룹웨어</title>
 <c:import url="../template/head.jsp" />
 
+
 </head>
 
 <body>
+	<!-- 소스 다운 -->
+	<script src="https://unpkg.com/@yaireo/tagify"></script>
+	<!-- 폴리필 (구버젼 브라우저 지원) -->
+	<script
+		src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+	<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css"
+		rel="stylesheet" type="text/css" />
+
 	<!-- ======= Header ======= -->
 	<c:import url="../template/header.jsp" />
 	<!-- ======= Sidebar ======= -->
@@ -78,70 +87,89 @@
 						</div>
 					</div>
 
-					
+
 				</div>
-				
+
 				<div class="col-4">
-				<div class="card">
-				
-				<div>
-						<h4 class="facilityday">예약 일시</h4>
-					</div>
+					<div class="card">
+
+						<div>
+							<h4 class="facilityday">예약 일시</h4>
+						</div>
 
 
-					<div class="d-flex">
-					<div class="form-group col-5" style=" margin-left: 30px;">
-						<label for="birth" class="form-label" style="font-size:80%; margin-bottom: 0;">start Date</label> 
-						<input id="birth" type="date" class="form-control mt-0">
+						<div class="d-flex">
+							<div class="form-group col-5" style="margin-left: 30px;">
+								<label for="birth" class="form-label"
+									style="font-size: 80%; margin-bottom: 0;">start Date</label> <input
+									id="birth" type="date" class="form-control mt-0">
+							</div>
+
+							<div class="form-group col-5" style="margin-left: 10px;">
+								<label for="birth" class="form-label"
+									style="font-size: 80%; margin-bottom: 0;">end Date</label> <input
+									id="birth" type="date" class="form-control mt-0">
+							</div>
+						</div>
+
+
+
+						<div class="facilityday">예약 시간</div>
+						<div class="d-flex">
+							<div class="col-1"></div>
+							<div class="col-2 listcheckbox">&nbsp;</div>
+							<span class="facilitySpan">&nbsp;예약 불가</span>
+							<div class="col-2"></div>
+							<div class="col-2 listcheckbox2">&nbsp;</div>
+							<span class="facilitySpan"> 예약 가능</span>
+						</div>
+
+						<!-- 시간  비동기 식으로 구현 필요-->
+						<div class="d-flex justify-content-center">
+							<div class="col-3 listcheckbox text-center">09:00</div>
+							<div class="col-3 listcheckbox text-center">10:00</div>
+							<div class="col-3 listcheckbox text-center">11:00</div>
+						</div>
+
+						<div class="d-flex justify-content-center ">
+							<div class="col-3 listcheckbox2 text-center">12:00</div>
+							<div class="col-3 listcheckbox2 text-center">13:00</div>
+							<div class="col-3 listcheckbox2 text-center">14:00</div>
+						</div>
+
+						<div class="d-flex justify-content-center ">
+							<div class="col-3 listcheckbox2 text-center">15:00</div>
+							<div class="col-3 listcheckbox2 text-center">16:00</div>
+							<div class="col-3 listcheckbox2 text-center">17:00</div>
+						</div>
+
+						<div class="d-flex justify-content-center ">
+							<div class="col-3 listcheckbox2 text-center">18:00</div>
+							<div class="col-3 listcheckbox2 text-center">19:00</div>
+							<div class="col-3 listcheckbox2 text-center">20:00</div>
+						</div>
+
+
+						<div>
+							<div class="ms-5 mb-3 d-flex align-middle">
+								<select class="form-select form-select-sm w-50"
+									aria-label="Small select example">
+									<option selected>부서선택</option>
+									<option value="1">영업팀</option>
+									<option value="2">인사팀</option>
+									<option value="3">식품개발팀</option>
+								</select>
+							<input type="checkbox" class="ms-2 mx-2"/> <label  style="font-weight: bold;font-size:90%; margin-top: 1.4%"> 전체선택</label>
+							</div>
+							
+						</div>
+						
+
+						
 					</div>
-					
-					<div class="form-group col-5" style=" margin-left: 10px;">
-						<label for="birth" class="form-label" style="font-size:80%; margin-bottom: 0;">end Date</label> 
-						<input id="birth" type="date" class="form-control mt-0">
-					</div>
-					</div>
-					
-					
-					
-					<div class="facilityday">예약 시간</div>
-					<div class="d-flex">
-					<div class="col-1"></div>
-					<div class="col-2 listcheckbox">&nbsp;</div>
-					<span class="facilitySpan">&nbsp;예약 불가</span>
-					<div class="col-2"></div>
-					<div class="col-2 listcheckbox2">&nbsp;</div>
-					<span class="facilitySpan"> 예약 가능</span>
-					</div>
-				
-				<!-- 시간  비동기 식으로 구현 필요-->
-				<div class="d-flex justify-content-center">
-				<div class="col-3 listcheckbox text-center">09:00</div>
-				<div class="col-3 listcheckbox text-center">10:00</div>
-				<div class="col-3 listcheckbox text-center">11:00</div>
-				</div>
-				
-				<div class="d-flex justify-content-center ">
-				<div class="col-3 listcheckbox2 text-center">12:00</div>
-				<div class="col-3 listcheckbox2 text-center">13:00</div>
-				<div class="col-3 listcheckbox2 text-center">14:00</div>
-				</div>
-				
-				<div class="d-flex justify-content-center ">
-				<div class="col-3 listcheckbox2 text-center" >15:00</div>
-				<div class="col-3 listcheckbox2 text-center" >16:00</div>
-				<div class="col-3 listcheckbox2 text-center" >17:00</div>
-				</div>
-				
-				<div class="d-flex justify-content-center ">
-				<div class="col-3 listcheckbox2 text-center">18:00</div>
-				<div class="col-3 listcheckbox2 text-center">19:00</div>
-				<div class="col-3 listcheckbox2 text-center">20:00</div>
-				</div>
-				
-				
-				</div>
 				</div>
 			</div>
+
 		</section>
 	</main>
 	<!-- End #main -->
@@ -150,5 +178,4 @@
 	<!-- ======= Script ======= -->
 	<c:import url="../template/script.jsp" />
 </body>
-
 </html>
