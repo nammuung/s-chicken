@@ -1,6 +1,6 @@
 let orgChart = {
     init : (id, callback) => {
-        fetch('organization/orgChart')
+        fetch('/organization/orgChart')
             .then(res=>res.json())
             .then(orgList => {
                 for (let orgData of orgList) {
