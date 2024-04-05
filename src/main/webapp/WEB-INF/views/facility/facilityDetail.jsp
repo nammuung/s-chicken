@@ -163,7 +163,20 @@
 							</div>
 							
 						</div>
+						<div class="ms-5">
+						<table border="1" style="table-layout: fixed;border-collapse: collapse; ">
 						
+						<c:forEach begin="1" end="5">
+						<tbody style="    display:block;height:25px;">
+						<tr>
+						<td width="15"><input type="checkbox"/></td>
+						<td>사원 이동일</td>
+						<td width="200"></td>
+						</tr>
+						</tbody>
+						</c:forEach>
+						</table>
+						</div>
 
 						
 					</div>
