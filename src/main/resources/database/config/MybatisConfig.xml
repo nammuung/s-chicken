@@ -6,5 +6,6 @@
 <configuration>
     <typeAliases>
         <typeAlias type="com.groups.schicken.department.DepartmentVO" alias="DepartmentVO"/>
+        <typeAlias type="com.groups.schicken.Employee.EmployeeVO" alias="EmployeeVO"/>
     </typeAliases>
 </configuration>
