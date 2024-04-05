@@ -1,11 +1,11 @@
-package com.groups.schicken.orgChart;
+package com.groups.schicken.organization;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class orgElement {
+public class OrgElementVO {
     private String id;
     private String parent;
     private String type;
