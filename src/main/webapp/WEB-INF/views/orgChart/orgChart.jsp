@@ -26,8 +26,8 @@
                     <div id="org-chart"></div>
                 </div>
                 <div class="card-body align-self-end">
-                    <button class="btn btn-primary">부서추가</button>
-                    <button class="btn btn-primary">부서수정</button>
+                    <button class="btn btn-primary dept-btn disabled">하위에 부서추가</button>
+                    <button class="btn btn-primary dept-btn disabled">부서수정</button>
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
-<script src="/js/orgChart/orgChart.js"></script>
+<script src="/js/orgChart/orgChartPage.js" type="module"></script>
 </body>
 
 </html>
