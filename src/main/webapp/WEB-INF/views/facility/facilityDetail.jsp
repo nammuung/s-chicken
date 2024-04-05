@@ -8,6 +8,15 @@
 <title>S치킨-그룹웨어</title>
 <c:import url="../template/head.jsp" />
 
+<style>
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+.list-group-item {
+	line-height: 0.8; /* 라인 높이 설정 */
+}
+</style>
 
 </head>
 
@@ -150,7 +159,7 @@
 						</div>
 
 
-						<div>
+						<div class="mt-1">
 							<div class="ms-5 mb-3 d-flex align-middle">
 								<select class="form-select form-select-sm w-50"
 									aria-label="Small select example">
@@ -158,27 +167,51 @@
 									<option value="1">영업팀</option>
 									<option value="2">인사팀</option>
 									<option value="3">식품개발팀</option>
-								</select>
-							<input type="checkbox" class="ms-2 mx-2"/> <label  style="font-weight: bold;font-size:90%; margin-top: 1.4%"> 전체선택</label>
+								</select> <input type="checkbox" class="ms-2 mx-2" /> <label
+									style="font-weight: bold; font-size: 90%; margin-top: 1.4%">
+									전체선택</label>
 							</div>
-							
-						</div>
-						<div class="ms-5">
-						<table border="1" style="table-layout: fixed;border-collapse: collapse; ">
-						
-						<c:forEach begin="1" end="5">
-						<tbody style="    display:block;height:25px;">
-						<tr>
-						<td width="15"><input type="checkbox"/></td>
-						<td>사원 이동일</td>
-						<td width="200"></td>
-						</tr>
-						</tbody>
-						</c:forEach>
-						</table>
+
 						</div>
 
-						
+						<div class="ms-5 mx-5 mb-3 overflow-auto"
+							style="max-height: 150px;">
+
+							<ul class="list-group" style="list-style: none;">
+								<c:forEach begin="1" end="20">
+									<li class="list-group-item"><input type="checkbox" />
+										asdasd</li>
+								</c:forEach>
+							</ul>
+						</div>
+
+						<!-- 리스트 체크시 들어가는 태그 -->
+						<div></div>
+
+
+						<div class="text-center mb-3">
+							<button class="btn btn-primary col-2">예약</button>
+						</div>
+
+
+					<!-- 해당시설에 예약한 모든 리스트 출력  -->
+						<div class="mb-1 ms-5" style="font-weight: bold">해당시설 예약목록</div>
+						<div class="ms-5 mx-5 mb-3 overflow-auto"
+							style="max-height: 150px;">
+							<ul class="list-group" style="list-style: none;">
+								<c:forEach begin="1" end="20">
+									<li class="list-group-item"><input type="checkbox" />
+										asdasd</li>
+								</c:forEach>
+							</ul>
+						</div>
+
+						<!-- 본인것만 취소가 가능  -->
+						<div class="text-center mb-3">
+							<button class="btn btn-primary col-2">취소</button>
+						</div>
+
+
 					</div>
 				</div>
 			</div>
