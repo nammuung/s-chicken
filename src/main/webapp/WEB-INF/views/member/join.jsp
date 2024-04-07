@@ -30,8 +30,8 @@
                                     <input id="name" type="text" class="form-control" placeholder="이름">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="phone" class="form-label"><b>전화번호</b></label>
-                                    <input id="phone" type="text" class="form-control" placeholder="전화번호">
+                                    <label for="phoneNumber" class="form-label"><b>전화번호</b></label>
+                                    <input id="phoneNumber" type="text" class="form-control" placeholder="전화번호">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="email" class="form-label"><b>이메일</b></label>
@@ -40,24 +40,24 @@
                                 
                                     <label for="address" class="form-label"><b>주소</b></label>
 								<div class="form-group mb-3 d-flex">
-    								<input type="text" id="sample6_postcode" placeholder="우편번호" class="form-control">
-    								<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" class="btn btn-primary">
+    								<input type="text" id="postcode" placeholder="우편번호" class="form-control">
+    								<input type="button" onclick="postcode()" value="우편번호 찾기" class="btn btn-primary">
 								</div>
 
                                 
                                  <div class="form-group mb-3 d-flex">
-      						<input type="text" id="sample6_address" class="form-control" placeholder="주소">
-      						<input type="text" id="sample6_detailAddress" class="form-control ml-2" placeholder="상세주소">
+      						<input type="text" id="address" class="form-control" placeholder="주소">
+      						<input type="text" id="address_detail" class="form-control ml-2" placeholder="상세주소">
                                 </div>
       						
                                 
                                 <div class="form-group mb-3">
-                                    <label for="birth" class="form-label"><b>생년월일</b></label>
-                                    <input id="birth" type="date" class="form-control">
+                                    <label for="residentNumber" class="form-label"><b>생년월일</b></label>
+                                    <input id="residentNumber" type="date" class="form-control">
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="joinDate" class="form-label"><b>입사일</b></label>
-                                    <input id="joinDate" type="date" class="form-control">
+                                    <label for="dateOfEmployment" class="form-label"><b>입사일</b></label>
+                                    <input id="dateOfEmployment" type="date" class="form-control">
                                 </div>
                                 <div class="form-group mb-3 col-4">
                                     <label for="position" class="form-label"><b>직급</b></label>
@@ -78,10 +78,10 @@
                                     </select>
                                 </div>
                                 <div class="form-group mb-3 col-4">
-                                    <label for="연차" class="form-label"><b>연차</b></label>
+                                    <label for="연차" class="form-label"><b>팀</b></label>
                                     <select class="form-select" id="연차">
-                                        <option value="0">14</option>
-                                        <option value="1">15</option>
+                                        <option value="0">영업</option>
+                                        <option value="1">인사</option>
                                     </select>
                                 </div>
                                 <div class="form-group mb-3 col-4">
@@ -97,6 +97,7 @@
                                 </div>
                             </div>
 
+							
                             <button type="button" class="btn btn-primary mt-3">회원가입</button>
                         </form>
                     </div>
