@@ -10,7 +10,7 @@
 <insert id="join" parameterType="EmployeeVO">
 
 <selectKey resultType="String" keyProperty="id" order="BEFORE">
-    SELECT CONCAT(#{residentNumber}, NEXT VALUE FOR seq3) AS id
+    SELECT CONCAT(#{residentNumber},  nextval(seq4)) AS id
 </selectKey>
 
 
