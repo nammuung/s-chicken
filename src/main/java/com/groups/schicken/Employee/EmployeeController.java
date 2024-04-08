@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.api.services.storage.Storage.BucketAccessControls.List;
 
-import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,17 +68,23 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("join")
-	public String join(EmployeeVO employeeVO, Model model, BindingResult bindingResult)throws Exception{
-//		boolean check = employeeService.checkEmployee(employeeVO, bindingResult);
-//		if(check) {
-//			return "employee/join";
-//		}
-		sys
+	public String join(EmployeeVO employeeVO, Model model, BindingResult bindingResult) throws Exception {
+	    int result = employeeService.join(employeeVO);
+	    
+	    String msg = "가입 실패";
+	    String path = "./join";
 
-		int reuslt = employeeService.join(employeeVO);
-		
-		return "commons/result";
-	} 
+	    if (result > 0) {
+	        msg = "가입 성공";
+	        path = "../";
+	    }
+
+	    model.addAttribute("msg", msg);
+	    model.addAttribute("path", path);
+	    
+	    return "employee/result";
+	}
+
 	
 	
 	

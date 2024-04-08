@@ -53,7 +53,7 @@
 									<div class="form-group mb-3 d-flex">
 										<input type="text" id="address" name="address" class="form-control"
 											placeholder="주소"> <input type="text"
-											id="address_detail" name="address_detail" class="form-control ml-2"
+											id="addressDetail" name="addressDetail" class="form-control ml-2"
 											placeholder="상세주소">
 									</div>
 
@@ -67,26 +67,33 @@
 										<input id="dateOfEmployment"  name="dateOfEmployment" type="date" class="form-control">
 									</div>
 									<div class="form-group mb-3 col-4">
-										<label for="position" name="position" class="form-label"><b>직급</b></label> <select
-											class="form-select" id="position">
+										<label for="posName" name="posName" class="form-label"><b>직급</b></label> <select
+											class="form-select" id="posName">
 											<option value="0">직급 선택</option>
-											<option value="1">사원</option>
-											<option value="1">주임</option>
-											<option value="1">대리</option>
-											<option value="1">과장</option>
-											<option value="1">부장</option>
+											<option value="2">사원</option>
+											<option value="3">주임</option>
+											<option value="4">계장</option>
+											<option value="5">대리</option>
+											<option value="6">과장</option>
+											<option value="7">차장</option>
+											<option value="8">부장</option>
+											<option value="9">감사</option>
+											<option value="10">이사</option>
+											<option value="11">상무</option>
+											<option value="12">부사장</option>
+											<option value="13">사장</option>
 										</select>
 									</div>
 									<div class="form-group mb-3 col-4">
 										<label for="department" class="form-label"><b>부서</b></label> <select
-											class="form-select" id="department" name="department_id">
+											class="form-select" id="department" name="departmentId">
 											<option value="0">부서 선택</option>
 
 										</select>
 									</div>
 									<div class="form-group mb-3 col-4">
 										<label for="team" class="form-label"><b>팀</b></label> <select
-											class="form-select" id="team" name="department_id">
+											class="form-select" id="team" name="departmentId">
 											<option value="0">팀 선택</option>
 
 										</select>
@@ -110,6 +117,7 @@
 
 
 								<input type="hidden" id="password" name="password">
+
 									
 								<button type="submit" class="btn btn-primary mt-3">회원가입</button>
 							</form>

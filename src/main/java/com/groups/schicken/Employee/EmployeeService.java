@@ -44,11 +44,20 @@ public class EmployeeService implements UserDetailsService {
 
 	//평문 password, Role정보 저장
 	public int join(EmployeeVO employeeVO)throws Exception{
-		//employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
-		int result = employeeDAO.join(employeeVO);
-
-//		result = employeeDAO.addEmployeeRole(employeeVO);
-		return result;
+	    // 생년월일에서 하이픈 제거
+	    String residentNumbers = employeeVO.getResidentNumber().replaceAll("-", "");
+	    // 제거된 생년월일을 다시 설정
+	    employeeVO.setResidentNumber(residentNumbers);
+	    
+	    // 입사일에서 하이픈 제거
+	    String dateOfEmploymens = employeeVO.getDateOfEmployment().replaceAll("-", "");
+	    // 제거된 입사일을 다시 설정
+	    employeeVO.setDateOfEmployment(dateOfEmploymens);
+	    
+	    // 나머지 코드는 그대로 유지
+	    int result = employeeDAO.join(employeeVO);
+	    //result = employeeDAO.addEmployeeRole(employeeVO);
+	    return result;
 	}
 
 

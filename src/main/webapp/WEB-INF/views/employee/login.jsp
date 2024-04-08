@@ -22,9 +22,9 @@
                         <form>
                             <!-- Email input -->
                             <div class="form-outline mb-4">
-                                <label class="form-label" for="email">이메일</label>
-                                <input type="email" id="email" class="form-control form-control-lg"
-                                       placeholder="이메일을 입력하세요." />
+                                <label class="form-label" for="id">ID</label>
+                                <input type="text" id="id" name="id" class="form-control form-control-lg"
+                                       placeholder="ID를 입력하세요." />
                             </div>
 
                             <!-- Password input -->

@@ -1,80 +1,93 @@
-// 부서에 대한 데이터
+// 조직도 받아오는 url
 const url = 'http://localhost:80/department/list';
-
 
 fetch(url)
   .then(response => {
-    
-    return response.json();
+    return response.json(); 
   })
   .then(data => {
-    // 부서 select 와 팀 select 가져옴
+    // 부서 select와 팀 select 요소를 가져옴
     const departmentSelect = document.getElementById("department");
     const teamSelect = document.getElementById("team");
 
-    // 배열에 담음
+    // 부서와 팀을 저장할 배열 초기화
     const departments = [];
     const teams = [];
 
-        // 팀으로 끝나는 글자를 찾아서 배열에 밀어넣어줌
+    // 부서와 팀을 분류하여 배열에 추가
     data.forEach(item => {
-        if (item.name.endsWith("팀")) {
-            teams.push(item);
-        } else {
-            departments.push(item);
+        if (item.upperId === null || item.upperId === 1) { // upperId가 null 또는 1이면 부서
+            departments.push(item); // 부서 배열에 추가
+        } else { // 그 외의 경우는 팀
+            teams.push(item); // 팀 배열에 추가
         }
     });
 
+    // 부서 select를 채워넣음
     departments.forEach(department => {
-        // optin 생성
         const option = document.createElement("option");
-        // value 값 department id로 줌
-        option.value = department.id;
-
-        //select box 에서 보이게 값을 넣어줌
-        option.textContent = department.name;
-
-        //select box 에 상속해서 보이게 함
-        departmentSelect.appendChild(option);
+        option.value = department.id; // 부서의 id를 option의 값으로 설정
+        option.textContent = department.name; // 부서의 이름을 option의 텍스트로 설정
+        departmentSelect.appendChild(option); // 부서 select에 option을 추가
     });
 
-    teams.forEach(team => {
-        // 상단 departments 로직이랑 같음
-        const option = document.createElement("option");
-        option.value = team.id;
-        option.textContent = team.name;
-        teamSelect.appendChild(option);
+    // 부서 select의 변경 이벤트를 추가
+    departmentSelect.addEventListener('change', function() {
+        const selectedDepartmentId = parseInt(this.value); // 선택한 부서의 id를 가져옴
+
+        // 팀 select를 초기화
+        teamSelect.innerHTML = '';
+
+        // 선택한 부서에 해당하는 팀을 필터링
+        // filter -> true만 새로운 배열로 담음
+        // team객체 만들어서 각각의 team 에 upperId, selectedDepartmentId비교  조건을 만족하면 
+        const filteredTeams = teams.filter(team => team.upperId === selectedDepartmentId);
+
+        // 선택한 부서가 팀 select에서 선택되어 있도록 처리
+        const departmentOption = document.createElement("option");
+        departmentOption.value = selectedDepartmentId;
+        departmentOption.textContent = this.options[this.selectedIndex].text;
+        teamSelect.appendChild(departmentOption);
+
+        // 필터링된 팀을 팀 select에 추가
+        filteredTeams.forEach(team => {
+            const option = document.createElement("option");
+            option.value = team.id; // 팀의 id를 option의 값으로 설정
+            option.textContent = team.name; // 팀의 이름을 option의 텍스트로 설정
+            teamSelect.appendChild(option); // 팀 select에 option을 추가
+        });
     });
   })
   .catch(error => {
-    // 오류 처리
-    console.error('Error fetching data:', error);
+    console.error('Error fetching data:', error); // 데이터를 불러오는 동안 발생한 오류 처리
   });
+
+
+
+
 
 
   let frm = document.querySelector("form"); 
 
-  // "-" 하이픈을 제거하는 함수
 
 
+
+// 하이픈을 제거하는 함수
+function removeHyphen(dateString) {
+  return dateString.replace(/-/g, "");
+}
 
 // 폼이 서브밋될 때 실행되는 함수
 function submitForm() {
   // 생년월일과 입사일 입력 필드의 값을 yyyy-mm-dd 형식으로 변환
-  let resident =   document.getElementById("residentNumber").value;
-   let employment = document.getElementById("dateOfEmployment").value;
-  
-  let  date1= employment.replace(/-/gi,"");
-  let  date2 = resident.replace(/-/gi,"");
-  // g : 전역검색 , i : 대/소문자 구별X
+  let resident = document.getElementById("residentNumber").value;
+  let employment = document.getElementById("dateOfEmployment").value;
 
-  // 비밀번호 입력 필드
-  var passwordInput = document.getElementById("password");
-  
-  // password input 태그의 값을 dateOfEmployment의 값으로 설정합니다.
-  passwordInput.value = date2;
-  
+  // 하이픈 제거
+  let password = removeHyphen(resident);
 
-  
+  // 비밀번호 입력 필드에 생년월일을 설정 (하이픈 제거된 값)
+  document.getElementById("password").value = password;
+
   return true;
 }
