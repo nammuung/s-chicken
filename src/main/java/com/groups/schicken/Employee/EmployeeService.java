@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -20,8 +20,8 @@ public class EmployeeService implements UserDetailsService {
 	@Autowired
 	private EmployeeDAO employeeDAO;
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;  //비밀번호를 저장할때 사용 암호화 하는 역할	
+	//@Autowired
+//	private PasswordEncoder passwordEncoder;  //비밀번호를 저장할때 사용 암호화 하는 역할	
 
 	
 	
@@ -41,14 +41,14 @@ public class EmployeeService implements UserDetailsService {
 	}
 	
 	
-	//평문 password, Role정보 저장
-	public int add(EmployeeVO employeeVO)throws Exception{
-		employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
-		int result = employeeDAO.add(employeeVO);
-		
-		result = employeeDAO.addEmployeeRole(employeeVO);
-		return result;
-	}
+//	//평문 password, Role정보 저장
+//	public int add(EmployeeVO employeeVO)throws Exception{
+//		employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
+//		int result = employeeDAO.add(employeeVO);
+//		
+//		result = employeeDAO.addEmployeeRole(employeeVO);
+//		return result;
+//	}
 	
 	
 	
