@@ -7,12 +7,67 @@
     
     
     
-    <insert id="addemployee" parameterType="EmployeeVO">
-    </insert>
+<insert id="join" parameterType="EmployeeVO">
+
+<selectKey resultType="String" keyProperty="id" order="BEFORE">
+    SELECT CONCAT(#{residentNumber}, NEXT VALUE FOR seq3) AS id
+</selectKey>
+
+
+    INSERT INTO employee 
+    VALUES (#{id}, #{residentNumber}, #{name}, #{phoneNumber}, #{email}, #{address}, #{addressDetail}, #{postcode},
+    now(), #{residentNumber}, #{salary}, #{accountNumber}, #{bankName}, 1, #{departmentId}, #{posId})
+</insert>
+
+
+<!--<select id="getpos">
+	select * from code
+</select>
+    -->
+    
+    
+    
+
+
+	
+
 
     
     
     
     
+
+
+
+
+
+
+
+
+
+    <resultMap type="EmployeeVO" id="employeeDetails">
+    	<id column="id" property="id"/>
+    	<result column="password" property="password"/>
+    	<result column="name" property="name"/>
+    	<result column="phoneNumber" property="phoneNumber"/>
+    	<result column="email" property="email"/>
+    	<result column="address" property="address"/>
+    	<result column="addressDetail" property="addressDetail"/>
+    	<result column="postcode" property="postcode"/>
+    	<result column="dateOfEmployment" property="dateOfEmployment"/>
+    	<result column="residentNumber" property="residentNumber"/>
+    	<result column="salary" property="salary"/>
+    	<result column="accountNumber" property="accountNumber"/>
+    	<result column="bankName" property="bankName"/>
+    	<result column="isLeaved" property="isLeaved"/>
+    	<result column="departmentId" property="departmentId"/>
+    	<result column="posId" property="posId"/>
+    
+    <association property="id" javaType="String">
+    <id property="userId" column="user_id"/>
+    
+    </association>
+    </resultMap>
+
     
 </mapper>

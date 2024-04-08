@@ -8,7 +8,7 @@ public interface EmployeeDAO {
 	
 	public EmployeeVO getDetail(EmployeeVO employeeVO)throws Exception;
 	
-	public int add(EmployeeVO employeeVO)throws Exception;
+	public int join(EmployeeVO employeeVO)throws Exception;
 	
 	public int addEmployeeRole(EmployeeVO employeeVO)throws Exception;
 	

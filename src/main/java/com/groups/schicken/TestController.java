@@ -20,5 +20,10 @@ public class TestController {
     public String test(@RequestParam("path")String path){
         return path;
     }
+    
+//    @GetMapping("/")
+//    public String test(){
+//        return "index";
+//    }
 
 }

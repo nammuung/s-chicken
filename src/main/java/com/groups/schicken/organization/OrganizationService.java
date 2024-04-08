@@ -11,8 +11,8 @@ public class OrganizationService {
     private OrganizationDAO organizationDAO;
 
 
-    public List<OrgElementVO> getOrgChart(String opt) {
-        List<OrgElementVO> list = organizationDAO.getOrgChart(opt);
+    public List<OrganizationVO> getOrgChart(String opt) {
+        List<OrganizationVO> list = organizationDAO.getOrgChart(opt);
 
         return list;
     }

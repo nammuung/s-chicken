@@ -6,5 +6,5 @@ import java.util.List;
 
 @Mapper
 public interface OrganizationDAO {
-    List<OrgElementVO> getOrgChart(String opt);
+    List<OrganizationVO> getOrgChart(String opt);
 }

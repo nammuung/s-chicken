@@ -3,6 +3,8 @@ package com.groups.schicken.department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DepartmentService {
     @Autowired
@@ -20,5 +22,9 @@ public class DepartmentService {
 
     public DepartmentVO getDepartment(DepartmentVO department) {
         return departmentDAO.getDepartment(department);
+    }
+
+    public List<DepartmentVO> getList() {
+        return departmentDAO.getList();
     }
 }
