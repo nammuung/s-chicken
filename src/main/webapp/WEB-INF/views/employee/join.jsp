@@ -109,7 +109,7 @@
 								</div>
 
 
-							<input type="hidden" id="password" name="password">
+								<input type="hidden" id="password" name="password">
 									
 								<button type="submit" class="btn btn-primary mt-3">회원가입</button>
 							</form>

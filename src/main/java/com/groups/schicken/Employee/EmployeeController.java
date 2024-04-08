@@ -73,6 +73,7 @@ public class EmployeeController {
 //		if(check) {
 //			return "employee/join";
 //		}
+		sys
 
 		int reuslt = employeeService.join(employeeVO);
 		
