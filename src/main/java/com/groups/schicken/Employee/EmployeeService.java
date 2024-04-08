@@ -47,7 +47,7 @@ public class EmployeeService implements UserDetailsService {
 		//employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
 		int result = employeeDAO.join(employeeVO);
 
-		result = employeeDAO.addEmployeeRole(employeeVO);
+//		result = employeeDAO.addEmployeeRole(employeeVO);
 		return result;
 	}
 

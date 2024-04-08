@@ -76,7 +76,7 @@ public class EmployeeController {
 
 		int reuslt = employeeService.join(employeeVO);
 		
-		return "employee/join";
+		return "commons/result";
 	} 
 	
 	
