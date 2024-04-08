@@ -15,11 +15,15 @@ public class FirebaseService {
     public FileVO uploadFile(MultipartFile file, FileVO fileVO) throws Exception {
         Bucket bucket = StorageClient.getInstance().bucket();
         InputStream content = new ByteArrayInputStream(file.getBytes());
-        Blob blob = bucket.create(fileVO.getUrl(), content, file.getContentType());
+        Blob blob = bucket.create(fileVO.getName(), content, file.getContentType());
         fileVO.setUrl(blob.getMediaLink());
         fileVO.setOrigin_name(file.getOriginalFilename());
         fileVO.setExtension(file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1));
         return fileVO;
     }
 
+    public boolean deleteFile(FileVO fileVO) throws Exception {
+        Bucket bucket = StorageClient.getInstance().bucket();
+        return bucket.get(fileVO.getName()).delete();
+    }
 }

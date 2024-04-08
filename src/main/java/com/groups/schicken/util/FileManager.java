@@ -16,12 +16,12 @@ public class FileManager {
 
     public FileVO uploadFile(MultipartFile file, FileVO fileVO) throws Exception{
         String uid = UUID.randomUUID().toString();
-        fileVO.setUrl(uid);
+        fileVO.setName(uid);
         firebaseService.uploadFile(file, fileVO);
         return fileVO;
     }
-    public int deleteFile(FileVO fileVO){
-        return 0;
+    public boolean deleteFile(FileVO fileVO) throws Exception {
+        return firebaseService.deleteFile(fileVO);
     }
     public List<FileVO> getFiles() {
         return null;
