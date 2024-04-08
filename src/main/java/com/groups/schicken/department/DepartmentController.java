@@ -15,7 +15,6 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @PostMapping("addDepartment")
-    @ResponseBody
     public ResponseEntity<DepartmentVO> addDepartment(@RequestBody DepartmentVO department){
         System.out.println("department = " + department);
         department = departmentService.addDepartment(department);
@@ -27,8 +26,12 @@ public class DepartmentController {
         return ResponseEntity.ok(department);
     }
 
+    @GetMapping("checkContactNumber")
+    public ResponseEntity<Boolean> checkContactNumber(String contactNumber){
+        return ResponseEntity.ok(departmentService.checkContactNumber(contactNumber));
+    }
+
     @GetMapping("getDepartment")
-    @ResponseBody
     public ResponseEntity<DepartmentVO> getDepartment(DepartmentVO department){
         department = departmentService.getDepartment(department);
 
@@ -36,7 +39,6 @@ public class DepartmentController {
     }
 
     @GetMapping("list")
-    @ResponseBody
     public ResponseEntity<List<DepartmentVO>> getList(){
         List<DepartmentVO> list = departmentService.getList();
 

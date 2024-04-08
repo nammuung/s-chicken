@@ -40,4 +40,11 @@ class DepartmentServiceTest {
         System.out.println("list = " + list);
         assertNotEquals(0, list.size());
     }
+
+    @Test
+    void getListWithHierarchy(){
+        var list = departmentDAO.getListWithHierarchy();
+        System.out.println("list = " + list);
+        assertNotNull(list.get(0).getSort());
+    }
 }

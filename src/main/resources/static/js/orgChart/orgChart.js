@@ -19,7 +19,7 @@ function initialize(id, callback, opt){
                     'check_callback' : true,
                     'data' : orgList
                 },
-                plugins : ['types', 'wholerow', 'contextmenu'],
+                plugins : ['types', 'wholerow'],
                 'types':{
                     'dept' : {
                         'icon': 'bi bi-building'
@@ -47,6 +47,7 @@ function initialize(id, callback, opt){
                 id : data.node.id,
                 name : data.node.text,
                 type : data.node.type,
+                depth : data.node.original.depth,
                 isSelect : isSelected
             }
 
