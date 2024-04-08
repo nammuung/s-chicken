@@ -8,10 +8,6 @@
     
     
     <insert id="addemployee" parameterType="EmployeeVO">
-    INSERT INTO employee VALUES(#{id},#{password},#{name},#{phone_number},#{email},#{address},
-    #{address_detail},#{postcode},#{date_of_employment},#{resident_number},#{salary},#{account_number},#{bank_name},
-    'N',{#department_id},#{pos_id}
-    )
     </insert>
 
     

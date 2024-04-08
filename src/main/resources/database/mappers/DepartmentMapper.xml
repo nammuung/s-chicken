@@ -5,6 +5,9 @@
 
 <mapper namespace="com.groups.schicken.department.DepartmentDAO">
     <insert id="addDepartment">
+        <selectKey resultType="Long" keyProperty="id" order="BEFORE">
+            SELECT nextval(seq4)
+        </selectKey>
         INSERT INTO department(id, name, contact_number, sort, upper_id)
         VALUES (#{id}, #{name}, #{contactNumber}, #{sort}, #{upperId})
     </insert>

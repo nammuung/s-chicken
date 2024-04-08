@@ -17,7 +17,6 @@ class DepartmentServiceTest {
     @Test
     void addDepartment() {
         DepartmentVO departmentVO = new DepartmentVO();
-        departmentVO.setId(0L);
         departmentVO.setName("S-chicken");
         departmentVO.setContactNumber("0000");
 
