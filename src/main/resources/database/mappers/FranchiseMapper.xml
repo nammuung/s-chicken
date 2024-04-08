@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.franchise.mapper.FranchiseMapper">
+    <insert id="addFranchise">
+        <selectKey order="BEFORE" resultType="Long" keyProperty="id">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO franchise
+        (id, name, owner_name, address, address_detail, contact_number, registration_number, email, password, contract_date, manager_id)
+        VALUES
+        (#{id}, #{name}, #{ownerName}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{password}, #{contractDate}, #{managerId})
+    </insert>
+    <select id="getFranchise">
+        SELECT
+        id,
+        name,
+        owner_name,
+        address,
+        address_detail,
+        contact_number,
+        registration_number,
+        email,
+        contract_date,
+        manager_id
+        FROM franchise
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="name != null">
+                OR name = #{name}
+            </if>
+            <if test="managerId != null">
+                OR manager_id = #{managerId}
+            </if>
+        </where>
+    </select>
+    <select id="getFranchiseList">
+        SELECT
+        id,
+        name,
+        owner_name,
+        address,
+        address_detail,
+        contact_number,
+        registration_number,
+        email,
+        contract_date,
+        manager_id
+        FROM franchise
+    </select>
+</mapper>
