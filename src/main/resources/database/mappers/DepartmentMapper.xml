@@ -19,5 +19,25 @@
     <select id="getList">
         SELECT * FROM department
     </select>
+
+    <select id="getListWithHierarchy">
+        <include refid="com.groups.schicken.organization.OrganizationDAO.hierarchical_query"></include>
+        SELECT
+              id
+            , depth AS sort
+        FROM OC
+    </select>
+
+    <select id="getLastSortByUpperId">
+        SELECT NVL(max(sort),-1)
+        FROM department
+        WHERE upper_id = #{upperId}
+    </select>
+
+    <select id="isContactNumber">
+        SELECT COUNT(*)
+        FROM department
+        WHERE contact_number = #{contactNumber}
+    </select>
 </mapper>
 
