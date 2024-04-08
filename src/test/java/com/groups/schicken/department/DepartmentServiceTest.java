@@ -33,4 +33,11 @@ class DepartmentServiceTest {
 
         System.out.println("departmentVO = " + departmentVO);
     }
+
+    @Test
+    void getList(){
+        var list = departmentDAO.getList();
+        System.out.println("list = " + list);
+        assertNotEquals(0, list.size());
+    }
 }

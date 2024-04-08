@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class OrgElementVO {
+public class OrganizationVO {
     private String id;
     private String parent;
     private String type;

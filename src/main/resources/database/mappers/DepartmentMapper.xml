@@ -15,4 +15,9 @@
     <select id="getDepartment" parameterType="DepartmentVO" resultType="DepartmentVO">
         SELECT * FROM department WHERE id=#{id}
     </select>
+
+    <select id="getList">
+        SELECT * FROM department
+    </select>
 </mapper>
+
