@@ -1,8 +1,8 @@
 package com.groups.schicken.firebase;
 
-//import com.google.cloud.storage.Blob;
-//import com.google.cloud.storage.Bucket;
-//import com.google.firebase.cloud.StorageClient;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.firebase.cloud.StorageClient;
 import com.groups.schicken.util.FileVO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
