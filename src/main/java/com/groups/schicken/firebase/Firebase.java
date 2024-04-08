@@ -1,11 +1,14 @@
-package com.groups.schicken.configuration;
+package com.groups.schicken.firebase;
 
 //import com.google.auth.oauth2.GoogleCredentials;
 //import com.google.firebase.FirebaseApp;
 //import com.google.firebase.FirebaseOptions;
 import jakarta.annotation.PostConstruct;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,5 +28,10 @@ public class Firebase {
 //                .build();
 //
 //        FirebaseApp.initializeApp(options);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return  new BCryptPasswordEncoder();
     }
 }
