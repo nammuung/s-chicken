@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class EmployeeVO  implements UserDetails {
 
 	
-	private Long id;
+	private String id;
 	private String password;
 	private String name;
 	private String phoneNumber;
@@ -35,6 +35,9 @@ public class EmployeeVO  implements UserDetails {
 	private Boolean isLeaved;
 	private Long departmentId;
 	private String posId;
+	private String posName; // 직급이름
+	
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		// TODO Auto-generated method stub

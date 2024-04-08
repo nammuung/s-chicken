@@ -23,7 +23,8 @@
 				<div class="col-12">
 					<div class="card">
 						<div class="card-body mt-3">
-							<form class="d-flex flex-column align-items-center">
+						
+							<form id="frm" action="./join" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
 								<div class="row justify-content-center mb-3 w-50">
 									<div class="form-group mb-3 mt-3">
 										<label for="name" class="form-label"><b>이름</b></label> <input
@@ -79,14 +80,14 @@
 										<label for="department" class="form-label"><b>부서</b></label> <select
 											class="form-select" id="department">
 											<option value="0">부서 선택</option>
-											<option value="1">영업팀</option>
+
 										</select>
 									</div>
 									<div class="form-group mb-3 col-4">
-										<label for="연차" class="form-label"><b>팀</b></label> <select
-											class="form-select" id="연차">
-											<option value="0">영업</option>
-											<option value="1">인사</option>
+										<label for="team" class="form-label"><b>팀</b></label> <select
+											class="form-select" id="team">
+											<option value="0">팀 선택</option>
+
 										</select>
 									</div>
 									<div class="form-group mb-3 col-4">
@@ -94,6 +95,9 @@
 											class="form-select" id="bankName">
 											<option value="0">은행 선택</option>
 											<option value="1">국민은행</option>
+											<option value="2">신한은행</option>
+											<option value="3">농협</option>
+											<option value="4">신협</option>
 										</select>
 									</div>
 									<div class="form-group mb-3 col-8">
@@ -118,7 +122,7 @@
 	<!-- ======= Script ======= -->
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="/js/employee/address.js"></script>
-
+	<script src="/js/employee/department.js"> </script>
 	<c:import url="../template/script.jsp" />
 </body>
 

@@ -20,4 +20,3 @@
         SELECT * FROM department
     </select>
 </mapper>
-
