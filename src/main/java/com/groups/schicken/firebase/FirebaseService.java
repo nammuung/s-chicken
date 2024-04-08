@@ -1,4 +1,4 @@
-package com.groups.schicken.configuration;
+package com.groups.schicken.firebase;
 
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;

@@ -1,11 +1,10 @@
 package com.groups.schicken.util;
 
-import com.groups.schicken.configuration.FirebaseService;
+import com.groups.schicken.firebase.FirebaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
