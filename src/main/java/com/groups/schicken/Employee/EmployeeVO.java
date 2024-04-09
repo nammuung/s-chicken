@@ -5,6 +5,9 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.groups.schicken.department.DepartmentVO;
+import com.groups.schicken.util.CodeVO;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +39,10 @@ public class EmployeeVO  implements UserDetails {
 	private Long departmentId;
 	private String posId;
 	private String posName; // 직급이름
+	
+	private DepartmentVO department;
+	private CodeVO code;
+	
 	
 	
 	@Override
