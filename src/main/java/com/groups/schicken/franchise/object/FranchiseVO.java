@@ -7,6 +7,7 @@ public class FranchiseVO {
     private Long id;
     private String name;
     private String ownerName;
+    private String postCode;
     private String address;
     private String addressDetail;
     private String contactNumber;
@@ -15,4 +16,6 @@ public class FranchiseVO {
     private String password;
     private String contractDate;
     private Long managerId;
+    private Long registerId;
+    private Long contractId;
 }

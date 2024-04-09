@@ -9,9 +9,9 @@
             SELECT nextval(seq1)
         </selectKey>
         INSERT INTO franchise
-        (id, name, owner_name, address, address_detail, contact_number, registration_number, email, password, contract_date, manager_id)
+        (id, name, owner_name, post_code, address, address_detail, contact_number, registration_number, email, password, contract_date, manager_id)
         VALUES
-        (#{id}, #{name}, #{ownerName}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{password}, #{contractDate}, #{managerId})
+        (#{id}, #{name}, #{ownerName}, #{postCode}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{password}, #{contractDate}, #{managerId})
     </insert>
     <select id="getFranchise">
         SELECT
@@ -24,7 +24,8 @@
         registration_number,
         email,
         contract_date,
-        manager_id
+        manager_id,
+        post_code
         FROM franchise
         <where>
             <if test="id != null">
@@ -49,7 +50,26 @@
         registration_number,
         email,
         contract_date,
-        manager_id
+        manager_id,
+        post_code
         FROM franchise
     </select>
+    <update id="updateFranchise">
+        UPDATE franchise
+        <set>
+            <if test="password != null">
+                password = #{password}
+            </if>
+            <if test="managerId != null">
+                , manager_id = #{managerId}
+            </if>
+            <if test="contractId != null">
+                 , contract_id = #{contractId}
+            </if>
+            <if test="registerId != null">
+                , register_id = #{registerId}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
 </mapper>

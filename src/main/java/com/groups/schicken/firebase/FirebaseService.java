@@ -17,7 +17,7 @@ public class FirebaseService {
         InputStream content = new ByteArrayInputStream(file.getBytes());
         Blob blob = bucket.create(fileVO.getName(), content, file.getContentType());
         fileVO.setUrl(blob.getMediaLink());
-        fileVO.setOrigin_name(file.getOriginalFilename());
+        fileVO.setOriginName(file.getOriginalFilename());
         fileVO.setExtension(file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1));
         return fileVO;
     }

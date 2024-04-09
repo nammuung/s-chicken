@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,13 +37,27 @@ public class FranchiseController {
     public void join(FranchiseVO franchiseVO) {
     }
     @PostMapping("/franchise/join")
-    @ResponseBody
-    public ResponseEntity<?> join(FranchiseVO franchiseVO, MultipartFile[] attach) throws Exception {
-        int result = franchiseService.addFranchise(franchiseVO);
+    public String join(Model model,FranchiseVO franchiseVO, MultipartFile[] attach) throws Exception {
+        int result = franchiseService.addFranchise(franchiseVO, attach);
+
         if (result == 1){
-            return ResponseEntity.ok(franchiseVO);
+            model.addAttribute("message", new MessageVO("가맹점 가입이 성공했습니다.","/franchise/detail?id="+franchiseVO.getId()));
         } else {
-            return ResponseEntity.badRequest().build();
+            model.addAttribute("message", new MessageVO("가맹점 가입에 실패했습니다.","/franchise/join"));
         }
+        return "result";
     }
+
+    @PostMapping("/franchise/update")
+    public String update(Model model,FranchiseVO franchiseVO) throws Exception {
+        int result = franchiseService.updateFranchise(franchiseVO);
+        if (result == 1){
+            model.addAttribute("message", new MessageVO("가맹점 정보 수정이 성공했습니다.","/franchise/detail?id="+franchiseVO.getId()));
+        } else {
+            model.addAttribute("message", new MessageVO("가맹점 정보 수정에 실패했습니다.","/franchise/detail?id="+franchiseVO.getId()));
+        }
+        return "result";
+    }
+
+
 }
