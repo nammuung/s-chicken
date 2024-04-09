@@ -24,8 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RepresentController {
 	
-	@Value("${app.board.represent}")
-	private String represent;
 	
 	@Autowired
 	private RepresentService representService;
@@ -33,7 +31,7 @@ public class RepresentController {
 	@ModelAttribute("board")
 	public String board() {
 		
-		return this.represent;
+		return "대표";
 	}
 	
 	
@@ -69,7 +67,7 @@ public class RepresentController {
 	
 	@GetMapping("impList")
 	public String getImpList(Pager pager,Model model) throws Exception {
-		log.info("====={}",represent);
+
 		List<BoardVO> ar = representService.getList(pager);
 		
 		model.addAttribute("list",ar);
