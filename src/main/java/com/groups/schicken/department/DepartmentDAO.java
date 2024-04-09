@@ -17,5 +17,9 @@ public interface DepartmentDAO {
 
     Integer getLastSortByUpperId(Long upperId);
 
-    Integer isContactNumber(String contactNumber);
+    Integer isContactNumber(String contactNumber, String except);
+
+    Integer updateDepartment(DepartmentVO department);
+
+    Integer updateDepartmentSort(DepartmentVO department);
 }

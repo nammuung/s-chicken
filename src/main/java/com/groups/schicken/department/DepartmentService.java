@@ -21,20 +21,9 @@ public class DepartmentService {
      * @return 입력된 행의 수가 1이상이면 입력한 VO를 id와 sort를 추가해서 돌려줌 그렇지 않으면 null 리턴
      */
     @Transactional
-    public DepartmentVO addDepartment(DepartmentVO department){
+    public Integer addDepartment(DepartmentVO department){
         department.setSort(departmentDAO.getLastSortByUpperId(department.getUpperId()) + 1);
-        int result = 0;
-        try{
-            result = departmentDAO.addDepartment(department);
-            if(result > 0){
-                return department;
-            }
-        } catch(Exception e) {
-            log.error(e.getMessage());
-            return null;
-        }
-
-        return null;
+        return departmentDAO.addDepartment(department);
     }
 
     public DepartmentVO getDepartment(DepartmentVO department) {
@@ -45,7 +34,15 @@ public class DepartmentService {
         return departmentDAO.getList();
     }
 
-    public Boolean checkContactNumber(String contactNumber){
-        return departmentDAO.isContactNumber(contactNumber) == 0;
+    public Boolean checkContactNumber(String contactNumber, String except){
+        if(except == null){
+            except = "not except";
+        }
+        return departmentDAO.isContactNumber(contactNumber, except) == 0;
+    }
+
+    public Integer updateDepartment(DepartmentVO department) {
+        Integer result = departmentDAO.updateDepartmentSort(department);
+        return result + departmentDAO.updateDepartment(department);
     }
 }

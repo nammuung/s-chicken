@@ -15,20 +15,32 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @PostMapping("addDepartment")
-    public ResponseEntity<DepartmentVO> addDepartment(@RequestBody DepartmentVO department){
+    public ResponseEntity<List<DepartmentVO>> addDepartment(@RequestBody DepartmentVO department){
         System.out.println("department = " + department);
-        department = departmentService.addDepartment(department);
+        Integer result = departmentService.addDepartment(department);
 
-        if(department == null){
+        if(result < 1){
             return ResponseEntity.internalServerError().build();
         }
 
-        return ResponseEntity.ok(department);
+        return ResponseEntity.ok(departmentService.getList());
+    }
+
+    @PostMapping("updateDepartment")
+    public ResponseEntity<List<DepartmentVO>> updateDepartment(@RequestBody DepartmentVO department){
+        System.out.println("department = " + department);
+        Integer result = departmentService.updateDepartment(department);
+
+        if(result < 1){
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(departmentService.getList());
     }
 
     @GetMapping("checkContactNumber")
-    public ResponseEntity<Boolean> checkContactNumber(String contactNumber){
-        return ResponseEntity.ok(departmentService.checkContactNumber(contactNumber));
+    public ResponseEntity<Boolean> checkContactNumber(String contactNumber, String except){
+        return ResponseEntity.ok(departmentService.checkContactNumber(contactNumber, except));
     }
 
     @GetMapping("getDepartment")

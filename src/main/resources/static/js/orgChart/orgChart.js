@@ -7,29 +7,25 @@ let chart;
 function initialize(id, callback, opt){
     let param = urls[opt] == null ? "" : `?${urls[opt]}`;
     chart = $(`#${id}`);
-    fetch('/organization/orgChart' + param)
-        .then(res=>res.json())
-        .then(orgList => {
-            for (let orgData of orgList) {
-                orgData.state = {opened : true}
+    chart.jstree({
+        'core' : {
+            'animation' : 0,
+            'check_callback' : true,
+            'data' : {
+                url : '/organization/orgChart' + param,
+                'dataType' : 'json'
             }
-            chart.jstree({
-                'core' : {
-                    'animation' : 0,
-                    'check_callback' : true,
-                    'data' : orgList
-                },
-                plugins : ['types', 'wholerow'],
-                'types':{
-                    'dept' : {
-                        'icon': 'bi bi-building'
-                    },
-                    'person' : {
-                        'icon' : 'bi bi-person'
-                    }
-                }
-            });
-        })
+        },
+        plugins : ['types', 'wholerow'],
+        'types':{
+            'dept' : {
+                'icon': 'bi bi-building'
+            },
+            'person' : {
+                'icon' : 'bi bi-person'
+            }
+        }
+    });
     let selected;
     chart.on(
         'select_node.jstree', (e, data)=>{
@@ -54,6 +50,10 @@ function initialize(id, callback, opt){
             if(callback != null) callback(param);
         }
     )
+
+    chart.on(
+        'ready.jstree', ()=>chart.jstree('open_all')
+    )
 }
 
 function createNode(input){
@@ -68,9 +68,14 @@ function createNode(input){
     console.log('result', result)
 }
 
+function refreshTree(){
+    chart.jstree('refresh')
+}
+
 let orgChart = {
     init : initialize,
-    create : createNode
+    create : createNode,
+    refresh : refreshTree
 }
 
 export default orgChart;

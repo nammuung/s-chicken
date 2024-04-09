@@ -6,27 +6,27 @@
 <mapper namespace="com.groups.schicken.organization.OrganizationDAO">
     <sql id="hierarchical_query">
         WITH RECURSIVE OC AS (
-        SELECT
-        id AS "id"
-        , name "text"
-        , upper_id AS "parent"
-        , 'dept' AS "type"
-        , 1 AS depth
-        , CAST(sort as char(25)) AS "sort"
+            SELECT
+                  id AS "id"
+                , name "text"
+                , upper_id AS "parent"
+                , 'dept' AS "type"
+                , 1 AS depth
+                , d.sort
         FROM department d
         WHERE upper_id IS NULL
 
         UNION ALL
 
         SELECT
-        dept.id AS "id"
-        , dept.name "text"
-        , dept.upper_id "parent"
-        , 'dept' AS "type"
-        , 1 + depth AS depth
-        , concat(OC.sort, dept.sort) AS "sort"
+              dept.id AS "id"
+            , dept.name "text"
+            , dept.upper_id "parent"
+            , 'dept' AS "type"
+            , 1 + depth AS depth
+            , dept.sort
         FROM department dept
-        INNER JOIN OC ON dept.upper_id = OC.id AND OC.type = 'dept'
+            INNER JOIN OC ON dept.upper_id = OC.id AND OC.type = 'dept'
         )
     </sql>
     <select id="getOrgChart">

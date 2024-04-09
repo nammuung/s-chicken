@@ -46,7 +46,9 @@
                             <h5>상위 부서</h5>
                         </div>
                         <div class="col-8 mb-4">
-                            <div id="upper-name" class="form-control h-100 bg-secondary-light"></div>
+                            <div id="upper-name"></div>
+                            <ul id="dept-list" class="list-group mt-2 d-none">
+                            </ul>
                         </div>
                         <div class="col-4 mb-4">
                             <h5>부서명</h5>
@@ -77,6 +79,8 @@
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
 <script src="/js/orgChart/orgChartPage.js" type="module"></script>
 </body>
 

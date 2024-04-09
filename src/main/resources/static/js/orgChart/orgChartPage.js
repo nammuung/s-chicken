@@ -8,35 +8,166 @@ const deptSubmitBtn = document.getElementById("dept-submit-btn");
 const upperName = document.getElementById("upper-name");
 const deptName = document.getElementById("dept-name");
 const deptNumber = document.getElementById("dept-number");
+const deptList = document.getElementById("dept-list");
 const conNumNotice = document.getElementById("con-num-notice");
 let selected;
+let deptData;
+let exceptNumber;
 
-function createOrgChart(){
-    oc.init("org-chart", data=>{
-        console.log(data);
-        if(data.isSelect){
-            selected = data;
-        } else {
-            selected = null;
-        }
-        if(selected != null && data.type === 'dept') {
-            if(data.depth < 3){
-                document.querySelectorAll(".dept-btn")
-                    .forEach(e=>e.classList.remove("disabled"));
-            } else {
-                deptModBtn.classList.remove("disabled");
-                deptAddBtn.classList.add("disabled");
-            }
-        } else {
+function getDepartmentData(){
+    fetch('/department/list')
+        .then(res=>res.json())
+        .then(r=>{
+            console.log(r);
+            deptData = r;
+        });
+}
+
+function ocInitFunction(data) {
+    console.log(data);
+    if(data.isSelect){
+        selected = data;
+    } else {
+        selected = null;
+    }
+    if(selected != null && data.type === 'dept') {
+        if(data.depth < 3){
             document.querySelectorAll(".dept-btn")
-                .forEach(e=>e.classList.add("disabled"));
+                .forEach(e=>e.classList.remove("disabled"));
+        } else {
+            deptModBtn.classList.remove("disabled");
+            deptAddBtn.classList.add("disabled");
         }
-    });
+
+        if(data.id == 1){
+            deptModBtn.classList.add("disabled");
+        }
+    } else {
+        document.querySelectorAll(".dept-btn")
+            .forEach(e=>e.classList.add("disabled"));
+    }
 }
 
 function setModalAddDept(data){
-    upperName.innerText = data.name;
-    upperName.value = data.id;
+    upperName.setAttribute("data-id", data.id);
+    upperName.innerHTML = `
+        <div class="form-control bg-secondary-light">${data.name}</div>
+    `
+
+    deptList.classList.add("d-none");
+
+    deptName.value = null;
+    deptNumber.value = null;
+
+    deptSubmitBtn.classList.add("disabled");
+
+    exceptNumber = null;
+}
+
+function getDepartmentLis({id, upperId}){
+    console.log("getDepartmentLis", id ,upperId);
+    let isId = false;
+
+    let arr = deptData
+        .filter(d => d.upperId == upperId)
+        .sort((a,b) => a.sort - b.sort)
+        .map(e=>{
+            let li = document.createElement("li");
+            let i;
+
+            li.classList.add("list-group-item","d-flex","justify-content-between", "filtered");
+            li.setAttribute("data-sort", e.sort);
+            if(id == e.id){
+                isId = true;
+
+                li.classList.add("bg-schicken-light");
+                li.classList.remove("filtered");
+                li.id="target-li";
+
+                i = document.createElement("i");
+                i.classList.add("fas","fa-bars");
+                i.id = "drag-icon";
+                i.draggable = true;
+            }
+
+            let div = document.createElement("div");
+            div.classList.add("content-name");
+            div.innerText = e.name;
+
+            li.append(div);
+            if(i != null) li.append(i);
+
+            return li;
+        })
+
+    if(!isId){
+        let idData = deptData.filter(d => d.id == id)[0];
+        console.log("idData", idData);
+        let li = document.createElement("li");
+        li.classList.add("list-group-item","d-flex","justify-content-between");
+        li.classList.add("bg-schicken-light");
+        li.setAttribute("data-sort",idData.sort);
+        li.id="target-li";
+
+        let div = document.createElement("div");
+        div.classList.add("content-name");
+        div.innerText = idData.name;
+
+        let i = document.createElement("i");
+        i.classList.add("fas","fa-bars");
+        i.id = "drag-icon";
+        i.draggable = true;
+
+        li.append(div, i);
+
+        arr.push(li);
+    }
+
+    return arr;
+}
+
+function setModalUpdateDept(data){
+    console.log(deptData)
+    let options = deptData
+        .filter(d => d.upperId == null || d.upperId == 1)
+        .map(e=> `<option value="${e.id}" ${e.id == data.upperId? "selected" : ""}>${e.name}</option>`)
+        .join();
+
+    upperName.setAttribute("data-id", data.upperId);
+    upperName.innerHTML = `
+        <select class="form-select">
+            ${options}
+        </select>
+    `
+
+    deptList.classList.remove("d-none");
+    deptList.innerHTML = "";
+    deptList.append(...getDepartmentLis(data));
+
+    upperName.querySelector("select.form-select").addEventListener("change",e=>{
+        console.log(e.target.value);
+        deptList.innerHTML = "";
+        upperName.setAttribute("data-id", e.target.value);
+        deptList.append(...getDepartmentLis({"id" : data.id,"upperId" : e.target.value}));
+        setDataSort();
+    })
+
+    $(deptList).sortable({
+        filter : ".filtered",
+        animation : 50,
+        onEnd : setDataSort
+    });
+
+    deptName.value = data.name;
+    deptNumber.value = data.contactNumber;
+
+    exceptNumber = data.contactNumber;
+}
+
+function setDataSort(){
+    const target = deptList.querySelector(".bg-schicken-light");
+    target.setAttribute("data-sort",
+        target.previousElementSibling == null ? '0' : parseInt(target.previousElementSibling.getAttribute("data-sort")) + 1);
 }
 
 /**
@@ -64,18 +195,23 @@ function validateDept(data){
 }
 
 function deptSubmit(type){
-    console.log("submit" , type)
-
-    if(type === 'add' && selected.depth >= 3){
+    if(type==='add' && selected.depth >= 3){
         alert('이 노드에는 추가할 수 없습니다.');
         return;
     }
 
     let data = {
+        id : selected.id,
         name :deptName.value,
         contactNumber : deptNumber.value,
-        upperId : upperName.value
+        upperId : upperName.getAttribute("data-id")
     }
+
+    if(type == 'update'){
+        data.sort = deptList.querySelector("li.bg-schicken-light").getAttribute("data-sort");
+    }
+
+    console.log("data = ", data);
 
     if(!validateDept(data)){
         return;
@@ -89,18 +225,43 @@ function deptSubmit(type){
         body : JSON.stringify(data)
     }).then(res => res.json())
         .then(r => {
-            console.log(r);
-            /* r은 id가 생성된 department 데이터 */
-            data.id = r.id;
-            oc.create(data);
+            /* r은 department 리스트 */
+            oc.refresh();
             bsDeptModal.hide();
+            deptData = r;
         })
 
 }
 
+let callSubmitFunction;
+function onDeptBtnClick(type) {
+    if(selected == null){
+        return;
+    }
+    fetch('/department/getDepartment?id=' + selected.id)
+        .then(res=>res.json())
+        .then(r=>{
+            console.log(r);
+            if(type === 'add') setModalAddDept(r);
+            if(type === 'update') setModalUpdateDept(r);
+            deptNumber.classList.remove("border-danger");
+            deptNumber.classList.remove("border-success");
+            conNumNotice.classList.add("d-none");
+            bsDeptModal.show();
+            callSubmitFunction = ()=>deptSubmit(type);
+        });
+}
+
+
 deptName.addEventListener("keyup",e=>{
     if(e.target.value.length === 0){
         deptSubmitBtn.classList.add("disabled");
+        return;
+    }
+
+    const targetLi = document.getElementById("target-li");
+    if(targetLi != null){
+        targetLi.querySelector("div").innerText = e.target.value;
         return;
     }
 
@@ -115,8 +276,12 @@ deptNumber.addEventListener("keyup", e=>{
     if(e.target.value.length !== 4){
         return;
     }
+    let param = `?contactNumber=${e.target.value}`
+    if(exceptNumber != null){
+        param += `&except=${exceptNumber}`;
+    }
 
-    fetch('/department/checkContactNumber?contactNumber=' + e.target.value)
+    fetch('/department/checkContactNumber' + param)
         .then(res=> res.json())
         .then(r=> {
             if(r){
@@ -138,21 +303,10 @@ deptNumber.addEventListener("keyup", e=>{
         });
 })
 
-deptAddBtn.addEventListener("click",()=>{
-    if(selected == null){
-        return;
-    }
-    fetch('/department/getDepartment?id=' + selected.id)
-        .then(res=>res.json())
-        .then(r=>{
-            console.log(r);
-            setModalAddDept(r);
-            deptName.value = null;
-            deptNumber.value = null;
-            deptSubmitBtn.classList.add("disabled");
-            bsDeptModal.show();
-            deptSubmitBtn.addEventListener("click", ()=>deptSubmit('add'), { once : true });
-        });
-})
 
-createOrgChart();
+deptAddBtn.addEventListener("click",()=>onDeptBtnClick('add'))
+deptModBtn.addEventListener("click",()=>onDeptBtnClick('update'))
+deptSubmitBtn.addEventListener("click", ()=>callSubmitFunction());
+
+oc.init("org-chart", data=>ocInitFunction(data));
+getDepartmentData();
