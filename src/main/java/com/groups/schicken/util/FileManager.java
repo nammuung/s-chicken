@@ -12,14 +12,18 @@ import java.util.UUID;
 public class FileManager {
     @Autowired
     private FirebaseService firebaseService;
+    @Autowired
+    private FileMapper fileMapper;
 
-    public FileVO uploadFile(MultipartFile file, FileVO fileVO) throws Exception{
+    public boolean uploadFile(MultipartFile file, FileVO fileVO) throws Exception{
         String uid = UUID.randomUUID().toString();
         fileVO.setName(uid);
         firebaseService.uploadFile(file, fileVO);
-        return fileVO;
+        fileMapper.uploadFile(fileVO);
+        return true;
     }
     public boolean deleteFile(FileVO fileVO) throws Exception {
+        fileMapper.deleteFile(fileVO);
         return firebaseService.deleteFile(fileVO);
     }
     public List<FileVO> getFiles() {

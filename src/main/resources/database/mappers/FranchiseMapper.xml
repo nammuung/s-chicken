@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.franchise.mapper.FranchiseMapper">
+    <insert id="addFranchise">
+        <selectKey order="BEFORE" resultType="Long" keyProperty="id">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO franchise
+        (id, name, owner_name, post_code, address, address_detail, contact_number, registration_number, email, password, contract_date, manager_id)
+        VALUES
+        (#{id}, #{name}, #{ownerName}, #{postCode}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{password}, #{contractDate}, #{managerId})
+    </insert>
+    <resultMap id="franchiseResultMap" type="FranchiseVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <association property="register" javaType="FileVO" columnPrefix="register_" autoMapping="true"/>
+        <association property="contract" javaType="FileVO" columnPrefix="contract_" autoMapping="true"/>
+    </resultMap>
+    <select id="getFranchise" resultMap="franchiseResultMap">
+        SELECT
+        frc.id,
+        frc.name,
+        frc.owner_name,
+        frc.address,
+        frc.address_detail,
+        frc.contact_number,
+        frc.registration_number,
+        frc.email,
+        frc.contract_date,
+        frc.manager_id,
+        frc.post_code,
+        frc.contract_id,
+        frc.register_id,
+        at1.name contract_name,
+        at1.origin_name contract_origin_name,
+        at1.url contract_url,
+        at1.extension contract_extension,
+        at2.name register_name,
+        at2.origin_name register_origin_name,
+        at2.url register_url,
+        at2.extension register_extension,
+        emp.name manager_name,
+        emp.position
+        FROM franchise frc
+        LEFT JOIN attach at1
+        ON frc.contract_id = at1.id
+        LEFT JOIN attach at2
+        ON frc.register_id = at2.id
+        LEFT JOIN employee emp
+        ON frc.manager_id = emp.id
+        <where>
+            <if test="id != null">
+                frc.id = #{id}
+            </if>
+            <if test="name != null">
+                OR frc.name = #{name}
+            </if>
+            <if test="managerId != null">
+                OR frc.manager_id = #{managerId}
+            </if>
+        </where>
+    </select>
+    <select id="getFranchiseList">
+        SELECT
+        id,
+        name,
+        owner_name,
+        address,
+        address_detail,
+        contact_number,
+        registration_number,
+        email,
+        contract_date,
+        manager_id,
+        post_code
+        FROM franchise
+    </select>
+    <update id="updateFranchise">
+        UPDATE franchise
+        <set>
+            <if test="password != null">
+                password = #{password}
+            </if>
+            <if test="managerId != null">
+                , manager_id = #{managerId}
+            </if>
+            <if test="contractId != null">
+                 , contract_id = #{contractId}
+            </if>
+            <if test="registerId != null">
+                , register_id = #{registerId}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+</mapper>
