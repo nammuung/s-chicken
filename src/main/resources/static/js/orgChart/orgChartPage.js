@@ -161,6 +161,7 @@ function setModalUpdateDept(data){
     deptName.value = data.name;
     deptNumber.value = data.contactNumber;
 
+    deptSubmitBtn.classList.remove("disabled");
     exceptNumber = data.contactNumber;
 }
 
