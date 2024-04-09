@@ -40,16 +40,12 @@
         at2.name register_name,
         at2.origin_name register_origin_name,
         at2.url register_url,
-        at2.extension register_extension,
-        emp.name manager_name,
-        emp.position
+        at2.extension register_extension
         FROM franchise frc
         LEFT JOIN attach at1
         ON frc.contract_id = at1.id
         LEFT JOIN attach at2
         ON frc.register_id = at2.id
-        LEFT JOIN employee emp
-        ON frc.manager_id = emp.id
         <where>
             <if test="id != null">
                 frc.id = #{id}

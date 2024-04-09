@@ -20,10 +20,10 @@ public class FranchiseVO {
     private String email;
     private String password;
     private String contractDate;
-    private Long managerId;
+    private String managerId;
     private Long registerId;
     private Long contractId;
-    private EmployeeVO manager;
+    private EmployeeVO manager = new EmployeeVO();
     private FileVO register;
     private FileVO contract;
 }

@@ -1,5 +1,6 @@
 package com.groups.schicken.franchise.service;
 
+import com.groups.schicken.Employee.EmployeeService;
 import com.groups.schicken.franchise.mapper.FranchiseMapper;
 import com.groups.schicken.franchise.object.FranchiseVO;
 import com.groups.schicken.util.FileManager;
@@ -15,16 +16,19 @@ import java.util.List;
 public class FranchiseService {
     @Autowired
     private FranchiseMapper franchiseMapper;
-
     @Autowired
     private FileManager fileManager;
-
+    @Autowired
+    private EmployeeService employeeService;
 
     public List<FranchiseVO> getFranchiseList() throws Exception {
         return franchiseMapper.getFranchiseList();
     }
     public FranchiseVO getFranchise(FranchiseVO franchiseVO) throws Exception {
-        return franchiseMapper.getFranchise(franchiseVO);
+        franchiseVO = franchiseMapper.getFranchise(franchiseVO);
+        franchiseVO.getManager().setId(franchiseVO.getManagerId());
+        franchiseVO.setManager(employeeService.userDetail(franchiseVO.getManager()));
+        return franchiseVO;
     }
     public int addFranchise(FranchiseVO franchiseVO, MultipartFile[] attach) throws Exception {
         int result = 0;
