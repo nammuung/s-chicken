@@ -12,5 +12,4 @@ public interface FranchiseMapper {
     int addFranchise(FranchiseVO franchiseVO);
     int updateFranchise(FranchiseVO franchiseVO);
     int deleteFranchise(FranchiseVO franchiseVO);
-
 }

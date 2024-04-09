@@ -13,29 +13,52 @@
         VALUES
         (#{id}, #{name}, #{ownerName}, #{postCode}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{password}, #{contractDate}, #{managerId})
     </insert>
-    <select id="getFranchise">
+    <resultMap id="franchiseResultMap" type="FranchiseVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <association property="register" javaType="FileVO" columnPrefix="register_" autoMapping="true"/>
+        <association property="contract" javaType="FileVO" columnPrefix="contract_" autoMapping="true"/>
+    </resultMap>
+    <select id="getFranchise" resultMap="franchiseResultMap">
         SELECT
-        id,
-        name,
-        owner_name,
-        address,
-        address_detail,
-        contact_number,
-        registration_number,
-        email,
-        contract_date,
-        manager_id,
-        post_code
-        FROM franchise
+        frc.id,
+        frc.name,
+        frc.owner_name,
+        frc.address,
+        frc.address_detail,
+        frc.contact_number,
+        frc.registration_number,
+        frc.email,
+        frc.contract_date,
+        frc.manager_id,
+        frc.post_code,
+        frc.contract_id,
+        frc.register_id,
+        at1.name contract_name,
+        at1.origin_name contract_origin_name,
+        at1.url contract_url,
+        at1.extension contract_extension,
+        at2.name register_name,
+        at2.origin_name register_origin_name,
+        at2.url register_url,
+        at2.extension register_extension,
+        emp.name manager_name,
+        emp.position
+        FROM franchise frc
+        LEFT JOIN attach at1
+        ON frc.contract_id = at1.id
+        LEFT JOIN attach at2
+        ON frc.register_id = at2.id
+        LEFT JOIN employee emp
+        ON frc.manager_id = emp.id
         <where>
             <if test="id != null">
-                id = #{id}
+                frc.id = #{id}
             </if>
             <if test="name != null">
-                OR name = #{name}
+                OR frc.name = #{name}
             </if>
             <if test="managerId != null">
-                OR manager_id = #{managerId}
+                OR frc.manager_id = #{managerId}
             </if>
         </where>
     </select>

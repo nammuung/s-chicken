@@ -29,6 +29,7 @@ public class FranchiseController {
     @GetMapping("/franchise/detail")
     public String getFranchise(Model model,FranchiseVO franchiseVO) throws Exception {
         franchiseVO = franchiseService.getFranchise(franchiseVO);
+        System.out.println("franchiseVO = " + franchiseVO);
         model.addAttribute("vo", franchiseVO);
         return "franchise/detail";
     }
