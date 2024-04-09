@@ -37,7 +37,6 @@ public class EmployeeService implements UserDetailsService {
 		EmployeeVO employeeVO = new EmployeeVO();
 		employeeVO.setId(id);
 
-		
 		try {
 			employeeVO= employeeDAO.getDetail(employeeVO);
 
