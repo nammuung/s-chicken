@@ -48,13 +48,15 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <c:forEach items="${list}" var="data">
                             <tr>
                                 <td>1</td>
                                 <td>영업팀</td>
                                 <td>사원</td>
-                                <td>김경모</td>
+                                <td><a href="/employee/profile?id=${data.id}">김경모</td>
                             </tr>
                             </tbody>
+                            </c:forEach>
                         </table>
                     </div>
                 </div>
