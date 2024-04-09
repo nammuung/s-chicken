@@ -27,11 +27,11 @@ public class Firebase {
                 .setStorageBucket("schicken-6e89b.appspot.com")
                 .build();
 
-        FirebaseApp.initializeApp(options);
+//        FirebaseApp.initializeApp(options);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return  new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder(){
+//        return  new BCryptPasswordEncoder();
+//    }
 }

@@ -24,7 +24,7 @@
 					<div class="card">
 						<div class="card-body mt-3">
 						
-							<form class="d-flex flex-column align-items-center " action="./join" method="post" enctype="multipart/form-data" onsubmit="return submitForm()">
+							<form class="d-flex flex-column align-items-center " action="./join" method="post" onsubmit="return submitForm()">
 
 								<div class="row justify-content-center mb-3 w-50">
 									<div class="form-group mb-3 mt-3">
@@ -67,8 +67,8 @@
 										<input id="dateOfEmployment"  name="dateOfEmployment" type="date" class="form-control">
 									</div>
 									<div class="form-group mb-3 col-4">
-										<label for="posName" name="posName" class="form-label"><b>직급</b></label> <select
-											class="form-select" id="posName">
+										<label for="posId"  class="form-label"><b>직급</b></label> <select
+											class="form-select" id="posId" name="posId">
 											<option value="0">직급 선택</option>
 											<option value="2">사원</option>
 											<option value="3">주임</option>

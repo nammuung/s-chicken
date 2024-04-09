@@ -19,26 +19,26 @@
                         <div class="p-3">
                             <h1>S치킨 그룹웨어</h1>
                         </div>
-                        <form>
-                            <!-- Email input -->
+                        <form action="./login" method="post">
+                            <!-- id input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="id">ID</label>
-                                <input type="text" id="id" name="id" class="form-control form-control-lg"
+                                <input type="text" id="id" name="id" value="${cookie.rememberId.value}" class="form-control form-control-lg"
                                        placeholder="ID를 입력하세요." />
                             </div>
 
                             <!-- Password input -->
                             <div class="form-outline mb-3">
                                 <label class="form-label" for="password">비밀번호</label>
-                                <input type="password" id="password" class="form-control form-control-lg"
+                                <input type="password" id="password" name="password" class="form-control form-control-lg"
                                        placeholder="비밀번호를 입력하세요." />
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Checkbox -->
                                 <div class="form-check mb-0">
-                                    <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-                                    <label class="form-check-label" for="form2Example3">
+                                    <input class="form-check-input me-2" type="checkbox" value="" id="remember-me" name="rememberMe"/>
+                                    <label class="form-check-label" for="remember-me">
                                         기억하기
                                     </label>
                                 </div>
@@ -46,7 +46,7 @@
                             </div>
 
                             <div class="text-center text-lg-start mt-4 pt-2 mb-2">
-                                <button type="button" class="btn btn-primary btn-lg"
+                                <button type="submit" class="btn btn-primary btn-lg"
                                         style="padding-left: 2.5rem; padding-right: 2.5rem; width: 300px;">로그인</button>
                             </div>
                             <div class="mb-2">
@@ -62,6 +62,11 @@
         </div>
     </section>
 </main><!-- End #main -->
+
+<!-- 파라미터를 초기화 시켜주는 스크립트 -->
+	<script type="text/javascript">
+		history.replaceState({}, null, location.pathname);
+	</script>
 </body>
 
 </html>

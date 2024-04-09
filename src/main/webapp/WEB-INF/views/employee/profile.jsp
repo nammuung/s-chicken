@@ -26,7 +26,7 @@
           <div class="card">
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
               <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-              <h2>남명균</h2>
+              <h2>${detail.name}</h2>
               <h3>영업팀/사원</h3>
             </div>
           </div>
@@ -62,17 +62,17 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label ">사원 번호</div>
-                    <div class="col-lg-9 col-md-8">2023113111</div>
+                    <div class="col-lg-9 col-md-8">${detail.id}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">이름</div>
-                    <div class="col-lg-9 col-md-8">남명균</div>
+                    <div class="col-lg-9 col-md-8">${detail.name}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">입사일</div>
-                    <div class="col-lg-9 col-md-8">2023-11-31</div>
+                    <div class="col-lg-9 col-md-8"></div>
                   </div>
 
                   <div class="row">
@@ -102,17 +102,17 @@
                   
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">은행/계좌</div>
-                    <div class="col-lg-9 col-md-8">국민은행 000000 00 000000</div>
+                    <div class="col-lg-9 col-md-8">${detail.bankName}:${detail.accountNumber}</div>
                   </div>
                   
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">주소</div>
-                    <div class="col-lg-9 col-md-8">서울특별시 관악구 신림동</div>
+                    <div class="col-lg-9 col-md-8">${detail.address}</div>
                   </div>
                   
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">상세주소</div>
-                    <div class="col-lg-9 col-md-8">@@빌라 100호</div>
+                    <div class="col-lg-9 col-md-8">${detail.addressDetail}</div>
                   </div>
                   
 				<div class="row">
