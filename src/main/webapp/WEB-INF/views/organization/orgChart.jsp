@@ -58,7 +58,8 @@
                             <h5>부서 내선번호</h5>
                         </div>
                         <div class="col-8">
-                            <input id="dept-number" type="text" class="form-control" placeholder="부서 내선번호를 입력하세요">
+                            <input id="dept-number" type="text" class="form-control" placeholder="부서 내선번호를 입력하세요" maxlength="4">
+                            <span id="con-num-notice" class="small text-danger d-none">내선번호가 중복되었습니다.</span>
                         </div>
                     </div>
                 </div>

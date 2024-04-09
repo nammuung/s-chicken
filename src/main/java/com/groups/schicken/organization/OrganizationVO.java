@@ -10,4 +10,6 @@ public class OrganizationVO {
     private String parent;
     private String type;
     private String text;
+    private Long depth;
+    private String sort;
 }

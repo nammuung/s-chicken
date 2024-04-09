@@ -13,9 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.io.File;
 import java.io.FileInputStream;
 
-//@Configuration
+@Configuration
 public class Firebase {
-//    @PostConstruct
+    @PostConstruct
     public void initialize() throws Exception {
         File file = new ClassPathResource("firebaseKey.json").getFile();
 

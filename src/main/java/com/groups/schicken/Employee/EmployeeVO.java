@@ -26,7 +26,7 @@ public class EmployeeVO  implements UserDetails {
 	private String email;
 	private String address;
 	private String addressDetail;
-	private Integer  postcode;
+	private String  postcode;
 	private String dateOfEmployment;
 	private String residentNumber;
 	private Integer salary;

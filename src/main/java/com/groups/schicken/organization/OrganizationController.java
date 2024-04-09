@@ -24,9 +24,9 @@ public class OrganizationController {
         return ResponseEntity.ok(list);
     }
 
-    @PostMapping("orgChart")
-    public String addOrgChart(){
-        return "aaa";
+    @GetMapping("orgChartPage")
+    public String orgChartPage(){
+        return "organization/orgChart";
     }
 
 }

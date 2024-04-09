@@ -12,4 +12,10 @@ public interface DepartmentDAO {
     DepartmentVO getDepartment(DepartmentVO department);
 
     List<DepartmentVO> getList();
+
+    List<DepartmentVO> getListWithHierarchy();
+
+    Integer getLastSortByUpperId(Long upperId);
+
+    Integer isContactNumber(String contactNumber);
 }
