@@ -4,6 +4,9 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.util.FileMapper">
+    <resultMap id="fileResultMap" type="FileVO" autoMapping="true">
+        <id property="id" column="id"/>
+    </resultMap>
    <insert id="uploadFile">
        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
            SELECT nextval(seq1)

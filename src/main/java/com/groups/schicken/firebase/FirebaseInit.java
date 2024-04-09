@@ -9,14 +9,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
 
-@Configuration
-public class Firebase {
+@Service
+public class FirebaseInit {
     @PostConstruct
-    public void initialize() throws Exception {
+    public final void initialize() throws Exception {
         File file = new ClassPathResource("firebaseKey.json").getFile();
 
         FileInputStream serviceAccount =
