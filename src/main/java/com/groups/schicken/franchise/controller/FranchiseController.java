@@ -60,5 +60,14 @@ public class FranchiseController {
         return "result";
     }
 
-
+    @PostMapping("/franchise/initPassword")
+    public String initPassword(Model model,FranchiseVO franchiseVO) throws Exception {
+        int result = franchiseService.initPassword(franchiseVO);
+        if (result == 1){
+            model.addAttribute("message", new MessageVO("초기화에 성공했습니다.","/franchise/detail?id="+franchiseVO.getId()));
+        } else {
+            model.addAttribute("message", new MessageVO("초기화에 실패했습니다.","/franchise/detail?id="+franchiseVO.getId()));
+        }
+        return "result";
+    }
 }

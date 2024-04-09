@@ -32,21 +32,17 @@ public class FranchiseService {
     }
     public int addFranchise(FranchiseVO franchiseVO, MultipartFile[] attach) throws Exception {
         int result = 0;
-        franchiseVO.setPassword(franchiseVO.getEmail()); //초기 비밀번호는 이메일
-        result += franchiseMapper.addFranchise(franchiseVO);
 
         FileVO file = new FileVO();
-        file.setParentId(franchiseVO.getId());
         file.setTblId("101");
         if(!fileManager.uploadFile(attach[0], file)) return 0;
         franchiseVO.setContractId(file.getId());
         if(!fileManager.uploadFile(attach[1], file)) return 0;
         franchiseVO.setRegisterId(file.getId());
-        FranchiseVO updateVO = new FranchiseVO();
-        updateVO.setId(franchiseVO.getId());
-        updateVO.setContractId(franchiseVO.getContractId());
-        updateVO.setRegisterId(franchiseVO.getRegisterId());
-        updateFranchise(updateVO);
+
+        franchiseVO.setPassword(franchiseVO.getEmail()); //초기 비밀번호는 이메일
+        result += franchiseMapper.addFranchise(franchiseVO);
+
         return result;
     }
     public int updateFranchise(FranchiseVO franchiseVO) throws Exception {
@@ -54,5 +50,11 @@ public class FranchiseService {
     }
     public int deleteFranchise(FranchiseVO franchiseVO) throws Exception {
         return franchiseMapper.deleteFranchise(franchiseVO);
+    }
+
+
+    public int initPassword(FranchiseVO franchiseVO) throws Exception {
+        franchiseVO.setPassword(franchiseVO.getEmail());
+        return franchiseMapper.updateFranchise(franchiseVO);
     }
 }

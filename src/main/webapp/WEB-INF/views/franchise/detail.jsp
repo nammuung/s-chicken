@@ -72,7 +72,7 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">담당자</div>
-                                        <div class="col-lg-9 col-md-8">${vo.managerId}</div>
+                                        <div class="col-lg-9 col-md-8">${vo.manager.name} ${vo.manager.posName}</div>
                                     </div>
 
                                     <div class="row">
@@ -148,8 +148,8 @@
                                             <label for="managerId" class="col-md-4 col-lg-3 col-form-label">담당자</label>
                                             <div class="col-md-8 col-lg-9">
                                                 <select class="form-select" id="managerId">
-                                                    <option value="0">${vo.managerId}</option>
-                                                    <option value="1">영업팀</option>
+                                                    <option value="0">${vo.manager.name}</option>
+                                                    <option value="1">${vo.manager.posName}</option>
                                                 </select>
                                             </div>
                                         </div>
