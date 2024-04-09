@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.board.represent.RepresentDAO">
+	<sql id="search">
+		<where>
+			<choose>
+				<when test="kind='kind1'">content</when>
+				<otherwise>writerId</otherwise>
+			</choose>
+			LIKE CONCAT('%',#{search},'%')
+		</where>		
+	</sql>
+	
+	<select id="getTotalCount" parameterType="Pager" resultType="Long">
+		SELECT COUNT(id) FROM represent
+		
+		<include refid="search"></include>
+	</select>
+	
+	
+	<select id="getList" parameterType="Pager" resultType="BoardVO">
+		SELECT * FROM represent
+			<include refid="search"></include>
+			ORDER BY id DESC
+			LIMIT #{startIndex},#{perPage}			
+	</select>
+	
+	<select id="getDetail" parameterType="BoardVO" resultMap="getDetailResult">
+		SELECT * FROM represent r
+		LEFT JOIN attach a ON a.parent_id=r.id
+		WHERE r.id=#{id}
+	</select>
+	
+	<resultMap type="BoardVO" id="getDetailResult">
+		<id column="id" property="id"/>
+		<result column="write_date" property="writeDate"/>
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="is_delete" property="isDelete"/>
+		<result column="hit" property="hit"/>
+		<result column="sort" property="sort"/>
+		<result column="writer_id" property="writerId"/>
+		<collection property="fileVOs" javaType="List" ofType="FileVO">
+			<id column="id" property="id"/>
+			<result column="name" property="name"/>
+			<result column="origin_name" property="originName"/>
+			<result column="url" property="url"/>
+			<result column="extension" property="extension"/>
+			<result column="parent_id" property="parentId"/>
+			<result column="tbl_id" property="tblId"/>			
+		</collection>
+	</resultMap>
+	
+	
+	<insert id="add" parameterType="BoardVO" keyProperty="id">
+		<selectKey order="BEFORE" resultType="Long" keyProperty="id">
+			SELECT nextval(seq1)
+		</selectKey>
+		INSERT INTO represent
+		VALUES
+		(#{id},#{writeDate},#{content},#{isDeleted},#{writerId},0,#{sort},#{title})
+	</insert>
+	
+	<insert id="fileAdd" parameterType="FileVO" keyProperty="id">
+		<selectKey resultType="Long" order="BEFORE" keyProperty="id">
+			SELECT nextval(seq2)
+		</selectKey>
+		INSERT INTO attach
+		VALUES(#{id},#{name},#{originName},#{url},#{extension},#{parentId},#{tblId})
+	</insert>
+
+
+</mapper>

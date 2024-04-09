@@ -16,12 +16,12 @@
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle" style="text-align: center;">
-        <h1>대표 게시판</h1>
+        <h1>전체 게시판</h1>
     </div>
     <section class="section">
         <div class="row justify-content-end p-3">
             <div class="col-auto">
-                <form class="search-form d-flex align-items-center " method="POST" action="#">
+
                     <label>
                         <select class="form-select w-auto me-1">
                             <option value="0">제목</option>
@@ -31,7 +31,7 @@
                     </label>
                     <input type="text" name="query" placeholder="검색" title="Enter search keyword">
                     <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-                </form>
+
             </div>
         </div>
         <div class="row">
@@ -49,13 +49,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td class="text-start">Test</td>
-                                <td>2023.03.31</td>
-                                <td>관리자</td>
-                                <td>11</td>
-                            </tr>
+
                             </tbody>
                         </table>
                     </div>
