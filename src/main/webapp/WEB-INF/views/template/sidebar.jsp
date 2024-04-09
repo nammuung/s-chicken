@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/notice/impList">
+                    <a href="/represent/impList">
                         <i class="bi bi-circle"></i><span>대표 공지</span>
                     </a>
                 </li>

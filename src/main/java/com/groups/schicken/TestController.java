@@ -23,7 +23,7 @@ public class TestController {
     
 //    @GetMapping("/")
 //    public String test(){
-//        return "index";
+//        return "home";
 //    }
 
 }
