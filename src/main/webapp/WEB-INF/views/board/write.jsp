@@ -1,4 +1,6 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.Date" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="kr">
@@ -21,6 +23,13 @@
 <!-- ======= Sidebar ======= -->
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
+
+<!-- 오늘날짜 가져오기 -->
+<%
+Date date = new Date();
+SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
+String strDate = simpleDate.format(date);
+%>
     <div class="pagetitle">
         <h1>공지사항</h1>
     </div>
@@ -30,27 +39,34 @@
                 <div class="card">
 
                     <div class="card-body mt-3">
-                        <form class="">
+                        <form id=frm method="post" action="write">
 
                             <div class="mb-3">
                                 <label for="sort" class="form-label">종류</label>
-                                <select class="form-select" style="width: 200px;">
+                                <select class="form-select" style="width: 200px;"name="sort" id=sort>
                                     <option value="0">경조사 게시</option>
                                     <option value="1">대표 게시</option>
                                 </select>
                             </div>
+                            
+                            <input type="hidden" name="writerId" value="123">
+                            <input type="hidden" name="isDelete" value="0">
+                            <input type="hidden" name="writeDate" value="<%=strDate %>">
                         
                             <div class="mb-3">
                                 <label for="title" class="form-label"><b>제목</b></label>
-                                <input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요.">
+                                <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력해주세요.">
                             </div>
-                            <div id="editor"></div>
+                            <div id="editor">
+                            	
+                            </div>
+                            	<input type="text" id="content" name="content">
                             <div class="form-check form-switch mt-3 mb-3">
                                 <label for="important" class="form-label">중요 공지</label>
                                 <input type="checkbox" class="form-check-input" id="important">
                             </div>
 
-                            <button class="btn btn-primary float-end">게시하기</button>
+                            <button type="submit" class="btn btn-primary float-end" id="btn">게시하기</button>
                         </form>
                     </div>
                 </div>
@@ -75,6 +91,7 @@
         });
 
 </script>
+<script src="/js/notice/add.js"></script>
 </body>
 
 </html>

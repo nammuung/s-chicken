@@ -16,12 +16,12 @@
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle" style="text-align: center;">
-        <h1>전체 게시판</h1>
+        <h1>대표 게시판</h1>
     </div>
     <section class="section">
         <div class="row justify-content-end p-3">
             <div class="col-auto">
-                <form class="search-form d-flex align-items-center " method="POST" action="#">
+                <form class="search-form d-flex align-items-center " method="POST">
                     <label>
                         <select class="form-select w-auto me-1">
                             <option value="0">제목</option>
@@ -40,22 +40,28 @@
                     <div class="card-body">
                         <table class="table text-center text-nowrap">
                             <thead>
-                            <tr>
-                                <th style="width: 5%">no</th>
-                                <th style="width: 70%">제목</th>
-                                <th style="width: 10%">작성일</th>
-                                <th style="width: 10%">등록자</th>
-                                <th style="width: 5%">조회수</th>
-                            </tr>
+	                            <tr>
+	                                <th style="width: 5%">no</th>
+	                                <th style="width: 70%">제목</th>
+	                                <th style="width: 10%">작성일</th>
+	                                <th style="width: 10%">등록자</th>
+	                                <th style="width: 5%">조회수</th>
+	                            </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td class="text-start">Test</td>
-                                <td>2023.03.31</td>
-                                <td>관리자</td>
-                                <td>11</td>
-                            </tr>
+                            	
+	                            	<c:forEach items="${list}" var="vo">
+	                            		<c:if test="${vo.sort eq 1}">
+				                            <tr>
+				                                <td>${vo.id}</td>
+				                                <td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a></td>
+				                                <td>${vo.writeDate}</td>
+				                                <td>등록자</td>
+				                                <td>${vo.hit}</td>
+				                            </tr>
+			                            </c:if>
+		                            </c:forEach>
+	                           
                             </tbody>
                         </table>
                     </div>
@@ -63,13 +69,16 @@
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+                            <a class="page-link" href="./list?page=${pager.startNum-1}&kind=${kind}&search=${search}" tabindex="-1" aria-disabled="true">이전</a>
                         </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        
+                        <c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="i">
+	                        <li class="page-item">
+	                        <a class="page-link" href="./list?page=${i}&kind=${kind}&search=${search}">${i}</a>
+	                        </li>
+                        </c:forEach>
                         <li class="page-item">
-                            <a class="page-link" href="#">다음</a>
+                            <a class="page-link" href="./list?page=${pager.lastNum+1}&kind=${kind}&search=${search}">다음</a>
                         </li>                     
                     </ul>
                     
