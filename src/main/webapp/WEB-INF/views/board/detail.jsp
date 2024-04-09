@@ -50,17 +50,20 @@
                 <div class="card">
                     <div class="card-body mt-3">
                         <div class="mb-3">
-                            <a href="/notice/list" class="link-body-emphasis">
+                            <a href="/${board}/impList" class="link-body-emphasis">
                                 <i class="bi bi-list toggle-sidebar-btn button"></i>
                                 <span>목록</span>
                             </a>
                         </div>
-
-                        <div class="mb-2">
-                            <i class="bi bi-caret-up-fill toggle-sidebar-btn button"></i>
-                            <span class="me-3">이전</span>
-                            <a href="/notice/detail" class="link-body-emphasis">사내 전산망 교체로 전산 사용불가</a>
-                        </div>
+					<c:choose>
+						<c:when test="${move.next != 0}">	
+	                        <div class="mb-2">
+	                            <i class="bi bi-caret-up-fill toggle-sidebar-btn button"></i>
+	                            <span class="me-3">이전</span>
+	                            <a href="/notice/detail" class="link-body-emphasis">${move.nextTitle}</a>
+	                        </div>
+	                    </c:when>    
+                    </c:choose>
                         <div>
                             <i class="bi bi-caret-down-fill toggle-sidebar-btn button"></i>
                             <span class="me-3">다음</span>

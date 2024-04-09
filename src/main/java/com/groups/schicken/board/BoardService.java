@@ -15,4 +15,6 @@ public interface BoardService {
 	public int fileAdd(FileVO fileVO)throws Exception;
 	
 	public BoardVO getDetail(BoardVO boardVO)throws Exception;
+	
+	public BoardVO movePage(Long id)throws Exception;
 }

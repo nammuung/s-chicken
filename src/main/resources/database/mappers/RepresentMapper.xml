@@ -71,6 +71,20 @@
 		INSERT INTO attach
 		VALUES(#{id},#{name},#{originName},#{url},#{extension},#{parentId},#{tblId})
 	</insert>
+	
+	<select id="movePage" resultType="BoardVO" parameterType="Long">
+		SELECT * FROM(SELECT
+			id,
+			LEAD(id,1,0) OVER(ORDER BY id) AS next,
+			LAG(id,1,0) OVER(ORDER BY id) AS last,
+			title,
+			LEAD(title,1,0) OVER(ORDER BY id) AS nextTitle,
+			LAG(id,1,0) OVER(ORDER BY id) AS lastTitle
+			FROM represent
+			ORDER BY id DESC			
+		)
+		WHERE id=#{id}
+	</select>
 
 
 </mapper>

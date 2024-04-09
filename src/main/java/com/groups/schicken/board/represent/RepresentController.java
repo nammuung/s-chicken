@@ -31,7 +31,7 @@ public class RepresentController {
 	@ModelAttribute("board")
 	public String board() {
 		
-		return "대표";
+		return "represent";
 	}
 	
 	
@@ -48,8 +48,10 @@ public class RepresentController {
 	@GetMapping("detail")
 	public String getDetail(BoardVO boardVO,Model model) throws Exception {
 		boardVO = representService.getDetail(boardVO);
-
+		
+		
 		model.addAttribute("vo", boardVO);
+		model.addAttribute("move", representService.movePage(boardVO.getId()));
 
 		return "board/detail";
 	}
