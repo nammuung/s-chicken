@@ -72,7 +72,6 @@ public class EmployeeService implements UserDetailsService {
 	
 
 	public EmployeeVO userDetail (EmployeeVO employeeVO)throws Exception{
-		log.info("===={}================서비스임", employeeVO);
 		return employeeDAO.userDetail(employeeVO);
 	}
 

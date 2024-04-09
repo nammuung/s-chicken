@@ -19,7 +19,9 @@
                         <div class="p-3">
                             <h1>S치킨 그룹웨어</h1>
                         </div>
-                        <form action="./login" method="post">
+                        <form action="./login" method="post" onsubmit="return submitForm()">
+                        <button vale="erp" class="btn btn-primary mb-3">그룹웨어</button>
+                        <button vale="erp" class="btn btn-primary mb-3">가맹점</button>
                             <!-- id input -->
                             <div class="form-outline mb-4">
                                 <label class="form-label" for="id">ID</label>
@@ -68,5 +70,5 @@
 		history.replaceState({}, null, location.pathname);
 	</script>
 </body>
-
+<script src="/js/employee/login.js"></script>
 </html>

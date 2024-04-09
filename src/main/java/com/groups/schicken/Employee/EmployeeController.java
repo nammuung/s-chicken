@@ -36,10 +36,10 @@ public class EmployeeController {
 	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session) throws Exception {
 
 		Object obj=(session.getAttribute("SPRING_SECURITY_CONTEXT"));
-		System.out.println(session.getAttribute("SPRING_SECURITY_CONTEXT"));
-
+		log.info("{}",obj);
+		System.out.println(employeeVO.getId());
 		if (obj == null) {
-			log.info("여기탐=================================");
+			log.info("============오브젝트 Null=================================");
 			return "employee/login";
 		}
 
@@ -90,7 +90,6 @@ public class EmployeeController {
 	public String userDetail(EmployeeVO employeeVO, Model model)throws Exception{
 		employeeVO = employeeService.userDetail(employeeVO);
 		model.addAttribute("detail", employeeVO);
-		log.info("===={}===컨트롤ㄹ러임", employeeVO);
 		return "employee/profile";
 		
 	}
