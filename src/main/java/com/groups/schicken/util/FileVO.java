@@ -7,8 +7,8 @@ public class FileVO {
     private Long id;
     private String url;
     private String name;
-    private String origin_name;
+    private String originName;
     private String extension;
-    private Long parent_id;
-    private String tbl_id;
+    private Long parentId;
+    private String tblId;
 }

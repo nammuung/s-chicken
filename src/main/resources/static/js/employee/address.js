@@ -8,7 +8,7 @@ function openPostcodePopup() {
             document.getElementById('address').value = data.address; // 전체 주소
             
             // 상세 주소 필드에 포커스
-            document.getElementById('address_detail').focus();
+            document.getElementById('addressDetail').focus();
         }
     }).open();
 }

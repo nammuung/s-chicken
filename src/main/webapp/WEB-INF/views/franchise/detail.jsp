@@ -47,52 +47,57 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label ">지점명</div>
-                                        <div class="col-lg-9 col-md-8">한라점</div>
+                                        <div class="col-lg-9 col-md-8">${vo.name}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">대표</div>
-                                        <div class="col-lg-9 col-md-8">남명균</div>
+                                        <div class="col-lg-9 col-md-8">${vo.ownerName}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">계약일</div>
-                                        <div class="col-lg-9 col-md-8">2023-11-31</div>
+                                        <div class="col-lg-9 col-md-8">${vo.contractDate}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">전화번호</div>
-                                        <div class="col-lg-9 col-md-8">01076887260</div>
+                                        <div class="col-lg-9 col-md-8">${vo.contactNumber}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">이메일</div>
-                                        <div class="col-lg-9 col-md-8">audrbs2368@gmail.com</div>
+                                        <div class="col-lg-9 col-md-8">${vo.email}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">담당자</div>
-                                        <div class="col-lg-9 col-md-8">김경모 사원</div>
+                                        <div class="col-lg-9 col-md-8">${vo.managerId}</div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-4 label">우편번호</div>
+                                        <div class="col-lg-9 col-md-8">${vo.postCode}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">주소</div>
-                                        <div class="col-lg-9 col-md-8">서울특별시 관악구 신림동</div>
+                                        <div class="col-lg-9 col-md-8">${vo.address}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">상세주소</div>
-                                        <div class="col-lg-9 col-md-8">101호</div>
+                                        <div class="col-lg-9 col-md-8">${vo.addressDetail}</div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">계약서</div>
-                                        <div class="col-lg-9 col-md-8"><a href="#">계약서.pdf</a></div>
+                                        <div class="col-lg-9 col-md-8"><a href="${vo.contract.url}">${vo.contract.originName}</a></div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">사업자등록증</div>
-                                        <div class="col-lg-9 col-md-8"><a href="#">사업자등록증.pdf</a></div>
+                                        <div class="col-lg-9 col-md-8"><a href="${vo.register.url}">${vo.register.originName}</a></div>
                                     </div>
 
                                 </div>
@@ -100,7 +105,7 @@
                                 <div class="tab-pane fade profile-edit" id="profile-edit">
                                     <h5 class="card-title">수정하기</h5>
                                     <!-- Profile Edit Form -->
-                                    <form>
+                                    <form method="POST" action="/franchise/update" id="updateForm">
                                         <div class="row mb-3">
                                             <label for="fullName" class="col-md-4 col-lg-3 col-form-label">지점명</label>
                                             <div class="col-md-8 col-lg-9">
@@ -110,58 +115,58 @@
 
 
                                         <div class="row mb-3">
-                                            <label for="company" class="col-md-4 col-lg-3 col-form-label">대표</label>
+                                            <label for="ownerName" class="col-md-4 col-lg-3 col-form-label">대표</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input id="joinDate" type="text" class="form-control" value="남명균" disabled>
+                                                <input id="ownerName" type="text" class="form-control" value="${vo.ownerName}" disabled>
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="Address" class="col-md-4 col-lg-3 col-form-label">계약일</label>
+                                            <label for="contractDate" class="col-md-4 col-lg-3 col-form-label">계약일</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input id="birth" type="date" class="form-control" value="2023-03-24" disabled>
+                                                <input id="contractDate" type="date" class="form-control" value="${vo.contractDate}" disabled>
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="Job" class="col-md-4 col-lg-3 col-form-label">전화번호</label>
+                                            <label for="contactNumber" class="col-md-4 col-lg-3 col-form-label">전화번호</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="phone" type="text" class="form-control" id="phone" value="01076887260">
+                                                <input name="contactNumber" type="text" class="form-control" id="contactNumber" value="${vo.contactNumber}">
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="Country" class="col-md-4 col-lg-3 col-form-label">이메일</label>
+                                            <label for="email" class="col-md-4 col-lg-3 col-form-label">이메일</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input id="email" type="email" class="form-control" placeholder="이메일" value="test@naver.com" disabled>
+                                                <input id="email" type="email" class="form-control" placeholder="이메일" value="${vo.email}" disabled>
                                             </div>
                                         </div>
 
 
 
                                         <div class="row mb-3">
-                                            <label for="department" class="col-md-4 col-lg-3 col-form-label">담당자</label>
+                                            <label for="managerId" class="col-md-4 col-lg-3 col-form-label">담당자</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <select class="form-select" id="department">
-                                                    <option value="0">부서 선택</option>
+                                                <select class="form-select" id="managerId">
+                                                    <option value="0">${vo.managerId}</option>
                                                     <option value="1">영업팀</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="accountNumber" class="col-md-4 col-lg-3 col-form-label">우편번호</label>
-                                            <div class="col-md-8 col-lg-6 d-flex">
-                                                <input type="text" id="sample6_postcode" placeholder="우편번호" class="form-control" disabled>
+                                            <label class="col-md-4 col-lg-3 col-form-label">우편번호</label>
+                                            <div class="col-md-8 col-lg-9 d-flex">
+                                                <input type="text" value="${vo.postCode}" class="form-control" disabled>
                                             </div>
                                         </div>
 
 
                                         <div class="row mb-3">
-                                            <label for="accountNumber" class="col-md-4 col-lg-3 col-form-label">주소</label>
+                                            <label class="col-md-4 col-lg-3 col-form-label">주소</label>
                                             <div class="col-md-8 col-lg-9 d-flex">
-                                                <input type="text" id="sample6_address" class="form-control" placeholder="주소" disabled>
-                                                <input type="text" id="sample6_detailAddress" class="form-control ml-2" placeholder="상세주소" disabled>
+                                                <input type="text" value="${vo.address}" class="form-control me-1" placeholder="주소" disabled>
+                                                <input type="text" value="${vo.addressDetail}" class="form-control" placeholder="상세주소" disabled>
                                             </div>
                                         </div>
 
@@ -186,6 +191,21 @@
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
+<script>
+    const updateForm = document.getElementById("updateForm");
+    updateForm.addEventListener("submit", async function (event){
+        event.preventDefault();
+        event.stopPropagation();
+        const formData = new FormData(updateForm);
+        const response = await fetch("/franchise/update", {
+            method: "PUT",
+            body: formData
+        });
+        const result = await response.json();
+        alert(result.message);
+        location.reload();
+    })
+</script>
 </body>
 
 </html>
