@@ -2,6 +2,7 @@ package com.groups.schicken.Employee;
 
 import java.util.List;
 
+import com.groups.schicken.franchise.mapper.FranchiseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +27,8 @@ public class EmployeeService implements UserDetailsService {
 
 	@Autowired
 	private EmployeeDAO employeeDAO;
+	@Autowired
+	private FranchiseMapper franchiseMapper;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;  //비밀번호를 저장할때 사용 암호화 하는 역할
@@ -34,7 +37,7 @@ public class EmployeeService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-	    System.out.println(id);
+	    System.out.println("입력 아이디: "+id);
 	    EmployeeVO employeeVO = new EmployeeVO();
 
 	    // emp로 시작하는 경우 그룹웨어 사용자
@@ -50,11 +53,13 @@ public class EmployeeService implements UserDetailsService {
 	    }
 	    // fra로 시작하는 경우 가맹점 사용자
 	    else if (id.startsWith("fra")) {
+			FranchiseVO franchiseVO = new FranchiseVO();
 	        // "fra"를 제거한 실제 id 파싱
 	        String realId = id.substring(3);
-	        employeeVO.setId(realId);
+	        franchiseVO.setId(realId);
 	        try {
-	            
+	            franchiseVO = franchiseMapper.getFranchise(franchiseVO);
+				return franchiseVO;
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
