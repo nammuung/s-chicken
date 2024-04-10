@@ -62,6 +62,7 @@ public class FranchiseController {
 
     @PostMapping("/franchise/initPassword")
     public String initPassword(Model model,FranchiseVO franchiseVO) throws Exception {
+        franchiseVO = franchiseService.getFranchise(franchiseVO);
         int result = franchiseService.initPassword(franchiseVO);
         if (result == 1){
             model.addAttribute("message", new MessageVO("초기화에 성공했습니다.","/franchise/detail?id="+franchiseVO.getId()));

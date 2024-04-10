@@ -225,8 +225,15 @@
     });
     initPasswordButton.addEventListener("click", async function (event){
         const form = document.createElement("form");
+        const id = document.createElement("input");
+        id.type = "hidden";
+        id.name = "id";
+        id.value = "${vo.id}";
+
         form.method = "POST";
         form.action = "/franchise/initPassword";
+        form.appendChild(id);
+        document.body.appendChild(form);
         form.submit();
     })
 </script>
