@@ -1,25 +1,32 @@
 package com.groups.schicken.franchise.service;
 
 import com.groups.schicken.Employee.EmployeeService;
+import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.franchise.mapper.FranchiseMapper;
 import com.groups.schicken.franchise.object.FranchiseVO;
 import com.groups.schicken.util.FileManager;
 import com.groups.schicken.util.FileVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Service
-public class FranchiseService {
+public class FranchiseService implements UserDetailsService {
     @Autowired
     private FranchiseMapper franchiseMapper;
     @Autowired
     private FileManager fileManager;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<FranchiseVO> getFranchiseList() throws Exception {
         return franchiseMapper.getFranchiseList();
@@ -40,7 +47,7 @@ public class FranchiseService {
         if(!fileManager.uploadFile(attach[1], file)) return 0;
         franchiseVO.setRegisterId(file.getId());
 
-        franchiseVO.setPassword(franchiseVO.getEmail()); //초기 비밀번호는 이메일
+        franchiseVO.setPassword(passwordEncoder.encode(franchiseVO.getEmail()));//초기 비밀번호는 이메일
         result += franchiseMapper.addFranchise(franchiseVO);
 
         return result;
@@ -54,7 +61,23 @@ public class FranchiseService {
 
 
     public int initPassword(FranchiseVO franchiseVO) throws Exception {
-        franchiseVO.setPassword(franchiseVO.getEmail());
+        franchiseVO.setPassword(passwordEncoder.encode(franchiseVO.getEmail()));
         return franchiseMapper.updateFranchise(franchiseVO);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+        FranchiseVO franchiseVO = new FranchiseVO();
+        franchiseVO.setId(id);
+
+        try {
+            franchiseVO= franchiseMapper.getFranchise(franchiseVO);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();  //에외처리 했을때 정보를 출력하는 메서드 호출
+        }
+
+        return null;
     }
 }

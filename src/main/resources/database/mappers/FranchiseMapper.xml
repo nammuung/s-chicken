@@ -88,6 +88,9 @@
             <if test="registerId != null">
                 , register_id = #{registerId}
             </if>
+            <if test="contactNumber != null">
+                , contact_number = #{contactNumber}
+            </if>
         </set>
         WHERE id = #{id}
     </update>

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FranchiseVO {
-    private Long id;
+    private String id;
     private String name;
     private String ownerName;
     private String postCode;
