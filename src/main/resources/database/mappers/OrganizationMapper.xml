@@ -45,13 +45,14 @@
 
             SELECT
                   e.id
-                , e.name "text"
+                , concat(code.name ,' ', e.name) "text"
                 , e.department_id "parent"
                 , 'person' AS "type"
                 , OC.depth + 1 AS depth
-                , OC.sort
+                , CAST(code.id AS INTEGER) AS "sort"
             FROM employee e
-            INNER JOIN OC ON e.department_id = OC.id
+                INNER JOIN OC ON e.department_id = OC.id
+                INNER JOIN code ON e.pos_id = code.id
         ) uoc
         ORDER BY uoc.depth, uoc.type desc, sort
     </select>
