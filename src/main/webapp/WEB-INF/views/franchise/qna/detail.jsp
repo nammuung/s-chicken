@@ -6,14 +6,14 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>S치킨-그룹웨어</title>
-    <c:import url="../template/head.jsp"/>
+    <c:import url="../../template/head.jsp"/>
 </head>
 
 <body>
 <!-- ======= Header ======= -->
-<c:import url="../template/header.jsp"/>
+<c:import url="../../template/header.jsp"/>
 <!-- ======= Sidebar ======= -->
-<c:import url="../template/sidebar.jsp"/>
+<c:import url="../../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>가맹점 QnA</h1>
@@ -24,13 +24,13 @@
                 <div class="card">
                     <div class="d-flex justify-content-between p-3 border-bottom">
                         <div>
-                            <span class="me-3">한라점</span>
-                            <b>이거 어떻게 하나요?</b>
+                            <span class="me-3">${vo.writer.name}</span>
+                            <b>${vo.title}</b>
                         </div>
-                        <span class="text-muted">2024.03.31</span>
+                        <span class="text-muted">${vo.writeDate}</span>
                     </div>
-                    <div class="card-body pt-3">
-                        어떻게 어떻게
+                    <div class="card-body pt-3" style="min-height: 10vh">
+                        ${vo.content}
                     </div>
                 </div>
             </div>
@@ -86,9 +86,9 @@
     </section>
 </main><!-- End #main -->
 <!-- ======= Footer ======= -->
-<c:import url="../template/footer.jsp"/>
+<c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
-<c:import url="../template/script.jsp"/>
+<c:import url="../../template/script.jsp"/>
 </body>
 
 </html>

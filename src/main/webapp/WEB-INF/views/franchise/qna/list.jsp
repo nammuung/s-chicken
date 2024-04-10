@@ -6,14 +6,14 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>S치킨-그룹웨어</title>
-    <c:import url="../template/head.jsp"/>
+    <c:import url="../../template/head.jsp"/>
 </head>
 
 <body>
 <!-- ======= Header ======= -->
-<c:import url="../template/header.jsp"/>
+<c:import url="../../template/header.jsp"/>
 <!-- ======= Sidebar ======= -->
-<c:import url="../template/sidebar.jsp"/>
+<c:import url="../../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle">
         <h1>가맹점 QnA</h1>
@@ -49,20 +49,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td class="text-start">이럴 때는 어떻게 하나요?</td>
-                                <td>한라점</td>
-                                <td>2023/03/27</td>
-                                <td>완료</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td class="text-start">이럴 때는 어떻게 하나요?</td>
-                                <td>한라점</td>
-                                <td>2023/03/27</td>
-                                <td>완료</td>
-                            </tr>
+                                <c:forEach items="${list}" var="item" varStatus="status">
+                                    <tr>
+                                        <td>${status.index+1}</td>
+                                        <td class="text-start">${item.title}</td>
+                                        <td>${item.writer.name}</td>
+                                        <td>${item.writeDate}</td>
+                                        <td>
+                                            <c:if test="${item.comment != null}">완료</c:if>
+                                            <c:if test="${item.comment == null}">미완</c:if>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
                             </tbody>
                         </table>
                     </div>
@@ -86,9 +84,9 @@
     </section>
 </main><!-- End #main -->
 <!-- ======= Footer ======= -->
-<c:import url="../template/footer.jsp"/>
+<c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
-<c:import url="../template/script.jsp"/>
+<c:import url="../../template/script.jsp"/>
 </body>
 
 </html>
