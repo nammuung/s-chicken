@@ -59,6 +59,7 @@ public class EmployeeService implements UserDetailsService {
 	        franchiseVO.setId(realId);
 	        try {
 	            franchiseVO = franchiseMapper.getFranchise(franchiseVO);
+				System.out.println("franchiseVO = " + franchiseVO);
 				return franchiseVO;
 	        } catch (Exception e) {
 	            e.printStackTrace();

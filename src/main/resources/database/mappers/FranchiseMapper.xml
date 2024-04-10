@@ -5,7 +5,7 @@
 
 <mapper namespace="com.groups.schicken.franchise.mapper.FranchiseMapper">
     <insert id="addFranchise">
-        <selectKey order="BEFORE" resultType="Long" keyProperty="id">
+        <selectKey order="BEFORE" resultType="String" keyProperty="id">
             SELECT nextval(seq1)
         </selectKey>
         INSERT INTO franchise
@@ -33,6 +33,7 @@
         frc.post_code,
         frc.contract_id,
         frc.register_id,
+        frc.password,
         at1.name contract_name,
         at1.origin_name contract_origin_name,
         at1.url contract_url,

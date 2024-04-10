@@ -36,6 +36,7 @@ public class EmployeeController {
 	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session) throws Exception {
 
 		Object obj=(session.getAttribute("SPRING_SECURITY_CONTEXT"));
+		System.out.println("employeeVO = " + employeeVO);
 		log.info("{}",obj);
 		System.out.println(employeeVO.getId());
 		if (obj == null) {

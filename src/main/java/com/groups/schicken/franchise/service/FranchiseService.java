@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Service
-public class FranchiseService implements UserDetailsService {
+public class FranchiseService {
     @Autowired
     private FranchiseMapper franchiseMapper;
     @Autowired
@@ -65,19 +65,5 @@ public class FranchiseService implements UserDetailsService {
         return franchiseMapper.updateFranchise(franchiseVO);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        FranchiseVO franchiseVO = new FranchiseVO();
-        franchiseVO.setId(id);
 
-        try {
-            franchiseVO= franchiseMapper.getFranchise(franchiseVO);
-
-        } catch (Exception e) {
-
-            e.printStackTrace();  //에외처리 했을때 정보를 출력하는 메서드 호출
-        }
-
-        return null;
-    }
 }
