@@ -7,8 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>S치킨-그룹웨어</title>
     <c:import url="../template/head.jsp"/>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9487982a6e9b4d2638f7bb9426cd5683"></script>
-
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9487982a6e9b4d2638f7bb9426cd5683&libraries=services"></script>
 </head>
 
 <body>
@@ -23,45 +22,37 @@
     <section class="section">
         <div class="row justify-content-center p-3">
             <div class="col-6">
-                <div id="map" style="width:100%;height:100%;"></div>
+                <div id="map" style="width:100%;height:100%;min-height: 50vh"></div>
             </div>
             <div class="col-6">
-                <form class="search-form d-flex align-items-center mb-3" method="POST" action="#">
+                <form class="search-form d-flex align-items-center mb-3" method="GET" action="#">
                     <label>
-                        <select class="form-select w-auto me-1">
-                            <option value="0">제목</option>
-                            <option value="1">내용</option>
-                            <option value="2">제목+내용</option>
+                        <select id="searchSelect" class="form-select w-auto me-1" name="kind" data-kind="${pager.kind}">
+                            <option value="name">지점명</option>
+                            <option value="manager">담당자명</option>
                         </select>
                     </label>
-                    <input type="text" name="query" placeholder="검색" title="Enter search keyword">
+                    <input type="text" name="search" placeholder="검색" value="${pager.search}" title="Enter search keyword">
                     <button type="submit" title="Search"><i class="bi bi-search"></i></button>
                 </form>
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <div class="d-flex flex-column">
-                            <b>한라점</b>
-                            <span>010-1234-5678</span>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="d-flex flex-column">
-                            <b>한라점</b>
-                            <span>010-1234-5678</span>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="d-flex flex-column">
-                            <b>한라점</b>
-                            <span>010-1234-5678</span>
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                        <div class="d-flex flex-column">
-                            <b>한라점</b>
-                            <span>010-1234-5678</span>
-                        </div>
-                    </li>
+
+                <ul class="list-group overflow-scroll" style="height: 50vh">
+                    <c:forEach items="${list}" var="item">
+                        <li class="list-group-item cursor d-flex justify-content-between align-items-center" onclick="focusMarker('${item.address}')">
+                            <a href="#" class="d-flex flex-column link-dark">
+                                <b>${item.name}</b>
+                                <span>${item.contactNumber}</span>
+                            </a>
+                            <div>
+                                <a href="/franchise/detail?id=${item.id}" class="link-dark me-1">
+                                    <i class="bi bi-bar-chart-fill"></i>
+                                </a>
+                                <a href="/franchise/detail?id=${item.id}" class="link-dark">
+                                    <i class="bi bi-info-circle-fill"></i>
+                                </a>
+                            </div>
+                        </li>
+                    </c:forEach>
                 </ul>
             </div>
         </div>
@@ -76,11 +67,105 @@
 <script>
     var container = document.getElementById('map');
     var options = {
-        center: new kakao.maps.LatLng(37.47767, 126.8795),
+        center: new kakao.maps.LatLng(37.5642135, 127.0016985),
         level: 3
     };
 
     var map = new kakao.maps.Map(container, options);
+    var ps = new kakao.maps.services.Places();
+    var geocoder = new kakao.maps.services.Geocoder();
+    var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+    Array.prototype.slice.call(document.getElementById("searchSelect"))
+        .forEach(child => {
+            if(child.value == '${pager.kind}') child.selected = true
+        })
+    // 지도에 마커를 표시하는 함수입니다
+    function displayMarker(place, description) {
+        // 마커를 생성합니다
+        // 마커를 생성하고 지도에 표시합니다
+        var coords = new kakao.maps.LatLng(place.y, place.x)
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(place.y, place.x)
+        });
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, 'click', function() {
+            map.setCenter(coords);
+            map.setLevel(2);
+        });
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, 'mouseover', function() {
+            infowindow.setContent('<div style="padding:5px;font-size:12px;"><b>' + description + '</b></div>');
+            infowindow.open(map, marker);
+        });
+        kakao.maps.event.addListener(marker, 'mouseout', function() {
+            infowindow.close(map, marker);
+        });
+    }
+
+    (async function () {
+        const response = await fetch("/v1/api/franchise?kind=${pager.kind}&search=${pager.search}");
+        const data = await response.json();
+        var bounds = new kakao.maps.LatLngBounds();
+        if(data.length === 0) {
+            map.setLevel(8);
+        }
+        data.forEach((franchise)=>{
+            // 주소로 좌표를 검색합니다
+            geocoder.addressSearch(franchise.address, function(result, status) {
+                // 정상적으로 검색이 완료됐으면
+                if (status === kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    displayMarker(result[0],franchise.name);
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    map.setBounds(bounds);
+
+                }
+            });
+
+        })
+    })()
+
+    function focusMarker(address){
+        geocoder.addressSearch(address, function(result, status) {
+            // 정상적으로 검색이 완료됐으면
+            if (status === kakao.maps.services.Status.OK) {
+                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                map.setCenter(coords);
+                map.setLevel(2);
+            }
+        })
+
+    }
+    // 키워드로 장소를 검색합니다
+    // ps.keywordSearch('서울 교촌치킨', placesSearchCB);
+    // 키워드 검색 완료 시 호출되는 콜백함수 입니다
+    // function placesSearchCB (data, status, pagination) {
+    //     if (status === kakao.maps.services.Status.OK) {
+    //
+    //         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+    //         // LatLngBounds 객체에 좌표를 추가합니다
+    //         var bounds = new kakao.maps.LatLngBounds();
+    //
+    //         for (var i=0; i<data.length; i++) {
+    //             console.log(data[i])
+    //             // displayMarker(data[i]);
+    //             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+    //         }
+    //
+    //         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+    //         map.setBounds(bounds);
+    //     }
+    // }
+
+
+    // 주소-좌표 변환 객체를 생성합니다
+
+
+
 </script>
 
 </body>

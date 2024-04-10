@@ -73,6 +73,14 @@
         manager_id,
         post_code
         FROM franchise
+        <choose>
+            <when test='kind != null and kind.equals("name")'>
+                WHERE name LIKE CONCAT('%',#{search},'%')
+            </when>
+            <when test='kind != null and kind.equals("manager")'>
+                WHERE manager_id in (SELECT manager_id FROM employee WHERE name LIKE CONCAT('%',#{search},'%'))
+            </when>
+        </choose>
     </select>
     <update id="updateFranchise">
         UPDATE franchise

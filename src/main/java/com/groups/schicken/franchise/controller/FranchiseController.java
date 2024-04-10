@@ -3,6 +3,7 @@ package com.groups.schicken.franchise.controller;
 import com.groups.schicken.franchise.object.FranchiseVO;
 import com.groups.schicken.franchise.object.MessageVO;
 import com.groups.schicken.franchise.service.FranchiseService;
+import com.groups.schicken.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,13 @@ public class FranchiseController {
     @Autowired
     private FranchiseService franchiseService;
     @GetMapping("/franchise/inquiry")
-    public String getFranchiseList(Model model) throws Exception {
-        List<FranchiseVO> franchiseVOList = franchiseService.getFranchiseList();
+    public String getFranchiseList(Model model, Pager pager) throws Exception {
+        List<FranchiseVO> franchiseVOList = franchiseService.getFranchiseList(pager);
         model.addAttribute("list", franchiseVOList);
+        model.addAttribute("pager", pager);
+        for (FranchiseVO vo :franchiseVOList){
+            System.out.println(vo);
+        }
         return "franchise/inquiry";
     }
 
