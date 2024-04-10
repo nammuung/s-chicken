@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import com.groups.schicken.franchise.object.FranchiseVO;
 import com.groups.schicken.util.Pager;
 
 import lombok.extern.java.Log;
@@ -33,22 +34,39 @@ public class EmployeeService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-		System.out.println(id);
-		EmployeeVO employeeVO = new EmployeeVO();
-		employeeVO.setId(id);
+	    System.out.println(id);
+	    EmployeeVO employeeVO = new EmployeeVO();
 
-		try {
-			employeeVO= employeeDAO.getDetail(employeeVO);
+	    // emp로 시작하는 경우 그룹웨어 사용자
+	    if (id.startsWith("emp")) {
+	        // "emp"를 제거한 실제 id 파싱
+	        String realId = id.substring(3);
+	        employeeVO.setId(realId);
+	        try {
+	        	employeeVO= employeeDAO.getDetail(employeeVO);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    // fra로 시작하는 경우 가맹점 사용자
+	    else if (id.startsWith("fra")) {
+	        // "fra"를 제거한 실제 id 파싱
+	        String realId = id.substring(3);
+	        employeeVO.setId(realId);
+	        try {
+	            
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    // 그 외의 경우 예외 처리
+	    else {
+	        throw new IllegalArgumentException("Invalid id format: " + id);
+	    }
 
-		} catch (Exception e) {
+	    return employeeVO;
+	}
 
-			e.printStackTrace();  //에외처리 했을때 정보를 출력하는 메서드 호출
-		}
-		
-
-		return employeeVO;
-	}	
-	
 
 	// 회원 가입
 	public int join(EmployeeVO employeeVO)throws Exception{
