@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -13,6 +14,7 @@ public class DepartmentController {
 
     @Autowired
     private DepartmentService departmentService;
+
 
     @PostMapping("addDepartment")
     public ResponseEntity<List<DepartmentVO>> addDepartment(@RequestBody DepartmentVO department){
@@ -30,6 +32,18 @@ public class DepartmentController {
     public ResponseEntity<List<DepartmentVO>> updateDepartment(@RequestBody DepartmentVO department){
         System.out.println("department = " + department);
         Integer result = departmentService.updateDepartment(department);
+
+        if(result < 1){
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(departmentService.getList());
+    }
+
+    @PostMapping("deleteDepartment")
+    public ResponseEntity<List<DepartmentVO>> deleteDepartment(@RequestBody DepartmentVO department){
+        System.out.println("department = " + department);
+        Integer result = departmentService.deleteDepartment(department);
 
         if(result < 1){
             return ResponseEntity.internalServerError().build();

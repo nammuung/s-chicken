@@ -47,4 +47,22 @@ class DepartmentServiceTest {
         System.out.println("list = " + list);
         assertNotNull(list.get(0).getSort());
     }
+
+    @Test
+    void countChildren(){
+        DepartmentVO department = new DepartmentVO();
+        department.setId(1L);
+
+        var count = departmentDAO.countChildren(department);
+        assertNotEquals(0, count);
+    }
+
+    @Test
+    void deleteDepartment(){
+        DepartmentVO departmentVO = new DepartmentVO();
+        departmentVO.setId(212L);
+
+        var count = departmentDAO.deleteDepartment(departmentVO);
+        assertEquals(1, count);
+    }
 }

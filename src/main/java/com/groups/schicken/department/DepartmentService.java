@@ -45,4 +45,13 @@ public class DepartmentService {
         Integer result = departmentDAO.updateDepartmentSort(department);
         return result + departmentDAO.updateDepartment(department);
     }
+
+    public Integer deleteDepartment(DepartmentVO department) {
+        Integer countChildren = departmentDAO.countChildren(department);
+        if(countChildren == 0){
+            return departmentDAO.deleteDepartment(department);
+        }
+
+        return 0;
+    }
 }

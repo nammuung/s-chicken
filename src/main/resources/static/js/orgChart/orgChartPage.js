@@ -10,10 +10,17 @@ const deptName = document.getElementById("dept-name");
 const deptNumber = document.getElementById("dept-number");
 const deptList = document.getElementById("dept-list");
 const conNumNotice = document.getElementById("con-num-notice");
+const deptDelBtn = document.getElementById("dept-del-btn");
+// 조직도에서 클릭한 Object
 let selected;
+// department list
 let deptData;
+// 부서 수정시 선택된 부서의 원래 내선번호
 let exceptNumber;
 
+/**
+ * 부서의 리스트를 가져와 deptData에 저장
+ */
 function getDepartmentData(){
     fetch('/department/list')
         .then(res=>res.json())
@@ -23,7 +30,11 @@ function getDepartmentData(){
         });
 }
 
-function ocInitFunction(data) {
+/**
+ * 조직도를 클릭하면 호출될 함수
+ * selected에 선택된 데이터를 저장하고 선택된 개체에따라 버튼의 disabled를 수정
+ */
+function ocCallbackFunction(data) {
     console.log(data);
     if(data.isSelect){
         selected = data;
@@ -48,6 +59,16 @@ function ocInitFunction(data) {
     }
 }
 
+/**
+ * 부서 삭제버튼 눌렀을 때 실행될 함수
+ * 기본적으로 비어있고, 삭제가 가능한 상황에만 함수를 채워넣음
+  */
+let deptDelete = () => {};
+
+/**
+ * 하위에 부서 추가 버튼 클릭시 실행
+ * 모달을 생성하고 띄워줌
+ */
 function setModalAddDept(data){
     upperName.setAttribute("data-id", data.id);
     upperName.innerHTML = `
@@ -62,8 +83,18 @@ function setModalAddDept(data){
     deptSubmitBtn.classList.add("disabled");
 
     exceptNumber = null;
+
+    deptDelBtn.classList.add("d-none");
+
+    deptDelete = ()=>{};
 }
 
+/**
+ * 부서 수정시에 특정 상위 부서의 하위부서를 보여주는데 사용함
+ * 하위부서들을 li 태그의 리스트로 리턴
+ * 선택된 부서는 상위부서에 속해있으면 원래자리
+ * 그렇지 않으면 제일 아래에 표시함
+ */
 function getDepartmentLis({id, upperId}){
     console.log("getDepartmentLis", id ,upperId);
     let isId = false;
@@ -126,6 +157,11 @@ function getDepartmentLis({id, upperId}){
     return arr;
 }
 
+/**
+ * 부서 수정 버튼 클릭시 실행
+ * 모달을 생성하고 띄워줌
+ * 부서 삭제가 가능한경우 여기서 deptDelete 함수를 채워줌
+ */
 function setModalUpdateDept(data){
     console.log(deptData)
     let options = deptData
@@ -163,8 +199,32 @@ function setModalUpdateDept(data){
 
     deptSubmitBtn.classList.remove("disabled");
     exceptNumber = data.contactNumber;
+
+    if(selected.children.length === 0){
+        deptDelBtn.classList.remove("d-none");
+        deptDelete = ()=>{
+            fetch('/department/deleteDepartment',{
+                method : 'post',
+                headers : {
+                    'content-type' : "application/json;charset=utf-8"
+                },
+                body : JSON.stringify({id : selected.id})
+            }).then(res=>res.json())
+                .then(r=>{
+                    deptData = r;
+                    bsDeptModal.hide();
+                    oc.refresh();
+                });
+        }
+    } else {
+        deptDelBtn.classList.add("d-none");
+        deptDelete = () =>{};
+    }
 }
 
+/**
+ * 부서의 정렬순서를 정할 sort값을 계산해줌
+ */
 function setDataSort(){
     const target = deptList.querySelector(".bg-schicken-light");
     target.setAttribute("data-sort",
@@ -195,7 +255,16 @@ function validateDept(data){
     return true;
 }
 
+/**
+ * type이 add 거나 update에 따라 호출하고
+ * 선택된 데이터를 서버로 보내 적용하는 함수
+ */
 function deptSubmit(type){
+    if(type !== 'add' && type !== 'update'){
+        console.log(`deptSubmit 의 type은 'add' 나 'update' 만 가능 : `, type);
+        return;
+    }
+
     if(type==='add' && selected.depth >= 3){
         alert('이 노드에는 추가할 수 없습니다.');
         return;
@@ -234,7 +303,16 @@ function deptSubmit(type){
 
 }
 
+/**
+ * deptSubmit함수를 실행해주는 함수
+ * 클릭한 버튼이 추가, 수정 인지에 따라 add, update 적용하는 함수를 실행함
+ */
 let callSubmitFunction;
+
+/**
+ * 부서를 선택하고, 추가또는 수정버튼을 클릭하면 모달을 세팅하고 띄워줌
+ * callSubmitFunction을 여기서 정의해줌
+ */
 function onDeptBtnClick(type) {
     if(selected == null){
         return;
@@ -308,6 +386,7 @@ deptNumber.addEventListener("keyup", e=>{
 deptAddBtn.addEventListener("click",()=>onDeptBtnClick('add'))
 deptModBtn.addEventListener("click",()=>onDeptBtnClick('update'))
 deptSubmitBtn.addEventListener("click", ()=>callSubmitFunction());
+deptDelBtn.addEventListener("click", ()=>deptDelete());
 
-oc.init("org-chart", data=>ocInitFunction(data));
+oc.init("org-chart", data=>ocCallbackFunction(data));
 getDepartmentData();

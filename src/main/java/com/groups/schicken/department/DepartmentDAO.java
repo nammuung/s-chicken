@@ -22,4 +22,8 @@ public interface DepartmentDAO {
     Integer updateDepartment(DepartmentVO department);
 
     Integer updateDepartmentSort(DepartmentVO department);
+
+    Integer countChildren(DepartmentVO department);
+
+    Integer deleteDepartment(DepartmentVO department);
 }
