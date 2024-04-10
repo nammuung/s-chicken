@@ -102,10 +102,10 @@
 										<label for="bankName" class="form-label"><b>은행명</b></label> <select
 											class="form-select" id="bankName" name="bankName">
 											<option value="0">은행 선택</option>
-											<option value="1">국민은행</option>
-											<option value="2">신한은행</option>
-											<option value="3">농협</option>
-											<option value="4">신협</option>
+											<option value="국민은행">국민은행</option>
+											<option value="신한은행">신한은행</option>
+											<option value="농협">농협</option>
+											<option value="신협">신협</option>
 										</select>
 									</div>
 									<div class="form-group mb-3 col-8">

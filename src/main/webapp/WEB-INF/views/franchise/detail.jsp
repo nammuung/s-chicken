@@ -35,7 +35,7 @@
                                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">수정</button>
                                 </li>
                                 <li class="nav-item">
-                                    <button class="nav-link text-danger">비밀번호 초기화</button>
+                                    <button id="initPasswordButton" class="nav-link text-danger">비밀번호 초기화</button>
                                 </li>
 
                             </ul>
@@ -72,7 +72,7 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">담당자</div>
-                                        <div class="col-lg-9 col-md-8">${vo.managerId}</div>
+                                        <div class="col-lg-9 col-md-8">${vo.manager.department.name} ${vo.manager.name} ${vo.manager.code.name}</div>
                                     </div>
 
                                     <div class="row">
@@ -106,10 +106,11 @@
                                     <h5 class="card-title">수정하기</h5>
                                     <!-- Profile Edit Form -->
                                     <form method="POST" action="/franchise/update" id="updateForm">
+                                        <input type="hidden" name="id" value="${vo.id}">
                                         <div class="row mb-3">
                                             <label for="fullName" class="col-md-4 col-lg-3 col-form-label">지점명</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="fullName" type="text" class="form-control" id="fullName" value="한라점" disabled>
+                                                <input name="fullName" type="text" class="form-control" id="fullName" value="${vo.name}" disabled>
                                             </div>
                                         </div>
 
@@ -146,11 +147,10 @@
 
                                         <div class="row mb-3">
                                             <label for="managerId" class="col-md-4 col-lg-3 col-form-label">담당자</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <select class="form-select" id="managerId">
-                                                    <option value="0">${vo.managerId}</option>
-                                                    <option value="1">영업팀</option>
-                                                </select>
+                                            <div class="col-md-8 col-lg-9 d-flex">
+                                                <input class="form-select" type="hidden" id="managerId" name="managerId" value="${vo.manager.id}">
+                                                <input class="form-select me-1" id="managerName" value="${vo.manager.department.name} ${vo.manager.name} ${vo.manager.code.name}">
+                                                <input class="btn btn-primary" id="managerSearch" value="찾기">
                                             </div>
                                         </div>
 
@@ -187,24 +187,70 @@
         </section>
     </section>
 </main><!-- End #main -->
+<div class="modal" tabindex="-1" id="dept-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">부서 등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="orgChart"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- ======= Footer ======= -->
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
-<script>
-    const updateForm = document.getElementById("updateForm");
-    updateForm.addEventListener("submit", async function (event){
-        event.preventDefault();
-        event.stopPropagation();
-        const formData = new FormData(updateForm);
-        const response = await fetch("/franchise/update", {
-            method: "PUT",
-            body: formData
-        });
-        const result = await response.json();
-        alert(result.message);
-        location.reload();
+<script type="module">
+    import orgChart from "/js/orgChart/orgChart.js";
+    const managerId = document.getElementById("managerId");
+    const managerSearch = document.getElementById("managerSearch");
+    const managerName = document.getElementById("managerName");
+    const modal = new bootstrap.Modal(document.getElementById("dept-modal"));
+    const initPasswordButton = document.getElementById("initPasswordButton");
+    orgChart.init("orgChart", (data)=>{
+        console.log(data);
+        modal.hide();
+        managerId.value = data.id;
+        managerName.value = data.name;
+    });
+    managerSearch.addEventListener("click", async function (event){
+        modal.show();
+    });
+    initPasswordButton.addEventListener("click", async function (event){
+        const form = document.createElement("form");
+        const id = document.createElement("input");
+        id.type = "hidden";
+        id.name = "id";
+        id.value = "${vo.id}";
+
+        form.method = "POST";
+        form.action = "/franchise/initPassword";
+        form.appendChild(id);
+        document.body.appendChild(form);
+        form.submit();
     })
+</script>
+<script>
+    <%--const updateForm = document.getElementById("updateForm");--%>
+    <%--updateForm.addEventListener("submit", async function (event){--%>
+    <%--    event.preventDefault();--%>
+    <%--    event.stopPropagation();--%>
+    <%--    const formData = new FormData(updateForm);--%>
+    <%--    const response = await fetch("/franchise/update?id="+${vo.id}, {--%>
+    <%--        method: "POST",--%>
+    <%--        body: formData--%>
+    <%--    });--%>
+    <%--    const result = await response.json();--%>
+    <%--    alert(result.message);--%>
+    <%--    location.reload();--%>
+    <%--})--%>
 </script>
 </body>
 

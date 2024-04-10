@@ -79,7 +79,7 @@ public class SecurityConfig {
 							(logout)->
 									logout
 										.logoutRequestMatcher(new AntPathRequestMatcher("/employee/logout"))
-										.logoutSuccessUrl("/")
+										.logoutSuccessUrl("/employee/login")
 										.invalidateHttpSession(true) // 로그아웃 성공시 session만료
 										.permitAll()
 						)// 로그아웃 끝 부분
@@ -87,12 +87,12 @@ public class SecurityConfig {
 				.rememberMe(
 								(rememberMe)->
 										rememberMe
-												.rememberMeParameter("rememberMe")
-												.tokenValiditySeconds(600)
-												.key("rememberMe")
-												.userDetailsService(employeeService)
-												.authenticationSuccessHandler(handler)
-												.useSecureCookie(false)
+										.rememberMeParameter("rememberMe")
+										.tokenValiditySeconds(600)
+										.key("rememberMe")
+										.userDetailsService(employeeService)
+										.authenticationSuccessHandler(handler)
+										.useSecureCookie(false)
 							
 						)// remember 끝 부분
 				.sessionManagement(
