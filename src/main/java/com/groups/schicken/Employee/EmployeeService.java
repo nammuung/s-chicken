@@ -48,7 +48,7 @@ public class EmployeeService implements UserDetailsService {
 	            e.printStackTrace();
 	        }
 	    }
-	    // fra로 시작하는 경우 가맹점 사용자
+	    // fra로 시작하는 경우 여기 수정해야댐 =============================================
 	    else if (id.startsWith("fra")) {
 	        // "fra"를 제거한 실제 id 파싱
 	        String realId = id.substring(3);
@@ -58,10 +58,6 @@ public class EmployeeService implements UserDetailsService {
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
-	    }
-	    // 그 외의 경우 예외 처리
-	    else {
-	        throw new IllegalArgumentException("Invalid id format: " + id);
 	    }
 
 	    return employeeVO;
