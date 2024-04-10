@@ -25,7 +25,7 @@
                 <div id="map" style="width:100%;height:100%;min-height: 50vh"></div>
             </div>
             <div class="col-6">
-                <form class="search-form d-flex align-items-center mb-3" method="GET" action="#">
+                <form class="search-form d-flex align-items-center mb-3 pe-3" method="GET" action="#">
                     <label>
                         <select id="searchSelect" class="form-select w-auto me-1" name="kind" data-kind="${pager.kind}">
                             <option value="name">지점명</option>
