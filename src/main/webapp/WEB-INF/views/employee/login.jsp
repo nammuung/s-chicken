@@ -19,8 +19,7 @@
 							<div class="p-3">
 								<h1>S치킨 그룹웨어</h1>
 							</div>
-							<form action="./login" method="post"
-								onsubmit="return submitForm()">
+							<form action="./login" method="post" onsubmit="return markButtonClicked()">
 
 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
     <input type="radio" class="btn-check" name="options-base" id="emp" autocomplete="off" checked> 
