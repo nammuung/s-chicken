@@ -43,8 +43,10 @@ public class FranchiseService {
         FileVO file = new FileVO();
         file.setTblId("101");
         if(!fileManager.uploadFile(attach[0], file)) return 0;
+        System.out.println("file = " + file);
         franchiseVO.setContractId(file.getId());
         if(!fileManager.uploadFile(attach[1], file)) return 0;
+        System.out.println("file = " + file);
         franchiseVO.setRegisterId(file.getId());
 
         franchiseVO.setPassword(passwordEncoder.encode(franchiseVO.getEmail()));//초기 비밀번호는 이메일

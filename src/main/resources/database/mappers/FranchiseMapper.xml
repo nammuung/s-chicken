@@ -9,9 +9,9 @@
             SELECT nextval(seq1)
         </selectKey>
         INSERT INTO franchise
-        (id, name, owner_name, post_code, address, address_detail, contact_number, registration_number, email, password, contract_date, manager_id)
+        (id, name, owner_name, post_code, address, address_detail, contact_number, registration_number, email, password, contract_date, manager_id, contract_id, register_id)
         VALUES
-        (#{id}, #{name}, #{ownerName}, #{postCode}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{password}, #{contractDate}, #{managerId})
+        (#{id}, #{name}, #{ownerName}, #{postCode}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{password}, #{contractDate}, #{managerId}, #{contractId}, #{registerId})
     </insert>
     <resultMap id="franchiseResultMap" type="FranchiseVO" autoMapping="true">
         <id column="id" property="id"/>
