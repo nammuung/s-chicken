@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import com.groups.schicken.franchise.mapper.FranchiseMapper;
 import com.groups.schicken.franchise.object.FranchiseVO;
 import com.groups.schicken.util.Pager;
 
