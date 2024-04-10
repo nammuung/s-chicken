@@ -44,22 +44,23 @@
 
                                 <label for="postCode" class="form-label"><b>주소</b></label>
                                 <div class="form-group mb-3 d-flex">
-                                    <input type="text" id="postCode" name="postCode" placeholder="우편번호" class="form-control me-1" required>
-                                    <input type="button" onclick="execPostcode()" value="우편번호 조회" class="btn btn-primary">
+                                    <input type="text" id="postCode" name="postCode" placeholder="우편번호" class="form-control me-1" readonly required>
+                                    <input type="button" id="postCodeButton" value="우편번호 조회" class="btn btn-primary">
                                 </div>
 
                                 <div class="form-group mb-3 d-flex">
-                                    <input type="text" id="address" name="address" class="form-control me-1" placeholder="주소" required>
+                                    <input type="text" id="address" name="address" class="form-control me-1" placeholder="주소" readonly required>
                                     <input type="text" id="addressDetail" name="addressDetail" class="form-control" placeholder="상세주소" required>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="registerNumber" class="form-label"><b>사업자번호</b></label>
                                     <input id="registerNumber" name="registrationNumber" type="text" class="form-control" required>
                                 </div>
-                                <label for="personInCharge" class="form-label"><b>담당자</b></label>
+                                <label for="managerId" class="form-label"><b>담당자</b></label>
                                 <div class="form-group mb-3 d-flex">
-                                    <input id="personInCharge" name="managerId" type="text" class="form-control me-1" required>
-                                    <input type="button" onclick="searchEmployee()" value="담당자 조회" class="btn btn-primary">
+                                    <input id="managerId" name="managerId" type="hidden" class="form-control me-1">
+                                    <input id="managerName"  type="text" class="form-control me-1" readonly required>
+                                    <input type="button" id="searchButton" value="담당자 조회" class="btn btn-primary">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="contractDate" class="form-label"><b>계약일</b></label>
@@ -83,12 +84,45 @@
         </div>
     </section>
 </main><!-- End #main -->
+<div class="modal" tabindex="-1" id="dept-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">부서 등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="orgChart"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- ======= Footer ======= -->
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
+
+<script type="module">
+    import orgChart from "/js/orgChart/orgChart.js";
+    const searchButton = document.getElementById("searchButton");
+    searchButton.addEventListener("click", ()=>{
+        modal.show();
+    })
+    orgChart.init("orgChart", (data)=>{
+        console.log(data);
+        modal.hide();
+        managerId.value = data.id;
+        managerName.value = data.name;
+    });
+    const modal = new bootstrap.Modal(document.getElementById("dept-modal"));
+    const postCodeButton = document.getElementById("postCodeButton");
+    postCodeButton.addEventListener("click", ()=>{
+        execPostcode();
+    })
     function execPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -137,7 +171,9 @@
             }
         }).open();
     }
-    function searchEmployee() {}
+    function searchEmployee() {
+        modal.show();
+    }
 
     const submitButton = document.getElementById("submitButton")
 
