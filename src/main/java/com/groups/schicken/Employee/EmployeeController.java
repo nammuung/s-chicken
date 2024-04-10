@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.groups.schicken.util.Pager;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,28 +33,21 @@ public class EmployeeController {
 
 	// Login
 	@GetMapping("login")
-	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session, HttpServletRequest request) throws Exception {
-	    Object obj = session.getAttribute("SPRING_SECURITY_CONTEXT");
-	    log.info("{}", obj);
-	    System.out.println(employeeVO.getId());
+	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session) throws Exception {
 
-	    // 세션에 저장된 "아이디 저장하기" 값 가져오기
-	    Boolean rememberMe = (Boolean) session.getAttribute("rememberMe");
+		Object obj=(session.getAttribute("SPRING_SECURITY_CONTEXT"));
+		System.out.println("employeeVO = " + employeeVO);
+		log.info("{}",obj);
+		System.out.println(employeeVO.getId());
+		if (obj == null) {
+			log.info("============오브젝트 Null=================================");
+			return "employee/login";
+		}
 
-	    if (obj == null) {
-	        log.info("============오브젝트 Null=================================");
-	        return "employee/login";
-	    }
 
-	    // "아이디 저장하기"가 체크되어 있고, 사용자 정보가 있다면 다시 로그인하지 않고 바로 페이지로 이동
-	    if (rememberMe != null && rememberMe && employeeVO.getId() != null) {
-	        // 여기에서 로그인 로직을 생략하고, 바로 목적 페이지로 이동하도록 설정
-	        return "redirect:/employee/join"; // 예시로 'join' 페이지로 이동하도록 설정
-	    }
+		return "employee/join";
 
-	    return "employee/login";
 	}
-
 	
 	
 
