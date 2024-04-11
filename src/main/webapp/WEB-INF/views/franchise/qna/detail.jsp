@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -62,7 +63,7 @@
                 </div>
             </div>
         </div>
-
+        <sec:authorize access="hasRole('EMPLOYEE')">
         <c:if test="${vo.comment == null}">
             <div class="form-floating mb-3 position-relative" style="height: 10vh;">
                 <textarea maxlength="500" style="height: 100%; resize:none;" name="content" class="form-control" placeholder="Leave a comment here" id="content"></textarea>
@@ -70,7 +71,7 @@
                 <button class="btn btn-primary position-absolute end-0 bottom-0 mb-3 me-3" type="button" id="commentButton">답변하기</button>
             </div>
         </c:if>
-
+        </sec:authorize>
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
