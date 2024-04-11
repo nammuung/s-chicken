@@ -219,7 +219,7 @@
         modal.hide();
         managerId.value = data.id;
         managerName.value = data.name;
-    });
+    },"person");
     managerSearch.addEventListener("click", async function (event){
         modal.show();
     });

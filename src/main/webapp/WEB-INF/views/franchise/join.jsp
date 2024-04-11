@@ -117,7 +117,7 @@
         modal.hide();
         managerId.value = data.id;
         managerName.value = data.name;
-    });
+    },"person");
     const modal = new bootstrap.Modal(document.getElementById("dept-modal"));
     const postCodeButton = document.getElementById("postCodeButton");
     postCodeButton.addEventListener("click", ()=>{
