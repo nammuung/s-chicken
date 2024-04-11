@@ -57,10 +57,9 @@ String strDate = simpleDate.format(date);
                                 <label for="title" class="form-label"><b>제목</b></label>
                                 <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력해주세요.">
                             </div>
-                            <div id="editor">
-                            	
-                            </div>
-                            	<input type="text" id="content" name="content">
+                            <textarea name="content" id="editor">
+
+					        </textarea>
                             <div class="form-check form-switch mt-3 mb-3">
                                 <label for="important" class="form-label">중요 공지</label>
                                 <input type="checkbox" class="form-check-input" id="important">
@@ -78,19 +77,7 @@ String strDate = simpleDate.format(date);
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
-<script>
-    ClassicEditor
-        .create(document.querySelector('#editor'))
-        .then(editor => {
-            editor.editing.view.change(writer => {
-                writer.setStyle('height', '50vh', editor.editing.view.document.getRoot());
-            });
-        })
-        .catch(error => {
-            console.error(error);
-        });
 
-</script>
 <script src="/js/notice/add.js"></script>
 </body>
 
