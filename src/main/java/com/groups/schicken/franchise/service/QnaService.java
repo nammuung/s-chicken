@@ -24,6 +24,7 @@ public class QnaService {
     }
 
     public int updateQna(QnaVO qnaVO) throws Exception {
+        qnaVO.setModifyDate(DateManager.getTodayDate());
         return qnaMapper.updateQna(qnaVO);
     }
 

@@ -20,12 +20,13 @@
                 title = #{title},
             </if>
             <if test="content != null">
-                content = #{content}
+                content = #{content},
             </if>
-            <if test="modify_date != null">
+            <if test="modifyDate != null">
                  modify_date = #{modifyDate}
             </if>
         </set>
+        WHERE id = #{id}
     </update>
     <delete id="deleteQna">
         DELETE FROM franchise_qna WHERE id = #{id}
@@ -71,6 +72,7 @@
         ON qna.writer_id = frc.id
         WHERE writer_id = #{franchise.id}
         <include refid="search"/>
+        ORDER BY qna.id desc
     </select>
     <select id="getTotal">
         SELECT COUNT(*) FROM franchise_qna qna WHERE qna.writer_id = #{franchise.id}

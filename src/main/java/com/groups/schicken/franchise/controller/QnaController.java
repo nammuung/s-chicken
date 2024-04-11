@@ -48,9 +48,9 @@ public class QnaController {
     public String updateQna(Model model,QnaVO qnaVO) throws Exception {
         int result = qnaService.updateQna(qnaVO);
         if (result == 1) {
-            model.addAttribute("message", new MessageVO("문의 추가가 완료되었습니다.", "/franchise/qna/detail?id=" + qnaVO.getId()));
+            model.addAttribute("message", new MessageVO("문의 수정이 완료되었습니다.", "/franchise/qna/detail?id=" + qnaVO.getId()));
         } else {
-            model.addAttribute("message", new MessageVO("문의 추가에 실패했습니다.", "/franchise/qna/detail?id=" + qnaVO.getId()));
+            model.addAttribute("message", new MessageVO("문의 수정에 실패했습니다.", "/franchise/qna/detail?id=" + qnaVO.getId()));
         }
         return "result";
     }
