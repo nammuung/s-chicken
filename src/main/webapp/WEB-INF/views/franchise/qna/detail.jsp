@@ -14,7 +14,7 @@
 <c:import url="../../template/header.jsp"/>
 <!-- ======= Sidebar ======= -->
 <c:import url="../../template/sidebar.jsp"/>
-<main id="main" class="main">
+<main id="main" class="main" data-id="${vo.id}">
     <div class="pagetitle">
         <h1>가맹점 QnA</h1>
     </div>
@@ -58,28 +58,38 @@
                 </div>
             </div>
         </div>
+
+        <c:if test="${vo.comment == null}">
+            <div class="form-floating mb-3 position-relative" style="height: 10vh;">
+                <textarea maxlength="500" style="height: 100%; resize:none;" name="content" class="form-control" placeholder="Leave a comment here" id="content"></textarea>
+                <label for="content">답변</label>
+                <button class="btn btn-primary position-absolute end-0 bottom-0 mb-3 me-3" type="button" id="commentButton">답변하기</button>
+            </div>
+        </c:if>
+
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <span class="card-title">답변</span>
                 </div>
-                <div class="card-body mt-3">
-                    <div class="d-flex align-items-center mb-2">
-                        <img width="50" height="50" src="avatar.png" alt="프로필" class="me-3">
-                        <div class="d-flex flex-column">
-                            <span><b>김경모 사원</b></span>
-                            <span>영업3팀</span>
+                <div class="card-body mt-3" id="commentBox">
+                    <c:if test="${vo.comment != null}">
+                        <div class="d-flex mb-2">
+                            <div class="d-flex justify-content-between w-100">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        <b>${vo.comment.employee.name}</b>
+                                    </div>
+                                    <div>
+                                            ${vo.comment.content}
+                                    </div>
+                                </div>
+                                <div>
+                                    ${vo.comment.writeDate}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <p>군사재판을 관할하기 위하여 특별법원으로서 군사법원을 둘 수 있다.</p>
-                        <p>대통령은 국회에 출석하여 발언하거나 서한으로 의견을 표시할 수 있다.</p>
-                    </div>
-                    <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                        <label for="floatingTextarea2">답변</label>
-                        <button class="btn btn-primary float-end mt-3" type="submit">답변하기</button>
-                    </div>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -89,6 +99,7 @@
 <c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../../template/script.jsp"/>
+<script src="/js/qna/script.js"></script>
 </body>
 
 </html>

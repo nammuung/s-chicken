@@ -12,8 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Pager {
 	
-	private Long page;	//페이지 번호
-	private Long perPage;	//한페이지당 출력 갯수
+	private Long page=1L;	//페이지 번호
+	private Long perPage=10L;	//한페이지당 출력 갯수
 	
 	private Long startIndex;
 	

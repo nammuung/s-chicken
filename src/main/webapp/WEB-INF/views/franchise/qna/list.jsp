@@ -21,15 +21,15 @@
     <section class="section">
         <div class="row justify-content-end p-3">
             <div class="col-auto">
-                <form class="search-form d-flex align-items-center " method="POST" action="#">
+                <form class="search-form d-flex align-items-center ">
                     <label>
-                        <select class="form-select w-auto me-1">
-                            <option value="0">제목</option>
-                            <option value="1">내용</option>
-                            <option value="2">제목+내용</option>
+                        <select class="form-select w-auto me-1" name="kind">
+                            <option value="title">제목</option>
+                            <option value="content">내용</option>
+                            <option value="title+content">제목+내용</option>
                         </select>
                     </label>
-                    <input type="text" name="query" placeholder="검색" title="Enter search keyword">
+                    <input type="text" name="search" placeholder="검색" title="Enter search keyword" value="${pager.search}">
                     <button type="submit" title="Search"><i class="bi bi-search"></i></button>
                 </form>
             </div>
@@ -38,7 +38,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table text-center text-nowrap">
+                        <table class="table table-hover text-center text-nowrap">
                             <thead>
                             <tr>
                                 <th style="width: 5%">#</th>
@@ -50,15 +50,15 @@
                             </thead>
                             <tbody>
                                 <c:forEach items="${list}" var="item" varStatus="status">
-                                    <tr>
-                                        <td>${status.index+1}</td>
-                                        <td class="text-start">${item.title}</td>
-                                        <td>${item.writer.name}</td>
-                                        <td>${item.writeDate}</td>
-                                        <td>
-                                            <c:if test="${item.comment != null}">완료</c:if>
-                                            <c:if test="${item.comment == null}">미완</c:if>
-                                        </td>
+                                    <tr onclick="location.href='detail?id=${item.id}'">
+                                            <td>${status.index+1}</td>
+                                        <td class="text-start"><a href="#" class="link-dark">${item.title}</a></td>
+                                            <td>${item.writer.name}</td>
+                                            <td>${item.writeDate}</td>
+                                            <td>
+                                                <c:if test="${item.comment != null}">완료</c:if>
+                                                <c:if test="${item.comment == null}">미완</c:if>
+                                            </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -67,15 +67,19 @@
                 </div>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">다음</a>
-                        </li>
+                        <c:if test="${!pager.start}">
+                            <li class="page-item">
+                                <a class="page-link" href="list?kind=${pager.kind}&search=${pager.search}&page=${pager.startNum-1}">이전</a>
+                            </li>
+                        </c:if>
+                        <c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="page">
+                            <li class="page-item active"><a class="page-link" href="list?kind=${pager.kind}&search=${pager.search}&page=${page}">1</a></li>
+                        </c:forEach>
+                        <c:if test="${!pager.last}">
+                            <li class="page-item">
+                                <a class="page-link" href="list?kind=${pager.kind}&search=${pager.search}&page=${pager.lastNum+1}">다음</a>
+                            </li>
+                        </c:if>
                     </ul>
                 </nav>
                 <button type="button" class="btn btn-primary float-end">답변하기</button>
@@ -87,6 +91,12 @@
 <c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../../template/script.jsp"/>
+<script>
+    Array.prototype.slice.call(document.querySelector("select"))
+        .forEach(options => {
+            if(options.value == '${pager.kind}') options.selected = true;
+        })
+</script>
 </body>
 
 </html>
