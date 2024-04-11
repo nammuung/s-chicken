@@ -21,34 +21,35 @@ public class SecurityConfig {
 
 	@Autowired
 	private EmployeeService employeeService;
-	
+
 	@Autowired
 	private SecurityLoginSucessHandler handler;
-	
+
 	@Autowired
 	private SecurityLoginFailHandler failHandler;
-	
+
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() {
 		return web -> web
 				.ignoring()
-				.requestMatchers("/css/**") 
+				.requestMatchers("/css/**")
 				.requestMatchers("/js/**")
 				.requestMatchers("/vendor/**")
-				.requestMatchers("/img/**");
+				.requestMatchers("/img/**")
+				.requestMatchers("/html/**");
 //				.requestMatchers("/firebase/**");
 	}
-	
-	
-	
+
+
+
 	@Bean
 	SecurityFilterChain filterChain (HttpSecurity security) throws Exception {
-		
+
 
 		security
 				//CSRF 추가
 				.csrf(
-						(csrf) -> 
+						(csrf) ->
 									csrf.disable()
 				)
 				.authorizeHttpRequests(
@@ -59,21 +60,21 @@ public class SecurityConfig {
 ////											.requestMatchers("/").permitAll()
 //											.requestMatchers("/employee/join2").permitAll()
 //											.anyRequest().permitAll()
-//											
+//
 //						)// 권한 끝 부분
-											
+
 				.formLogin(
 							(login)->
-									login	
+									login
 									.loginPage("/employee/login")
 									.successHandler(handler)
 									.usernameParameter("id") // username이 아니라 id임
 //									.defaultSuccessUrl("/")	// 성공했을때 localhost 로 이동
 									.failureHandler(failHandler)
-									
+
 									.permitAll()
 
-									
+
 						)// 로그인 끝부분
 				.logout(
 							(logout)->
@@ -83,7 +84,7 @@ public class SecurityConfig {
 										.invalidateHttpSession(true) // 로그아웃 성공시 session만료
 										.permitAll()
 						)// 로그아웃 끝 부분
-				
+
 				.rememberMe(
 								(rememberMe)->
 										rememberMe
@@ -93,7 +94,7 @@ public class SecurityConfig {
 										.userDetailsService(employeeService)
 										.authenticationSuccessHandler(handler)
 										.useSecureCookie(false)
-							
+
 						)// remember 끝 부분
 				.sessionManagement(
 						(sessionManagement)->
@@ -101,20 +102,20 @@ public class SecurityConfig {
 								.maximumSessions(1)
 								.maxSessionsPreventsLogin(false)
 								.expiredUrl("/expired")
-								
+
 				)//sessionManagement 끝
-				
-				
-				;	
-		
-		
-		
+
+
+				;
+
+
+
 		return security.build();
 	}
 
-	
-	
-	
-	
-	
+
+
+
+
+
 }

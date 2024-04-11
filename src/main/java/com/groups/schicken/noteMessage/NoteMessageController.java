@@ -16,6 +16,9 @@ public class NoteMessageController {
     @PostMapping("sendMessage")
     public String sendMessage(NoteMessageVO message, List<String> receivers){
         //나중에 로그인 후 session에서 받아오기
+        System.out.println("message = " + message);
+        System.out.println("receivers = " + receivers);
+
         Long id = 20160607230L;
         message.setSenderId(id);
         Integer result = noteMessageService.sendMessage(message, receivers);

@@ -103,6 +103,14 @@
     background-color: #C7A9FF !important;
 }
 
+.note-message-list > .list-group-item{
+  padding: 1rem 0 1rem 0;
+}
+
+.note-message-list > .list-group-item:hover > span{
+  color : #7749F8!important;
+}
+
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
