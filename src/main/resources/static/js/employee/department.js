@@ -77,6 +77,16 @@ function removeHyphen(dateString) {
   return dateString.replace(/-/g, "");
 }
 
+
+
+
+
+
+
+
+
+
+
 // 폼이 서브밋될 때 실행되는 함수
 function submitForm() {
   // 생년월일과 입사일 입력 필드의 값을 yyyy-mm-dd 형식으로 변환
@@ -89,5 +99,50 @@ function submitForm() {
   // 비밀번호 입력 필드에 생년월일을 설정 (하이픈 제거된 값)
   document.getElementById("password").value = password;
 
+  // 입력 값의 유효성 검사
+  return validateForm();
+}
+
+// 입력값 유효성 검사 함수
+function validateForm() {
+  var name = document.getElementById("name").value;
+  var phoneNumber = document.getElementById("phoneNumber").value;
+  var email = document.getElementById("email").value;
+  var postcode = document.getElementById("postcode").value;
+  var address = document.getElementById("address").value;
+  var addressDetail = document.getElementById("addressDetail").value;
+  var residentNumber = document.getElementById("residentNumber").value;
+  var dateOfEmployment = document.getElementById("dateOfEmployment").value;
+  var posId = document.getElementById("posId").value;
+  var department = document.getElementById("department").value;
+  var team = document.getElementById("team").value;
+  var bankName = document.getElementById("bankName").value;
+  var accountNumber = document.getElementById("accountNumber").value;
+
+  // 필수 입력 필드가 비어 있는지 확인
+  if (!name || !phoneNumber || !email || !postcode || !address || !addressDetail || !residentNumber || !dateOfEmployment || posId === "0" || department === "0" || team === "0" || bankName === "0" || !accountNumber) {
+      // 필수 입력 필드 중 하나라도 비어 있는 경우 오류 메시지 표시 및 폼 제출 중지
+      alert("모든 필수 항목을 입력해주세요.");
+      return false;
+  }
+
+  // 이메일 형식을 검증
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+      alert("올바른 이메일 주소를 입력해주세요.");
+      return false;
+  }
+
+  // 휴대폰 번호에서 하이픈 제거
+  phoneNumber = phoneNumber.replace(/-/g, '');
+
+  // 계좌번호에서 하이픈 제거
+  accountNumber = accountNumber.replace(/-/g, '');
+
+  // 제거된 값 다시 필드에 설정
+  document.getElementById("phoneNumber").value = phoneNumber;
+  document.getElementById("accountNumber").value = accountNumber;
+
+  // 모든 검증 통과 시 폼 제출 허용
   return true;
 }
