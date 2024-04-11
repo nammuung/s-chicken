@@ -3,14 +3,16 @@ let urls = {
     person : "opt=person"
 }
 let chart;
+let option;
 
 /**
  * 조직도를 생성해줌
  * @param id 조직도를 생성할 div의 id
  * @param callback 조직도 클릭시 호출될 함수, {id, name, type, depth, children, parent, isSelected} 를 인수로 넣어줌
- * @param opt 조직도를 사람만 출력할지(person), 부서만 출력할지(dept), 둘 다 출력할지(otherwise) 옵션을 줌
+ * @param opt 조직도를 부서만 출력할지(dept), 둘 다 출력할지(otherwise) 옵션을 줌
  */
 function initialize(id, callback, opt){
+    option = opt;
     let param = urls[opt] == null ? "" : `?${urls[opt]}`;
     chart = $(`#${id}`);
     chart.jstree({
@@ -43,6 +45,11 @@ function initialize(id, callback, opt){
             } else {
                 selected = data;
                 isSelected = true;
+            }
+
+            if(opt === 'person' && data.node.type === 'dept'){
+                data.instance.deselect_node(data.node);
+                return;
             }
 
             let param = {
