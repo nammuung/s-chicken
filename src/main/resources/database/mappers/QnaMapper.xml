@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.franchise.mapper.QnaMapper">
+    <insert id="addQna">
+        <selectKey resultType="Long" order="BEFORE" keyProperty="id">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO franchise_qna
+        (id, title, content, write_date, writer_id, is_deleted)
+        VALUES
+        (#{id}, #{title}, #{content}, #{writeDate}, #{writerId}, 0)
+    </insert>
+    <update id="updateQna">
+        UPDATE franchise_qna
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="modifyDate != null">
+                 modify_date = #{modifyDate},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteQna">
+        DELETE FROM franchise_qna WHERE id = #{id}
+    </delete>
+    <select id="getAllFranchiseQnaList" resultMap="getQnaMap">
+        SELECT
+            qna.id,
+            qna.title,
+            qna.content,
+            qna.write_date,
+            qna.modify_date,
+            qna.writer_id,
+            cmt.id comment_id,
+            frc.name writer_name
+        FROM franchise_qna qna
+        LEFT JOIN franchise_qna_comment cmt
+        ON qna.id = cmt.qna_id
+        LEFT JOIN franchise frc
+        ON qna.writer_id = frc.id
+        WHERE is_deleted != 1
+        <include refid="search"/>
+        ORDER BY qna.id DESC
+    </select>
+    <resultMap id="getQnaMap" type="QnaVO" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="comment" javaType="QnaCommentVO" columnPrefix="comment_" autoMapping="true">
+            <association property="employee" javaType="EmployeeVO" columnPrefix="employee_" autoMapping="true"/>
+        </association>
+        <association property="writer" javaType="FranchiseVO" columnPrefix="writer_" autoMapping="true"/>
+    </resultMap>
+    <select id="getFranchiseQnaList" resultMap="getQnaMap">
+        SELECT
+            qna.id,
+            qna.title,
+            qna.content,
+            qna.write_date,
+            qna.modify_date,
+            qna.writer_id,
+            cmt.id comment_id,
+            frc.name writer_name
+        FROM franchise_qna qna
+        LEFT JOIN franchise_qna_comment cmt
+        ON qna.id = cmt.qna_id
+        LEFT JOIN franchise frc
+        ON qna.writer_id = frc.id
+        WHERE writer_id = #{franchise.id} AND is_deleted != 1
+        <include refid="search"/>
+        ORDER BY qna.id desc
+    </select>
+    <select id="getTotal">
+        SELECT COUNT(*) FROM franchise_qna qna WHERE qna.writer_id = #{franchise.id} AND is_deleted != 1
+        <include refid="search"/>
+    </select>
+    <sql id="search">
+        <choose>
+            <when test='pager.kind != null and pager.kind.equals("title")'>
+                AND qna.title LIKE concat('%',#{pager.search},'%')
+            </when>
+            <when test='pager.kind != null and pager.kind.equals("content")'>
+                AND qna.content LIKE concat('%',#{pager.search},'%')
+            </when>
+            <when test='pager.kind != null and pager.kind.equals("title+content")'>
+                AND (qna.title LIKE concat('%',#{pager.search},'%') OR qna.content LIKE concat('%',#{pager.search},'%'))
+            </when>
+        </choose>
+    </sql>
+    <select id="getQna" resultMap="getQnaMap">
+        SELECT
+        qna.id,
+        qna.title,
+        qna.content,
+        qna.write_date,
+        qna.modify_date,
+        qna.writer_id,
+        cmt.id comment_id,
+        cmt.write_date comment_write_date,
+        cmt.content comment_content,
+        cmt.employee_id comment_employee_id,
+        emp.name comment_employee_name,
+        frc.name writer_name
+        FROM franchise_qna qna
+        LEFT JOIN franchise_qna_comment cmt
+        ON qna.id = cmt.qna_id
+        LEFT JOIN franchise frc
+        ON qna.writer_id = frc.id
+        LEFT JOIN employee emp
+        ON cmt.employee_id = emp.id
+        WHERE qna.id = #{id}
+    </select>
+    <select id="getAnotherQna">
+        SELECT
+            *
+        FROM franchise_qna
+        WHERE id in (
+            (SELECT id FROM franchise_qna WHERE id &lt; #{id} AND is_deleted != 1 ORDER BY id DESC LIMIT 1),
+            (SELECT id FROM franchise_qna WHERE id &gt; #{id} AND is_deleted != 1 ORDER BY id LIMIT 1)
+        )
+    </select>
+    <insert id="commentQna">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO franchise_qna_comment
+        (id, qna_id, write_date, content, employee_id, is_deleted)
+        VALUES
+        (#{id}, #{qnaId}, #{writeDate}, #{content}, #{employeeId}, 0)
+    </insert>
+    <select id="getFirstSequenceQna">
+        SELECT
+        qna.*
+        FROM franchise_qna qna
+        LEFT JOIN franchise_qna_comment cmt ON qna.id = cmt.qna_id
+        WHERE qna.is_deleted != 1 AND cmt.id IS NULL ORDER BY qna.id DESC LIMIT 2
+    </select>
+    <select id="getSequenceQna">
+        SELECT
+        *
+        FROM franchise_qna
+        WHERE id in (
+        (SELECT qna.id FROM franchise_qna qna LEFT JOIN franchise_qna_comment cmt ON qna.id = cmt.qna_id WHERE qna.id &lt; #{id} AND qna.is_deleted != 1 AND cmt.id IS NULL ORDER BY qna.id DESC LIMIT 1),
+        (SELECT qna.id FROM franchise_qna qna LEFT JOIN franchise_qna_comment cmt ON qna.id = cmt.qna_id WHERE qna.id &gt; #{id} AND qna.is_deleted != 1 AND cmt.id IS NULL ORDER BY qna.id LIMIT 1)
+        )
+    </select>
+</mapper>

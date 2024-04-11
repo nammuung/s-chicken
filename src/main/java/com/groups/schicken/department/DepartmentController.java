@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -14,21 +15,46 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
-    @PostMapping("addDepartment")
-    public ResponseEntity<DepartmentVO> addDepartment(@RequestBody DepartmentVO department){
-        System.out.println("department = " + department);
-        department = departmentService.addDepartment(department);
 
-        if(department == null){
+    @PostMapping("addDepartment")
+    public ResponseEntity<List<DepartmentVO>> addDepartment(@RequestBody DepartmentVO department){
+        System.out.println("department = " + department);
+        Integer result = departmentService.addDepartment(department);
+
+        if(result < 1){
             return ResponseEntity.internalServerError().build();
         }
 
-        return ResponseEntity.ok(department);
+        return ResponseEntity.ok(departmentService.getList());
+    }
+
+    @PostMapping("updateDepartment")
+    public ResponseEntity<List<DepartmentVO>> updateDepartment(@RequestBody DepartmentVO department){
+        System.out.println("department = " + department);
+        Integer result = departmentService.updateDepartment(department);
+
+        if(result < 1){
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(departmentService.getList());
+    }
+
+    @PostMapping("deleteDepartment")
+    public ResponseEntity<List<DepartmentVO>> deleteDepartment(@RequestBody DepartmentVO department){
+        System.out.println("department = " + department);
+        Integer result = departmentService.deleteDepartment(department);
+
+        if(result < 1){
+            return ResponseEntity.internalServerError().build();
+        }
+
+        return ResponseEntity.ok(departmentService.getList());
     }
 
     @GetMapping("checkContactNumber")
-    public ResponseEntity<Boolean> checkContactNumber(String contactNumber){
-        return ResponseEntity.ok(departmentService.checkContactNumber(contactNumber));
+    public ResponseEntity<Boolean> checkContactNumber(String contactNumber, String except){
+        return ResponseEntity.ok(departmentService.checkContactNumber(contactNumber, except));
     }
 
     @GetMapping("getDepartment")

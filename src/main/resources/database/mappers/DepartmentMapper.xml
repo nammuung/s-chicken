@@ -13,11 +13,27 @@
     </insert>
 
     <select id="getDepartment" parameterType="DepartmentVO" resultType="DepartmentVO">
-        SELECT * FROM department WHERE id=#{id}
+        SELECT
+              d.id
+            , d.name
+            , d.contact_number
+            , d.upper_id
+            , d2.name AS "upper_name"
+        FROM department d
+            LEFT JOIN department d2 ON d.upper_id = d2.id
+        WHERE d.id=#{id}
     </select>
 
     <select id="getList">
-        SELECT * FROM department
+        SELECT
+              d.id
+            , d.name
+            , d.contact_number
+            , d.upper_id
+            , d.sort
+            , d2.name AS "upper_name"
+        FROM department d
+            LEFT JOIN department d2 ON d.upper_id = d2.id
     </select>
 
     <select id="getListWithHierarchy">
@@ -37,6 +53,41 @@
     <select id="isContactNumber">
         SELECT COUNT(*)
         FROM department
-        WHERE contact_number = #{contactNumber}
+        WHERE contact_number = #{contactNumber} AND contact_number != #{except}
     </select>
+
+    <update id="updateDepartment">
+        UPDATE department
+        SET
+            name = #{name},
+            upper_id = #{upperId},
+            contact_number = #{contactNumber},
+            sort = #{sort}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDepartmentSort">
+        UPDATE department
+        SET sort = sort+1
+        WHERE upper_id = #{upperId} AND sort >= #{sort}
+    </update>
+
+    <select id="countChildren">
+        SELECT COUNT(*)
+        FROM department
+        WHERE
+            upper_id = #{id}
+            OR
+            id IN (
+                SELECT DISTINCT department_id
+                FROM employee
+                WHERE department_id = #{id}
+            )
+    </select>
+
+    <update id="deleteDepartment">
+        UPDATE department
+        SET name = 'deleted!'
+        WHERE id = #{id}
+    </update>
 </mapper>

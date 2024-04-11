@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FranchiseVO implements UserDetails {
     private String id;
     private String name;
