@@ -58,7 +58,7 @@ public class QnaController {
     public String deleteQna(Model model,QnaVO qnaVO) throws Exception {
         int result = qnaService.deleteQna(qnaVO);
         if (result == 1) {
-            model.addAttribute("message", new MessageVO("문의 삭제가 완료되었습니다.", "/franchise/qna/detail?id=" + qnaVO.getId()));
+            model.addAttribute("message", new MessageVO("문의 삭제가 완료되었습니다.", "/franchise/qna/list"));
         } else {
             model.addAttribute("message", new MessageVO("문의 삭제에 실패했습니다.", "/franchise/qna/detail?id=" + qnaVO.getId()));
         }
