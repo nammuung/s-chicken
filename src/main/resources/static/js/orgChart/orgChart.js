@@ -4,6 +4,12 @@ let urls = {
 }
 let chart;
 
+/**
+ * 조직도를 생성해줌
+ * @param id 조직도를 생성할 div의 id
+ * @param callback 조직도 클릭시 호출될 함수, {id, name, type, depth, children, parent, isSelected} 를 인수로 넣어줌
+ * @param opt 조직도를 사람만 출력할지(person), 부서만 출력할지(dept), 둘 다 출력할지(otherwise) 옵션을 줌
+ */
 function initialize(id, callback, opt){
     let param = urls[opt] == null ? "" : `?${urls[opt]}`;
     chart = $(`#${id}`);
@@ -44,6 +50,8 @@ function initialize(id, callback, opt){
                 name : data.node.text,
                 type : data.node.type,
                 depth : data.node.original.depth,
+                children : data.node.children,
+                parent : data.node.parent,
                 isSelect : isSelected
             }
 
@@ -56,25 +64,15 @@ function initialize(id, callback, opt){
     )
 }
 
-function createNode(input){
-    console.log("createNode", input);
-    let newNode = {
-        state : "open",
-        text : input.name,
-        type : 'dept',
-        id : input.id
-    }
-    let result = chart.jstree("create_node",input.upperId, newNode, 'last', false, false);
-    console.log('result', result)
-}
-
+/**
+ * 조직도를 재생성함
+ */
 function refreshTree(){
     chart.jstree('refresh')
 }
 
 let orgChart = {
     init : initialize,
-    create : createNode,
     refresh : refreshTree
 }
 

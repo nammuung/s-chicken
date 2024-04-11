@@ -71,4 +71,23 @@
         SET sort = sort+1
         WHERE upper_id = #{upperId} AND sort >= #{sort}
     </update>
+
+    <select id="countChildren">
+        SELECT COUNT(*)
+        FROM department
+        WHERE
+            upper_id = #{id}
+            OR
+            id IN (
+                SELECT DISTINCT department_id
+                FROM employee
+                WHERE department_id = #{id}
+            )
+    </select>
+
+    <update id="deleteDepartment">
+        UPDATE department
+        SET name = 'deleted!'
+        WHERE id = #{id}
+    </update>
 </mapper>

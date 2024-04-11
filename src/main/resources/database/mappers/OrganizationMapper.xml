@@ -13,46 +13,46 @@
                 , 'dept' AS "type"
                 , 1 AS depth
                 , d.sort
-        FROM department d
-        WHERE upper_id IS NULL
+            FROM department d
+            WHERE upper_id IS NULL
 
-        UNION ALL
+            UNION ALL
 
-        SELECT
-              dept.id AS "id"
-            , dept.name "text"
-            , dept.upper_id "parent"
-            , 'dept' AS "type"
-            , 1 + depth AS depth
-            , dept.sort
-        FROM department dept
-            INNER JOIN OC ON dept.upper_id = OC.id AND OC.type = 'dept'
+            SELECT
+                  dept.id AS "id"
+                , dept.name "text"
+                , dept.upper_id "parent"
+                , 'dept' AS "type"
+                , 1 + depth AS depth
+                , dept.sort
+            FROM department dept
+                INNER JOIN OC ON dept.upper_id = OC.id AND OC.type = 'dept'
         )
     </sql>
     <select id="getOrgChart">
         <include refid="hierarchical_query"></include>
         SELECT * FROM (
+            SELECT
+                  o.id
+                , o.text
+                , NVL(o.parent, '#') AS "parent"
+                , o.type
+                , o.depth
+                , o.sort
+            FROM OC o
 
-        SELECT
-            o.id
-            , o.text
-            , NVL(o.parent, '#') AS "parent"
-            , o.type
-            , o.depth
-            , o.sort
-        FROM OC o
+            UNION
 
-        UNION
-
-        SELECT
-            e.id
-            , e.name "text"
-            , e.department_id "parent"
-            , 'person' AS "type"
-            , OC.depth + 1 AS depth
-            , OC.sort
-        FROM employee e
-        INNER JOIN OC ON e.department_id = OC.id
+            SELECT
+                  e.id
+                , concat(code.name ,' ', e.name) "text"
+                , e.department_id "parent"
+                , 'person' AS "type"
+                , OC.depth + 1 AS depth
+                , CAST(code.id AS INTEGER) AS "sort"
+            FROM employee e
+                INNER JOIN OC ON e.department_id = OC.id
+                INNER JOIN code ON e.pos_id = code.id
         ) uoc
         ORDER BY uoc.depth, uoc.type desc, sort
     </select>

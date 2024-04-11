@@ -66,6 +66,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button id="dept-del-btn" type="button" class="btn btn-outline-danger d-none">삭제</button>
                     <button id="dept-submit-btn" type="button" class="btn btn-primary">저장</button>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
