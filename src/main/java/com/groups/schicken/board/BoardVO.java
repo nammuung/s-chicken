@@ -16,7 +16,10 @@ public class BoardVO {
 	private Long hit;
 	private int sort;
 	private Long writerId;
-
+	private Long next;
+	private Long last;
+	private String nextTitle;
+	private String lastTitle;
 	
 	private List<FileVO> fileVOs;
 }

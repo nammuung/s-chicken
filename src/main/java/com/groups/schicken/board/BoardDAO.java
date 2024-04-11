@@ -20,9 +20,7 @@ public interface BoardDAO {
 	
 	public BoardVO getDetail(BoardVO boardVO)throws Exception;
 	
-	public List<BoardVO> pastPage(BoardVO boardVO)throws Exception;
-	
-	public List<BoardVO> nextPage(BoardVO boardVO)throws Exception;
+	public BoardVO movePage(Long id)throws Exception; 
 	
 	
 }

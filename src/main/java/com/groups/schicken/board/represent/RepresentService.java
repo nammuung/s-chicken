@@ -45,18 +45,5 @@ public class RepresentService implements BoardService {
 		 return representDAO.getDetail(boardVO);
 				
 	}
-
-
-	@Override
-	public List<BoardVO> pastPage(BoardVO boardVO) throws Exception {
-		// TODO Auto-generated method stub
-		return representDAO.pastPage(boardVO);
-	}
-	
-	@Override
-	public List<BoardVO> nextPage(BoardVO boardVO) throws Exception {
-		// TODO Auto-generated method stub
-		return representDAO.nextPage(boardVO);
-	}
 	
 }

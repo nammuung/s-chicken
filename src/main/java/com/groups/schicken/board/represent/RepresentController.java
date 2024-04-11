@@ -48,18 +48,11 @@ public class RepresentController {
 	@GetMapping("detail")
 	public String getDetail(BoardVO boardVO,Model model) throws Exception {
 		boardVO = representService.getDetail(boardVO);
+		
+		
 		model.addAttribute("vo", boardVO);
-		System.out.println(boardVO.getId());
-		System.out.println(boardVO.getSort());
-		List<BoardVO> ar = representService.pastPage(boardVO);
-		System.out.println(ar);
-		model.addAttribute("move", ar);
-		
-		List<BoardVO> br = representService.nextPage(boardVO);
-		
-		model.addAttribute("next", br);
+		model.addAttribute("move", representService.movePage(boardVO.getId()));
 
-		
 		return "board/detail";
 	}
 	
@@ -80,7 +73,8 @@ public class RepresentController {
 		List<BoardVO> ar = representService.getList(pager);
 		
 		model.addAttribute("list",ar);
-		model.addAttribute("pager", pager);		
+		model.addAttribute("pager", pager);
+		
 				
 		return "board/impList";
 	}
