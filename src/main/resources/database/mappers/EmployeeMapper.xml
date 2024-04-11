@@ -19,10 +19,27 @@
 
 
 	<select id="userDetail" parameterType="EmployeeVO" resultMap="employeeDetails">
-	SELECT *
+	SELECT employee.id,
+		employee.name,
+		employee.phone_number,
+		employee.email,
+		employee.address,
+		employee.address_detail,
+		employee.postcode,
+		employee.date_of_employment,
+		employee.resident_number,
+		employee.salary,
+		employee.account_number,
+		employee.bank_name,
+		employee.is_leaved,
+		employee.department_id,
+		employee.pos_id,
+		department.name AS "dept_name",
+		department.contact_number ,
+		code.name AS "code_name"
 	FROM employee
 	INNER JOIN department ON employee.department_id = department.id
-	INNER JOIN code ON employee.pos_id = code.id WHERE employee.id=#{id};
+	INNER JOIN code ON employee.pos_id = code.id WHERE employee.id = #{id};
 	</select>
 
 
@@ -33,13 +50,14 @@ SELECT * from employee where id=#{id}
     
     
 <select id="userList" resultType="employeeVO" parameterType="Pager">
-				select * from employee 
+				select * 
+				from employee 
 				order by id  DESC 
 				Limit #{startIndex}, #{perPage}
 </select>
 
 
-<select id="getTotalCount" resultType="Long" parameterType="Pager">
+<select id="getTotalCount">
 			select count(id) from employee;
 </select>
 	
@@ -66,8 +84,7 @@ SELECT * from employee where id=#{id}
     	<result column="pos_id" property="posId"/>
     
     <association property="department" javaType="DepartmentVO">
-    <id property="id" column="id"/>
-    <result column="name" property="name"/>
+    <result column="dept_name" property="name"/>
     <result column="contact_Number" property="contactNumber"/>
      <result column="sort" property="sort"/>
      <result column="upper_id" property="upperId"/>
@@ -76,9 +93,8 @@ SELECT * from employee where id=#{id}
     
     
     <association property="code" javaType="CodeVO">
-    <id property="id" column="id"/>
     <result column="type_id" property="typeId"/>
-    <result column="name" property="name"/>
+    <result column="code_name" property="name"/>
     <result column="use" property="use"/>
     </association>
     </resultMap>

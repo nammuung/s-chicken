@@ -1,9 +1,13 @@
 package com.groups.schicken.Employee;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.groups.schicken.department.DepartmentVO;
+import com.groups.schicken.util.CodeVO;
 
 import lombok.Data;
 import lombok.Getter;
@@ -37,6 +41,11 @@ public class EmployeeVO  implements UserDetails {
 	private String posId;
 	private String posName; // 직급이름
 	
+	private DepartmentVO department;
+	private CodeVO code;
+	
+	//OAuth2User, Token등 정보 저장
+	private Map<String, Object> attributes;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

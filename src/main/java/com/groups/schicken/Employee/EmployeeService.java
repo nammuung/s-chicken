@@ -2,6 +2,7 @@ package com.groups.schicken.Employee;
 
 import java.util.List;
 
+import com.groups.schicken.franchise.mapper.FranchiseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
+import com.groups.schicken.franchise.mapper.FranchiseMapper;
+import com.groups.schicken.franchise.object.FranchiseVO;
 import com.groups.schicken.util.Pager;
 
 import lombok.extern.java.Log;
@@ -25,6 +28,8 @@ public class EmployeeService implements UserDetailsService {
 
 	@Autowired
 	private EmployeeDAO employeeDAO;
+	@Autowired
+	private FranchiseMapper franchiseMapper;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;  //비밀번호를 저장할때 사용 암호화 하는 역할
@@ -33,23 +38,38 @@ public class EmployeeService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-		System.out.println(id);
-		EmployeeVO employeeVO = new EmployeeVO();
-		employeeVO.setId(id);
+	    System.out.println("입력 아이디: "+id);
+	    EmployeeVO employeeVO = new EmployeeVO();
 
-		
-		try {
-			employeeVO= employeeDAO.getDetail(employeeVO);
+	    // emp로 시작하는 경우 그룹웨어 사용자
+	    if (id.startsWith("emp")) {
+	        // "emp"를 제거한 실제 id 파싱
+	        String realId = id.substring(3);
+	        employeeVO.setId(realId);
+	        try {
+	        	employeeVO= employeeDAO.getDetail(employeeVO);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    // fra로 시작하는 경우 여기 수정해야댐 =============================================
+	    else if (id.startsWith("fra")) {
+			FranchiseVO franchiseVO = new FranchiseVO();
+	        // "fra"를 제거한 실제 id 파싱
+	        String realId = id.substring(3);
+	        franchiseVO.setId(realId);
+	        try {
+	            franchiseVO = franchiseMapper.getFranchise(franchiseVO);
+				System.out.println("franchiseVO = " + franchiseVO);
+				return franchiseVO;
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
 
-		} catch (Exception e) {
+	    return employeeVO;
+	}
 
-			e.printStackTrace();  //에외처리 했을때 정보를 출력하는 메서드 호출
-		}
-		
-
-		return employeeVO;
-	}	
-	
 
 	// 회원 가입
 	public int join(EmployeeVO employeeVO)throws Exception{
@@ -73,7 +93,6 @@ public class EmployeeService implements UserDetailsService {
 	
 
 	public EmployeeVO userDetail (EmployeeVO employeeVO)throws Exception{
-		log.info("===={}================서비스임", employeeVO);
 		return employeeDAO.userDetail(employeeVO);
 	}
 
