@@ -70,6 +70,7 @@ let deptDelete = () => {};
  * 모달을 생성하고 띄워줌
  */
 function setModalAddDept(data){
+    document.getElementById("dept-modal-title").innerText = '부서 등록'
     upperName.setAttribute("data-id", data.id);
     upperName.innerHTML = `
         <div class="form-control bg-secondary-light">${data.name}</div>
@@ -163,6 +164,7 @@ function getDepartmentLis({id, upperId}){
  * 부서 삭제가 가능한경우 여기서 deptDelete 함수를 채워줌
  */
 function setModalUpdateDept(data){
+    document.getElementById("dept-modal-title").innerText = '부서 수정'
     console.log(deptData)
     let options = deptData
         .filter(d => d.upperId == null || d.upperId == 1)
@@ -388,5 +390,5 @@ deptModBtn.addEventListener("click",()=>onDeptBtnClick('update'))
 deptSubmitBtn.addEventListener("click", ()=>callSubmitFunction());
 deptDelBtn.addEventListener("click", ()=>deptDelete());
 
-oc.init("org-chart", data=>ocCallbackFunction(data), 'person');
+oc.init("org-chart", data=>ocCallbackFunction(data));
 getDepartmentData();
