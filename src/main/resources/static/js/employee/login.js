@@ -15,3 +15,27 @@ function markButtonClicked() {
     document.getElementById("id").value = idInput;
     return true; // 폼 제출
 }
+// 서버로 비밀번호 찾기 요청을 보내는 함수
+function submitPasswordReset() {
+    var email = document.getElementById("email").value; // 이메일 입력란의 값 가져오기
+    if (email.trim() === "") { // 이메일이 비어있는지 확인
+        alert("이메일을 입력하세요.");
+        return;
+    }
+
+    // 서버로 이메일 전송 요청
+    $.ajax({
+        type: "POST",
+        url: "/employee/resetPassword", // 로컬 서버의 비밀번호 찾기 처리 엔드포인트 URL
+        data: { email: email },
+        success: function(response) {
+            // 성공적으로 요청을 처리한 경우
+            alert("임시 비밀번호가 이메일로 전송되었습니다.");
+            $('#passwordResetModal').modal('hide'); // 모달 닫기
+        },
+        error: function(xhr, status, error) {
+            // 요청 처리 중 에러가 발생한 경우
+            alert("비밀번호 찾기 요청에 실패했습니다. 다시 시도해주세요.");
+        }
+    });
+}

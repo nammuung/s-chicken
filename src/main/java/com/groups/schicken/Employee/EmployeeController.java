@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.groups.schicken.util.Pager;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -36,7 +38,6 @@ public class EmployeeController {
 	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session) throws Exception {
 
 		Object obj=(session.getAttribute("SPRING_SECURITY_CONTEXT"));
-		System.out.println("employeeVO = " + employeeVO);
 		log.info("{}",obj);
 		System.out.println(employeeVO.getId());
 		if (obj == null) {
@@ -107,7 +108,18 @@ public class EmployeeController {
 	}
 
 	
-	
-	
-	
+	// 비밀번호 찾기 페이지로 이동
+    @GetMapping("resetPassword")
+    public String resetPasswordPage() {
+        return "employee/resetPassword";
+    }
+
+    // 비밀번호 찾기 요청 처리
+    @PostMapping("resetPassword")
+    public String resetPassword(@RequestParam("email") String email, Model model) {
+        // 이메일 주소를 이용하여 비밀번호 재설정 메서드 호출
+        boolean result = employeeService.resetPassword(email);
+        return "employee/resetPasswordResult"; // 결과를 보여줄 페이지로 이동
+    }
+
 }
