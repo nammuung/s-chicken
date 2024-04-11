@@ -25,9 +25,6 @@ public class FranchiseController {
         List<FranchiseVO> franchiseVOList = franchiseService.getFranchiseList(pager);
         model.addAttribute("list", franchiseVOList);
         model.addAttribute("pager", pager);
-        for (FranchiseVO vo :franchiseVOList){
-            System.out.println(vo);
-        }
         return "franchise/inquiry";
     }
 

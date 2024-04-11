@@ -34,22 +34,24 @@
     <delete id="deleteQna">
         DELETE FROM franchise_qna WHERE id = #{id}
     </delete>
-    <select id="getAllFranchiseQnaList">
-        SELECT * FROM franchise_qna
-        <choose>
-            <when test='kind != null and kind.equals("title")'>
-                WHERE title LIKE concat('%',#{search},'%')
-            </when>
-            <when test='kind != null and kind.equals("content")'>
-                WHERE content LIKE concat('%',#{search},'%')
-            </when>
-            <when test='kind != null and kind.equals("title+content")'>
-                WHERE title LIKE concat('%',#{search},'%') OR content LIKE concat('%',#{search},'%')
-            </when>
-            <when test='kind != null and kind.equals("writer")'>
-                WHERE writer_id = (SELECT id FROM franchise WHERE name LIKE concat('%',#{search},'%'))
-            </when>
-        </choose>
+    <select id="getAllFranchiseQnaList" resultMap="getQnaMap">
+        SELECT
+            qna.id,
+            qna.title,
+            qna.content,
+            qna.write_date,
+            qna.modify_date,
+            qna.writer_id,
+            cmt.id comment_id,
+            frc.name writer_name
+        FROM franchise_qna qna
+        LEFT JOIN franchise_qna_comment cmt
+        ON qna.id = cmt.qna_id
+        LEFT JOIN franchise frc
+        ON qna.writer_id = frc.id
+        WHERE is_deleted != 1
+        <include refid="search"/>
+        ORDER BY qna.id DESC
     </select>
     <resultMap id="getQnaMap" type="QnaVO" autoMapping="true">
         <id property="id" column="id"/>

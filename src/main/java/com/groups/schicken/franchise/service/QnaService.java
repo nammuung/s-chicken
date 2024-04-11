@@ -33,7 +33,10 @@ public class QnaService {
     }
 
     public List<QnaVO> getAllFranchiseQnaList(Pager pager) throws Exception {
-        return qnaMapper.getAllFranchiseQnaList(pager);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("pager", pager);
+        pager.makeNum(qnaMapper.getTotal(map));
+        return qnaMapper.getAllFranchiseQnaList(map);
     }
 
     public List<QnaVO> getFranchiseQnaList(FranchiseVO franchiseVO, Pager pager) throws Exception {

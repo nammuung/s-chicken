@@ -50,7 +50,7 @@
                             </thead>
                             <tbody>
                                 <c:forEach items="${list}" var="item" varStatus="status">
-                                    <tr onclick="location.href='detail?id=${item.id}'">
+                                    <tr onclick="location.href='/franchise/qna/detail?id=${item.id}'">
                                             <td>${status.index+1}</td>
                                         <td class="text-start"><a href="#" class="link-dark">${item.title}</a></td>
                                             <td>${item.writer.name}</td>
@@ -82,7 +82,7 @@
                         </c:if>
                     </ul>
                 </nav>
-                <a href="./add" class="btn btn-primary float-end">질문작성</a>
+                <a href="/franchise/qna/sequence" class="btn btn-primary float-end">답변하기</a>
             </div>
         </div>
     </section>

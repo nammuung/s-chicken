@@ -14,7 +14,7 @@ public interface QnaMapper {
     int addQna(QnaVO qnaVO) throws Exception;
     int updateQna(QnaVO qnaVO) throws Exception;
     int deleteQna(QnaVO qnaVO) throws Exception;
-    List<QnaVO> getAllFranchiseQnaList(Pager pager) throws Exception;
+    List<QnaVO> getAllFranchiseQnaList(Map<String, Object> map) throws Exception;
     List<QnaVO> getFranchiseQnaList(Map<String, Object> map) throws Exception;
     QnaVO getQna(QnaVO qnaVO) throws Exception;
 
