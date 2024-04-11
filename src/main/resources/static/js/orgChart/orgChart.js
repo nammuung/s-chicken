@@ -1,6 +1,5 @@
 let urls = {
-    dept : "opt=dept",
-    person : "opt=person"
+    dept : "opt=dept"
 }
 let chart;
 let option;
@@ -9,9 +8,10 @@ let option;
  * 조직도를 생성해줌
  * @param id 조직도를 생성할 div의 id
  * @param callback 조직도 클릭시 호출될 함수, {id, name, type, depth, children, parent, isSelected} 를 인수로 넣어줌
- * @param opt 조직도를 부서만 출력할지(dept), 둘 다 출력할지(otherwise) 옵션을 줌
+ * @param opt 조직도를 부서만 출력할지(dept), 둘 다 출력할지(otherwise) 옵션을 줌, 'person'의 경우 사람만 선택 가능
+ * @param isAllopen true면 모든 node를 연다, 그렇지 않으면 제일 위의 노드만 연다
  */
-function initialize(id, callback, opt){
+function initialize(id, callback, opt, isAllopen = false){
     option = opt;
     let param = urls[opt] == null ? "" : `?${urls[opt]}`;
     chart = $(`#${id}`);
@@ -66,9 +66,11 @@ function initialize(id, callback, opt){
         }
     )
 
-    chart.on(
-        'ready.jstree', ()=>chart.jstree('open_all')
-    )
+    if(isAllopen) {
+        chart.on('ready.jstree', ()=>chart.jstree('open_all'));
+    } else {
+        chart.on('ready.jstree', ()=>chart.jstree('open_node',{id : '1'}));
+    }
 }
 
 /**

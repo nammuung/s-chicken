@@ -39,7 +39,7 @@ String strDate = simpleDate.format(date);
                 <div class="card">
 
                     <div class="card-body mt-3">
-                        <form id=frm method="post" action="write">
+                        <form id=frm method="post" action="write" enctype="multipart/form-data">
 
                             <div class="mb-3">
                                 <label for="sort" class="form-label">종류</label>
@@ -64,6 +64,10 @@ String strDate = simpleDate.format(date);
                                 <label for="important" class="form-label">중요 공지</label>
                                 <input type="checkbox" class="form-check-input" id="important">
                             </div>
+                            <div>
+                            	<input type="file" name="attach">
+                            </div>
+                            
 
                             <button type="submit" class="btn btn-primary float-end" id="btn">게시하기</button>
                         </form>

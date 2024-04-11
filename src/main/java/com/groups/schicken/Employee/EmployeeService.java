@@ -1,12 +1,17 @@
 package com.groups.schicken.Employee;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.groups.schicken.franchise.mapper.FranchiseMapper;
 
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,6 +31,10 @@ import com.groups.schicken.franchise.mapper.FranchiseMapper;
 import com.groups.schicken.franchise.object.FranchiseVO;
 import com.groups.schicken.util.Pager;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage.RecipientType;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +52,11 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	private PasswordEncoder passwordEncoder;  //비밀번호를 저장할때 사용 암호화 하는 역할
 
 
+	@Autowired
+	private JavaMailSender javaMailSender;
+	
+	private String ePw;
+	
 
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
@@ -121,34 +135,59 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		log.info("Client Name == > {}", clientRegistration.getClientName());
 		
 		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
-//		
-//		if(clientRegistration.getClientName().equals("Kakao")) {
-//			
-//			user = this.kakao(user);
-//		}
 		
-//		SocialVO socialVO = new SocialVO();
-//		((EmployeeVO)user).setSocialVO(socialVO);
+		if(clientRegistration.getClientName().equals("Kakao")) {
+			
+			user = this.kakao(user);
+		}
 		
+		SocialVO socialVO = new SocialVO();
+		socialVO.setKind(clientRegistration.getClientName());  
+		((EmployeeVO)user).setSocialVO(socialVO);              
+
 		return user;
 	}
 	
 	
-	private OAuth2User kakao(OAuth2User oAuth2User) {
-		Map<String, Object> map = oAuth2User.getAttribute("properties");
-		EmployeeVO employeeVO = new EmployeeVO();
-		employeeVO.setName(oAuth2User.getName()); 
-		employeeVO.setAttributes(oAuth2User.getAttributes());
-		
-		return employeeVO;
-		
-	}
-	
-	
-	
-	
-	
-	
+	 // 임시 비밀번호 생성 메서드
+    private String generateTempPassword() {
+        // 임시 비밀번호를 랜덤하게 생성하는 로직 추가 (예: UUID 사용)
+        return UUID.randomUUID().toString().substring(0, 8); // 임시로 8자리 생성
+    }
+
+    // 비밀번호 재설정 및 임시 비밀번호 전송 메서드
+    public boolean resetPassword(String email) {
+        // 임시 비밀번호 생성
+        String tempPassword = generateTempPassword();
+
+        // DB 업데이트 하는거 필요함 
+
+        // 메일로 임시 비밀번호 전송
+        sendTempPasswordEmail(email, tempPassword);
+		return true;
+    }
+
+ // 임시 비밀번호를 이메일로 전송하는 메서드
+    private void sendTempPasswordEmail(String to, String tempPassword) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8"); // 인코딩 설정 추가
+            helper.setTo(to);
+            helper.setSubject("임시 비밀번호 발급 안내");
+
+            // 메일 내용을 HTML 형식으로 작성
+            String mailContent = "<p>안녕하세요, 임시 비밀번호가 발급되었습니다.</p>"
+                    + "<p>임시 비밀번호: <strong>" + tempPassword + "</strong></p>"
+                    + "<p>로그인 후에는 반드시 비밀번호를 변경해주세요.</p>";
+            helper.setText(mailContent, true); // HTML 설정 추가
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // 이메일 전송 실패 시 예외 처리
+            throw new RuntimeException("이메일 전송 에러");
+        }
+    }
+
 	
 
 	

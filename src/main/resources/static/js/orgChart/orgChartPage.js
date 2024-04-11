@@ -390,5 +390,5 @@ deptModBtn.addEventListener("click",()=>onDeptBtnClick('update'))
 deptSubmitBtn.addEventListener("click", ()=>callSubmitFunction());
 deptDelBtn.addEventListener("click", ()=>deptDelete());
 
-oc.init("org-chart", data=>ocCallbackFunction(data));
+oc.init("org-chart", data=>ocCallbackFunction(data),'',true);
 getDepartmentData();

@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.google.api.gax.paging.Page;
 import com.groups.schicken.board.BoardVO;
+import com.groups.schicken.util.FileManager;
+import com.groups.schicken.util.FileVO;
 import com.groups.schicken.util.Pager;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +28,7 @@ public class RepresentController {
 	
 	
 	@Autowired
-	private RepresentService representService;
+	private RepresentService representService;	
 	
 	@ModelAttribute("board")
 	public String board() {
@@ -47,6 +49,9 @@ public class RepresentController {
 	
 	@GetMapping("detail")
 	public String getDetail(BoardVO boardVO,Model model) throws Exception {
+		
+		int result = representService.hit(boardVO);
+		
 		boardVO = representService.getDetail(boardVO);
 		model.addAttribute("vo", boardVO);
 		System.out.println(boardVO.getId());
@@ -69,8 +74,9 @@ public class RepresentController {
 	}
 	
 	@PostMapping("write")
-	public String getWrite(BoardVO boardVO) throws Exception {
-		int result = representService.add(boardVO);
+	public String getWrite(BoardVO boardVO,@RequestParam("attach") MultipartFile attach) throws Exception {
+		int result = representService.add(boardVO,attach);
+		System.out.println(attach);
 		return "redirect:./impList";		
 	}
 	

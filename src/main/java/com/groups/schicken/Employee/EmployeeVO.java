@@ -46,10 +46,7 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	private CodeVO position;
 	
 	//소셜 Login
-
-	private Integer kind;
-	private String employeeId;
-	
+	private SocialVO socialVO;
 	
 	
 	//OAuth2User, Token등 정보 저장
@@ -90,4 +87,5 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
 }

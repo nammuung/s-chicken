@@ -61,7 +61,7 @@
 		</selectKey>
 		INSERT INTO represent
 		VALUES
-		(#{id},#{writeDate},#{content},#{isDeleted},#{writerId},0,#{sort},#{title})
+		(#{id},#{writeDate},#{content},0,#{writerId},0,#{sort},#{title})
 	</insert>
 	
 	<insert id="fileAdd" parameterType="FileVO" keyProperty="id">
@@ -89,6 +89,33 @@
 			ORDER BY id
 			LIMIT 1
 	</select>
+	
+	<update id="hit" parameterType="BoardVO">
+		UPDATE represent SET
+		hit=hit+1
+		WHERE id=#{id}
+	</update>
+	
+	<update id="delete" parameterType="BoardVO">
+		UPDATE represent SET
+		is_delete=#{isDelete}
+	</update>
+	
+	<update id="update" parameterType="BoardVO">
+		UPDATE represent
+		<set>
+			<if test="title !=null and title !=''">
+				title=#{title},
+			</if>
+			<if test="content != null and content !=''">
+				content=#{content},
+			</if>
+			<if test="important !=null and important !=''">
+				important=#{important}
+			</if>			
+		</set>
+		WHERE id=#{id}		
+	</update>
 
 
 </mapper>
