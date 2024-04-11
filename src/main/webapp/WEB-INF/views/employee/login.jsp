@@ -24,7 +24,6 @@
 							</div>
 							<form action="./login" method="post"
 								onsubmit="return markButtonClicked()">
-
 								<div class="btn-group" role="group"
 									aria-label="Basic radio toggle button group">
 									<input type="radio" class="btn-check" name="options-base"

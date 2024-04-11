@@ -121,15 +121,16 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		log.info("Client Name == > {}", clientRegistration.getClientName());
 		
 		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
-//		
-//		if(clientRegistration.getClientName().equals("Kakao")) {
-//			
-//			user = this.kakao(user);
-//		}
 		
-//		SocialVO socialVO = new SocialVO();
-//		((EmployeeVO)user).setSocialVO(socialVO);
+		if(clientRegistration.getClientName().equals("Kakao")) {
+			
+			user = this.kakao(user);
+		}
 		
+		SocialVO socialVO = new SocialVO();
+		socialVO.setKind(clientRegistration.getClientName());  
+		((EmployeeVO)user).setSocialVO(socialVO);              
+
 		return user;
 	}
 	
