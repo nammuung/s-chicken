@@ -18,6 +18,9 @@
 						<div class="card-body d-flex flex-column align-items-center">
 							<div class="p-3">
 								<h1>S치킨 그룹웨어</h1>
+								<div>
+									<h5 style="color: red;">${param.message}</h5>
+								</div>
 							</div>
 							<form action="./login" method="post"
 								onsubmit="return markButtonClicked()">
@@ -52,7 +55,7 @@
 
 								<div class="d-flex justify-content-between align-items-center">
 									<!-- Checkbox -->
-<!-- 								<div class="form-check mb-0">
+									<!-- 								<div class="form-check mb-0">
 										<input class="form-check-input me-2" type="checkbox" value=""
 											id="remember-me" name="rememberMe" /> <label
 											class="form-check-label" for="remember-me"> Remember-Me </label>
@@ -60,12 +63,13 @@
 									<div class="d-flex justify-content-between align-items-center">
 										<input type="checkbox" checked name="rememberId"
 											class="form-check-input" id="remember-id"> <label
-											class="form-check-label" for="remember-me">&nbsp;ID 저장</label>
+											class="form-check-label" for="remember-me">&nbsp;ID
+											저장</label>
 									</div>
 									<a href="#" class="text-muted">비밀번호 찾기</a>
 								</div>
-								
-								
+
+
 								<div class="text-center text-lg-start mt-3 pt-2 mb-2">
 									<button type="submit" class="btn btn-primary btn-lg"
 										style="width: 300px;">
@@ -88,7 +92,7 @@
 	<!-- End #main -->
 
 	<!-- 파라미터를 초기화 시켜주는 스크립트 -->
-	<script type="text/javascript">
+ 	<script type="text/javascript">
 		history.replaceState({}, null, location.pathname);
 	</script>
 </body>

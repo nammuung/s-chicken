@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.groups.schicken.department.DepartmentVO;
 import com.groups.schicken.util.CodeVO;
@@ -20,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 //@ToString
 @Slf4j
 @Data
-public class EmployeeVO  implements UserDetails {
+public class EmployeeVO  implements UserDetails, OAuth2User {
 
 	
 	private String id;
@@ -42,7 +43,14 @@ public class EmployeeVO  implements UserDetails {
 	private String posName; // 직급이름
 	
 	private DepartmentVO department;
-	private CodeVO code;
+	private CodeVO position;
+	
+	//소셜 Login
+
+	private Integer kind;
+	private String employeeId;
+	
+	
 	
 	//OAuth2User, Token등 정보 저장
 	private Map<String, Object> attributes;

@@ -9,21 +9,11 @@ import java.util.List;
 
 @Controller
 public class TestController {
-    /*
-        orgChart/orgChart
-        spendingDetails/spendingDetails
-
-     */
 
 
     @GetMapping("/")
     public String test(@RequestParam("path")String path){
         return path;
     }
-    
-//    @GetMapping("/")
-//    public String test(){
-//        return "home";
-//    }
 
 }

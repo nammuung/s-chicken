@@ -34,7 +34,7 @@ public class SecurityLoginFailHandler implements AuthenticationFailureHandler {
 		String message= "로그인 실패";
 		
 		if(exception instanceof BadCredentialsException) {
-			message="비밀번호를 확인";
+			message="비밀번호가 틀렸습니다.";
 		}
 		
 		if(exception instanceof InternalAuthenticationServiceException) {
@@ -55,7 +55,7 @@ public class SecurityLoginFailHandler implements AuthenticationFailureHandler {
 		
 		message = URLEncoder.encode(message, "UTF-8");
 		
-		response.sendRedirect("./login");
+		response.sendRedirect("./login?message="+message);
 		
 	}
 
