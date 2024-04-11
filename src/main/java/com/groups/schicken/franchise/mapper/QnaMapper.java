@@ -21,4 +21,6 @@ public interface QnaMapper {
     int commentQna(QnaCommentVO commentVO) throws Exception;
 
     Long getTotal(Map<String, Object> map) throws Exception;
+
+    List<QnaVO> getAnotherQna(QnaVO qnaVO) throws Exception;
 }

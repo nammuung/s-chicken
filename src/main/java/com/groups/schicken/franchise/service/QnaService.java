@@ -44,7 +44,14 @@ public class QnaService {
     }
 
     public QnaVO getQna(QnaVO qnaVO) throws Exception {
-        return qnaMapper.getQna(qnaVO);
+        qnaVO = qnaMapper.getQna(qnaVO);
+        List<QnaVO> anotherList = qnaMapper.getAnotherQna(qnaVO);
+        System.out.println("anotherList = " + anotherList);
+        for (QnaVO  vo: anotherList){
+            if(vo.getId() > qnaVO.getId()) qnaVO.setNextQna(vo);
+            if(vo.getId() < qnaVO.getId()) qnaVO.setPreQna(vo);
+        }
+        return qnaVO;
     }
 
     public int commentQna(QnaCommentVO commentVO) throws Exception {

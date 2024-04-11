@@ -112,6 +112,15 @@
         ON cmt.employee_id = emp.id
         WHERE qna.id = #{id}
     </select>
+    <select id="getAnotherQna">
+        SELECT
+            *
+        FROM franchise_qna
+        WHERE id in (
+            (SELECT id FROM franchise_qna WHERE id &lt; #{id} ORDER BY id DESC LIMIT 1),
+            (SELECT id FROM franchise_qna WHERE id &gt; #{id} ORDER BY id LIMIT 1)
+        )
+    </select>
     <insert id="commentQna">
         <selectKey keyProperty="id" order="BEFORE" resultType="Long">
             SELECT nextval(seq1)

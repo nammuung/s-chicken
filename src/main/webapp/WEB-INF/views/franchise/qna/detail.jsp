@@ -45,16 +45,20 @@
                         </a>
                     </div>
 
-                    <div class="mb-2">
-                        <i class="bi bi-caret-up-fill toggle-sidebar-btn button"></i>
-                        <span class="me-3">이전</span>
-                        <a href="/notice/detail" class="link-body-emphasis">사내 전산망 교체로 전산 사용불가</a>
-                    </div>
-                    <div>
-                        <i class="bi bi-caret-down-fill toggle-sidebar-btn button"></i>
-                        <span class="me-3">다음</span>
-                        <a href="/notice/detail" class="link-body-emphasis">사내 전산망 교체로 전산 사용불가</a>
-                    </div>
+                    <c:if test="${vo.preQna != null}">
+                        <div class="mb-2">
+                            <i class="bi bi-caret-up-fill toggle-sidebar-btn button"></i>
+                            <span class="me-3">다음</span>
+                            <a href="?id=${vo.preQna.id}" class="link-body-emphasis">${vo.preQna.title}</a>
+                        </div>
+                    </c:if>
+                    <c:if test="${vo.nextQna != null}">
+                        <div>
+                            <i class="bi bi-caret-down-fill toggle-sidebar-btn button"></i>
+                            <span class="me-3">이전</span>
+                            <a href="?id=${vo.nextQna.id}" class="link-body-emphasis">${vo.nextQna.title}</a>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>
