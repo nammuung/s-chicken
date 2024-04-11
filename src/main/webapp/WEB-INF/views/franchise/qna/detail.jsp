@@ -45,18 +45,18 @@
                         </a>
                     </div>
 
-                    <c:if test="${vo.preQna != null}">
+                    <c:if test="${vo.nextQna != null}">
                         <div class="mb-2">
                             <i class="bi bi-caret-up-fill toggle-sidebar-btn button"></i>
-                            <span class="me-3">다음</span>
-                            <a href="?id=${vo.preQna.id}" class="link-body-emphasis">${vo.preQna.title}</a>
-                        </div>
-                    </c:if>
-                    <c:if test="${vo.nextQna != null}">
-                        <div>
-                            <i class="bi bi-caret-down-fill toggle-sidebar-btn button"></i>
                             <span class="me-3">이전</span>
                             <a href="?id=${vo.nextQna.id}" class="link-body-emphasis">${vo.nextQna.title}</a>
+                        </div>
+                    </c:if>
+                    <c:if test="${vo.preQna != null}">
+                        <div>
+                            <i class="bi bi-caret-down-fill toggle-sidebar-btn button"></i>
+                            <span class="me-3">다음</span>
+                            <a href="?id=${vo.preQna.id}" class="link-body-emphasis">${vo.preQna.title}</a>
                         </div>
                     </c:if>
                 </div>
