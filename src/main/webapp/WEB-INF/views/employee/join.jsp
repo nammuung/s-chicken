@@ -86,7 +86,7 @@
 									</div>
 									<div class="form-group mb-3 col-4">
 										<label for="department" class="form-label"><b>부서</b></label> <select
-											class="form-select" id="department" name="departmentId">
+											class="form-select" id="department">
 											<option value="0">부서 선택</option>
 
 										</select>

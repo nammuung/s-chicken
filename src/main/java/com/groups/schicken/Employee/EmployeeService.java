@@ -1,13 +1,21 @@
 package com.groups.schicken.Employee;
 
 import java.util.List;
+import java.util.Map;
 
 import com.groups.schicken.franchise.mapper.FranchiseMapper;
+
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)  //error 났을때 rollbac설정
-public class EmployeeService implements UserDetailsService {
+public class EmployeeService extends DefaultOAuth2UserService implements UserDetailsService {
 
 	@Autowired
 	private EmployeeDAO employeeDAO;
@@ -102,8 +110,45 @@ public class EmployeeService implements UserDetailsService {
 		pager.makeNum(employeeDAO.getTotalCount(pager));
 		return employeeDAO.userList(pager);
 	}
+
+
+	// 소셜 로그인
+	@Override
+	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+		ClientRegistration clientRegistration = userRequest.getClientRegistration();  // 인가 서버에서 클라이언트의 정보를 가져와 매핑시킴
+		
+		log.info("Client ID == > {}", clientRegistration.getClientId());
+		log.info("Client Name == > {}", clientRegistration.getClientName());
+		
+		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
+		
+		if(clientRegistration.getClientName().equals("Kakao")) {
+			
+		}
+		//((EmployeeVO)user).
+		
+		
+		return user;
+	}
 	
 	
+	private OAuth2User kakao(OAuth2User oAuth2User) {
+		Map<String, Object> map = oAuth2User.getAttribute("properties");
+		EmployeeVO employeeVO = new EmployeeVO();
+		employeeVO.setName(oAuth2User.getName()); 
+		employeeVO.setAttributes(oAuth2User.getAttributes());
+		
+		return employeeVO;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+
 	
 
 }
