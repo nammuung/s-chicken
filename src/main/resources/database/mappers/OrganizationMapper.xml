@@ -49,7 +49,7 @@
                 , e.department_id "parent"
                 , 'person' AS "type"
                 , OC.depth + 1 AS depth
-                , CAST(code.id AS INTEGER) AS "sort"
+                , 100 - CAST(code.id AS INTEGER) AS "sort"
             FROM employee e
                 INNER JOIN OC ON e.department_id = OC.id
                 INNER JOIN code ON e.pos_id = code.id
