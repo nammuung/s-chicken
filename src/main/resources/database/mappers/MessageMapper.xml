@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.noteMessage.NoteMessageDAO">
+    <insert id="addMessage">
+        <selectKey resultType="Long" keyProperty="id" order="BEFORE">
+            SELECT nextval(seq5)
+        </selectKey>
+        INSERT INTO note_message(id, sender_id, content)
+        VALUES(#{id}, #{senderId}, #{content})
+    </insert>
+
+    <insert id="addReceivers">
+        INSERT INTO note_receiver(note_id, receiver_id)
+        <foreach collection="receivers" item="i" open="VALUES " separator=",">
+            (#{id}, #{i})
+        </foreach>
+    </insert>
+</mapper>
