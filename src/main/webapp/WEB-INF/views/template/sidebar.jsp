@@ -119,17 +119,22 @@
             </a>
             <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="icons-bootstrap.html">
+                    <a href="/franchise/join">
+                        <i class="bi bi-circle"></i><span>가맹점 가입</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/franchise/inquiry">
                         <i class="bi bi-circle"></i><span>가맹점 조회</span>
                     </a>
                 </li>
                 <li>
-                    <a href="icons-remix.html">
+                    <a href="/manager/qna/list">
                         <i class="bi bi-circle"></i><span>가맹점 QnA</span>
                     </a>
                 </li>
                 <li>
-                    <a href="icons-boxicons.html">
+                    <a href="/franchise/faq/list">
                         <i class="bi bi-circle"></i><span>가맹점 F.A.Q</span>
                     </a>
                 </li>
