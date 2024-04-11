@@ -69,7 +69,7 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">담당자</div>
-                                        <div class="col-lg-9 col-md-8">${vo.manager.department.name} ${vo.manager.name} ${vo.manager.code.name}</div>
+                                        <div class="col-lg-9 col-md-8">${vo.manager.department.name} ${vo.manager.name} ${vo.manager.position.name}</div>
                                     </div>
 
                                     <div class="row">

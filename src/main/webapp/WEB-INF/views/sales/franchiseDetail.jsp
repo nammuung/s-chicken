@@ -72,7 +72,7 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">담당자</div>
-                                        <div class="col-lg-9 col-md-8">${vo.manager.department.name} ${vo.manager.name} ${vo.manager.code.name}</div>
+                                        <div class="col-lg-9 col-md-8">${vo.manager.department.name} ${vo.manager.name} ${vo.manager.position.name}</div>
                                     </div>
 
                                     <div class="row">
@@ -149,7 +149,7 @@
                                             <label for="managerId" class="col-md-4 col-lg-3 col-form-label">담당자</label>
                                             <div class="col-md-8 col-lg-9 d-flex">
                                                 <input class="form-select" type="hidden" id="managerId" name="managerId" value="${vo.manager.id}">
-                                                <input class="form-select me-1" id="managerName" value="${vo.manager.department.name} ${vo.manager.name} ${vo.manager.code.name}">
+                                                <input class="form-select me-1" id="managerName" value="${vo.manager.department.name} ${vo.manager.name} ${vo.manager.position.name}">
                                                 <input class="btn btn-primary" id="managerSearch" value="찾기">
                                             </div>
                                         </div>
