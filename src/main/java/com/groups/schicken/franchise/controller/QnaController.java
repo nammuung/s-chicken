@@ -28,7 +28,6 @@ public class QnaController {
     @PostMapping("add")
     public String addQna(@AuthenticationPrincipal FranchiseVO franchiseVO, Model model, QnaVO qnaVO) throws Exception {
         qnaVO.setWriterId(franchiseVO.getId());
-        System.out.println("qnaVO = " + qnaVO);
         int result = qnaService.addQna(qnaVO);
         if (result == 1) {
             model.addAttribute("message", new MessageVO("문의 추가가 완료되었습니다.", "/franchise/qna/detail?id=" + qnaVO.getId()));
