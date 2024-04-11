@@ -23,4 +23,6 @@ public interface QnaMapper {
     Long getTotal(Map<String, Object> map) throws Exception;
 
     List<QnaVO> getAnotherQna(QnaVO qnaVO) throws Exception;
+    List<QnaVO>  getFirstSequenceQna() throws Exception;
+    List<QnaVO>  getSequenceQna(QnaVO qnaVO) throws Exception;
 }

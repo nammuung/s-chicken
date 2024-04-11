@@ -86,4 +86,16 @@ public class QnaController {
         model.addAttribute("vo", qnaVO);
         return "franchise/qna/detail";
     }
+
+    @GetMapping("sequence")
+    public String getQnaSequence(Model model, QnaVO qnaVO) throws Exception {
+        System.out.println(qnaVO);
+        if(qnaVO.getId() == null){
+            qnaVO = qnaService.getSequenceQna();
+        } else {
+            qnaVO = qnaService.getSequenceQna(qnaVO);
+        }
+        model.addAttribute("vo", qnaVO);
+        return "franchise/qna/sequenceAnswer";
+    }
 }

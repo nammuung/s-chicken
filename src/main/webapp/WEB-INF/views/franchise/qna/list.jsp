@@ -83,7 +83,7 @@
                     </ul>
                 </nav>
                 <a href="./add" class="btn btn-primary float-end">질문작성</a>
-                <button type="button" class="btn btn-primary float-end">답변하기</button>
+                <a href="./sequence" class="btn btn-primary float-end">답변하기</a>
             </div>
         </div>
     </section>

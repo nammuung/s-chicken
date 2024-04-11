@@ -60,5 +60,25 @@ public class QnaService {
         return qnaMapper.commentQna(commentVO);
     }
 
+    public QnaVO getSequenceQna() throws Exception {
+        List<QnaVO> list = qnaMapper.getFirstSequenceQna();
+        QnaVO vo = new QnaVO();
+        if(list.get(0) != null) {
+            vo = list.get(0);
+        }
+        if(list.get(1) != null) {
+            vo.setPreQna(list.get(1));
+        }
+        return vo;
+    }
+    public QnaVO getSequenceQna(QnaVO vo) throws Exception {
+        vo = qnaMapper.getQna(vo);
+        List<QnaVO> list = qnaMapper.getSequenceQna(vo);
+        for(QnaVO vo1 : list){
+            if(vo1.getId() > vo.getId()) vo.setNextQna(vo1);
+            if(vo1.getId() < vo.getId()) vo.setPreQna(vo1);
+        }
+        return vo;
+    }
 
 }

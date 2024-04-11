@@ -135,5 +135,20 @@
         VALUES
         (#{id}, #{qnaId}, #{writeDate}, #{content}, #{employeeId})
     </insert>
-
+    <select id="getFirstSequenceQna">
+        SELECT
+        qna.*
+        FROM franchise_qna qna
+        LEFT JOIN franchise_qna_comment cmt ON qna.id = cmt.qna_id
+        WHERE qna.is_deleted != 1 AND cmt.id IS NULL ORDER BY qna.id DESC LIMIT 2
+    </select>
+    <select id="getSequenceQna">
+        SELECT
+        *
+        FROM franchise_qna
+        WHERE id in (
+        (SELECT qna.id FROM franchise_qna qna LEFT JOIN franchise_qna_comment cmt ON qna.id = cmt.qna_id WHERE qna.id &lt; #{id} AND qna.is_deleted != 1 AND cmt.id IS NULL ORDER BY qna.id DESC LIMIT 1),
+        (SELECT qna.id FROM franchise_qna qna LEFT JOIN franchise_qna_comment cmt ON qna.id = cmt.qna_id WHERE qna.id &gt; #{id} AND qna.is_deleted != 1 AND cmt.id IS NULL ORDER BY qna.id LIMIT 1)
+        )
+    </select>
 </mapper>
