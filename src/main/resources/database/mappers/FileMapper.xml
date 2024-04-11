@@ -7,7 +7,7 @@
     <resultMap id="fileResultMap" type="FileVO" autoMapping="true">
         <id property="id" column="id"/>
     </resultMap>
-   <insert id="uploadFile">
+   <insert id="uploadFile" parameterType="FileVO">
        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
            SELECT nextval(seq1)
        </selectKey>

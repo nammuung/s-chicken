@@ -12,14 +12,11 @@ public class BoardVO {
 	private String writeDate;
 	private String title;
 	private String content;
-	private Boolean isDeleted;
+	private Boolean isDelete;
 	private Long hit;
 	private int sort;
 	private Long writerId;
-	private Long next;
-	private Long last;
-	private String nextTitle;
-	private String lastTitle;
-	
+	private Boolean important;
+
 	private List<FileVO> fileVOs;
 }

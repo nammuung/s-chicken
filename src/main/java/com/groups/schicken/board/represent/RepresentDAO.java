@@ -6,5 +6,7 @@ import com.groups.schicken.board.BoardDAO;
 
 @Mapper
 public interface RepresentDAO extends BoardDAO {
-
+	
+	
+	
 }
