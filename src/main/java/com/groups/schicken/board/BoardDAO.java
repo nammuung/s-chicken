@@ -24,5 +24,8 @@ public interface BoardDAO {
 	
 	public List<BoardVO> nextPage(BoardVO boardVO)throws Exception;
 	
+	public int hit(BoardVO boardVO)throws Exception;
+	
+	public int update(BoardVO boardVO)throws Exception;
 	
 }
