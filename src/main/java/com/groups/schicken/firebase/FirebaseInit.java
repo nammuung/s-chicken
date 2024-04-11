@@ -28,7 +28,7 @@ public class FirebaseInit {
                 .setStorageBucket("schicken-6e89b.appspot.com")
                 .build();
 
-        FirebaseApp.initializeApp(options);
+       // FirebaseApp.initializeApp(options);
     }
 
 //    @Bean

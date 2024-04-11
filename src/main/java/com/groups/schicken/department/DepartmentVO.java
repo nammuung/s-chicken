@@ -9,5 +9,6 @@ public class DepartmentVO {
     private String contactNumber;
     private Integer sort;
     private Long upperId;
+    private String upperName;
     private Integer depth;
 }
