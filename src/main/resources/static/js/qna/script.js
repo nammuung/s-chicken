@@ -16,6 +16,8 @@ commentButton.addEventListener("click", async function (event) {
     console.log(result);
     alert(result.message);
     if (result.status === "OK"){
+        const commentInputContainer = document.getElementById("commentInputContainer");
+        commentInputContainer.style.display = "none";
         content.value = "";
         commentBox.innerHTML = `
                  <div class="d-flex mb-2">
@@ -35,4 +37,5 @@ commentButton.addEventListener("click", async function (event) {
                 </div>
             `
     }
+
 })
