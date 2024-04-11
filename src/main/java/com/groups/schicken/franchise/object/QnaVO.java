@@ -14,6 +14,7 @@ public class QnaVO {
     private String writeDate;
     private String modifyDate;
     private String writerId;
+    private Boolean isDeleted;
     private FranchiseVO writer;
     private QnaCommentVO comment;
     private QnaVO preQna;

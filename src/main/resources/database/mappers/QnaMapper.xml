@@ -9,9 +9,9 @@
             SELECT nextval(seq1)
         </selectKey>
         INSERT INTO franchise_qna
-        (id, title, content, write_date, writer_id)
+        (id, title, content, write_date, writer_id, is_deleted)
         VALUES
-        (#{id}, #{title}, #{content}, #{writeDate}, #{writerId})
+        (#{id}, #{title}, #{content}, #{writeDate}, #{writerId}, 0)
     </insert>
     <update id="updateQna">
         UPDATE franchise_qna
@@ -23,7 +23,10 @@
                 content = #{content},
             </if>
             <if test="modifyDate != null">
-                 modify_date = #{modifyDate}
+                 modify_date = #{modifyDate},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted}
             </if>
         </set>
         WHERE id = #{id}
@@ -70,12 +73,12 @@
         ON qna.id = cmt.qna_id
         LEFT JOIN franchise frc
         ON qna.writer_id = frc.id
-        WHERE writer_id = #{franchise.id}
+        WHERE writer_id = #{franchise.id} AND is_deleted != 1
         <include refid="search"/>
         ORDER BY qna.id desc
     </select>
     <select id="getTotal">
-        SELECT COUNT(*) FROM franchise_qna qna WHERE qna.writer_id = #{franchise.id}
+        SELECT COUNT(*) FROM franchise_qna qna WHERE qna.writer_id = #{franchise.id} AND is_deleted != 1
         <include refid="search"/>
     </select>
     <sql id="search">
@@ -119,8 +122,8 @@
             *
         FROM franchise_qna
         WHERE id in (
-            (SELECT id FROM franchise_qna WHERE id &lt; #{id} ORDER BY id DESC LIMIT 1),
-            (SELECT id FROM franchise_qna WHERE id &gt; #{id} ORDER BY id LIMIT 1)
+            (SELECT id FROM franchise_qna WHERE id &lt; #{id} AND is_deleted != 1 ORDER BY id DESC LIMIT 1),
+            (SELECT id FROM franchise_qna WHERE id &gt; #{id} AND is_deleted != 1 ORDER BY id LIMIT 1)
         )
     </select>
     <insert id="commentQna">
