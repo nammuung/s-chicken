@@ -72,18 +72,22 @@
 		VALUES(#{id},#{name},#{originName},#{url},#{extension},#{parentId},#{tblId})
 	</insert>
 	
-	<select id="movePage" resultType="BoardVO" parameterType="Long">
-		SELECT * FROM(SELECT
-			id,
-			LEAD(id,1,0) OVER(ORDER BY id) AS next,
-			LAG(id,1,0) OVER(ORDER BY id) AS last,
-			title,
-			LEAD(title,1,0) OVER(ORDER BY id) AS nextTitle,
-			LAG(id,1,0) OVER(ORDER BY id) AS lastTitle
+	<select id="pastPage" resultType="BoardVO" parameterType="BoardVO"> <!-- &lt; 이전 -->
+			SELECT id, title, sort
 			FROM represent
-			ORDER BY id DESC			
-		)
-		WHERE id=#{id}
+			WHERE id  &lt; #{id}
+			AND sort = 1
+			ORDER BY id DESC
+			LIMIT 1
+	</select>
+	
+	<select id="nextPage" resultType="BoardVO" parameterType="BoardVO"> <!--  -->
+		SELECT id, title,sort
+			FROM represent
+			WHERE id &gt; #{id}
+			AND sort = 1
+			ORDER BY id
+			LIMIT 1
 	</select>
 
 
