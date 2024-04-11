@@ -26,7 +26,7 @@
 <script src="/js/lib/summernote-lite.js"></script>
 <script src="/js/lib/summernote-ko-KR.js"></script>
 
-
+<script src="/js/header/header.js" type="module"></script>
 
 
 <!-- Template Main JS File -->
