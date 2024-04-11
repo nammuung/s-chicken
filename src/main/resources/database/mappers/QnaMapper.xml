@@ -92,7 +92,7 @@
                 AND qna.content LIKE concat('%',#{pager.search},'%')
             </when>
             <when test='pager.kind != null and pager.kind.equals("title+content")'>
-                AND qna.title LIKE concat('%',#{pager.search},'%') OR qna.content LIKE concat('%',#{pager.search},'%')
+                AND (qna.title LIKE concat('%',#{pager.search},'%') OR qna.content LIKE concat('%',#{pager.search},'%'))
             </when>
         </choose>
     </sql>
