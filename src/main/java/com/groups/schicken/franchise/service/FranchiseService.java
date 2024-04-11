@@ -72,4 +72,8 @@ public class FranchiseService {
     }
 
 
+    public int updatePassword(FranchiseVO franchiseVO) throws  Exception {
+        franchiseVO.setPassword(passwordEncoder.encode(franchiseVO.getPassword()));
+        return franchiseMapper.updateFranchise(franchiseVO);
+    }
 }

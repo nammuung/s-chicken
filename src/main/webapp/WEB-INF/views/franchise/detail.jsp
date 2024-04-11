@@ -32,10 +32,7 @@
                                     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">정보</button>
                                 </li>
                                 <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">수정</button>
-                                </li>
-                                <li class="nav-item">
-                                    <button id="initPasswordButton" class="nav-link text-danger">비밀번호 초기화</button>
+                                    <button id="changePasswordButton" class="nav-link text-danger">비밀번호 변경</button>
                                 </li>
 
                             </ul>
@@ -101,82 +98,6 @@
                                     </div>
 
                                 </div>
-
-                                <div class="tab-pane fade profile-edit" id="profile-edit">
-                                    <h5 class="card-title">수정하기</h5>
-                                    <!-- Profile Edit Form -->
-                                    <form method="POST" action="/franchise/update" id="updateForm">
-                                        <input type="hidden" name="id" value="${vo.id}">
-                                        <div class="row mb-3">
-                                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">지점명</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="fullName" type="text" class="form-control" id="fullName" value="${vo.name}" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row mb-3">
-                                            <label for="ownerName" class="col-md-4 col-lg-3 col-form-label">대표</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input id="ownerName" type="text" class="form-control" value="${vo.ownerName}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <label for="contractDate" class="col-md-4 col-lg-3 col-form-label">계약일</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input id="contractDate" type="date" class="form-control" value="${vo.contractDate}" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <label for="contactNumber" class="col-md-4 col-lg-3 col-form-label">전화번호</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input name="contactNumber" type="text" class="form-control" id="contactNumber" value="${vo.contactNumber}">
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <label for="email" class="col-md-4 col-lg-3 col-form-label">이메일</label>
-                                            <div class="col-md-8 col-lg-9">
-                                                <input id="email" type="email" class="form-control" placeholder="이메일" value="${vo.email}" disabled>
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="row mb-3">
-                                            <label for="managerId" class="col-md-4 col-lg-3 col-form-label">담당자</label>
-                                            <div class="col-md-8 col-lg-9 d-flex">
-                                                <input class="form-select" type="hidden" id="managerId" name="managerId" value="${vo.manager.id}">
-                                                <input class="form-select me-1" id="managerName" value="${vo.manager.department.name} ${vo.manager.name} ${vo.manager.code.name}">
-                                                <input class="btn btn-primary" id="managerSearch" value="찾기">
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <label class="col-md-4 col-lg-3 col-form-label">우편번호</label>
-                                            <div class="col-md-8 col-lg-9 d-flex">
-                                                <input type="text" value="${vo.postCode}" class="form-control" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="row mb-3">
-                                            <label class="col-md-4 col-lg-3 col-form-label">주소</label>
-                                            <div class="col-md-8 col-lg-9 d-flex">
-                                                <input type="text" value="${vo.address}" class="form-control me-1" placeholder="주소" disabled>
-                                                <input type="text" value="${vo.addressDetail}" class="form-control" placeholder="상세주소" disabled>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-primary">저장 하기</button>
-                                        </div>
-                                    </form><!-- End Profile Edit Form -->
-
-                                </div>
                             </div><!-- End Bordered Tabs -->
 
                         </div>
@@ -191,11 +112,31 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">부서 등록</h5>
+                <h5 class="modal-title">비밀번호 변경</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div id="orgChart"></div>
+                <form id="changePasswordForm" class="d-flex flex-column align-items-center">
+                    <div class="row justify-content-center mb-3 w-75">
+                        <input name="id" type="hidden" value="${vo.id}">
+                        <div>
+                            <b id="errorMessage" style="color:red"></b>
+                        </div>
+                        <div class="form-group mb-3 mt-3">
+                            <label for="prevPassword" class="form-label"><b>기존 비밀번호</b></label>
+                            <input id="prevPassword" name="prevPassword" type="password" class="form-control" placeholder="기존 비밀번호" required>
+                        </div>
+                        <div class="form-group mb-3 mt-3">
+                            <label for="password" class="form-label"><b>새로운 비밀변호</b></label>
+                            <input id="password" name="password" type="password" class="form-control" placeholder="새로운 비밀변호" required>
+                        </div>
+                        <div class="form-group mb-3 mt-3">
+                            <label for="passwordCheck" class="form-label"><b>비밀번호 확인</b></label>
+                            <input id="passwordCheck" name="passwordCheck" type="password" class="form-control" placeholder="새로운 비밀번호 확인" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">변경</button>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
@@ -207,50 +148,39 @@
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
-<script type="module">
-    import orgChart from "/js/orgChart/orgChart.js";
-    const managerId = document.getElementById("managerId");
-    const managerSearch = document.getElementById("managerSearch");
-    const managerName = document.getElementById("managerName");
-    const modal = new bootstrap.Modal(document.getElementById("dept-modal"));
-    const initPasswordButton = document.getElementById("initPasswordButton");
-    orgChart.init("orgChart", (data)=>{
-        console.log(data);
-        modal.hide();
-        managerId.value = data.id;
-        managerName.value = data.name;
-    });
-    managerSearch.addEventListener("click", async function (event){
-        modal.show();
-    });
-    initPasswordButton.addEventListener("click", async function (event){
-        const form = document.createElement("form");
-        const id = document.createElement("input");
-        id.type = "hidden";
-        id.name = "id";
-        id.value = "${vo.id}";
-
-        form.method = "POST";
-        form.action = "/franchise/initPassword";
-        form.appendChild(id);
-        document.body.appendChild(form);
-        form.submit();
-    })
-</script>
 <script>
-    <%--const updateForm = document.getElementById("updateForm");--%>
-    <%--updateForm.addEventListener("submit", async function (event){--%>
-    <%--    event.preventDefault();--%>
-    <%--    event.stopPropagation();--%>
-    <%--    const formData = new FormData(updateForm);--%>
-    <%--    const response = await fetch("/franchise/update?id="+${vo.id}, {--%>
-    <%--        method: "POST",--%>
-    <%--        body: formData--%>
-    <%--    });--%>
-    <%--    const result = await response.json();--%>
-    <%--    alert(result.message);--%>
-    <%--    location.reload();--%>
-    <%--})--%>
+    const modal = new bootstrap.Modal(document.getElementById("dept-modal"));
+    const changePasswordButton = document.getElementById("changePasswordButton");
+
+    changePasswordButton.addEventListener("click", async function (event){
+        modal.show();
+    })
+    const changePasswordForm = document.getElementById("changePasswordForm")
+    changePasswordForm.addEventListener('submit', async function (event) {
+        const formData = new FormData(changePasswordForm);
+        const errorMessage = document.getElementById("errorMessage");
+        event.preventDefault()
+        event.stopPropagation()
+        console.log(formData)
+        if(formData.get("password") !== formData.get("passwordCheck")){
+            errorMessage.innerHTML = "비밀번호가 동일한지 확인해주세요.";
+            return;
+        }
+
+        const response = await fetch("/v1/api/franchise/updatePassword",{
+            method: "POST",
+            body: formData
+        });
+        const result = await response.json();
+        console.log(result.status);
+        if (result.status === "OK") {
+            alert(result.message);
+            location.href = "/employee/login"
+        } else {
+
+            errorMessage.innerHTML = result.message;
+        }
+    }, false)
 </script>
 </body>
 
