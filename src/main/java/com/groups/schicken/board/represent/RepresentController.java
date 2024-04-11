@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.google.api.gax.paging.Page;
 import com.groups.schicken.board.BoardVO;
 import com.groups.schicken.util.FileManager;
 import com.groups.schicken.util.FileVO;

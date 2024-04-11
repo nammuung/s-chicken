@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.groups.schicken.franchise.mapper.FranchiseMapper;
 
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

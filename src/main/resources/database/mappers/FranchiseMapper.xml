@@ -78,7 +78,7 @@
                 WHERE name LIKE CONCAT('%',#{search},'%')
             </when>
             <when test='kind != null and kind.equals("manager")'>
-                WHERE manager_id in (SELECT manager_id FROM employee WHERE name LIKE CONCAT('%',#{search},'%'))
+                WHERE manager_id in (SELECT id FROM employee WHERE name LIKE CONCAT('%',#{search},'%'))
             </when>
         </choose>
     </select>
