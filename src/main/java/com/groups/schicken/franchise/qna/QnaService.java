@@ -55,11 +55,14 @@ public class QnaService {
             if(vo.getId() > qnaVO.getId()) qnaVO.setNextQna(vo);
             if(vo.getId() < qnaVO.getId()) qnaVO.setPreQna(vo);
         }
-        EmployeeVO employeeVO = new EmployeeVO();
-        employeeVO.setId(qnaVO.getComment().getEmployee().getId());
-        employeeVO = employeeService.userDetail(employeeVO);
-        QnaCommentVO comment = qnaVO.getComment();
-        comment.setEmployee(employeeVO);
+        if(qnaVO.getComment() != null){
+            EmployeeVO employeeVO = new EmployeeVO();
+            employeeVO.setId(qnaVO.getComment().getEmployee().getId());
+            employeeVO = employeeService.userDetail(employeeVO);
+            QnaCommentVO comment = qnaVO.getComment();
+            comment.setEmployee(employeeVO);
+        }
+
         return qnaVO;
     }
 
