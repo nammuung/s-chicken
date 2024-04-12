@@ -146,10 +146,6 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 			}
 		}
 		
-		SocialVO socialVO = new SocialVO();
-		socialVO.setKind(clientRegistration.getClientName());  
-		((EmployeeVO)user).setSocialVO(socialVO);              
-
 		return user;
 	}
 	
@@ -157,11 +153,13 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	
 	// Kakao
 	private OAuth2User kakao(OAuth2User oAuth2User)throws Exception{
-		Map<String, Object> map = oAuth2User.getAttribute("properites");
+		Map<String, Object> map = oAuth2User.getAttribute("properties");
 		EmployeeVO employeeVO = new EmployeeVO();
 		// 사용자 이름을 꺼내옴
-		employeeVO.setName(oAuth2User.getName());
-		employeeVO.setAttributes(oAuth2User.getAttributes());;
+		
+		employeeVO.setId(oAuth2User.getName());
+		employeeVO.setAttributes(oAuth2User.getAttributes());
+		
 		
 		return employeeVO;
 		

@@ -4,22 +4,27 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.Employee.EmployeeDAO">
-    
-    
-    
-<insert id="join" parameterType="EmployeeVO">
-	<selectKey resultType="String" keyProperty="id" order="BEFORE">
-    	SELECT concat (#{residentNumber}, nextval(seq4))
-	</selectKey>
-    	INSERT INTO employee (id,password,name,phone_number,email,address,address_detail,postcode,date_of_employment,resident_number,salary,account_Number,bank_name,is_leaved,department_id,pos_id)
-    	VALUES (#{id}, #{password}, #{name}, #{phoneNumber}, #{email}, #{address}, #{addressDetail}, #{postcode},
-    	#{dateOfEmployment}, #{residentNumber}, 10000, #{accountNumber}, #{bankName}, 1, #{departmentId}, #{posId})
-</insert>
 
 
 
-	<select id="userDetail" parameterType="EmployeeVO" resultMap="employeeDetails">
-	SELECT employee.id,
+	<insert id="join" parameterType="EmployeeVO">
+		<selectKey resultType="String" keyProperty="id"
+			order="BEFORE">
+			SELECT concat (#{residentNumber}, nextval(seq4))
+		</selectKey>
+		INSERT INTO employee
+		(id,password,name,phone_number,email,address,address_detail,postcode,date_of_employment,resident_number,salary,account_Number,bank_name,is_leaved,department_id,pos_id)
+		VALUES (#{id}, #{password}, #{name}, #{phoneNumber}, #{email},
+		#{address}, #{addressDetail}, #{postcode},
+		#{dateOfEmployment}, #{residentNumber}, 10000, #{accountNumber}, #{bankName}, 1,
+		#{departmentId}, #{posId})
+	</insert>
+
+
+
+	<select id="userDetail" parameterType="EmployeeVO"
+		resultMap="employeeDetails">
+		SELECT employee.id,
 		employee.name,
 		employee.phone_number,
 		employee.email,
@@ -37,78 +42,85 @@
 		department.name AS "dept_name",
 		department.contact_number ,
 		code.name AS "code_name"
-	FROM employee
-	INNER JOIN department ON employee.department_id = department.id
-	INNER JOIN code ON employee.pos_id = code.id WHERE employee.id = #{id};
+		FROM employee
+		INNER JOIN department ON employee.department_id = department.id
+		INNER JOIN code ON employee.pos_id = code.id WHERE employee.id = #{id};
 	</select>
 
 
-<select id="getDetail" parameterType="String">
-SELECT * from employee where id=#{id}
-</select>
-    
-    
-    
-<select id="userList" resultType="employeeVO" parameterType="Pager">
-				select * 
-				from employee 
-				order by id  DESC 
-				Limit #{startIndex}, #{perPage}
-</select>
-
-
-<select id="getTotalCount">
-			select count(id) from employee;
-</select>
-	
-
-
-<update id="password"  parameterType="EmployeeVO">
-update employee set password =#{password} 
-WHERE id = #{id} 
-  AND name = #{name} 
-  AND email = #{email}
-</update>
+	<select id="getDetail" parameterType="String">
+		SELECT * from employee where id=#{id}
+	</select>
 
 
 
+	<select id="userList" resultType="employeeVO"
+		parameterType="Pager">
+		select *
+		from employee
+		order by id DESC
+		Limit #{startIndex}, #{perPage}
+	</select>
 
-    <resultMap type="EmployeeVO" id="employeeDetails">
-    	<id column="id" property="id"/>
-    	<result column="password" property="password"/>
-    	<result column="name" property="name"/>
-    	<result column="phone_number" property="phoneNumber"/>
-    	<result column="email" property="email"/>
-    	<result column="address" property="address"/>
-    	<result column="address_detail" property="addressDetail"/>
-    	<result column="postcode" property="postcode"/>
-    	<result column="date_of_employment" property="dateOfEmployment"/>
-    	<result column="resident_number" property="residentNumber"/>
-    	<result column="salary" property="salary"/>
-    	<result column="account_number" property="accountNumber"/>
-    	<result column="bank_name" property="bankName"/>
-    	<result column="is_leaved" property="isLeaved"/>
-    	<result column="department_id" property="departmentId"/>
-    	<result column="pos_id" property="posId"/>
-    
-    <association property="department" javaType="DepartmentVO">
-    <result column="dept_name" property="name"/>
-    <result column="contact_Number" property="contactNumber"/>
-     <result column="sort" property="sort"/>
-     <result column="upper_id" property="upperId"/>
-     <result column="depth" property="depth"/>
-    </association>
-    
-    
-    <association property="position" javaType="CodeVO">
-    <result column="type_id" property="typeId"/>
-    <result column="code_name" property="name"/>
-    <result column="use" property="use"/>
-    </association>
-    </resultMap>
 
-    
-    
-    
-    
+	<select id="getTotalCount">
+		select count(id) from employee;
+	</select>
+
+
+
+	<update id="password" parameterType="EmployeeVO">
+		update employee set password =#{password}
+		WHERE id = #{id}
+		AND name = #{name}
+		AND email = #{email}
+	</update>
+
+
+
+
+	<resultMap type="EmployeeVO" id="employeeDetails">
+		<id column="id" property="id" />
+		<result column="password" property="password" />
+		<result column="name" property="name" />
+		<result column="phone_number" property="phoneNumber" />
+		<result column="email" property="email" />
+		<result column="address" property="address" />
+		<result column="address_detail" property="addressDetail" />
+		<result column="postcode" property="postcode" />
+		<result column="date_of_employment" property="dateOfEmployment" />
+		<result column="resident_number" property="residentNumber" />
+		<result column="salary" property="salary" />
+		<result column="account_number" property="accountNumber" />
+		<result column="bank_name" property="bankName" />
+		<result column="is_leaved" property="isLeaved" />
+		<result column="department_id" property="departmentId" />
+		<result column="pos_id" property="posId" />
+
+		<association property="department" javaType="DepartmentVO">
+			<result column="dept_name" property="name" />
+			<result column="contact_Number" property="contactNumber" />
+			<result column="sort" property="sort" />
+			<result column="upper_id" property="upperId" />
+			<result column="depth" property="depth" />
+		</association>
+
+
+		<association property="position" javaType="CodeVO">
+			<result column="type_id" property="typeId" />
+			<result column="code_name" property="name" />
+			<result column="use" property="use" />
+		</association>
+		<association property="social" javaType="SocialVO">
+			<result column="social_id" property="social_id" />
+			<result column="kind" property="kind" />
+			<result column="employee_id" property="employeeId" />
+
+		</association>
+	</resultMap>
+
+
+
+
+
 </mapper>

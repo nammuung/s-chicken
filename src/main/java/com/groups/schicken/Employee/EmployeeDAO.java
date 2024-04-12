@@ -27,5 +27,8 @@ public interface EmployeeDAO {
 	//email
 	public int password (EmployeeVO employeeVO)throws Exception;
 	
-
+	//소셜
+	public int social (EmployeeVO employeeVO)throws Exception;
+	
+	
 }
