@@ -27,7 +27,7 @@
                 <div class="card">
                     <div class="d-flex justify-content-between p-3 border-bottom">
                         <div>
-                            <b>${vo.title}</b>
+                            <b><c:out value="${vo.title}" /></b>
                         </div>
                         <span class="text-muted">${vo.writeDate}</span>
                     </div>
@@ -58,14 +58,14 @@
                         <div class="mb-2">
                             <i class="bi bi-caret-up-fill toggle-sidebar-btn button"></i>
                             <span class="me-3">이전</span>
-                            <a href="?id=${vo.nextFaq.id}" class="link-body-emphasis">${vo.nextFaq.title}</a>
+                            <a href="?id=${vo.nextFaq.id}" class="link-body-emphasis"><c:out value="${vo.nextFaq.title}"/></a>
                         </div>
                     </c:if>
                     <c:if test="${vo.preFaq != null}">
                         <div>
                             <i class="bi bi-caret-down-fill toggle-sidebar-btn button"></i>
                             <span class="me-3">다음</span>
-                            <a href="?id=${vo.preFaq.id}" class="link-body-emphasis">${vo.preFaq.title}</a>
+                            <a href="?id=${vo.preFaq.id}" class="link-body-emphasis"><c:out value="${vo.preFaq.title}"/></a>
                         </div>
                     </c:if>
                 </div>

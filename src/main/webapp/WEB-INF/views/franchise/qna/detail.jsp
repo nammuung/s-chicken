@@ -28,7 +28,7 @@
                     <div class="d-flex justify-content-between p-3 border-bottom">
                         <div>
                             <span class="me-3 text-nowrap">${vo.writer.name}</span>
-                            <b>${vo.title}</b>
+                            <b><c:out value="${vo.title}" /></b>
                         </div>
                         <span class="text-nowrap text-muted">${vo.writeDate}</span>
                     </div>
@@ -59,14 +59,14 @@
                         <div class="mb-2">
                             <i class="bi bi-caret-up-fill toggle-sidebar-btn button"></i>
                             <span class="me-3">이전</span>
-                            <a href="?id=${vo.nextQna.id}" class="link-body-emphasis">${vo.nextQna.title}</a>
+                            <a href="?id=${vo.nextQna.id}" class="link-body-emphasis"><c:out value="${vo.nextQna.title}"/></a>
                         </div>
                     </c:if>
                     <c:if test="${vo.preQna != null}">
                         <div>
                             <i class="bi bi-caret-down-fill toggle-sidebar-btn button"></i>
                             <span class="me-3">다음</span>
-                            <a href="?id=${vo.preQna.id}" class="link-body-emphasis">${vo.preQna.title}</a>
+                            <a href="?id=${vo.preQna.id}" class="link-body-emphasis"><c:out value="${vo.preQna.title}"/> </a>
                         </div>
                     </c:if>
                 </div>
@@ -95,7 +95,7 @@
                                         <b>${vo.comment.employee.department.name} ${vo.comment.employee.name} 매니저</b>
                                     </div>
                                     <div class="me-3">
-                                            ${vo.comment.content}
+                                        <c:out value="${vo.comment.content}" />
                                     </div>
                                 </div>
                                 <div class="text-nowrap text-muted">
