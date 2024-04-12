@@ -27,10 +27,10 @@
                 <div class="card">
                     <div class="d-flex justify-content-between p-3 border-bottom">
                         <div>
-                            <span class="me-3">${vo.writer.name}</span>
+                            <span class="me-3 text-nowrap">${vo.writer.name}</span>
                             <b>${vo.title}</b>
                         </div>
-                        <span class="text-muted">${vo.writeDate}</span>
+                        <span class="text-nowrap text-muted">${vo.writeDate}</span>
                     </div>
 
                     <div class="card-body pt-3" style="min-height: 10vh">
@@ -91,14 +91,14 @@
                         <div class="d-flex mb-2">
                             <div class="d-flex justify-content-between w-100">
                                 <div class="d-flex">
-                                    <div class="me-3">
-                                        <b>${vo.comment.employee.name}</b>
+                                    <div class="me-3 text-nowrap">
+                                        <b>${vo.comment.employee.department.name} ${vo.comment.employee.name} 매니저</b>
                                     </div>
-                                    <div>
+                                    <div class="me-3">
                                             ${vo.comment.content}
                                     </div>
                                 </div>
-                                <div>
+                                <div class="text-nowrap text-muted">
                                     ${vo.comment.writeDate}
                                 </div>
                             </div>

@@ -38,7 +38,7 @@
                                 <input name="title" value="${vo.title}" type="text" class="form-control" id="title" placeholder="제목을 입력해주세요.">
                             </div>
                             <input id="content" type="hidden" name="content">
-                            <div id="editor"></div>
+                            <div id="editor">${vo.content}</div>
 
 
                             <button id="submitButton" type="button" class="btn btn-primary float-end mt-3">수정하기</button>
@@ -62,7 +62,7 @@
             editor.editing.view.change(writer => {
                 writer.setStyle('height', '50vh', editor.editing.view.document.getRoot());
             });
-            editor.setData('${vo.content}')
+            <%--editor.setData('${vo.content}')--%>
         })
         .catch(error => {
             console.error(error);

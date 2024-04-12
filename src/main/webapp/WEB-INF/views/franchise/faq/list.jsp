@@ -32,10 +32,10 @@
                             </div>
                             <div class="accordion accordion-flush" id="accordionFlushExample">
                                 <c:forEach items="${importantList}" var="item" varStatus="status">
-                                    <div class="accordion-item">
+                                    <div class="accordion-item ms-3 me-3 p-3">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${status.index}" aria-expanded="false" aria-controls="flush-collapse${status.index}">
-                                                    ${item.title}
+                                                <b># ${item.title}</b>
                                             </button>
                                         </h2>
                                         <div id="flush-collapse${status.index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
