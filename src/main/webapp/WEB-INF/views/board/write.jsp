@@ -39,7 +39,7 @@ String strDate = simpleDate.format(date);
                 <div class="card">
 
                     <div class="card-body mt-3">
-                        <form id=frm method="post" action="write" enctype="multipart/form-data">
+                        <form id="frm" method="post" action="write" enctype="multipart/form-data">
 
                             <div class="mb-3">
                                 <label for="sort" class="form-label">종류</label>
@@ -62,7 +62,7 @@ String strDate = simpleDate.format(date);
 					        </textarea>
                             <div class="form-check form-switch mt-3 mb-3">
                                 <label for="important" class="form-label">중요 공지</label>
-                                <input type="checkbox" class="form-check-input" id="important">
+                                <input type="checkbox" class="form-check-input" id="important" name="important" onclick="check1()">
                             </div>
                             <div>
                             	<input type="file" name="attach">
@@ -82,7 +82,7 @@ String strDate = simpleDate.format(date);
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
 
-<script src="/js/notice/add.js"></script>
+<script src="/js/board/write.js"></script>
 </body>
 
 </html>

@@ -1,15 +1,11 @@
 package com.groups.schicken.Employee;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import com.groups.schicken.franchise.mapper.FranchiseMapper;
+import com.groups.schicken.franchise.FranchiseMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,17 +21,12 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 
-import com.groups.schicken.franchise.mapper.FranchiseMapper;
-import com.groups.schicken.franchise.object.FranchiseVO;
+import com.groups.schicken.franchise.FranchiseVO;
 import com.groups.schicken.util.Pager;
 
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMessage.RecipientType;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -55,7 +46,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	private String ePw;
+
 	
 
 	@Override
@@ -99,20 +90,20 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	    String residentNumbers = employeeVO.getResidentNumber().replaceAll("-", "");
 	    // 제거된 생년월일을 다시 설정
 	    employeeVO.setResidentNumber(residentNumbers);
-	    
+
 	    // 입사일에서 하이픈 제거
 	    String dateOfEmploymens = employeeVO.getDateOfEmployment().replaceAll("-", "");
 	    // 제거된 입사일을 다시 설정
 	    employeeVO.setDateOfEmployment(dateOfEmploymens);
-	    
+
 	    // 나머지 코드는 그대로 유지
 	    employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
 	    int result = employeeDAO.join(employeeVO);
-		    
-	    
+
+
 	    return result;
 	}
-	
+
 
 	public EmployeeVO userDetail (EmployeeVO employeeVO)throws Exception{
 		return employeeDAO.userDetail(employeeVO);
@@ -128,25 +119,48 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
 	// 소셜 로그인
 	@Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
 		ClientRegistration clientRegistration = userRequest.getClientRegistration();  // 인가 서버에서 클라이언트의 정보를 가져와 매핑시킴
+		
+		
+		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
 		
 		log.info("Client ID == > {}", clientRegistration.getClientId());
 		log.info("Client Name == > {}", clientRegistration.getClientName());
 		
-		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
-		
 		if(clientRegistration.getClientName().equals("Kakao")) {
 			
-			user = this.kakao(user);
+			try {
+				user = this.kakao(user);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
-		SocialVO socialVO = new SocialVO();
-		socialVO.setKind(clientRegistration.getClientName());  
-		((EmployeeVO)user).setSocialVO(socialVO);              
-
 		return user;
 	}
+	
+	
+	
+	// Kakao
+	private OAuth2User kakao(OAuth2User oAuth2User)throws Exception{
+		Map<String, Object> map = oAuth2User.getAttribute("properties");
+		EmployeeVO employeeVO = new EmployeeVO();
+		// 사용자 이름을 꺼내옴
+		
+		employeeVO.setId(oAuth2User.getName());
+		employeeVO.setAttributes(oAuth2User.getAttributes());
+		
+		
+		return employeeVO;
+		
+		
+		
+		
+	}
+	
+	
+	
 	
 	
 	 // 임시 비밀번호 생성 메서드
@@ -156,14 +170,18 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
     }
 
     // 비밀번호 재설정 및 임시 비밀번호 전송 메서드
-    public boolean resetPassword(String email) {
+    public boolean resetPassword(EmployeeVO employeeVO)throws Exception {
         // 임시 비밀번호 생성
         String tempPassword = generateTempPassword();
 
-        // DB 업데이트 하는거 필요함 
+        // DB 업데이트 하는거 필요함
+        
+        employeeVO.setPassword(passwordEncoder.encode(tempPassword));
+        employeeDAO.password(employeeVO);
+
 
         // 메일로 임시 비밀번호 전송
-        sendTempPasswordEmail(email, tempPassword);
+        sendTempPasswordEmail(employeeVO.getEmail(), tempPassword);
 		return true;
     }
 
@@ -188,8 +206,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
         }
     }
 
-	
 
-	
+
+
 
 }

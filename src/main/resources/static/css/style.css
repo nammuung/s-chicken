@@ -111,6 +111,20 @@
   color : #7749F8!important;
 }
 
+.h-500px{
+  height: 500px;
+  overflow-y: auto;
+}
+
+.bg-schicken-light-hover:hover{
+  background-color: #C7A9FF !important;
+}
+
+#note-message-selected-list .selected {
+  background-color: #7749f8 !important;
+  color : white;
+}
+
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/

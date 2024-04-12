@@ -1,5 +1,6 @@
 package com.groups.schicken.util;
 
+import com.groups.schicken.common.vo.FileVO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

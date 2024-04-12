@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.groups.schicken.util.FileVO;
+import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.util.Pager;
 
 @Mapper
@@ -27,5 +27,7 @@ public interface BoardDAO {
 	public int hit(BoardVO boardVO)throws Exception;
 	
 	public int update(BoardVO boardVO)throws Exception;
+	
+	public int delete(BoardVO boardVO)throws Exception;
 	
 }

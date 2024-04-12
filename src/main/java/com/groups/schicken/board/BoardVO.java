@@ -2,7 +2,7 @@ package com.groups.schicken.board;
 
 import java.util.List;
 
-import com.groups.schicken.util.FileVO;
+import com.groups.schicken.common.vo.FileVO;
 
 import lombok.Data;
 

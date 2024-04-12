@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.groups.schicken.util.FileVO;
 import com.groups.schicken.util.Pager;
 
 public interface BoardService {
@@ -21,6 +20,8 @@ public interface BoardService {
 	
 	public int hit(BoardVO boardVO)throws Exception;
 	
-	public int update(BoardVO boardVO,MultipartFile attach)throws Exception;
+	public int update(BoardVO boardVO)throws Exception;
+	
+	public int delete(BoardVO boardVO)throws Exception;
 	
 }

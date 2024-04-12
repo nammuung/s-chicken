@@ -129,7 +129,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/manager/qna/list">
+                    <a href="/franchise/qna/list">
                         <i class="bi bi-circle"></i><span>가맹점 QnA</span>
                     </a>
                 </li>

@@ -35,7 +35,7 @@ public class Pager {
 		//인덱스번호 1 ->0
 		//인덱스번호 2 ->10
 		//인덱스번호 3 ->20
-		this.startIndex= (this.getPage()-1)*this.getPage();
+		this.startIndex= (this.getPage()-1)*this.getPerPage();
 		
 	}
 	
@@ -87,6 +87,7 @@ public class Pager {
 	         this.setLastNum(totalPage);
 	         this.setLast(true);
 	      }
+		  makeIndex();
 	   }
 	
 	//Getter		멤버번수명 첫글자 대문자

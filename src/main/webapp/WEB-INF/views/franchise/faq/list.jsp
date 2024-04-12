@@ -16,9 +16,44 @@
 <c:import url="../../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>가맹점 FAQ</h1>
+        <a href="./list">
+            <h1>가맹점 FAQ</h1>
+        </a>
     </div>
     <section class="section ms-3 me-3">
+        <c:if test="${importantList != null and importantList.size() != 0}">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-center m-3 p-3">
+                                <h1><b>자주 묻는 질문</b></h1>
+                            </div>
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <c:forEach items="${importantList}" var="item" varStatus="status">
+                                    <div class="accordion-item ms-3 me-3 p-3">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${status.index}" aria-expanded="false" aria-controls="flush-collapse${status.index}">
+                                                <b># ${item.title}</b>
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapse${status.index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">${item.content}</div>
+                                            <div class="d-flex justify-content-end mb-3">
+                                                <a href="/franchise/faq/detail?id=${item.id}">
+                                                    <span class="text-muted">자세히 보기</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
         <div class="row justify-content-end p-3">
             <div class="col-auto">
                 <form class="search-form d-flex align-items-center ">
@@ -38,31 +73,6 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="d-flex justify-content-center m-3 p-3">
-                            <h1><b>자주 묻는 질문</b></h1>
-                        </div>
-                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                            <c:forEach items="${importantList}" var="item" varStatus="status">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${status.index}" aria-expanded="false" aria-controls="flush-collapse${status.index}">
-                                            ${item.title}
-                                        </button>
-                                    </h2>
-                                    <div id="flush-collapse${status.index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body">${item.content}</div>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
                         <table class="table table-hover text-center ">
                             <thead>
                             <tr>
@@ -73,7 +83,7 @@
                             <tbody>
                                 <c:forEach items="${commonList}" var="item" varStatus="status">
                                     <tr onclick="location.href = '/franchise/faq/detail?id=${item.id}'">
-                                        <td>${status.index+1}</td>
+                                        <td>${status.index+1+pager.startIndex}</td>
                                         <td class="text-start">
                                             <a href="#" class="link-dark">${item.title}</a>
                                         </td>
@@ -93,7 +103,7 @@
                     </li>
                 </c:if>
                 <c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="page">
-                    <li class="page-item active"><a class="page-link" href="list?kind=${pager.kind}&search=${pager.search}&page=${page}">1</a></li>
+                    <li class="page-item <c:if test="${pager.page == page}">active</c:if>"><a class="page-link" href="list?kind=${pager.kind}&search=${pager.search}&page=${page}">${page}</a></li>
                 </c:forEach>
                 <c:if test="${!pager.last}">
                     <li class="page-item">
