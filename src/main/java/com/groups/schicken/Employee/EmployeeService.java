@@ -99,20 +99,20 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	    String residentNumbers = employeeVO.getResidentNumber().replaceAll("-", "");
 	    // 제거된 생년월일을 다시 설정
 	    employeeVO.setResidentNumber(residentNumbers);
-	    
+
 	    // 입사일에서 하이픈 제거
 	    String dateOfEmploymens = employeeVO.getDateOfEmployment().replaceAll("-", "");
 	    // 제거된 입사일을 다시 설정
 	    employeeVO.setDateOfEmployment(dateOfEmploymens);
-	    
+
 	    // 나머지 코드는 그대로 유지
 	    employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
 	    int result = employeeDAO.join(employeeVO);
-		    
-	    
+
+
 	    return result;
 	}
-	
+
 
 	public EmployeeVO userDetail (EmployeeVO employeeVO)throws Exception{
 		return employeeDAO.userDetail(employeeVO);
@@ -215,8 +215,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
         }
     }
 
-	
 
-	
+
+
 
 }
