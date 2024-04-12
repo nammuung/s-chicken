@@ -39,30 +39,32 @@ String strDate = simpleDate.format(date);
                 <div class="card">
 
                     <div class="card-body mt-3">
-                        <form id="frm" method="post" action="write" enctype="multipart/form-data">
+                        <form id="frm" method="post" action="./update" enctype="multipart/form-data">
 
                             <div class="mb-3">
                                 <label for="sort" class="form-label">종류</label>
-                                <select class="form-select" style="width: 200px;"name="sort" id=sort>
+                                <select class="form-select" style="width: 200px;"id="sort" name="sort" data-sort="${vo.sort}" id=sort>
                                     <option value="0">경조사 게시</option>
                                     <option value="1">대표 게시</option>
                                 </select>
                             </div>
                             
+                            
+                            <input type="hidden" name="id" value="${vo.id}">
                             <input type="hidden" name="writerId" value="123">
                             <input type="hidden" name="isDelete" value="0">
                             <input type="hidden" name="writeDate" value="<%=strDate %>">
                         
                             <div class="mb-3">
                                 <label for="title" class="form-label"><b>제목</b></label>
-                                <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력해주세요.">
+                                <input type="text" class="form-control" id="title" name="title" value="${vo.title}" placeholder="제목을 입력해주세요.">
                             </div>
                             <textarea name="content" id="editor">
-
+								${vo.content}
 					        </textarea>
                             <div class="form-check form-switch mt-3 mb-3">
                                 <label for="important" class="form-label">중요 공지</label>
-                                <input type="checkbox" class="form-check-input" id="important" name="important" onclick="check1()">
+                                <input type="checkbox" class="form-check-input" id="important" name="important" onclick="check1()" value="${vo.important}">
                             </div>
                             <div>
                             	<input type="file" name="attach">
@@ -82,7 +84,7 @@ String strDate = simpleDate.format(date);
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
 
-<script src="/js/board/write.js"></script>
+<script src="/js/board/update.js"></script>
 </body>
 
 </html>

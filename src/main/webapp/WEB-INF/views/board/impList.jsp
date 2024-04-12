@@ -21,16 +21,16 @@
     <section class="section">
         <div class="row justify-content-end p-3">
             <div class="col-auto">
-                <form class="search-form d-flex align-items-center " method="POST">
-                    <label>
+                <form class="search-form d-flex align-items-center " method="get" action="/impList">
+                    <label for="search">
                         <select class="form-select w-auto me-1">
-                            <option value="0">제목</option>
-                            <option value="1">내용</option>
-                            <option value="2">제목+내용</option>
+                            <option value="kind1">제목</option>
+                            <option value="kind2">내용</option>
+                            <option value="kind3">제목+내용</option>
                         </select>
                     </label>
-                    <input type="text" name="query" placeholder="검색" title="Enter search keyword">
-                    <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+                    <input type="text" id="search" name="search" placeholder="검색" title="Enter search keyword">
+                    <button type="submit"><i class="bi bi-search"></i></button>
                 </form>
             </div>
         </div>
