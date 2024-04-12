@@ -133,9 +133,9 @@
             SELECT nextval(seq1)
         </selectKey>
         INSERT INTO franchise_qna_comment
-        (id, qna_id, write_date, content, employee_id, is_deleted)
+        (id, qna_id, write_date, content, employee_id)
         VALUES
-        (#{id}, #{qnaId}, #{writeDate}, #{content}, #{employeeId}, 0)
+        (#{id}, #{qnaId}, #{writeDate}, #{content}, #{employeeId})
     </insert>
     <select id="getFirstSequenceQna">
         SELECT
