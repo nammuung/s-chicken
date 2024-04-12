@@ -54,9 +54,9 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
+
 	private String ePw;
-	
+
 
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
@@ -99,20 +99,20 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	    String residentNumbers = employeeVO.getResidentNumber().replaceAll("-", "");
 	    // 제거된 생년월일을 다시 설정
 	    employeeVO.setResidentNumber(residentNumbers);
-	    
+
 	    // 입사일에서 하이픈 제거
 	    String dateOfEmploymens = employeeVO.getDateOfEmployment().replaceAll("-", "");
 	    // 제거된 입사일을 다시 설정
 	    employeeVO.setDateOfEmployment(dateOfEmploymens);
-	    
+
 	    // 나머지 코드는 그대로 유지
 	    employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
 	    int result = employeeDAO.join(employeeVO);
-		    
-	    
+
+
 	    return result;
 	}
-	
+
 
 	public EmployeeVO userDetail (EmployeeVO employeeVO)throws Exception{
 		return employeeDAO.userDetail(employeeVO);
@@ -130,25 +130,25 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		ClientRegistration clientRegistration = userRequest.getClientRegistration();  // 인가 서버에서 클라이언트의 정보를 가져와 매핑시킴
-		
+
 		log.info("Client ID == > {}", clientRegistration.getClientId());
 		log.info("Client Name == > {}", clientRegistration.getClientName());
-		
+
 		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
-		
+
 		if(clientRegistration.getClientName().equals("Kakao")) {
-			
-			user = this.kakao(user);
+
+//			user = this.kakao(user);
 		}
-		
+
 		SocialVO socialVO = new SocialVO();
-		socialVO.setKind(clientRegistration.getClientName());  
-		((EmployeeVO)user).setSocialVO(socialVO);              
+		socialVO.setKind(clientRegistration.getClientName());
+		((EmployeeVO)user).setSocialVO(socialVO);
 
 		return user;
 	}
-	
-	
+
+
 	 // 임시 비밀번호 생성 메서드
     private String generateTempPassword() {
         // 임시 비밀번호를 랜덤하게 생성하는 로직 추가 (예: UUID 사용)
@@ -160,7 +160,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
         // 임시 비밀번호 생성
         String tempPassword = generateTempPassword();
 
-        // DB 업데이트 하는거 필요함 
+        // DB 업데이트 하는거 필요함
 
         // 메일로 임시 비밀번호 전송
         sendTempPasswordEmail(email, tempPassword);
@@ -188,8 +188,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
         }
     }
 
-	
 
-	
+
+
 
 }

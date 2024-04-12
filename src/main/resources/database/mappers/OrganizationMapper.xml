@@ -52,8 +52,36 @@
                 , 100 - CAST(code.id AS INTEGER) AS "sort"
             FROM employee e
                 INNER JOIN OC ON e.department_id = OC.id
-                INNER JOIN code ON e.pos_id = code.id
+                INNER JOIN code ON e.pos_id = code.id AND code.type_id = '300'
         ) uoc
         ORDER BY uoc.depth, uoc.type desc, sort
+    </select>
+
+    <select id="getEmployeesByDepartmentId" resultType="OrganizationVO">
+        SELECT
+              e.id
+            , concat(d.name,' ',c.name,' ',e.name) AS "text"
+            , d.id AS "parent"
+            , c.id AS "sort"
+        FROM employee e
+            INNER JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
+            INNER JOIN department d ON d.id = e.department_id
+        WHERE
+            d.id = #{deptId}
+        ORDER BY sort desc
+    </select>
+
+    <select id="getEmployeeByEmployeeId" resultType="OrganizationVO">
+        SELECT
+              e.id
+            , concat(d.name,' ',c.name,' ',e.name) AS "text"
+            , d.id AS "parent"
+            , c.id AS "sort"
+        FROM employee e
+            INNER JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
+            INNER JOIN department d ON d.id = e.department_id
+        WHERE
+            e.id = #{empId}
+        ORDER BY sort desc
     </select>
 </mapper>
