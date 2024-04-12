@@ -25,7 +25,7 @@
                     <div class="d-flex justify-content-between p-3 border-bottom">
                         <div>
                             <span class="me-3">관리자</span>
-                            <b>${vo.title}</b>
+                            <b data-vo="${vo.title}"></b>
                         </div>
                         <span class="text-muted">${vo.writeDate}</span>
                     </div>
@@ -44,7 +44,22 @@
                             <p style="line-height: 24px; font-size: 12pt;"><span style="font-size: 10pt;">&nbsp;</span></p>
                             <p style="line-height: 24px; font-size: 12pt;"><span style="font-family: '맑은 고딕'; letter-spacing: -0.25pt;">감사합니다.&nbsp;</span></p></div> -->
                     </div>
+                    <div>      
+                    	<c:forEach items="${vo.fileVOs}" var="file">
+                    		<a href="/${board}/fileDown?id=${file.id}">${file.originName}</a>
+                    	</c:forEach>
+                    </div>
                 </div>
+                 <div class="row justify-content-end p-3">
+		            <div class="col-auto">            	               	
+		               	<a href="./update" id="update" class="btn btn-primary">수정하기</a>
+		               	<a href="./delete" id="del" class="btn btn-primary">삭제하기</a>
+		            </div>
+		        </div>
+		        <form id="frm" action="./update" method="get">
+		        	<input type="text" name="id" value="${vo.id}" hidden>
+		        	<input type="text" id="title" name="title" value="${vo.title}" hidden>
+		        </form>
             </div>
             <div class="col-12">
                 <div class="card">
@@ -99,6 +114,7 @@
     </section>
 </main><!-- End #main -->
 <!-- ======= Footer ======= -->
+<script src="../js/board/detail.js"></script>
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>

@@ -87,9 +87,16 @@ public class RepresentService implements BoardService {
 	}
 
 	@Override
-	public int update(BoardVO boardVO, MultipartFile attach) throws Exception {
+	public int update(BoardVO boardVO) throws Exception {
 		int result = representDAO.update(boardVO);
 		
+		
+		return result;
+	}
+
+	@Override
+	public int delete(BoardVO boardVO) throws Exception {
+		int result = representDAO.delete(boardVO);
 		
 		return result;
 	}

@@ -7,8 +7,9 @@
 	<sql id="search">
 		<where>
 			<choose>
-				<when test="kind='kind1'">content</when>
-				<otherwise>writerId</otherwise>
+				<when test="kind='kind1'">title</when>
+				<when test="kind='kind2'">writerId</when>
+				<otherwise>title + writerId</otherwise>
 			</choose>
 			LIKE CONCAT('%',#{search},'%')
 		</where>		
@@ -43,6 +44,7 @@
 		<result column="hit" property="hit"/>
 		<result column="sort" property="sort"/>
 		<result column="writer_id" property="writerId"/>
+		<result column="important" property="important"/>
 		<collection property="fileVOs" javaType="List" ofType="FileVO">
 			<id column="id" property="id"/>
 			<result column="name" property="name"/>
@@ -61,7 +63,7 @@
 		</selectKey>
 		INSERT INTO represent
 		VALUES
-		(#{id},#{writeDate},#{content},0,#{writerId},0,#{sort},#{title})
+		(#{id},#{writeDate},#{content},0,#{writerId},0,#{sort},#{title},#{important})
 	</insert>
 	
 	<insert id="fileAdd" parameterType="FileVO" keyProperty="id">
@@ -72,21 +74,12 @@
 		VALUES(#{id},#{name},#{originName},#{url},#{extension},#{parentId},#{tblId})
 	</insert>
 	
-	<select id="pastPage" resultType="BoardVO" parameterType="BoardVO"> <!-- &lt; 이전 -->
+	<select id="pastPage" resultType="BoardVO" parameterType="BoardVO"> <!-- &lt; 이전게시판보기 -->
 			SELECT id, title, sort
 			FROM represent
 			WHERE id  &lt; #{id}
 			AND sort = 1
 			ORDER BY id DESC
-			LIMIT 1
-	</select>
-	
-	<select id="nextPage" resultType="BoardVO" parameterType="BoardVO"> <!--  -->
-		SELECT id, title,sort
-			FROM represent
-			WHERE id &gt; #{id}	
-			AND sort = 1
-			ORDER BY id
 			LIMIT 1
 	</select>
 	
@@ -96,10 +89,18 @@
 		WHERE id=#{id}
 	</update>
 	
-	<update id="delete" parameterType="BoardVO">
-		UPDATE represent SET
-		is_delete=#{isDelete}
-	</update>
+	<select id="nextPage" resultType="BoardVO" parameterType="BoardVO"> <!-- &gt; 다음게시판보기  -->
+		SELECT id, title,sort
+			FROM represent
+			WHERE id &gt; #{id}	
+			AND sort = 1
+			ORDER BY id
+			LIMIT 1
+	</select>
+	
+
+	
+
 	
 	<update id="update" parameterType="BoardVO">
 		UPDATE represent
@@ -112,9 +113,16 @@
 			</if>
 			<if test="important !=null and important !=''">
 				important=#{important}
-			</if>			
+			</if>
 		</set>
-		WHERE id=#{id}		
+		WHERE id=#{id}
+	</update>
+
+
+	<update id="delete" parameterType="BoardVO">
+		UPDATE represent SET
+		is_deleted=1,title=#{title}
+		WHERE id=#{id}
 	</update>
 
 

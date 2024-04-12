@@ -28,4 +28,6 @@ public interface BoardDAO {
 	
 	public int update(BoardVO boardVO)throws Exception;
 	
+	public int delete(BoardVO boardVO)throws Exception;
+	
 }
