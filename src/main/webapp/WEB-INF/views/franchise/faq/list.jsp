@@ -19,6 +19,39 @@
         <h1>가맹점 FAQ</h1>
     </div>
     <section class="section ms-3 me-3">
+        <c:if test="${importantList.size() != 0}">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-center m-3 p-3">
+                                <h1><b>자주 묻는 질문</b></h1>
+                            </div>
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <c:forEach items="${importantList}" var="item" varStatus="status">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${status.index}" aria-expanded="false" aria-controls="flush-collapse${status.index}">
+                                                    ${item.title}
+                                            </button>
+                                        </h2>
+                                        <div id="flush-collapse${status.index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">${item.content}</div>
+                                            <div class="d-flex justify-content-end mb-3">
+                                                <a href="/franchise/faq/detail?id=${item.id}">
+                                                    <span class="text-muted">자세히 보기</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:if>
         <div class="row justify-content-end p-3">
             <div class="col-auto">
                 <form class="search-form d-flex align-items-center ">
@@ -32,36 +65,6 @@
                     <input type="text" name="search" placeholder="검색" title="Enter search keyword" value="${pager.search}">
                     <button type="submit" title="Search"><i class="bi bi-search"></i></button>
                 </form>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-center m-3 p-3">
-                            <h1><b>자주 묻는 질문</b></h1>
-                        </div>
-                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                            <c:forEach items="${importantList}" var="item" varStatus="status">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${status.index}" aria-expanded="false" aria-controls="flush-collapse${status.index}">
-                                            ${item.title}
-                                        </button>
-                                    </h2>
-                                    <div id="flush-collapse${status.index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body">${item.content}</div>
-                                        <div class="d-flex justify-content-end mb-3">
-                                            <a href="/franchise/faq/detail?id=${item.id}">
-                                                <span class="text-muted">자세히 보기</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="row justify-content-center">
