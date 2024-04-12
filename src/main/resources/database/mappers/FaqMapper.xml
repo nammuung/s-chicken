@@ -10,11 +10,13 @@
         WHERE is_important = 1 AND is_deleted != 1
     </select>
     <select id="getFaqList">
+
         SELECT *
         FROM franchise_faq
         WHERE is_important != 1 AND is_deleted != 1
         <include refid="search"/>
         ORDER BY id DESC
+        LIMIT ${startIndex}, ${perPage}
     </select>
     <insert id="addFaq">
         <selectKey resultType="Long" order="BEFORE" keyProperty="id">

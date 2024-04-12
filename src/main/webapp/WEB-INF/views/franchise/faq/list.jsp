@@ -16,10 +16,12 @@
 <c:import url="../../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>가맹점 FAQ</h1>
+        <a href="./list">
+            <h1>가맹점 FAQ</h1>
+        </a>
     </div>
     <section class="section ms-3 me-3">
-        <c:if test="${importantList.size() != 0}">
+        <c:if test="${importantList != null}">
             <div class="row justify-content-center">
                 <div class="col-12">
                     <div class="card">
@@ -81,7 +83,7 @@
                             <tbody>
                                 <c:forEach items="${commonList}" var="item" varStatus="status">
                                     <tr onclick="location.href = '/franchise/faq/detail?id=${item.id}'">
-                                        <td>${status.index+1}</td>
+                                        <td>${status.index+1+pager.startIndex}</td>
                                         <td class="text-start">
                                             <a href="#" class="link-dark">${item.title}</a>
                                         </td>
@@ -101,7 +103,7 @@
                     </li>
                 </c:if>
                 <c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="page">
-                    <li class="page-item active"><a class="page-link" href="list?kind=${pager.kind}&search=${pager.search}&page=${page}">1</a></li>
+                    <li class="page-item <c:if test="${pager.page == page}">active</c:if>"><a class="page-link" href="list?kind=${pager.kind}&search=${pager.search}&page=${page}">${page}</a></li>
                 </c:forEach>
                 <c:if test="${!pager.last}">
                     <li class="page-item">
