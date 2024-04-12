@@ -1,6 +1,7 @@
 package com.groups.schicken.franchise.qna;
 
 import com.groups.schicken.common.vo.ResultVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1/api/franchise/qna/")
+@RequiredArgsConstructor
 public class QnaApi {
-    @Autowired
-    private QnaService qnaService;
+    private final QnaService qnaService;
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteQna(@PathVariable Long id) throws Exception {

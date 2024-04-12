@@ -2,6 +2,7 @@ package com.groups.schicken.franchise;
 
 import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.util.Pager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class FranchiseController {
-    @Autowired
-    private FranchiseService franchiseService;
+    private final FranchiseService franchiseService;
     @GetMapping("/franchise/inquiry")
     public String getFranchiseList(Model model, Pager pager) throws Exception {
         List<FranchiseVO> franchiseVOList = franchiseService.getFranchiseList(pager);

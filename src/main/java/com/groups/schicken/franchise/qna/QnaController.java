@@ -3,6 +3,7 @@ package com.groups.schicken.franchise.qna;
 import com.groups.schicken.franchise.FranchiseVO;
 import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.util.Pager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,9 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/franchise/qna/")
+@RequiredArgsConstructor
 public class QnaController {
-    @Autowired
-    private QnaService qnaService;
+    private final QnaService qnaService;
 
     @GetMapping("add")
     public void addQna(Model model) throws Exception {
