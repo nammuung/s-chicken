@@ -1,11 +1,8 @@
-package com.groups.schicken.franchise.api;
+package com.groups.schicken.franchise.qna;
 
 import com.groups.schicken.Employee.EmployeeService;
 import com.groups.schicken.Employee.EmployeeVO;
-import com.groups.schicken.franchise.object.QnaCommentVO;
-import com.groups.schicken.franchise.object.ResultVO;
-import com.groups.schicken.franchise.service.QnaService;
-import jakarta.websocket.server.PathParam;
+import com.groups.schicken.common.vo.ResultVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

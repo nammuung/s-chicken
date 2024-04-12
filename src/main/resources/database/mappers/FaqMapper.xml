@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.groups.schicken.franchise.mapper.FaqMapper">
+<mapper namespace="com.groups.schicken.franchise.faq.FaqMapper">
     <select id="getImportantFaqList">
         SELECT *
         FROM franchise_faq

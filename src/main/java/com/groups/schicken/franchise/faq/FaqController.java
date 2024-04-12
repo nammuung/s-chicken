@@ -1,9 +1,6 @@
-package com.groups.schicken.franchise.controller;
+package com.groups.schicken.franchise.faq;
 
-import com.groups.schicken.franchise.object.FaqVO;
-import com.groups.schicken.franchise.object.MessageVO;
-import com.groups.schicken.franchise.object.QnaVO;
-import com.groups.schicken.franchise.service.FaqService;
+import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +19,7 @@ public class FaqController {
     public String getFaqDetail(Model model, FaqVO faqVO) throws Exception {
         faqVO = faqService.getFaq(faqVO);
         model.addAttribute("vo", faqVO);
-        return "franchise/faq/detail";
+        return "franchise/faq/detailForFranchise";
     }
     @GetMapping("/franchise/faq/list")
     public String getFaqList(Model model, Pager pager) throws Exception {

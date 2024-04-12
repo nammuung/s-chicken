@@ -1,17 +1,12 @@
-package com.groups.schicken.franchise.controller;
+package com.groups.schicken.franchise;
 
-import com.groups.schicken.franchise.object.FranchiseVO;
-import com.groups.schicken.franchise.object.MessageVO;
-import com.groups.schicken.franchise.service.FranchiseService;
+import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

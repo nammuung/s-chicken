@@ -1,4 +1,4 @@
-package com.groups.schicken.franchise.object;
+package com.groups.schicken.franchise.qna;
 
 import com.groups.schicken.Employee.EmployeeVO;
 import lombok.AllArgsConstructor;

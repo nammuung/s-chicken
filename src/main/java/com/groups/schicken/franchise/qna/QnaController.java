@@ -1,11 +1,8 @@
-package com.groups.schicken.franchise.controller;
+package com.groups.schicken.franchise.qna;
 
-import com.groups.schicken.franchise.object.FranchiseVO;
-import com.groups.schicken.franchise.object.MessageVO;
-import com.groups.schicken.franchise.object.QnaVO;
-import com.groups.schicken.franchise.service.QnaService;
+import com.groups.schicken.franchise.FranchiseVO;
+import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.util.Pager;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

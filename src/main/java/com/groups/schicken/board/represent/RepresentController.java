@@ -3,7 +3,6 @@ package com.groups.schicken.board.represent;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.board.BoardVO;
-import com.groups.schicken.util.FileManager;
-import com.groups.schicken.util.FileVO;
 import com.groups.schicken.util.Pager;
 
 import lombok.extern.slf4j.Slf4j;

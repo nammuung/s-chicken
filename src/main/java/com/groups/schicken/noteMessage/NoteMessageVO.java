@@ -1,6 +1,6 @@
 package com.groups.schicken.noteMessage;
 
-import com.groups.schicken.util.FileVO;
+import com.groups.schicken.common.vo.FileVO;
 import lombok.Data;
 
 @Data

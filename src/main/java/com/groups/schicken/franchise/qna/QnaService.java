@@ -1,9 +1,6 @@
-package com.groups.schicken.franchise.service;
+package com.groups.schicken.franchise.qna;
 
-import com.groups.schicken.franchise.mapper.QnaMapper;
-import com.groups.schicken.franchise.object.FranchiseVO;
-import com.groups.schicken.franchise.object.QnaCommentVO;
-import com.groups.schicken.franchise.object.QnaVO;
+import com.groups.schicken.franchise.FranchiseVO;
 import com.groups.schicken.util.DateManager;
 import com.groups.schicken.util.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
