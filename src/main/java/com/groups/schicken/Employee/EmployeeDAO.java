@@ -24,7 +24,8 @@ public interface EmployeeDAO {
 	
 	public Long getTotalCount(Pager pager)throws Exception;
 	
-	
+	//email
+	public int password (EmployeeVO employeeVO)throws Exception;
 	
 
 }

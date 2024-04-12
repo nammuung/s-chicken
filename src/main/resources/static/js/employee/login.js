@@ -18,8 +18,19 @@ function markButtonClicked() {
 // 서버로 비밀번호 찾기 요청을 보내는 함수
 function submitPasswordReset() {
     var email = document.getElementById("email").value; // 이메일 입력란의 값 가져오기
+    let id = document.getElementById("userid").value;
+    var name = document.getElementById("name").value; // 이름 입력란의 값 가져오기
+    console.log(id);
     if (email.trim() === "") { // 이메일이 비어있는지 확인
         alert("이메일을 입력하세요.");
+        return;
+    }
+    if(id.trim() === ""){
+        alert("아이디를 입력하세요.");
+        return;
+    }
+    if(name.trim() === ""){
+        alert("이름을 입력하세요.");
         return;
     }
 
@@ -27,7 +38,7 @@ function submitPasswordReset() {
     $.ajax({
         type: "POST",
         url: "/employee/resetPassword", // 로컬 서버의 비밀번호 찾기 처리 엔드포인트 URL
-        data: { email: email },
+        data: { email: email , id:id, name:name},
         success: function(response) {
             // 성공적으로 요청을 처리한 경우
             alert("임시 비밀번호가 이메일로 전송되었습니다.");

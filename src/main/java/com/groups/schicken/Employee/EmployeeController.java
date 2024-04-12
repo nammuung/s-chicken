@@ -116,10 +116,21 @@ public class EmployeeController {
 
     // 비밀번호 찾기 요청 처리
     @PostMapping("resetPassword")
-    public String resetPassword(@RequestParam("email") String email, Model model) {
+    public String resetPassword(@RequestParam("email") String email, @RequestParam("name") String name,@RequestParam("id") String id, Model model) throws Exception{
         // 이메일 주소를 이용하여 비밀번호 재설정 메서드 호출
-        boolean result = employeeService.resetPassword(email);
-        return "employee/resetPasswordResult"; // 결과를 보여줄 페이지로 이동
+    	   System.out.println("ID: " + id);
+    	    System.out.println("Name: " + name);
+    	    System.out.println("Email: " + email);
+    	    
+    	    EmployeeVO employeeVO = new EmployeeVO();
+    	    employeeVO.setName(name);
+    	    employeeVO.setEmail(email);
+    	    employeeVO.setId(id);
+    	    
+        boolean result = employeeService.resetPassword(employeeVO);
+        
+       
+        return "employee/login"; // 결과를 보여줄 페이지로 이동
     }
 
 }

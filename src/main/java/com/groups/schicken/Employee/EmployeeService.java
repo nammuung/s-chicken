@@ -55,7 +55,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	private String ePw;
+
 	
 
 	@Override
@@ -128,17 +128,22 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
 	// 소셜 로그인
 	@Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
 		ClientRegistration clientRegistration = userRequest.getClientRegistration();  // 인가 서버에서 클라이언트의 정보를 가져와 매핑시킴
+		
+		
+		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
 		
 		log.info("Client ID == > {}", clientRegistration.getClientId());
 		log.info("Client Name == > {}", clientRegistration.getClientName());
 		
-		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
-		
 		if(clientRegistration.getClientName().equals("Kakao")) {
 			
-			user = this.kakao(user);
+			try {
+				user = this.kakao(user);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		SocialVO socialVO = new SocialVO();
@@ -149,6 +154,26 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	}
 	
 	
+	
+	// Kakao
+	private OAuth2User kakao(OAuth2User oAuth2User)throws Exception{
+		Map<String, Object> map = oAuth2User.getAttribute("properites");
+		EmployeeVO employeeVO = new EmployeeVO();
+		// 사용자 이름을 꺼내옴
+		employeeVO.setName(oAuth2User.getName());
+		employeeVO.setAttributes(oAuth2User.getAttributes());;
+		
+		return employeeVO;
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
 	 // 임시 비밀번호 생성 메서드
     private String generateTempPassword() {
         // 임시 비밀번호를 랜덤하게 생성하는 로직 추가 (예: UUID 사용)
@@ -156,14 +181,18 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
     }
 
     // 비밀번호 재설정 및 임시 비밀번호 전송 메서드
-    public boolean resetPassword(String email) {
+    public boolean resetPassword(EmployeeVO employeeVO)throws Exception {
         // 임시 비밀번호 생성
         String tempPassword = generateTempPassword();
 
-        // DB 업데이트 하는거 필요함 
+        // DB 업데이트 하는거 필요함
+        
+        employeeVO.setPassword(passwordEncoder.encode(tempPassword));
+        employeeDAO.password(employeeVO);
+
 
         // 메일로 임시 비밀번호 전송
-        sendTempPasswordEmail(email, tempPassword);
+        sendTempPasswordEmail(employeeVO.getEmail(), tempPassword);
 		return true;
     }
 
