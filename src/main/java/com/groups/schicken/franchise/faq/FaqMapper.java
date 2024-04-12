@@ -1,6 +1,5 @@
-package com.groups.schicken.franchise.mapper;
+package com.groups.schicken.franchise.faq;
 
-import com.groups.schicken.franchise.object.FaqVO;
 import com.groups.schicken.util.Pager;
 import org.apache.ibatis.annotations.Mapper;
 

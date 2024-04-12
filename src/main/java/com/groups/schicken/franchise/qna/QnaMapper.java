@@ -1,9 +1,5 @@
-package com.groups.schicken.franchise.mapper;
+package com.groups.schicken.franchise.qna;
 
-import com.groups.schicken.franchise.object.FranchiseVO;
-import com.groups.schicken.franchise.object.QnaCommentVO;
-import com.groups.schicken.franchise.object.QnaVO;
-import com.groups.schicken.util.Pager;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

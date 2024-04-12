@@ -3,18 +3,20 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.groups.schicken.franchise.mapper.FaqMapper">
+<mapper namespace="com.groups.schicken.franchise.faq.FaqMapper">
     <select id="getImportantFaqList">
         SELECT *
         FROM franchise_faq
         WHERE is_important = 1 AND is_deleted != 1
     </select>
     <select id="getFaqList">
+
         SELECT *
         FROM franchise_faq
         WHERE is_important != 1 AND is_deleted != 1
         <include refid="search"/>
         ORDER BY id DESC
+        LIMIT ${startIndex}, ${perPage}
     </select>
     <insert id="addFaq">
         <selectKey resultType="Long" order="BEFORE" keyProperty="id">
@@ -23,7 +25,7 @@
         INSERT INTO franchise_faq
         (id, title, content, write_date, is_important, is_deleted)
         VALUES
-        (#{id}, #{title}, #{content}, #{writeDate}, 0, 0)
+        (#{id}, #{title}, #{content}, #{writeDate}, #{isImportant}, 0)
     </insert>
     <select id="getFaq">
         SELECT *

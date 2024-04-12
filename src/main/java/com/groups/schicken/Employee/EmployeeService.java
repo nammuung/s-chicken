@@ -1,15 +1,11 @@
 package com.groups.schicken.Employee;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import com.groups.schicken.franchise.mapper.FranchiseMapper;
+import com.groups.schicken.franchise.FranchiseMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,17 +21,12 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 
-import com.groups.schicken.franchise.mapper.FranchiseMapper;
-import com.groups.schicken.franchise.object.FranchiseVO;
+import com.groups.schicken.franchise.FranchiseVO;
 import com.groups.schicken.util.Pager;
 
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMessage.RecipientType;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

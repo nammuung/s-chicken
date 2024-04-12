@@ -1,4 +1,4 @@
-package com.groups.schicken.util;
+package com.groups.schicken.common.vo;
 
 import lombok.Data;
 

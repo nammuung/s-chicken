@@ -1,4 +1,4 @@
-package com.groups.schicken.franchise.object;
+package com.groups.schicken.franchise.faq;
 
 import lombok.Data;
 

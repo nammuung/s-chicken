@@ -1,10 +1,7 @@
-package com.groups.schicken.franchise.api;
+package com.groups.schicken.franchise.faq;
 
-import com.groups.schicken.franchise.object.FaqVO;
-import com.groups.schicken.franchise.object.QnaVO;
-import com.groups.schicken.franchise.object.ResultVO;
-import com.groups.schicken.franchise.service.FaqService;
-import com.groups.schicken.franchise.service.QnaService;
+import com.groups.schicken.common.vo.ResultVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1/api/franchise/faq/")
+@RequiredArgsConstructor
 public class FaqApi {
-    @Autowired
-    private FaqService faqService;
+    private final FaqService faqService;
 
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteFaq(@PathVariable Long id) throws Exception {

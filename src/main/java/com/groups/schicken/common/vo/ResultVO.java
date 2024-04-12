@@ -1,4 +1,4 @@
-package com.groups.schicken.franchise.object;
+package com.groups.schicken.common.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

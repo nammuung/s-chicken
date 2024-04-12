@@ -1,29 +1,22 @@
-package com.groups.schicken.franchise.api;
+package com.groups.schicken.franchise;
 
-import com.groups.schicken.franchise.object.FranchiseVO;
-import com.groups.schicken.franchise.object.MessageVO;
-import com.groups.schicken.franchise.object.ResultVO;
-import com.groups.schicken.franchise.service.FranchiseService;
+import com.groups.schicken.common.vo.ResultVO;
 import com.groups.schicken.util.Pager;
-import jakarta.websocket.server.PathParam;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/v1/api/")
+@RequiredArgsConstructor
 @Slf4j
 public class FranchiseApi {
-    @Autowired
-    private FranchiseService franchiseService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final FranchiseService franchiseService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("franchise")
     public ResponseEntity<?> getFranchise(Pager pager) throws Exception {

@@ -1,36 +1,24 @@
-package com.groups.schicken.franchise.service;
+package com.groups.schicken.franchise;
 
 import com.groups.schicken.Employee.EmployeeService;
-import com.groups.schicken.Employee.EmployeeVO;
-import com.groups.schicken.franchise.mapper.FranchiseMapper;
-import com.groups.schicken.franchise.object.FranchiseVO;
 import com.groups.schicken.util.FileManager;
-import com.groups.schicken.util.FileVO;
+import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.util.Pager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @Service
+@RequiredArgsConstructor
 public class FranchiseService {
-    @Autowired
-    private FranchiseMapper franchiseMapper;
-    @Autowired
-    private FileManager fileManager;
-    @Autowired
-    private EmployeeService employeeService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final FranchiseMapper franchiseMapper;
+    private final FileManager fileManager;
+    private final EmployeeService employeeService;
+    private final PasswordEncoder passwordEncoder;
 
     public List<FranchiseVO> getFranchiseList(Pager pager) throws Exception {
         return franchiseMapper.getFranchiseList(pager);

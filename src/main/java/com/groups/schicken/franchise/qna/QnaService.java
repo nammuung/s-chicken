@@ -1,11 +1,11 @@
-package com.groups.schicken.franchise.service;
+package com.groups.schicken.franchise.qna;
 
-import com.groups.schicken.franchise.mapper.QnaMapper;
-import com.groups.schicken.franchise.object.FranchiseVO;
-import com.groups.schicken.franchise.object.QnaCommentVO;
-import com.groups.schicken.franchise.object.QnaVO;
+import com.groups.schicken.Employee.EmployeeService;
+import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.franchise.FranchiseVO;
 import com.groups.schicken.util.DateManager;
 import com.groups.schicken.util.Pager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class QnaService {
-    @Autowired
-    private QnaMapper qnaMapper;
+    private final QnaMapper qnaMapper;
+    private final EmployeeService employeeService;
 
     public int addQna(QnaVO qnaVO) throws Exception {
         qnaVO.setWriteDate(DateManager.getTodayDate());
@@ -50,11 +51,18 @@ public class QnaService {
     public QnaVO getQna(QnaVO qnaVO) throws Exception {
         qnaVO = qnaMapper.getQna(qnaVO);
         List<QnaVO> anotherList = qnaMapper.getAnotherQna(qnaVO);
-        System.out.println("anotherList = " + anotherList);
         for (QnaVO  vo: anotherList){
             if(vo.getId() > qnaVO.getId()) qnaVO.setNextQna(vo);
             if(vo.getId() < qnaVO.getId()) qnaVO.setPreQna(vo);
         }
+        if(qnaVO.getComment() != null){
+            EmployeeVO employeeVO = new EmployeeVO();
+            employeeVO.setId(qnaVO.getComment().getEmployee().getId());
+            employeeVO = employeeService.userDetail(employeeVO);
+            QnaCommentVO comment = qnaVO.getComment();
+            comment.setEmployee(employeeVO);
+        }
+
         return qnaVO;
     }
 

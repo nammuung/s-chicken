@@ -1,9 +1,7 @@
-package com.groups.schicken.franchise.object;
+package com.groups.schicken.franchise;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.groups.schicken.Employee.EmployeeVO;
-import com.groups.schicken.util.FileVO;
+import com.groups.schicken.common.vo.FileVO;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

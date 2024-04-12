@@ -1,11 +1,9 @@
-package com.groups.schicken.franchise.api;
+package com.groups.schicken.franchise.qna;
 
 import com.groups.schicken.Employee.EmployeeService;
 import com.groups.schicken.Employee.EmployeeVO;
-import com.groups.schicken.franchise.object.QnaCommentVO;
-import com.groups.schicken.franchise.object.ResultVO;
-import com.groups.schicken.franchise.service.QnaService;
-import jakarta.websocket.server.PathParam;
+import com.groups.schicken.common.vo.ResultVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/api/")
+@RequiredArgsConstructor
 public class CommentApi {
-    @Autowired
-    private QnaService qnaService;
-    @Autowired
-    private EmployeeService employeeService;
+    private final QnaService qnaService;
+    private final EmployeeService employeeService;
 
     @PostMapping("franchise/qna/comment/{id}")
     public ResponseEntity<?> commentQna(@AuthenticationPrincipal EmployeeVO employeeVO, @PathVariable Long id,@RequestBody QnaCommentVO commentVO) throws Exception {

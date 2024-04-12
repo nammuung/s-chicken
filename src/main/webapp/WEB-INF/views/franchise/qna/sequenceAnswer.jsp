@@ -17,7 +17,9 @@
 <c:import url="../../template/sidebar.jsp"/>
 <main id="main" class="main" data-id="${vo.id}">
     <div class="pagetitle">
-        <h1>가맹점 QnA</h1>
+        <a href="./list">
+            <h1>가맹점 QnA</h1>
+        </a>
     </div>
     <section class="section">
         <div class="row">

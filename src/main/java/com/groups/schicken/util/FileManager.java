@@ -1,6 +1,7 @@
 package com.groups.schicken.util;
 
 import com.groups.schicken.aws.S3Service;
+import com.groups.schicken.common.vo.FileVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

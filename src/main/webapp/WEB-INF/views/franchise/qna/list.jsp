@@ -16,7 +16,9 @@
 <c:import url="../../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>가맹점 QnA</h1>
+        <a href="./list">
+            <h1>가맹점 QnA</h1>
+        </a>
     </div>
     <section class="section">
         <div class="row justify-content-end p-3">
@@ -82,7 +84,10 @@
                         </c:if>
                     </ul>
                 </nav>
-                <a href="./add" class="btn btn-primary float-end">질문작성</a>
+                <div class="d-flex justify-content-end">
+                    <a href="./sequenceAnswer" class="btn btn-primary float-end">답변하기</a>
+                    <a href="./add" class="btn btn-primary float-end">질문작성</a>
+                </div>
             </div>
         </div>
     </section>

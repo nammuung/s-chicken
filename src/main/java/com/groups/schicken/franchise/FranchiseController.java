@@ -1,25 +1,21 @@
-package com.groups.schicken.franchise.controller;
+package com.groups.schicken.franchise;
 
-import com.groups.schicken.franchise.object.FranchiseVO;
-import com.groups.schicken.franchise.object.MessageVO;
-import com.groups.schicken.franchise.service.FranchiseService;
+import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.util.Pager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class FranchiseController {
-    @Autowired
-    private FranchiseService franchiseService;
+    private final FranchiseService franchiseService;
     @GetMapping("/franchise/inquiry")
     public String getFranchiseList(Model model, Pager pager) throws Exception {
         List<FranchiseVO> franchiseVOList = franchiseService.getFranchiseList(pager);
@@ -31,9 +27,9 @@ public class FranchiseController {
     @GetMapping("/franchise/detail")
     public String getFranchise(Model model,FranchiseVO franchiseVO) throws Exception {
         franchiseVO = franchiseService.getFranchise(franchiseVO);
-        System.out.println("franchiseVO = " + franchiseVO);
         model.addAttribute("vo", franchiseVO);
-        return "franchise/detail";
+//        return "franchise/detailForEmployee"; 본사 직원 화면
+        return "franchise/detailForFranchise"; // 가맹점 화면
     }
 
     @GetMapping("/franchise/join")
