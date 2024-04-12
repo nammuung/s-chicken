@@ -82,7 +82,10 @@
                         </c:if>
                     </ul>
                 </nav>
-                <a href="./add" class="btn btn-primary float-end">질문작성</a>
+                <div class="d-flex justify-content-end">
+                    <a href="./sequenceAnswer" class="btn btn-primary float-end">답변하기</a>
+                    <a href="./add" class="btn btn-primary float-end">질문작성</a>
+                </div>
             </div>
         </div>
     </section>

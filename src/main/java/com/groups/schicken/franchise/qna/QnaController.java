@@ -64,14 +64,12 @@ public class QnaController {
 
     @GetMapping("list")
     public String getFranchiseQnaList(Model model, Pager pager) throws Exception {
-//        System.out.println("franchiseVO = " + franchiseVO);
         FranchiseVO franchiseVO = new FranchiseVO();
-        franchiseVO.setId("210");
-        List<QnaVO> list = qnaService.getFranchiseQnaList(franchiseVO, pager);
-        System.out.println("pager = " + pager);
-        for (QnaVO vo : list) {
-            System.out.println("vo = " + vo);
-        }
+        franchiseVO.setId("210"); //가맹점 아이디 임의 설정
+
+//        List<QnaVO> list = qnaService.getAllFranchiseQnaList(pager); 매니저 로그인 시
+        List<QnaVO> list = qnaService.getFranchiseQnaList(franchiseVO, pager); //가맹점 로그인 시
+
         model.addAttribute("list", list);
         model.addAttribute("pager", pager);
         return "franchise/qna/list";
@@ -84,7 +82,7 @@ public class QnaController {
         return "franchise/qna/detail";
     }
 
-    @GetMapping("sequence")
+    @GetMapping("sequenceAnswer")
     public String getQnaSequence(Model model, QnaVO qnaVO) throws Exception {
         System.out.println(qnaVO);
         if(qnaVO.getId() == null){
@@ -95,4 +93,5 @@ public class QnaController {
         model.addAttribute("vo", qnaVO);
         return "franchise/qna/sequenceAnswer";
     }
+
 }
