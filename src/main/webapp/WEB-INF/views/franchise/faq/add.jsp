@@ -38,7 +38,10 @@
                             <input id="content" type="hidden" name="content">
                             <div id="editor"></div>
 
-
+                            <div class="form-check form-switch mt-3">
+                                <input class="form-check-input" type="checkbox" id="importantInput" name="isImportant">
+                                <label class="form-check-label" for="importantInput">메인 FAQ 등록</label>
+                            </div>
                             <button id="submitButton" type="button" class="btn btn-primary float-end mt-3">게시하기</button>
                         </form>
                     </div>
@@ -68,9 +71,9 @@
     document.getElementById("submitButton").addEventListener("click", function (event) {
         const contentInput = document.getElementById("content");
         contentInput.value = editor.getData();
-        console.log(editor.getData());
         document.getElementById("addForm").submit()
     })
+
 
 </script>
 </body>

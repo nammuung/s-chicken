@@ -51,6 +51,11 @@
                                     </h2>
                                     <div id="flush-collapse${status.index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body">${item.content}</div>
+                                        <div class="d-flex justify-content-end mb-3">
+                                            <a href="/franchise/faq/detail?id=${item.id}">
+                                                <span class="text-muted">자세히 보기</span>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </c:forEach>

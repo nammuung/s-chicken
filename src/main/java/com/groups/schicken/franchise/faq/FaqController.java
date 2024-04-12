@@ -20,7 +20,7 @@ public class FaqController {
     public String getFaqDetail(Model model, FaqVO faqVO) throws Exception {
         faqVO = faqService.getFaq(faqVO);
         model.addAttribute("vo", faqVO);
-        return "franchise/faq/detailForFranchise";
+        return "franchise/faq/detail";
     }
     @GetMapping("/franchise/faq/list")
     public String getFaqList(Model model, Pager pager) throws Exception {

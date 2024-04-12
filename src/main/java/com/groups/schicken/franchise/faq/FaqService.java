@@ -33,16 +33,20 @@ public class FaqService {
     }
 
     public int addFaq(FaqVO faqVO) throws Exception {
+        if (faqVO.getIsImportant() == null) faqVO.setIsImportant(false);
         faqVO.setWriteDate(DateManager.getTodayDate());
         return faqMapper.addFaq(faqVO);
     }
 
     public int updateFaq(FaqVO faqVO) throws Exception {
+        if (faqVO.getIsImportant() == null) faqVO.setIsImportant(false);
+        faqVO.setModifyDate(DateManager.getTodayDate());
         return faqMapper.updateFaq(faqVO);
     }
 
     public int deleteFaq(FaqVO faqVO) throws Exception {
         faqVO.setIsDeleted(true);
+        faqVO.setModifyDate(DateManager.getTodayDate());
         return faqMapper.updateFaq(faqVO);
     }
 

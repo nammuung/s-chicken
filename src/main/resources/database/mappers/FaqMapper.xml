@@ -23,7 +23,7 @@
         INSERT INTO franchise_faq
         (id, title, content, write_date, is_important, is_deleted)
         VALUES
-        (#{id}, #{title}, #{content}, #{writeDate}, 0, 0)
+        (#{id}, #{title}, #{content}, #{writeDate}, #{isImportant}, 0)
     </insert>
     <select id="getFaq">
         SELECT *
