@@ -21,7 +21,7 @@
         </a>
     </div>
     <section class="section ms-3 me-3">
-        <c:if test="${importantList != null}">
+        <c:if test="${importantList != null and importantList.size() != 0}">
             <div class="row justify-content-center">
                 <div class="col-12">
                     <div class="card">
