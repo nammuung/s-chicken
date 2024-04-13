@@ -10,9 +10,11 @@ let sort = document.getElementById("sort")
 const frm = document.querySelector("#frm")
 let important = document.getElementById("important")
 
-
+	
 
 	function check1(){
+
+		
 		if(important.checked){
 			important.value=1;
 			console.log("체크됨")
@@ -21,8 +23,6 @@ let important = document.getElementById("important")
 			important.value=0;
 		
 		}
-		
-
 	}
 	
 
@@ -43,7 +43,9 @@ let important = document.getElementById("important")
 
 
 	btn.addEventListener('click',(e)=>{
-		e.preventDefault();		
+		e.preventDefault();
+		
+		
 		check1();
 
 

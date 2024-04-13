@@ -54,7 +54,8 @@
                             	
 	                            	<c:forEach items="${list}" var="vo">
 	                            		<c:if test="${vo.sort eq 1}">
-				                            <tr>
+				                            <tr id="important">
+                                                <input type="hidden" id="important_val" value="${vo.important}">
 				                                <td>${vo.id}</td>
 				                                <td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a></td>
 				                                <td>${vo.writeDate}</td>
@@ -99,27 +100,7 @@
         
     </section>
 </main><!-- End #main -->
-<script>
-    Array.prototype.slice.call(document.querySelector("select"))
-        .forEach(options => {
-            if(options.value == '${pager.kind}') options.selected = true;
-        })
-
-    const prev = document.getElementById("prev")
-    const prev_val = document.getElementById("prev_val")
-        
-        if(prev_val.value == 1){
-            prev.classList.add("disabled")
-        }
-
-    const next = document.getElementById("next")
-    const next_val = document.getElementById("next_val")
-        
-        if(next_val.value == 1){
-            next.classList.add("disabled")
-        }
-    
-</script>
+<script src="../js/board/list.js"></script>
 <!-- ======= Footer ======= -->
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->

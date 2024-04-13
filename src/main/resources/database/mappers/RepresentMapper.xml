@@ -24,7 +24,7 @@
 		SELECT * FROM represent r
 			WHERE is_deleted !=1 
 			<include refid="search"/>
-			ORDER BY id DESC
+			ORDER BY important DESC, id DESC
 			LIMIT #{pager.startIndex},#{pager.perPage}			
 	</select>
 	
@@ -96,9 +96,6 @@
 			ORDER BY id
 			LIMIT 1
 	</select>
-	
-
-	
 
 	
 	<update id="update" parameterType="BoardVO">
@@ -110,9 +107,9 @@
 			<if test="content != null and content !=''">
 				content=#{content},
 			</if>
-			<if test="important !=null and important !=''">
+
 				important=#{important}
-			</if>
+
 		</set>
 		WHERE id=#{id}
 	</update>

@@ -65,8 +65,9 @@ public class RepresentController {
 	
 	@PostMapping("write")
 	public String getWrite(BoardVO boardVO,@RequestParam("attach") MultipartFile attach) throws Exception {
+		
 		int result = representService.add(boardVO,attach);
-		System.out.println(attach);
+		System.out.println(attach+"++++++++++++++++++++++++++");
 		return "redirect:./impList";		
 	}
 	
@@ -96,6 +97,7 @@ public class RepresentController {
 	
 	@PostMapping("update")
 	public String setUpdate(BoardVO boardVO)throws Exception{
+		System.out.println(boardVO.getImportant());
 		int result = representService.update(boardVO);
 		System.out.println("로직 들어오기");
 

@@ -98,6 +98,7 @@ public class RepresentService implements BoardService {
 	@Override
 	public int update(BoardVO boardVO) throws Exception {
 		int result = representDAO.update(boardVO);
+		System.out.println(boardVO.getImportant());
 		
 		
 		return result;

@@ -62,7 +62,8 @@ String strDate = simpleDate.format(date);
 					        </textarea>
                             <div class="form-check form-switch mt-3 mb-3">
                                 <label for="important" class="form-label">중요 공지</label>
-                                <input type="checkbox" class="form-check-input" id="important" name="important" onclick="check1()">
+                                <input type="checkbox" class="form-check-input" id="important" name="important">
+                                <input type="hidden" name="_important" value="on">
                             </div>
                             <div>
                             	<input type="file" name="attach">
