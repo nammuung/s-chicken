@@ -1,6 +1,7 @@
 package com.groups.schicken.board.represent;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -70,12 +71,16 @@ public class RepresentController {
 	}
 	
 	@GetMapping("impList")
-	public String getImpList(Pager pager,Model model) throws Exception {
+	public String getImpList(Pager pager,Model model,BoardVO boardVO) throws Exception {
 
-		List<BoardVO> ar = representService.getList(pager);
+		List<BoardVO> ar = representService.getList(pager,boardVO);
 		
 		model.addAttribute("list",ar);
-		model.addAttribute("pager", pager);		
+		model.addAttribute("pager", pager);
+		
+		System.out.println(pager.isLast());
+		System.out.println(pager.isStart());
+
 				
 		return "board/impList";
 	}

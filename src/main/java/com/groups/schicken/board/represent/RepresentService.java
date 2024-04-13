@@ -1,6 +1,8 @@
 package com.groups.schicken.board.represent;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,12 +28,19 @@ public class RepresentService implements BoardService {
 
 	
 	@Override
-	public List<BoardVO> getList(Pager pager) throws Exception {
+	public List<BoardVO> getList(Pager pager,BoardVO boardVO) throws Exception {
+		Map<String, Object> map = new HashMap<String,Object>();
+		
+		map.put("pager", pager);
+		map.put("boadVO",boardVO);
 		
 		pager.makeIndex();
-		pager.makeNum(representDAO.getTotalCount(pager));		
+		pager.makeNum(representDAO.getTotalCount(map));	
 		
-		return representDAO.getList(pager);
+		System.out.println(pager.getSearch());
+		System.out.println(pager.getKind());
+		
+		return representDAO.getList(map);
 	}
 
 	@Override
