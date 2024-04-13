@@ -2,28 +2,42 @@ import noteMessage from "/js/noteMessage/noteMessage.js";
 import oc from "/js/orgChart/orgChart.js";
 
 let noteMessageNav = document.getElementById("note-message-nav");
+let noteMessageBody = document.getElementById("note-message-body");
 let noteMessageModal = document.getElementById("note-message-modal");
 let bsNoteMessageModal = new bootstrap.Modal(noteMessageModal);
-let noteMessageBody = document.getElementById("note-message-body");
+
 let sendMessageBtn = document.getElementById("send-message-btn");
+
 let noteMessageSelectedList;
 let addReceiversBtn;
 let removeReceiversBtn;
+let selectCompleteBtn;
+let noteMessageReceiversList;
+let noteMessageForm;
+let noteMessageReceiverInput;
+let noteMessageSubmitBtn;
+let noteMessageTextArea;
 
-let listPage;
-let sendPage;
-let readPage;
+let pages = {
+    list : '',
+    send : '',
+    read : ''
+}
 
 window.onload=()=>{
     fetch("/html/noteMessage/noteMessageTemplate.html")
         .then(res=>res.text())
         .then(r=>{
-            const pages = r.split("^^^^^^^^^^");
+            const page = r.split("^^^^^^^^^^");
 
-            listPage = pages[0];
-            sendPage = pages[1];
-            readPage = pages[2];
+            pages.list = page[0];
+            pages.send = page[1];
+            pages.read = page[2];
         })
+}
+
+function changeModalPage(pageName){
+    noteMessageBody.innerHTML = pages[pageName];
 }
 
 let selectedItems = {};
@@ -52,17 +66,35 @@ function onSelectOrgChart({id, type}) {
     }
 }
 
-function drawSelectedList(){
+function getNoteMessageElement(type, element){
+    return {
+        list : `
+    <li data-id="${element.id}" 
+        class="list-group-item text-center bg-schicken-light-hover ${selectedToDelete[element.id] == null? "" :"selected"} ">
+            ${element.name}
+    </li>
+`,
+        div : `
+        <div class="note-message-receiver-item text-center">
+                ${element.name}
+        </div>
+        `
+    }[type];
+}
+
+function drawSelectedElement(type){
     let result = [];
 
     for (let key in selectedItems) {
-        const li = `<li data-id="${selectedItems[key].id}" class="list-group-item text-center bg-schicken-light-hover">${selectedItems[key].name}</li>`;
-        result.push(li);
+        const element = getNoteMessageElement(type, selectedItems[key]);
+        result.push(element);
     }
 
-    result.sort();
-
     return result;
+}
+
+function getNoteMessageSelectedId(){
+    return Object.values(selectedItems).map(i => i.id).join(",");
 }
 
 function addReceivers(){
@@ -70,9 +102,17 @@ function addReceivers(){
         selectedItems[element.id] = element;
     }
 
-    noteMessageSelectedList.innerHTML = drawSelectedList().join("");
+    noteMessageSelectedList.innerHTML = drawSelectedElement('list').join("");
+    noteMessageReceiversList.innerHTML = drawSelectedElement('div').join("");
+    noteMessageReceiverInput.value = getNoteMessageSelectedId();
 
     depAndEmp = [];
+
+    if(Object.keys(selectedItems).length !== 0){
+        selectCompleteBtn.classList.remove("disabled");
+    } else {
+        selectCompleteBtn.classList.add("disabled");
+    }
 }
 
 let selectedToDelete = {};
@@ -101,26 +141,82 @@ function deleteSelectedItems(){
 
     selectedToDelete = {};
 
-    noteMessageSelectedList.innerHTML = drawSelectedList().join("");
+    if(Object.keys(selectedItems).length !== 0){
+        selectCompleteBtn.classList.remove("disabled");
+    } else {
+        selectCompleteBtn.classList.add("disabled");
+    }
+
+    noteMessageSelectedList.innerHTML = drawSelectedElement('list').join("");
+    noteMessageReceiversList.innerHTML = drawSelectedElement('div').join("");
+    noteMessageReceiverInput.value = getNoteMessageSelectedId();
+}
+
+function noteMessageSubmit(){
+    let data = new FormData(noteMessageForm);
+    fetch('/message/sendMessage',{
+        method:'post',
+        body : data
+    }).then(res=>res.text())
+        .then(r=> {
+            alert(r)
+            if(r === "쪽지를 보냈습니다."){
+                /* 보낸 쪽지함으로 이동 */
+                console.log("in if : ", r);
+                return;
+            }
+
+            console.log("out if : ", r);
+        })
+}
+
+let noteMessageCheckBoolean = false;
+function noteMessageCheck(event){
+    let len = event.target.value.length;
+
+    document.getElementById("note-message-content-count").innerText = len;
+    if(len > 0 && noteMessageCheckBoolean){
+        return;
+    }
+
+    if(len === 0){
+        noteMessageCheckBoolean = false;
+        noteMessageSubmitBtn.classList.add("disabled");
+        return;
+    }
+
+    noteMessageCheckBoolean = true;
+    noteMessageSubmitBtn.classList.remove("disabled");
 }
 
 //============================================ 모달 페이지 전환 ==========================================================
 
 
 function openListPage(){
-    noteMessageBody.innerHTML = listPage;
+    changeModalPage('list');
 }
 
 function openSendPage() {
-    noteMessageBody.innerHTML = sendPage;
+    changeModalPage('send');
     selectedItems = {};
     depAndEmp = [];
+
     addReceiversBtn = document.getElementById("add-receivers-btn");
     noteMessageSelectedList = document.getElementById("note-message-selected-list");
     removeReceiversBtn = document.getElementById("remove-receivers-btn");
-    noteMessageSelectedList.addEventListener("click", selectItemToDelete);
+    selectCompleteBtn = document.getElementById("note-message-select-complete-btn");
+    noteMessageReceiversList = document.getElementById("note-message-receivers-list");
+    noteMessageForm = document.getElementById("note-message-form");
+    noteMessageReceiverInput = document.getElementById("note-message-receiver-input");
+    noteMessageSubmitBtn = document.getElementById("note-message-submit-btn");
+    noteMessageTextArea = document.getElementById("note-message-textarea");
+
     addReceiversBtn.addEventListener("click", addReceivers);
+    noteMessageSelectedList.addEventListener("click", selectItemToDelete);
     removeReceiversBtn.addEventListener("click", deleteSelectedItems);
+    noteMessageSubmitBtn.addEventListener("click", noteMessageSubmit);
+    noteMessageTextArea.addEventListener("keyup", noteMessageCheck);
+
     oc.init("note-message-org-chart", onSelectOrgChart, '', false, { checkbox: true, type : 'person' });
 }
 

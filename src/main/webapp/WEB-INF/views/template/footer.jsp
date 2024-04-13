@@ -11,7 +11,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row p-2">
-                    <div class="col-2 border-end border-1">
+                    <div class="col-2 border-end border-1 mh-600px">
                         <ul class="note-message-list list-group list-group-flush">
                             <li class="list-group-item">
                                 <button id="send-message-btn" class="btn btn-primary w-100">쪽지 보내기</button>

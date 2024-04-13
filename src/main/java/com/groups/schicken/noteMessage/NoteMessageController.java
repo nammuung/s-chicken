@@ -1,12 +1,17 @@
 package com.groups.schicken.noteMessage;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/message/*")
 public class NoteMessageController {
@@ -14,17 +19,20 @@ public class NoteMessageController {
     private NoteMessageService noteMessageService;
 
     @PostMapping("sendMessage")
-    public String sendMessage(NoteMessageVO message, List<String> receivers){
+    public ResponseEntity<String> sendMessage(NoteMessageVO message, String[] receivers, MultipartFile attach) {
         //나중에 로그인 후 session에서 받아오기
         System.out.println("message = " + message);
-        System.out.println("receivers = " + receivers);
+        System.out.println("receivers = " + Arrays.toString(receivers));
 
         Long id = 20160607230L;
         message.setSenderId(id);
-        Integer result = noteMessageService.sendMessage(message, receivers);
-        if(result > 0){
-            return "성공적으로 보냈습니다.";
+        try{
+            noteMessageService.sendMessage(message, List.of(receivers), attach);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return "쪽지를 보내지 못했습니다.";
+
+        return ResponseEntity.ok("쪽지를 보냈습니다.");
     }
 }

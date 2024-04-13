@@ -103,7 +103,22 @@
     background-color: #C7A9FF !important;
 }
 
-.note-message-list > .list-group-item{
+.h-500px{
+  height: 500px !important;
+  overflow-y: auto !important;
+}
+
+.mh-600px{
+  min-height: 600px !important;
+}
+
+.bg-schicken-light-hover:hover{
+  background-color: #C7A9FF !important;
+}
+
+/* 쪽지관련 */
+
+.note-message-content .note-message-list > .list-group-item{
   padding: 1rem 0 1rem 0;
 }
 
@@ -111,18 +126,50 @@
   color : #7749F8!important;
 }
 
-.h-500px{
+.note-message-content .selected {
+  border : 1px #7746f8 solid
+}
+
+.note-message-content.wrap-container{
+  position: relative !important;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.note-message-content #note-message-write-page{
+  position: absolute;
+  width: 100%;
   height: 500px;
+  left: 100%;
+  transition: left 0.5s cubic-bezier(.25,0.1,.25,1);
+}
+
+.note-message-content #note-message-select-page{
+  position: absolute;
+  width: 100%;
+  height: 500px;
+  transition: left 0.5s cubic-bezier(.25,0.1,.25,1);
+}
+
+.note-message-content button#note-message-select-complete-btn:target ~ div#note-message-write-page{
+  left : 0;
+}
+
+.note-message-content #note-message-back-select-btn:target ~ div#note-message-select-page{
+  left : 0;
+}
+
+.note-message-content .note-message-receiver-item{
+  margin: 0.25rem;
+  border: 1px #7749F8 solid;
+  border-radius: 0.375rem;
+  min-width: 177px;
+}
+
+#note-message-textarea{
+  max-height: 401px;
   overflow-y: auto;
-}
-
-.bg-schicken-light-hover:hover{
-  background-color: #C7A9FF !important;
-}
-
-#note-message-selected-list .selected {
-  background-color: #7749f8 !important;
-  color : white;
 }
 
 /*--------------------------------------------------------------
