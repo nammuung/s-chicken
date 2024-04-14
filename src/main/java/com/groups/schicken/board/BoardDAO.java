@@ -1,18 +1,18 @@
 package com.groups.schicken.board;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.groups.schicken.common.vo.FileVO;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.util.FileVO;
 
 @Mapper
 public interface BoardDAO {
 	
-	public Long getTotalCount(Pager pager)throws Exception;
+	public Long getTotalCount(Map<String,Object> map)throws Exception;
 	
-	public List<BoardVO> getList(Pager pager)throws Exception;
+	public List<BoardVO> getList(Map<String,Object> map)throws Exception;
 	
 	public int add(BoardVO boardVO)throws Exception;
 	

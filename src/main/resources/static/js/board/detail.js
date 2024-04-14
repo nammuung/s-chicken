@@ -23,6 +23,7 @@ window.addEventListener('load',()=>{
 console.log(del_title)
 
 
+
 update.addEventListener("click",(e)=>{
 	e.preventDefault();
 	frm.submit();

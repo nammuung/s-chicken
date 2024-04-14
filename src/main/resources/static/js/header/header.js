@@ -1,134 +1,111 @@
-import noteMessage from "/js/noteMessage/noteMessage.js";
-import oc from "/js/orgChart/orgChart.js";
+import sendForm from '/js/noteMessage/noteMessageSendForm.js'
 
 let noteMessageNav = document.getElementById("note-message-nav");
+let noteMessageBody = document.getElementById("note-message-body");
 let noteMessageModal = document.getElementById("note-message-modal");
 let bsNoteMessageModal = new bootstrap.Modal(noteMessageModal);
-let noteMessageBody = document.getElementById("note-message-body");
-let sendMessageBtn = document.getElementById("send-message-btn");
-let noteMessageSelectedList;
-let addReceiversBtn;
-let removeReceiversBtn;
 
-let listPage;
-let sendPage;
-let readPage;
+let noteMessageSendFormBtn = document.getElementById("note-message-send-form-btn");
+let noteMessageReceiveBoxBtn = document.getElementById("note-message-receive-box-btn");
+let noteMessageSaveBoxBtn = document.getElementById("note-message-save-box-btn");
+let noteMessageSendBoxBtn = document.getElementById("note-message-send-box-btn");
+let noteMessageDeleteBoxBtn = document.getElementById("note-message-delete-box-btn");
+
+let noteMessageDatas;
+
+let pages = {
+    list : '',
+    send : '',
+    read : ''
+}
 
 window.onload=()=>{
     fetch("/html/noteMessage/noteMessageTemplate.html")
         .then(res=>res.text())
         .then(r=>{
-            const pages = r.split("^^^^^^^^^^");
+            const page = r.split("^^^^^^^^^^");
 
-            listPage = pages[0];
-            sendPage = pages[1];
-            readPage = pages[2];
+            pages.list = page[0];
+            sendForm.set(noteMessageBody, page[1]);
+            pages.read = page[2];
         })
 }
 
-let selectedItems = {};
-let depAndEmp;
-function onSelectOrgChart({id, type}) {
-    console.log("note-message-select", id, type)
+function getToday(){
+    let now = new Date();
+    let year = now.getFullYear();
+    let month = now.getMonth() + 1;
+    month = (month >= 10 ? "" : "0") + month;
+    let date = now.getDate();
 
-    let opt = {
-        dept : `?deptId=${id}`,
-        person : `?empId=${id}`
-    }[type];
-
-    if(opt != null){
-        fetch('/organization/employees' + opt)
-            .then(res => res.json())
-            .then(r => {
-                depAndEmp = [];
-                for(let emps of r){
-                    depAndEmp.push({
-                        id : emps.id,
-                        name : emps.text,
-                        sort : emps.sort
-                    });
-                }
-            })
-    }
+    return '' + year + month + date;
 }
 
-function drawSelectedList(){
-    let result = [];
+function dateFormatting(date){
+    let year = date.substring(0,4);
+    let month = date.substring(4,6);
+    let day = date.substring(6,8);
 
-    for (let key in selectedItems) {
-        const li = `<li data-id="${selectedItems[key].id}" class="list-group-item text-center bg-schicken-light-hover">${selectedItems[key].name}</li>`;
-        result.push(li);
+    if(date.substring(0,8) !== getToday()){
+        return year + "." + month + "." + day;
     }
 
-    result.sort();
+    let hour = date.substring(8,10);
+    let minute = date.substring(10,12);
 
-    return result;
+    return hour + ':' + minute;
 }
 
-function addReceivers(){
-    for (let element of depAndEmp) {
-        selectedItems[element.id] = element;
-    }
-
-    noteMessageSelectedList.innerHTML = drawSelectedList().join("");
-
-    depAndEmp = [];
+function senderNameSetting(senderName){
+    let names = senderName.split(" ");
+    return `<small class="linkable">${names[0]}</small><div>${names[1]} ${names[2]}</div>`
 }
 
-let selectedToDelete = {};
-function selectItemToDelete(event){
-    if(event.target.tagName !== 'LI'){
-        return;
-    }
-
-    const id = event.target.getAttribute("data-id");
-
-    if(selectedToDelete[id] != null){
-        event.target.classList.remove("selected");
-        delete selectedToDelete[id];
-    } else {
-        event.target.classList.add("selected");
-        selectedToDelete[id] = id;
-    }
-
-    console.log(selectedToDelete);
+function drawNoteMessageTr(data){
+    return `
+<div class="d-flex border-1 border-bottom mt-2">
+        <div class="col-1 px-3 text-center form-check">
+            <input type="checkbox" class="form-check-input" style="margin-left: 1em; margin-top: 0.5em">
+        </div>
+        <div class="col-2 px-3 text-center linkable text-black">${senderNameSetting(data.senderName)}</div>
+        <div class="col-6 px-3 text-center text-truncate linkable text-black">${data.content}</div>
+        <div class="col-1 px-3 text-center"></div>
+        <div class="col-2 px-3 text-center">${dateFormatting(data.date)}</div>
+        </div>
+    `
 }
 
-function deleteSelectedItems(){
-    for (let key in selectedToDelete) {
-        delete selectedItems[key];
-    }
-
-    selectedToDelete = {};
-
-    noteMessageSelectedList.innerHTML = drawSelectedList().join("");
+function drawNoteMessageTableRows(data){
+    return data.map(d => drawNoteMessageTr(d)).join("");
 }
+
+function getNoteMessageList(page){
+    let param = page == null? "?page=1" : "?page="+page;
+
+    fetch('/message/getList' + param)
+        .then(res => res.json())
+        .then(r => {
+            noteMessageDatas.innerHTML=drawNoteMessageTableRows(r);
+        });
+}
+
 
 //============================================ 모달 페이지 전환 ==========================================================
 
 
 function openListPage(){
-    noteMessageBody.innerHTML = listPage;
+    noteMessageBody.innerHTML = pages['list'];
+
+    noteMessageDatas = document.getElementById("note-message-datas");
+
+    getNoteMessageList(0);
 }
 
-function openSendPage() {
-    noteMessageBody.innerHTML = sendPage;
-    selectedItems = {};
-    depAndEmp = [];
-    addReceiversBtn = document.getElementById("add-receivers-btn");
-    noteMessageSelectedList = document.getElementById("note-message-selected-list");
-    removeReceiversBtn = document.getElementById("remove-receivers-btn");
-    noteMessageSelectedList.addEventListener("click", selectItemToDelete);
-    addReceiversBtn.addEventListener("click", addReceivers);
-    removeReceiversBtn.addEventListener("click", deleteSelectedItems);
-    oc.init("note-message-org-chart", onSelectOrgChart, '', false, { checkbox: true, type : 'person' });
-}
 
 
 //========================================== 이벤트 리스너 등록 ==========================================================
-sendMessageBtn.addEventListener("click", ()=>{
-    openSendPage();
-})
+noteMessageSendFormBtn.addEventListener("click", sendForm.open)
+noteMessageReceiveBoxBtn.addEventListener("click", ()=>openListPage())
 
 noteMessageNav.addEventListener("click", () => {
     openListPage();

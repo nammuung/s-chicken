@@ -109,6 +109,15 @@ public class EmployeeController {
 		
 	}
 
+	@GetMapping("role")
+	public String rolelist(EmployeeVO employeeVO ,Model model) throws Exception {
+	    List<RoleVO> roles = employeeService.rolelist(employeeVO); 
+	    model.addAttribute("list", roles);  
+	    return "employee/role";
+	}
+
+
+	
 	
 	// 비밀번호 찾기 페이지로 이동
     @GetMapping("resetPassword")
@@ -134,5 +143,6 @@ public class EmployeeController {
        
         return "employee/login"; // 결과를 보여줄 페이지로 이동
     }
+    
 
 }

@@ -30,5 +30,9 @@ public interface EmployeeDAO {
 	//소셜
 	public int social (EmployeeVO employeeVO)throws Exception;
 	
+	//role
+
+	public List<RoleVO> rolelist(EmployeeVO employeeVO) throws Exception;
+	
 	
 }
