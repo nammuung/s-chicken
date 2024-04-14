@@ -51,7 +51,6 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	
 	private RoleVO roleVO;
 	
-	private List<RoleVO> roleVOs;
 	
 	//OAuth2User, Token등 정보 저장
 	private Map<String, Object> attributes;

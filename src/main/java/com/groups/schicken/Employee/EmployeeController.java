@@ -111,8 +111,8 @@ public class EmployeeController {
 
 	@GetMapping("role")
 	public String rolelist(EmployeeVO employeeVO ,Model model) throws Exception {
-	    List<RoleVO> roles = employeeService.rolelist(employeeVO);  // 서비스를 통해 롤 리스트를 가져옵니다.
-	    model.addAttribute("list", roles);  // 모델에 롤 리스트를 추가합니다.
+	    List<RoleVO> roles = employeeService.rolelist(employeeVO); 
+	    model.addAttribute("list", roles);  
 	    return "employee/role";
 	}
 
