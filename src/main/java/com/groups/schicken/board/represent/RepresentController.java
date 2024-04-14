@@ -1,8 +1,11 @@
 package com.groups.schicken.board.represent;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,17 +15,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.services.s3.transfer.internal.DownloadS3ObjectCallable;
 import com.groups.schicken.board.BoardVO;
+import com.groups.schicken.util.FileDownView;
+import com.groups.schicken.util.FileManager;
+import com.groups.schicken.util.FileVO;
 import com.groups.schicken.util.Pager;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
 @Controller
 @RequestMapping("/represent/*")
 @Slf4j
+@RequiredArgsConstructor
 public class RepresentController {
 	
+	private final FileDownView fileDownView;
 	
 	@Autowired
 	private RepresentService representService;	
@@ -33,6 +43,14 @@ public class RepresentController {
 		return "represent";
 	}
 	
+	@GetMapping("fileDown")
+	public ResponseEntity<byte[]> download(FileVO fileVO) throws Exception{
+		ResponseEntity<byte[]> result = representService.fileDown(fileVO);
+		System.out.println(fileVO.getTblId()+"+++++++++++++++++++++++++++++++++");
+		
+		return result;
+	}
+	
 	
 	@GetMapping("detail")
 	public String getDetail(BoardVO boardVO,Model model) throws Exception {
@@ -41,6 +59,7 @@ public class RepresentController {
 		
 		boardVO = representService.getDetail(boardVO);
 		model.addAttribute("vo", boardVO);		
+		System.out.println(boardVO.getFileVO()+"1111111111111111");		
 		
 		List<BoardVO> ar = representService.pastPage(boardVO);
 		System.out.println(ar);
@@ -61,18 +80,23 @@ public class RepresentController {
 	
 	@PostMapping("write")
 	public String getWrite(BoardVO boardVO,@RequestParam("attach") MultipartFile attach) throws Exception {
+		
 		int result = representService.add(boardVO,attach);
-		System.out.println(attach);
+		System.out.println(attach+"++++++++++++++++++++++++++");
 		return "redirect:./impList";		
 	}
 	
 	@GetMapping("impList")
-	public String getImpList(Pager pager,Model model) throws Exception {
+	public String getImpList(Pager pager,Model model,BoardVO boardVO) throws Exception {
 
-		List<BoardVO> ar = representService.getList(pager);
+		List<BoardVO> ar = representService.getList(pager,boardVO);
 		
 		model.addAttribute("list",ar);
-		model.addAttribute("pager", pager);		
+		model.addAttribute("pager", pager);
+		
+		System.out.println(pager.isLast());
+		System.out.println(pager.isStart());
+
 				
 		return "board/impList";
 	}
@@ -88,6 +112,7 @@ public class RepresentController {
 	
 	@PostMapping("update")
 	public String setUpdate(BoardVO boardVO)throws Exception{
+		System.out.println(boardVO.getImportant());
 		int result = representService.update(boardVO);
 		System.out.println("로직 들어오기");
 

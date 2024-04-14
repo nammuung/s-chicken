@@ -4,58 +4,60 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.board.represent.RepresentDAO">
-	<sql id="search">
-		<where>
+	<sql id="search">	
 			<choose>
-				<when test="kind='kind1'">title</when>
-				<when test="kind='kind2'">writerId</when>
-				<otherwise>title + writerId</otherwise>
+				<when test='pager.kind != null and pager.kind.equals("kind1")'>AND r.title LIKE CONCAT('%',#{pager.search},'%')</when>
+				<when test='pager.kind != null and pager.kind.equals("kind2")'>AND r.writer_id LIKE CONCAT('%',#{pager.search},'%')</when>
+				<otherwise>AND (r.title LIKE CONCAT('%',#{search},'%') OR r.writer_id LIKE CONCAT('%',#{pager.search},'%')) </otherwise>					
 			</choose>
-			LIKE CONCAT('%',#{search},'%')
-		</where>		
+				
 	</sql>
 	
-	<select id="getTotalCount" parameterType="Pager" resultType="Long">
-		SELECT COUNT(id) FROM represent
-		
-		<include refid="search"></include>
+	<select id="getTotalCount" parameterType="Map" resultType="Long">
+		SELECT COUNT(id) FROM represent r
+		WHERE is_deleted !=1
+		<include refid="search"/>
 	</select>
 	
 	
-	<select id="getList" parameterType="Pager" resultType="BoardVO">
-		SELECT * FROM represent
-			<include refid="search"></include>
-			ORDER BY id DESC
-			LIMIT #{startIndex},#{perPage}			
+	<select id="getList" parameterType="Map" resultType="BoardVO">
+		SELECT * FROM represent r
+			WHERE is_deleted !=1 
+			<include refid="search"/>
+			ORDER BY important DESC, id DESC
+			LIMIT #{pager.startIndex},#{pager.perPage}			
 	</select>
 	
 	<select id="getDetail" parameterType="BoardVO" resultMap="getDetailResult">
 		SELECT * FROM represent r
-		LEFT JOIN attach a ON a.parent_id=r.id
+		LEFT JOIN attach a ON r.id = a.parent_id
 		WHERE r.id=#{id}
 	</select>
-	
+		
 	<resultMap type="BoardVO" id="getDetailResult">
+	    <id column="id" property="id"/>
+	    	<result  column="write_date" property="writeDate"/>
+	    	<result  column="content" property="content"/>
+	    	<result  column="is_deleted" property="isDeleted"/>
+	    	<result  column="writer_id" property="writerId"/>
+	    	<result  column="hit" property="hit"/>
+	    	<result  column="sort" property="sort"/>
+	    	<result  column="title" property="title"/>
+	    	<result  column="important" property="important"/>
+	<collection property="fileVO" javaType="FileVO" ofType="List" columnPrefix="attach_">
 		<id column="id" property="id"/>
-		<result column="write_date" property="writeDate"/>
-		<result column="title" property="title"/>
-		<result column="content" property="content"/>
-		<result column="is_delete" property="isDelete"/>
-		<result column="hit" property="hit"/>
-		<result column="sort" property="sort"/>
-		<result column="writer_id" property="writerId"/>
-		<result column="important" property="important"/>
-		<collection property="fileVOs" javaType="List" ofType="FileVO">
-			<id column="id" property="id"/>
-			<result column="name" property="name"/>
 			<result column="origin_name" property="originName"/>
 			<result column="url" property="url"/>
 			<result column="extension" property="extension"/>
 			<result column="parent_id" property="parentId"/>
-			<result column="tbl_id" property="tblId"/>			
-		</collection>
+			<result column="tbl_id" property="tblId"/>
+			<result column="name" property="name"/>
+		
+	</collection>	    	
 	</resultMap>
-	
+
+<!-- FileVO를 매핑하는 resultMap -->
+
 	
 	<insert id="add" parameterType="BoardVO" keyProperty="id">
 		<selectKey order="BEFORE" resultType="Long" keyProperty="id">
@@ -97,9 +99,6 @@
 			ORDER BY id
 			LIMIT 1
 	</select>
-	
-
-	
 
 	
 	<update id="update" parameterType="BoardVO">
@@ -111,9 +110,9 @@
 			<if test="content != null and content !=''">
 				content=#{content},
 			</if>
-			<if test="important !=null and important !=''">
+
 				important=#{important}
-			</if>
+
 		</set>
 		WHERE id=#{id}
 	</update>
