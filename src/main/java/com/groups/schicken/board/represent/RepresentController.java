@@ -34,24 +34,13 @@ public class RepresentController {
 	}
 	
 	
-	
-	@GetMapping("list")
-	public String getList(Pager pager, Model model) throws Exception {
-
-
-		
-		return "notice/list";
-		
-	}
-	
 	@GetMapping("detail")
 	public String getDetail(BoardVO boardVO,Model model) throws Exception {
 		
 		int result = representService.hit(boardVO);
 		
 		boardVO = representService.getDetail(boardVO);
-		model.addAttribute("vo", boardVO);
-		System.out.println(boardVO.getId());
+		model.addAttribute("vo", boardVO);		
 		
 		List<BoardVO> ar = representService.pastPage(boardVO);
 		System.out.println(ar);
@@ -87,6 +76,32 @@ public class RepresentController {
 				
 		return "board/impList";
 	}
+	
+	@GetMapping("update")
+	public String getUpdate(BoardVO boardVO,Model model)throws Exception{
+		boardVO = representService.getDetail(boardVO);
+		model.addAttribute("vo", boardVO);	
+		System.out.println(boardVO.getId());
+		
+		return "board/update";
+	}
+	
+	@PostMapping("update")
+	public String setUpdate(BoardVO boardVO)throws Exception{
+		int result = representService.update(boardVO);
+		System.out.println("로직 들어오기");
+
+		return "redirect:./impList";
+	}
+	
+	@PostMapping("delete")
+	public String delete(BoardVO boardVO)throws Exception{
+		int result = representService.delete(boardVO);
+		
+		
+		return "redirect:./impList";
+	}
+	
 	
 
 }

@@ -16,4 +16,12 @@ public class OrganizationService {
 
         return list;
     }
+
+    public List<OrganizationVO> getEmployeesByDepartmentId(String deptId) {
+        return organizationDAO.getEmployeesByDepartmentId(deptId);
+    }
+
+    public OrganizationVO getEmployeeByEmployeeId(String empId) {
+        return organizationDAO.getEmployeeByEmployeeId(empId);
+    }
 }
