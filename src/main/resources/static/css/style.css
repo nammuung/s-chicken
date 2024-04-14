@@ -172,6 +172,14 @@
   overflow-y: auto;
 }
 
+.note-message-content .ellipsis{
+  max-width: 475px;
+}
+
+.border-schicken{
+  border-color : #7749F888 !important;
+}
+
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -730,12 +738,20 @@ h6 {
   color : #00ceff;
 }
 
+small.linkable{
+  color: #555
+}
+
 .notifications .linkable{
   font-weight: bold;
   text-decoration: underline;
 }
 
 .linkable:hover{
+  color : #7749F8!important;
+}
+
+.linkable:hover > small.linkable{
   color : #7749F8!important;
 }
 

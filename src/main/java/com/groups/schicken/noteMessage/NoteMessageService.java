@@ -1,5 +1,6 @@
 package com.groups.schicken.noteMessage;
 
+import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.util.FileManager;
 import com.groups.schicken.util.Pager;
@@ -50,5 +51,17 @@ public class NoteMessageService {
         }
 
         return result;
+    }
+
+    public List<NoteMessageVO> getList(EmployeeVO loginEmp, Pager pager) {
+        pager.makeIndex();
+        Long totalCount = noteMessageDAO.getTotalCount(loginEmp);
+        System.out.println("totalCount = " + totalCount);
+
+        pager.makeNum(totalCount);
+        List<NoteMessageVO> list = noteMessageDAO.getList(loginEmp, pager);
+        System.out.println("list = " + list);
+
+        return list;
     }
 }

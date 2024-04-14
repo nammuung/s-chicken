@@ -5,26 +5,18 @@
         <button class="btn btn-outline-danger btn-sm disabled ms-1">삭제</button>
         <button class="btn btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
-    <table class="table pt-3">
-        <thead>
-            <tr class="text-center">
-                <th style="width: 5%"></th>
-                <th style="width: 15%">보낸사람</th>
-                <th style="width: 55%">내용</th>
-                <th style="width: 10%">첨부파일</th>
-                <th style="width: 15%">수신날짜</th>
-            </tr>
-        </thead>
-        <tbody id="note-message-datas" class="text-center">
-            <tr>
-                <td><input type="checkbox" class="form-check"></td>
-                <td>어딘가의 누구</td>
-                <td>이러이러한 내용으로 이러이러 했다 뭐 어쩌고 저쩌고...</td>
-                <td></td>
-                <td>16:56</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row pt-3">
+        <b class="col-1 border-2 border-schicken border-bottom text-center"></b>
+        <b class="col-2 border-2 border-schicken border-bottom text-center">보낸사람</b>
+        <b class="col-6 border-2 border-schicken border-bottom text-center">내용</b>
+        <b class="col-1 border-2 border-schicken border-bottom text-center">파일</b>
+        <b class="col-2 border-2 border-schicken border-bottom text-center">수신날짜</b>
+        <div class="col-12">
+            <div id="note-message-datas" class="row">
+                <div class="text-center">쪽지가 없습니다.</div>
+            </div>
+        </div>
+    </div>
 </div>
 ^^^^^^^^^^
 <!-- 쪽지 보내기페이지 -->

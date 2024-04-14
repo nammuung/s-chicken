@@ -1,5 +1,7 @@
 package com.groups.schicken.noteMessage;
 
+import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.util.Pager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,8 +27,22 @@ class NoteMessageServiceTest {
         message.setSenderId(id);
         message.setContent("test message 입니다.");
 
-        Integer result = noteMessageService.sendMessage(message, receivers);
+        Integer result = noteMessageService.sendMessage(message, receivers, null);
 
         assertNotEquals(0, result);
+    }
+
+    @Test
+    void getList() {
+        EmployeeVO employeeVO = new EmployeeVO();
+        employeeVO.setId("19990806228");
+
+        Pager pager = new Pager();
+        pager.setPage(0L);
+
+        var list = noteMessageService.getList(employeeVO, pager);
+        System.out.println("list = " + list);
+
+        assertEquals(0, list.size());
     }
 }

@@ -14,18 +14,18 @@
                     <div class="col-2 border-end border-1 mh-600px">
                         <ul class="note-message-list list-group list-group-flush">
                             <li class="list-group-item">
-                                <button id="send-message-btn" class="btn btn-primary w-100">쪽지 보내기</button>
+                                <button id="note-message-send-form-btn" class="btn btn-primary w-100">쪽지 보내기</button>
                             </li>
-                            <li class="list-group-item text-center">
+                            <li id="note-message-receive-box-btn" class="list-group-item text-center">
                                 <span>받은 쪽지함</span>
                             </li>
-                            <li class="list-group-item text-center">
+                            <li id="note-message-save-box-btn" class="list-group-item text-center">
                                 <span>쪽지 보관함</span>
                             </li>
-                            <li class="list-group-item text-center">
+                            <li id="note-message-send-box-btn" class="list-group-item text-center">
                                 <span>보낸 쪽지함</span>
                             </li>
-                            <li class="list-group-item text-center">
+                            <li id="note-message-delete-box-btn" class="list-group-item text-center">
                                 <span>휴지통</span>
                             </li>
                         </ul>
