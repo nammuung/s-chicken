@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,8 +38,6 @@ public class RepresentService implements BoardService {
 		pager.makeIndex();
 		pager.makeNum(representDAO.getTotalCount(map));	
 		
-		System.out.println(pager.getSearch());
-		System.out.println(pager.getKind());
 		
 		return representDAO.getList(map);
 	}
@@ -109,6 +108,12 @@ public class RepresentService implements BoardService {
 		int result = representDAO.delete(boardVO);
 		
 		return result;
+	}
+	
+	public ResponseEntity<byte[]> fileDown(FileVO fileVO)throws Exception{
+		
+		return fileManager.downFile(fileVO);
+		
 	}
 	
 }

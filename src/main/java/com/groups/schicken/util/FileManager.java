@@ -2,6 +2,7 @@ package com.groups.schicken.util;
 
 import com.groups.schicken.aws.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,5 +31,11 @@ public class FileManager {
     }
     public List<FileVO> getFiles() {
         return null;
+    }
+    public ResponseEntity<byte[]> downFile(FileVO fileVO) throws Exception{
+    	fileMapper.downFile(fileVO);
+    	
+		return s3Service.downFile(fileVO);
+    	
     }
 }

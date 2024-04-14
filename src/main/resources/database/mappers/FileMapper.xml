@@ -30,5 +30,10 @@
             </if>
         </where>
     </delete>
+    
+    <select id="downFile" parameterType="FileVO" resultType="FileVO">
+		SELECT * FROM attach
+		WHERE id=#{id}
+	</select>
 </mapper>
 
