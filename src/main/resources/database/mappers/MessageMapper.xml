@@ -18,4 +18,27 @@
             (#{id}, #{i})
         </foreach>
     </insert>
+
+    <select id="getTotalCount">
+        SELECT COUNT(*)
+        FROM note_receiver
+        WHERE receiver_id = #{id}
+    </select>
+
+    <select id="getList">
+        SELECT
+              nm.id
+            , nm.sender_id
+            , concat(d.name,' ',c.name,' ',e.name) AS "sender_name"
+            , nm.content
+            , nm.date
+        FROM note_message nm
+            INNER JOIN note_receiver nr ON nr.note_id = nm.id
+            INNER JOIN employee e ON e.id = nm.sender_id
+            INNER JOIN department d ON d.id = e.department_id
+            INNER JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
+        WHERE receiver_id = #{employee.id}
+        ORDER BY nm.date desc
+        LIMIT ${pager.startIndex}, ${pager.perPage}
+    </select>
 </mapper>
