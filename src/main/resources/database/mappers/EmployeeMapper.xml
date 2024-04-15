@@ -77,11 +77,8 @@
 	</update>
 
 
-	<select id="role" parameterType="EmployeeVO" resultMap="employeeDetails">
-	SELECT dr.id AS dept_id,  dr.rol_id, c.type_id , c.name 
-	FROM dept_role AS dr
-	INNER JOIN code AS c
-	ON dr.rol_id = c.id
+	<select id="role" parameterType="EmployeeVO" resultMap="role">
+	select * from code where type_id = 200
 	</select>
 
 

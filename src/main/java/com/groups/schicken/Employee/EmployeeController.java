@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groups.schicken.util.Pager;
 
 import jakarta.servlet.http.HttpSession;
@@ -66,15 +67,6 @@ public class EmployeeController {
 
 	}
 	
-	@PostMapping("role")
-	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("roleId") String[] roleId , Model model)throws Exception {
-//	    employeeService.rolecontrolle(employeeVO);
-		System.out.println(departmentId);
-		System.out.println("roldId = " + Arrays.toString(roleId));
-		
-		employeeService.rolecontrolle(departmentId, roleId);
-	    return "employee/role";
-	}
 
 	
 	
@@ -125,9 +117,31 @@ public class EmployeeController {
 	}
 
 	@GetMapping("role")
-	public String rolelist(EmployeeVO employeeVO ,Model model) throws Exception {
-	    List<RoleVO> roles = employeeService.rolelist(employeeVO); 
+	public String role(EmployeeVO employeeVO ,Model model) throws Exception {
+	    List<RoleVO> roles = employeeService.role(employeeVO);
 	    model.addAttribute("list", roles);  
+	    return "employee/role";
+	}
+
+	@GetMapping("/roles")
+    @ResponseBody
+    public String rolelist1(EmployeeVO employeeVO) throws Exception {
+        List<RoleVO> roles = employeeService.rolelist(employeeVO);
+
+       
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonRoles = objectMapper.writeValueAsString(roles);
+        
+        return jsonRoles;
+    }
+	
+	@PostMapping("role")
+	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("roleId") String[] roleId , Model model)throws Exception {
+//	    employeeService.rolecontrolle(employeeVO);
+		System.out.println(departmentId);
+		System.out.println("roldId = " + Arrays.toString(roleId));
+		
+		employeeService.rolecontrolle(departmentId, roleId);
 	    return "employee/role";
 	}
 

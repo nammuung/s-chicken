@@ -126,6 +126,9 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		return employeeDAO.rolelist(employeeVO);
 	}
 	
+	public List<RoleVO> role (EmployeeVO employeeVO)throws Exception{
+		return employeeDAO.role(employeeVO);
+	}
 	
 	
 	
@@ -238,6 +241,9 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
           
             return 1;
     }
+
+
+
 
 
     
