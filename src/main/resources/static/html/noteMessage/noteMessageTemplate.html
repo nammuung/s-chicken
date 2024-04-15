@@ -3,7 +3,7 @@
     <div class="d-flex">
         <button id="note-message-save-btn" class="btn btn-primary btn-sm disabled ms-1">보관</button>
         <button id="note-message-delete-btn" class="btn btn-outline-danger btn-sm disabled ms-1">삭제</button>
-        <button class="btn btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+        <span class="ms-auto close" data-bs-dismiss="modal" aria-label="Close" style="font-size: x-large">&times;</span>
     </div>
     <div class="row pt-3">
         <b class="col-1 border-2 border-schicken border-bottom text-center"></b>
@@ -84,6 +84,25 @@
 <!-- 쪽지 확인페이지 -->
 <div class="note-message-content">
     <div class="row">
-
+        <div class="col-12">
+            From.
+        </div>
+        <div id="note-message-from" class="col-5 note-message-from"></div>
+        <div class="col-4"></div>
+        <div id="note-message-date" class="col-3"></div>
+        <div class="col-12">
+            <textarea id="noteMessageEditor"></textarea>
+        </div>
+        <div id="note-message-attach" class="col-12"></div>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6">
+                    <button class="btn btn-primary"> 답장 </button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-primary"> 확인 </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
