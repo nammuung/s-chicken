@@ -18,7 +18,7 @@ public class FileManager {
     private FileMapper fileMapper;
 
     public boolean uploadFile(MultipartFile file, FileVO fileVO) throws Exception{
-        String uid = UUID.randomUUID().toString();
+        String uid = UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
         fileVO.setName(uid);
         fileVO.setOriginName(file.getOriginalFilename());
         fileVO.setExtension(file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1));

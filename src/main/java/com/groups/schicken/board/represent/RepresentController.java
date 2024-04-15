@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.board.BoardVO;
-import com.groups.schicken.util.FileDownView;
+
+import com.groups.schicken.util.FileManager;
+import com.groups.schicken.util.FileVO;
 import com.groups.schicken.util.Pager;
 
 import lombok.RequiredArgsConstructor;
@@ -29,9 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class RepresentController {
-
-	private final FileDownView fileDownView;
-
+	
+	
 	@Autowired
 	private RepresentService representService;
 
@@ -41,24 +42,16 @@ public class RepresentController {
 		return "represent";
 	}
 
-	@GetMapping("fileDown")
-	public ResponseEntity<byte[]> download(FileVO fileVO) throws Exception{
-		ResponseEntity<byte[]> result = representService.fileDown(fileVO);
-		System.out.println(fileVO.getTblId()+"+++++++++++++++++++++++++++++++++");
-
-		return result;
-	}
-
-
+	
+	
 	@GetMapping("detail")
 	public String getDetail(BoardVO boardVO,Model model) throws Exception {
 
 		int result = representService.hit(boardVO);
 
 		boardVO = representService.getDetail(boardVO);
-		model.addAttribute("vo", boardVO);
-		System.out.println(boardVO.getFileVO()+"1111111111111111");
-
+		model.addAttribute("vo", boardVO);		
+		
 		List<BoardVO> ar = representService.pastPage(boardVO);
 		System.out.println(ar);
 		model.addAttribute("move", ar);
