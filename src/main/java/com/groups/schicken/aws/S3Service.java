@@ -15,13 +15,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -60,22 +58,26 @@ public class S3Service {
     }
     
     public ResponseEntity<byte[]> downFile(FileVO fileVO) throws IOException{
-    	System.out.println(fileVO.getTblId()+"+++++++++++++++++++++++++++++++++");
-    	System.out.println(fileVO.getName());
-    	String fileName1 = fileVO.getName();
+    	System.out.println(fileVO.getName()+"11111111111");
+    	System.out.println(fileVO.getOriginName()+"123");
+    	String name = fileVO.getName();
+    	String oriName = fileVO.getOriginName() + "." + fileVO.getExtension();
     	
-    	S3Object o = amazonS3.getObject(new GetObjectRequest(bucket, fileName1));
+    	S3Object o = amazonS3.getObject(new GetObjectRequest(bucket, name));
     	S3ObjectInputStream objectInputStream = o.getObjectContent();
     	byte[] bytes = IOUtils.toByteArray(objectInputStream);
     	
-    	String fileName = URLEncoder.encode(fileName1, "UTF-8").replaceAll("WW+", "%20");
-        HttpHeaders httpHeaders = new HttpHeaders();
+    	String fileName = URLEncoder.encode(oriName, "UTF-8").replaceAll("WW+", "%20");
+    	HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         httpHeaders.setContentLength(bytes.length);
-        httpHeaders.setContentDispositionFormData("attachment", fileName);
         
-        return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);
-		
+        
+        httpHeaders.setContentDispositionFormData("attachment", fileName);   	
+    
+        
+        
+        return new ResponseEntity<>(bytes, httpHeaders, HttpStatus.OK);		
     	
     }
 }

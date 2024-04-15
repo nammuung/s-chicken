@@ -54,7 +54,7 @@ public class RepresentService implements BoardService {
 			
 			
 			fileVO.setParentId(boardVO.getId());
-			fileVO.setTblId("100");
+			fileVO.setTblId("102");
 			
 			boolean result1 = fileManager.uploadFile(attach, fileVO);
 			
@@ -65,8 +65,6 @@ public class RepresentService implements BoardService {
 			}
 			return result;	
 	}
-
-
 
 	@Override
 	public BoardVO getDetail(BoardVO boardVO) throws Exception {
@@ -110,10 +108,5 @@ public class RepresentService implements BoardService {
 		return result;
 	}
 	
-	public ResponseEntity<byte[]> fileDown(FileVO fileVO)throws Exception{
-		
-		return fileManager.downFile(fileVO);
-		
-	}
 	
 }

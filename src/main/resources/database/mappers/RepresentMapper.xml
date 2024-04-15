@@ -29,31 +29,33 @@
 	</select>
 	
 	<select id="getDetail" parameterType="BoardVO" resultMap="getDetailResult">
-		SELECT * FROM represent r
+		SELECT 
+		r.*,
+		a.id attach_id,
+		a.origin_name attach_origin_name,
+		a.url attach_url,
+		a.extension attach_extension,
+		a.parent_id attach_parent_id,
+		a.tbl_id attach_tbl_id,
+		a.name attach_name
+		FROM represent r
 		LEFT JOIN attach a ON r.id = a.parent_id
 		WHERE r.id=#{id}
 	</select>
 		
 	<resultMap type="BoardVO" id="getDetailResult">
-	    <id column="id" property="id"/>
-	    	<result  column="write_date" property="writeDate"/>
-	    	<result  column="content" property="content"/>
-	    	<result  column="is_deleted" property="isDeleted"/>
-	    	<result  column="writer_id" property="writerId"/>
-	    	<result  column="hit" property="hit"/>
-	    	<result  column="sort" property="sort"/>
-	    	<result  column="title" property="title"/>
-	    	<result  column="important" property="important"/>
-	<collection property="fileVO" javaType="FileVO" ofType="List" columnPrefix="attach_">
-		<id column="id" property="id"/>
-			<result column="origin_name" property="originName"/>
-			<result column="url" property="url"/>
-			<result column="extension" property="extension"/>
-			<result column="parent_id" property="parentId"/>
-			<result column="tbl_id" property="tblId"/>
-			<result column="name" property="name"/>
-		
-	</collection>	    	
+    	<id column="id" property="id"/>
+    	<result  column="write_date" property="writeDate"/>
+    	<result  column="content" property="content"/>
+    	<result  column="is_deleted" property="isDeleted"/>
+    	<result  column="writer_id" property="writerId"/>
+    	<result  column="hit" property="hit"/>
+    	<result  column="sort" property="sort"/>
+    	<result  column="title" property="title"/>
+    	<result  column="important" property="important"/>
+		<collection property="fileVO" javaType="List" ofType="FileVO" autoMapping="true" columnPrefix="attach_">
+				<id column="id" property="id"/>
+		</collection>	    	
 	</resultMap>
 
 <!-- FileVO를 매핑하는 resultMap -->
