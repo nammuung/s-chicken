@@ -1,5 +1,7 @@
 package com.groups.schicken.Employee;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -63,6 +65,19 @@ public class EmployeeController {
 	public void update() throws Exception {
 
 	}
+	
+	@PostMapping("role")
+	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("roleId") String[] roleId , Model model)throws Exception {
+//	    employeeService.rolecontrolle(employeeVO);
+		System.out.println(departmentId);
+		System.out.println("roldId = " + Arrays.toString(roleId));
+		
+		employeeService.rolecontrolle(departmentId, roleId);
+	    return "employee/role";
+	}
+
+	
+	
 	
 	//회원가입 페이지 이동
 	@GetMapping("join")

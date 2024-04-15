@@ -44,7 +44,7 @@
 		code.name AS "code_name"
 		FROM employee
 		INNER JOIN department ON employee.department_id = department.id
-		INNER JOIN code ON employee.pos_id = code.id WHERE employee.id = #{id};
+		INNER JOIN code ON employee.pos_id = code.id WHERE employee.id = #{id}
 	</select>
 
 
@@ -64,7 +64,7 @@
 
 
 	<select id="getTotalCount">
-		select count(id) from employee;
+		select count(id) from employee
 	</select>
 
 
@@ -87,12 +87,28 @@
 
 
 	<select id="rolelist" parameterType="EmployeeVO" resultMap="role">
-	SELECT c.type_id , c.name ,c.use , d.name AS deptname, dr.id AS dept_role_id
+	SELECT c.id, c.type_id , c.name ,c.use , d.name AS deptname, dr.id AS dept_role_id
 	FROM code c
 	LEFT OUTER JOIN dept_role dr ON c.id = dr.rol_id
 	LEFT OUTER JOIN department d ON dr.id = d.id
 	WHERE c.type_id = 200 AND c.use = 1
 	</select>
+
+
+	<delete id="roledelete" >
+	delete FROM dept_role WHERE id = #{departmentId}
+	</delete>
+
+
+
+
+	<insert id="roleinsert">
+	insert into dept_role (id, rol_id)
+		<foreach collection="list" item="i" open="VALUES " separator=",">
+		(#{i.id}, #{i.rolId})
+        </foreach>
+	</insert>
+
 
 
 	<resultMap type="EmployeeVO" id="employeeDetails">
@@ -147,10 +163,11 @@
 		</association>
 
 		<association property="roleVO" javaType="RoleVO">
-		<result column="dept_id" property="id"/>
+		<result column="dept_role_id" property="id"/>
 		<result column="rol_id" property="rolId"/>
 		</association>
 				<association property="position" javaType="CodeVO">
+			<result column="id" property="id" />	
 			<result column="type_id" property="typeId" />
 			<result column="name" property="name" />
 			<result column="use" property="use" />
