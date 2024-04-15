@@ -112,6 +112,10 @@
   min-height: 600px !important;
 }
 
+.anchorable{
+  cursor: pointer;
+}
+
 .bg-schicken-light-hover:hover{
   background-color: #C7A9FF !important;
 }

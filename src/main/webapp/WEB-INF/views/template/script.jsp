@@ -7,6 +7,10 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<!-- CK Editor -->
+<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+
 <!-- Vendor JS Files -->
 <script src="/vendor/apexcharts/apexcharts.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -27,7 +31,6 @@
 <script src="/js/lib/summernote-ko-KR.js"></script>
 
 <script src="/js/header/header.js" type="module"></script>
-
 
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>

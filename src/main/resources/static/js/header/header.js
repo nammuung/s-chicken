@@ -12,6 +12,8 @@ let noteMessageSendBoxBtn = document.getElementById("note-message-send-box-btn")
 let noteMessageDeleteBoxBtn = document.getElementById("note-message-delete-box-btn");
 
 let noteMessageDatas;
+let noteMessageSaveBtn;
+let noteMessageDeleteBtn;
 
 let pages = {
     list : '',
@@ -63,14 +65,16 @@ function senderNameSetting(senderName){
 
 function drawNoteMessageTr(data){
     return `
-<div class="d-flex border-1 border-bottom mt-2">
-        <div class="col-1 px-3 text-center form-check">
-            <input type="checkbox" class="form-check-input" style="margin-left: 1em; margin-top: 0.5em">
-        </div>
-        <div class="col-2 px-3 text-center linkable text-black">${senderNameSetting(data.senderName)}</div>
-        <div class="col-6 px-3 text-center text-truncate linkable text-black">${data.content}</div>
-        <div class="col-1 px-3 text-center"></div>
-        <div class="col-2 px-3 text-center">${dateFormatting(data.date)}</div>
+        <div data-note-message="${data.id}" class="d-flex border-1 border-bottom mt-2">
+            <div class="col-1 px-3 text-center form-check">
+                <input data-id="note-message-select" type="checkbox" class="form-check-input" style="margin-left: 1em; margin-top: 0.5em">
+            </div>
+            <div data-sender-id="${data.senderId}" class="col-2 px-3 text-center linkable text-black">${senderNameSetting(data.senderName)}</div>
+            <div class="col-6 px-3 text-center text-truncate linkable text-black">${data.content}</div>
+            <div class="col-1 px-3 text-center">
+                ${data.file == null ? "" : "<i data-file-id='${data.file}' class='fas fa-save fa-lg anchorable' style='color: #7749F8;margin-top: 0.5em'></i>"}
+            </div>
+            <div class="col-2 px-3 text-center">${dateFormatting(data.date)}</div>
         </div>
     `
 }
@@ -86,7 +90,24 @@ function getNoteMessageList(page){
         .then(res => res.json())
         .then(r => {
             noteMessageDatas.innerHTML=drawNoteMessageTableRows(r);
+            toggleSaveAndDeleteBtnByCheckbox();
         });
+}
+
+function toggleSaveAndDeleteBtnByCheckbox(){
+    let selCount = 0;
+    document.querySelectorAll("input[data-id='note-message-select']")
+        .forEach(ipt =>ipt.addEventListener("click",e => {
+            selCount += e.target.checked? 1 : -1;
+
+            if(selCount <= 0){
+                noteMessageSaveBtn.classList.add("disabled");
+                noteMessageDeleteBtn.classList.add("disabled");
+            } else {
+                noteMessageSaveBtn.classList.remove("disabled");
+                noteMessageDeleteBtn.classList.remove("disabled");
+            }
+        }))
 }
 
 
@@ -97,6 +118,11 @@ function openListPage(){
     noteMessageBody.innerHTML = pages['list'];
 
     noteMessageDatas = document.getElementById("note-message-datas");
+    noteMessageSaveBtn = document.getElementById("note-message-save-btn");
+    noteMessageDeleteBtn = document.getElementById("note-message-delete-btn");
+
+    noteMessageSaveBtn.addEventListener("click",()=>{})
+    noteMessageDeleteBtn.addEventListener("click",()=>{})
 
     getNoteMessageList(0);
 }
