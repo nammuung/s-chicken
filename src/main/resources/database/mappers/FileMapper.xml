@@ -16,24 +16,36 @@
        VALUES
        (#{id}, #{name}, #{originName}, #{url}, #{extension}, #{parentId}, #{tblId})
    </insert>
-    <delete id="deleteFile">
+   
+    <delete id="deleteFile" parameterType="FileVO">
         delete from attach
         <where>
-            <if test="id != null">
-                id = #{id}
+            <if test="parentId != null">
+                parent_id = #{parentId}                
             </if>
-            <if test="name != null">
-                OR name = #{name}
+            <if test="originName != null">
+            	OR origin_name=#{originName}
             </if>
-            <if test="url != null">
-                OR url = #{url}
-            </if>
+            
+            
         </where>
     </delete>
     
     <select id="downFile" parameterType="FileVO" resultType="FileVO">
 		SELECT * FROM attach
-		WHERE id=#{id} AND extension=#{extension} AND origin_name=#{originName}
+			<where>
+				<if test="id !=null">
+					id=#{id}
+				</if>
+				<if test="extension !=null">
+					OR extension=#{extension}
+				</if>
+				<if test="originName != null">
+					OR origin_name=#{originName}
+				</if>
+				
+			</where>
+		
 	</select>
 </mapper>
 

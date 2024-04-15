@@ -63,7 +63,7 @@ public class RepresentService implements BoardService {
 				int intresult = 1;
 				result=intresult;
 			}
-			return result;	
+			return result;
 	}
 
 	@Override
@@ -93,9 +93,26 @@ public class RepresentService implements BoardService {
 	}
 
 	@Override
-	public int update(BoardVO boardVO) throws Exception {
-		int result = representDAO.update(boardVO);
-		System.out.println(boardVO.getImportant());
+	public int update(BoardVO boardVO,MultipartFile file) throws Exception {
+		int result = representDAO.update(boardVO);		
+		
+		if(file.isEmpty()) {
+			return result;
+		}
+		
+		FileVO fileVO = new FileVO();
+		fileVO.setParentId(boardVO.getId());	
+		
+		boolean result1 = fileManager.deleteFile(fileVO);
+		
+		fileVO.setParentId(boardVO.getId());
+		fileVO.setTblId("102");
+		result1= fileManager.uploadFile(file, fileVO);
+		
+		if(result1) {
+			int intresult=1;
+			result = intresult;
+		}
 		
 		
 		return result;

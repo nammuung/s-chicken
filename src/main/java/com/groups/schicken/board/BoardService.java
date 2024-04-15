@@ -22,7 +22,7 @@ public interface BoardService {
 	
 	public int hit(BoardVO boardVO)throws Exception;
 	
-	public int update(BoardVO boardVO)throws Exception;
+	public int update(BoardVO boardVO,MultipartFile file)throws Exception;
 	
 	public int delete(BoardVO boardVO)throws Exception;
 	

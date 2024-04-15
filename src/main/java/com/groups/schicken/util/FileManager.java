@@ -33,7 +33,7 @@ public class FileManager {
         return null;
     }
     public ResponseEntity<byte[]> downFile(FileVO fileVO) throws Exception{
-    	fileMapper.downFile(fileVO);
+    	fileVO = fileMapper.downFile(fileVO);
     	
 		return s3Service.downFile(fileVO);
     	

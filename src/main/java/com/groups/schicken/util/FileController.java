@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 @Controller
-public class FileDownController {
+public class FileController {
 
 	@Autowired
 	private FileManager fileManager;
@@ -15,5 +15,11 @@ public class FileDownController {
 		
 		
 		return fileManager.downFile(fileVO);
+	}
+	
+	@GetMapping("/fileDelete")
+	public boolean delete(FileVO fileVO)throws Exception{
+		
+		return fileManager.deleteFile(fileVO);
 	}
 }
