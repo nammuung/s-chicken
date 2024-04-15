@@ -7,17 +7,16 @@
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0" />
     <!-- css 파일 -->
-    <link rel="stylesheet" href="/css/documentDetail.css">    
+    <link rel="stylesheet" href="/css/documentDetail.css">
 	<script src="/js/document/documentDetail.js"></script>
 
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 </head>
 
-<body> 
+<body>
 
     <span>
         <p style="line-height: 150%; font-family: 맑은 고딕; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;"><span
@@ -43,18 +42,18 @@
                         <button>임시저장</button>
                     </td>
                 </tr>
-                    
+
                 <tr>
-                    
+
                     <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
-                        colspan="2" class=""> 지출결의서  
+                        colspan="2" class=""> 지출결의서
                         <div style="text-align: right;">
-                        
+
                             <!-- Button to Open the Modal -->
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
 							  결재선지정
 							</button>
-							
+
 							<!-- The Modal -->
 							<div class="modal fade" id="myModal">
 							  <div class="modal-dialog modal-dialog-scrollable" id="modalContent">
@@ -88,18 +87,18 @@
 							    </div>
 							  </div>
 							</div>
-							
+
                         </div>
                     </td>
-                    
+
                     <!-- <td><button>결제미리보기</button></td> -->
-                    
+
                 </tr>
-                
+
                 <tr>
                     <td
                         style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 506px; text-align: left; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
-                        
+
                         <table
                             style="border: 1px solid rgb(0, 0, 0); border-image: none; width: 356px; height: 130px; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; margin-top: 1px; border-collapse: collapse;">
                             <!-- User -->
@@ -107,7 +106,7 @@
                                 <col width="100" />
                                 <col width="210" />
                             </colgroup>
-                            
+
                             <tbody>
                                 <tr>
                                     <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
@@ -164,7 +163,7 @@
                     </td>
                     <td
                         style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 293px; text-align: right; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
-                        
+
                         <p style="text-align: right; line-height: 150%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt; margin-top: 0px; margin-bottom: 0px;">
                             <span class="sign_type1_inline"style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
                                 data-is-reception="" data-group-type="type1" data-group-max-count="7" data-group-name="결재선" data-group-seq="0">
@@ -180,7 +179,7 @@
                                         <span class="sign_date_wrap">
                                             <span class="sign_date " id="">이름</span>
                                         </span>
-                                        
+
                                         <span class="sign_wrap">
                                             <span class="sign_name"><strong>서명</strong></span>
                                         </span>
@@ -204,7 +203,7 @@
                                             <span class="sign_date " id="">날짜</span>
                                         </span>
                                     </span>
-                                </span> 
+                                </span>
                                 <span class="sign_member_wrap" id="">
                                     <span class="sign_member">
                                         <span class="sign_rank_wrap">
@@ -220,7 +219,7 @@
                                             <span class="sign_date " id="">날짜</span>
                                         </span>
                                     </span>
-                                </span> 
+                                </span>
                                 <span class="sign_member_wrap" id="">
                                     <span class="sign_member">
                                         <span class="sign_rank_wrap">
@@ -236,7 +235,7 @@
                                             <span class="sign_date " id="">날짜</span>
                                         </span>
                                     </span>
-                                </span>  
+                                </span>
 
                             </span>
                         </p>
@@ -258,18 +257,18 @@
                         대상자 </td>
                     <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
                         colspan="5">
-                        
+
                         <input type="text" class="form-control" id="title" name="title" style="width: 100%;">
                     </td>
                 </tr>
-                
+
                 <tr>
                     <td
                         style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
                         참조 </td>
                     <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
                         colspan="5">
-                        
+
                         <input type="text" class="form-control" id="title" name="title" style="width: 100%; text-align: center;">
                     </td>
                 </tr>
@@ -280,12 +279,12 @@
                         제목 </td>
                     <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
                         colspan="5">
-                        
+
                         <input type="text" class="form-control" id="title" name="title" style="width: 100%;">
                     </td>
                 </tr>
-        
-                
+
+
             </tbody>
         </table>
         <table
@@ -302,7 +301,7 @@
                          <div id="editor"></div>
                     </td>
                 </tr>
-                
+
             </tbody>
         </table>
         <div>
@@ -314,7 +313,7 @@
             style="line-height: 150%; font-family: &quot;맑은 고딕&quot;; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;">
             &nbsp;</p>
     </span>
-    
+
 <script>
     ClassicEditor
         .create(document.querySelector('#editor'))
@@ -328,7 +327,7 @@
         });
 
 </script>
-    
+
 </body>
 
 </html>

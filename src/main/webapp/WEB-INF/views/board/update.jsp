@@ -9,7 +9,6 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>S치킨-그룹웨어</title>
     <c:import url="../template/head.jsp"/>
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
     <style>
         #editor {
             height: 50vh;
@@ -48,13 +47,13 @@ String strDate = simpleDate.format(date);
                                     <option value="1">대표 게시</option>
                                 </select>
                             </div>
-                            
-                            
+
+
                             <input type="hidden" name="id" value="${vo.id}">
                             <input type="hidden" name="writerId" value="123">
                             <input type="hidden" name="isDelete" value="0">
                             <input type="hidden" name="writeDate" value="<%=strDate %>">
-                        
+
                             <div class="mb-3">
                                 <label for="title" class="form-label"><b>제목</b></label>
                                 <input type="text" class="form-control" id="title" name="title" value="${vo.title}" placeholder="제목을 입력해주세요.">
@@ -70,7 +69,7 @@ String strDate = simpleDate.format(date);
                             <div>
                             	<input type="file" name="attach">
                             </div>
-                            
+
 
                             <button type="submit" class="btn btn-primary float-end" id="btn">게시하기</button>
                         </form>

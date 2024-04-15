@@ -47,7 +47,7 @@
             <c:forEach items="${list}" var="data">
                 <tr>
                     <td>${data.position.name}</td>
-                    <td><input type="checkbox" value="${data.department.name}"></td>
+                    <td class="text-center"><input type="checkbox" value="${data.department.name}"></td>
                     <!-- 추가 데이터 필드에 대한 셀을 여기에 추가할 수 있습니다. -->
                 </tr>
             </c:forEach>

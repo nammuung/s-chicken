@@ -1,19 +1,13 @@
 package com.groups.schicken.board;
 
-import java.util.List;
-
-import com.groups.schicken.franchise.object.FranchiseVO;
-import com.groups.schicken.franchise.object.QnaCommentVO;
-import com.groups.schicken.franchise.object.QnaVO;
-import com.groups.schicken.util.FileVO;
-
+import com.groups.schicken.common.vo.FileVO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class BoardVO {
 	private Long id;
 	private String writeDate;
