@@ -10,4 +10,5 @@ public class NoteMessageVO {
     private String content;
     private String date;
     private String file;
+    private String filename;
 }

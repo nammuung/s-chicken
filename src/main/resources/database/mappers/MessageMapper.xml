@@ -43,4 +43,21 @@
         ORDER BY nm.date desc
         LIMIT ${pager.startIndex}, ${pager.perPage}
     </select>
+
+    <select id="getMessage">
+        SELECT
+              nm.id
+            , nm.sender_id
+            , concat(d.name,' ',c.name,' ',e.name) AS "sender_name"
+            , nm.content
+            , nm.date
+            , a.id AS "file"
+            , a.origin_name AS "filename"
+        FROM note_message nm
+            INNER JOIN employee e ON e.id = nm.sender_id
+            INNER JOIN department d ON d.id = e.department_id
+            INNER JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
+            LEFT JOIN attach a ON a.tbl_id='104' AND a.parent_id=nm.id
+        WHERE nm.id = #{id}
+    </select>
 </mapper>

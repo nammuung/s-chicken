@@ -20,7 +20,7 @@ class NoteMessageServiceTest {
 
     @Test
     void sendMessage() {
-        Long id = 20240402226L;
+        String id = "20240402226";
         List<String> receivers = List.of("20160607230,20240409220".split(","));
 
         NoteMessageVO message = new NoteMessageVO();
@@ -44,5 +44,14 @@ class NoteMessageServiceTest {
         System.out.println("list = " + list);
 
         assertEquals(0, list.size());
+    }
+
+    @Test
+    void getMessage(){
+        NoteMessageVO messageVO = new NoteMessageVO();
+        messageVO.setId(1021L);
+
+        var message = noteMessageService.getMessage(messageVO);
+        System.out.println("message = " + message);
     }
 }

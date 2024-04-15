@@ -48,4 +48,15 @@ public class NoteMessageController {
 
         return ResponseEntity.ok(list);
     }
+
+    @GetMapping("getMessage")
+    public ResponseEntity<NoteMessageVO> getMessage(NoteMessageVO noteMessage){
+        noteMessage = noteMessageService.getMessage(noteMessage);
+
+        if(noteMessage == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(noteMessage);
+    }
 }

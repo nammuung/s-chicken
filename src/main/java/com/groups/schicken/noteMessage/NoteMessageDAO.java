@@ -15,4 +15,6 @@ public interface NoteMessageDAO {
     Integer addReceivers(List<String> receivers, Long id);
 
     List<NoteMessageVO> getList(EmployeeVO employee, Pager pager);
+
+    NoteMessageVO getMessage(NoteMessageVO noteMessage);
 }

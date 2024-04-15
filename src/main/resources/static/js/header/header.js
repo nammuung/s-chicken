@@ -12,6 +12,10 @@ let noteMessageSaveBoxBtn = document.getElementById("note-message-save-box-btn")
 let noteMessageSendBoxBtn = document.getElementById("note-message-send-box-btn");
 let noteMessageDeleteBoxBtn = document.getElementById("note-message-delete-box-btn");
 
+let noteMessageFrom;
+let noteMessageDate;
+let noteMessageEditor;
+let noteMessageAttach;
 
 let pages = {
     list : '',
@@ -25,7 +29,7 @@ window.onload=()=>{
         .then(r=>{
             const page = r.split("^^^^^^^^^^");
 
-            listForm.set(noteMessageBody, page[0]);
+            listForm.set(noteMessageBody, page[0], openRead);
             sendForm.set(noteMessageBody, page[1]);
             pages.read = page[2];
         })
@@ -34,7 +38,32 @@ window.onload=()=>{
 
 //============================================ 모달 페이지 전환 ==========================================================
 
+function openRead(messageId){
+    noteMessageBody.innerHTML = pages.read;
 
+    noteMessageFrom = document.getElementById("note-message-from");
+    noteMessageDate = document.getElementById("note-message-date");
+    noteMessageEditor = document.getElementById("note-message-editor");
+    noteMessageAttach = document.getElementById("note-message-attach");
+
+    fetch(`/message/getMessage?id=${messageId}`)
+        .then(res=>res.json())
+        .then(r => {
+            noteMessageFrom.innerHTML = `<h5>${r.senderName}</h5>`;
+            noteMessageDate.innerHTML = r.date;
+            noteMessageEditor.value = r.content;
+            noteMessageAttach.innerHTML = r.filename;
+
+            ClassicEditor.create(document.getElementById("note-message-editor"), {toolbar:[]})
+                .then(editor => {
+                    editor.enableReadOnlyMode("note-message-editor");
+                    editor.editing.view.change(writer => {
+                        writer.setStyle('height', '300px', editor.editing.view.document.getRoot());
+                        writer.setStyle('overflow', 'auto', editor.editing.view.document.getRoot());
+                    });
+                })
+        });
+}
 
 
 //========================================== 이벤트 리스너 등록 ==========================================================

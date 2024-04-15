@@ -64,4 +64,8 @@ public class NoteMessageService {
 
         return list;
     }
+
+    public NoteMessageVO getMessage(NoteMessageVO noteMessage) {
+        return noteMessageDAO.getMessage(noteMessage);
+    }
 }

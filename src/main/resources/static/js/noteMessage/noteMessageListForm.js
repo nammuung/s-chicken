@@ -4,9 +4,11 @@ let noteMessageDeleteBtn;
 
 let noteMessageBody;
 let listPage;
-function setPage(body, page){
+let openMessage;
+function setPage(body, page, readFunc){
     noteMessageBody = body;
     listPage = page;
+    openMessage = readFunc;
 }
 
 function getToday(){
@@ -41,12 +43,12 @@ function senderNameSetting(senderName){
 
 function drawNoteMessageTr(data){
     return `
-        <div data-note-message="${data.id}" class="d-flex border-1 border-bottom mt-2">
+        <div class="d-flex border-1 border-bottom mt-2">
             <div class="col-1 px-3 text-center form-check">
                 <input data-id="note-message-select" type="checkbox" class="form-check-input" style="margin-left: 1em; margin-top: 0.5em">
             </div>
             <div data-sender-id="${data.senderId}" class="col-2 px-3 text-center linkable text-black">${senderNameSetting(data.senderName)}</div>
-            <div class="col-6 px-3 text-center text-truncate linkable text-black">${data.content}</div>
+            <div data-content="${data.id}" class="col-6 px-3 text-center text-truncate linkable text-black">${data.content}</div>
             <div class="col-1 px-3 text-center">
                 ${data.file == null ? "" : `<a href='/fileDown?id=${data.file}'><i class='fas fa-save fa-lg anchorable' style='color: #7749F8;margin-top: 0.5em'></i></a>`}
             </div>
@@ -67,6 +69,8 @@ function getNoteMessageList(page){
         .then(r => {
             noteMessageDatas.innerHTML=drawNoteMessageTableRows(r);
             toggleSaveAndDeleteBtnByCheckbox();
+            document.querySelectorAll("div[data-content]")
+                .forEach(div => div.addEventListener("click", evt => openMessage(evt.target.getAttribute("data-content"))))
         });
 }
 
