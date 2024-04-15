@@ -4,6 +4,7 @@ import com.groups.schicken.aws.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class FileManager {
         fileMapper.uploadFile(fileVO);
         return true;
     }
+//    @Transactional
     public boolean deleteFile(FileVO fileVO) throws Exception {
         fileMapper.deleteFile(fileVO);
         return s3Service.deleteFile(fileVO);

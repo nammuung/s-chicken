@@ -19,32 +19,13 @@
    
     <delete id="deleteFile" parameterType="FileVO">
         delete from attach
-        <where>
-            <if test="parentId != null">
-                parent_id = #{parentId}                
-            </if>
-            <if test="originName != null">
-            	OR origin_name=#{originName}
-            </if>
+           	WHERE id = #{id}                
             
-            
-        </where>
     </delete>
     
     <select id="downFile" parameterType="FileVO" resultType="FileVO">
 		SELECT * FROM attach
-			<where>
-				<if test="id !=null">
-					id=#{id}
-				</if>
-				<if test="extension !=null">
-					OR extension=#{extension}
-				</if>
-				<if test="originName != null">
-					OR origin_name=#{originName}
-				</if>
-				
-			</where>
+			WHERE id=#{id}
 		
 	</select>
 </mapper>

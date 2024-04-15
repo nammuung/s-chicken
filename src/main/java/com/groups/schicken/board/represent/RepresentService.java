@@ -37,7 +37,10 @@ public class RepresentService implements BoardService {
 		
 		pager.makeIndex();
 		pager.makeNum(representDAO.getTotalCount(map));	
-		
+		System.out.println(pager.getStartIndex());
+		System.out.println(pager.getPerPage());
+		System.out.println(pager.getTotalPage());
+		System.out.println(pager.getLastNum());
 		
 		return representDAO.getList(map);
 	}

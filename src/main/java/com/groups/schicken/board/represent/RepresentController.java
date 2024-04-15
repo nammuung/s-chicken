@@ -50,7 +50,7 @@ public class RepresentController {
 		int result = representService.hit(boardVO);
 		
 		boardVO = representService.getDetail(boardVO);
-		model.addAttribute("vo", boardVO);		
+		model.addAttribute("vo", boardVO);
 		
 		List<BoardVO> ar = representService.pastPage(boardVO);
 		System.out.println(ar);

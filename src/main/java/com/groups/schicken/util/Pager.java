@@ -35,8 +35,7 @@ public class Pager {
 		//인덱스번호 1 ->0
 		//인덱스번호 2 ->10
 		//인덱스번호 3 ->20
-		this.startIndex= (this.getPage()-1)*this.getPage();
-		
+		this.startIndex= (this.getPage()-1)*this.getPerPage();		
 	}
 	
 	public void makeNum(Long totalCount) {
