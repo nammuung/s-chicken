@@ -77,6 +77,22 @@
 	</update>
 
 
+	<select id="role" parameterType="EmployeeVO" resultMap="employeeDetails">
+	SELECT dr.id AS dept_id,  dr.rol_id, c.type_id , c.name 
+	FROM dept_role AS dr
+	INNER JOIN code AS c
+	ON dr.rol_id = c.id
+	</select>
+
+
+
+	<select id="rolelist" parameterType="EmployeeVO" resultMap="role">
+	SELECT c.type_id , c.name ,c.use , d.name AS deptname, dr.id AS dept_role_id
+	FROM code c
+	LEFT OUTER JOIN dept_role dr ON c.id = dr.rol_id
+	LEFT OUTER JOIN department d ON dr.id = d.id
+	WHERE c.type_id = 200 AND c.use = 1
+	</select>
 
 
 	<resultMap type="EmployeeVO" id="employeeDetails">
@@ -115,12 +131,30 @@
 			<result column="social_id" property="social_id" />
 			<result column="kind" property="kind" />
 			<result column="employee_id" property="employeeId" />
-
 		</association>
+		
 	</resultMap>
 
 
+<resultMap type="EmployeeVO" id="role">
 
+		<association property="department" javaType="DepartmentVO">
+			<result column="deptname" property="name" />
+			<result column="contact_Number" property="contactNumber" />
+			<result column="sort" property="sort" />
+			<result column="upper_id" property="upperId" />
+			<result column="depth" property="depth" />
+		</association>
 
-
+		<association property="roleVO" javaType="RoleVO">
+		<result column="dept_id" property="id"/>
+		<result column="rol_id" property="rolId"/>
+		</association>
+				<association property="position" javaType="CodeVO">
+			<result column="type_id" property="typeId" />
+			<result column="name" property="name" />
+			<result column="use" property="use" />
+		</association>
+		
+	</resultMap>
 </mapper>

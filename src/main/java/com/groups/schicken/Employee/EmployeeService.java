@@ -28,6 +28,7 @@ import com.groups.schicken.util.Pager;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -118,6 +119,11 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	}
 
 
+	public List<RoleVO> rolelist (EmployeeVO employeeVO)throws Exception{
+		return employeeDAO.rolelist(employeeVO);
+	}
+	
+	
 	// 소셜 로그인
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
@@ -125,10 +131,18 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		
 		
 		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
-		
+		String email = user.getAttribute("email");
 		log.info("Client ID == > {}", clientRegistration.getClientId());
 		log.info("Client Name == > {}", clientRegistration.getClientName());
+		log.info("Client email == > {}", clientRegistration.getScopes());
+		log.info("Client email == > {}", clientRegistration.getScopes());
 		
+		
+		
+		SocialVO socialVO = new SocialVO();
+		EmployeeVO employeeVO = new EmployeeVO();
+		socialVO.setId(clientRegistration.getClientId());
+		socialVO.setKind(clientRegistration.getClientName());
 		if(clientRegistration.getClientName().equals("Kakao")) {
 			
 			try {
@@ -159,6 +173,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		
 		
 	}
+	
+	
 	
 	
 	

@@ -1,6 +1,7 @@
 package com.groups.schicken.Employee;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -47,6 +48,8 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	
 	//소셜 Login
 	private SocialVO socialVO;
+	
+	private RoleVO roleVO;
 	
 	
 	//OAuth2User, Token등 정보 저장

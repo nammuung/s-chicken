@@ -45,8 +45,8 @@
                             <p style="line-height: 24px; font-size: 12pt;"><span style="font-family: '맑은 고딕'; letter-spacing: -0.25pt;">감사합니다.&nbsp;</span></p></div> -->
                     </div>
                     <div>      
-                    	<c:forEach items="${vo.fileVOs}" var="file">
-                    		<a href="/${board}/fileDown?id=${file.id}">${file.originName}</a>
+                    	<c:forEach items="${vo.fileVO}" var="file">
+                    		<a href="/fileDown?id=${file.id}&extension=${file.extension}&originName=${file.originName}&name=${file.name}">${file.originName}</a>
                     	</c:forEach>
                     </div>
                 </div>

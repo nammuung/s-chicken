@@ -36,8 +36,6 @@ console.log(sort.dataset.sort);
 			important.value=0;
 		
 		}
-		
-
 	}
 	
 

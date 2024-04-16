@@ -1,6 +1,7 @@
 package com.groups.schicken.board;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +10,7 @@ import com.groups.schicken.util.Pager;
 public interface BoardService {
 	
 	
-	public List<BoardVO> getList(Pager pager)throws Exception;
+	public List<BoardVO> getList(Pager pager,BoardVO boardVO)throws Exception;
 	
 	public int add(BoardVO boardVO, MultipartFile attach)throws Exception;
 	

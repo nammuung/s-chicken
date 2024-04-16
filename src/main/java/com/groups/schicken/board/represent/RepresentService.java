@@ -1,9 +1,12 @@
 package com.groups.schicken.board.represent;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,12 +27,17 @@ public class RepresentService implements BoardService {
 
 	
 	@Override
-	public List<BoardVO> getList(Pager pager) throws Exception {
+	public List<BoardVO> getList(Pager pager,BoardVO boardVO) throws Exception {
+		Map<String, Object> map = new HashMap<String,Object>();
+		
+		map.put("pager", pager);
+		map.put("boadVO",boardVO);
 		
 		pager.makeIndex();
-		pager.makeNum(representDAO.getTotalCount(pager));		
+		pager.makeNum(representDAO.getTotalCount(map));	
 		
-		return representDAO.getList(pager);
+		
+		return representDAO.getList(map);
 	}
 
 	@Override
@@ -44,7 +52,7 @@ public class RepresentService implements BoardService {
 			
 			
 			fileVO.setParentId(boardVO.getId());
-			fileVO.setTblId("100");
+			fileVO.setTblId("102");
 			
 			boolean result1 = fileManager.uploadFile(attach, fileVO);
 			
@@ -55,8 +63,6 @@ public class RepresentService implements BoardService {
 			}
 			return result;	
 	}
-
-
 
 	@Override
 	public BoardVO getDetail(BoardVO boardVO) throws Exception {
@@ -87,6 +93,7 @@ public class RepresentService implements BoardService {
 	@Override
 	public int update(BoardVO boardVO) throws Exception {
 		int result = representDAO.update(boardVO);
+		System.out.println(boardVO.getImportant());
 		
 		
 		return result;
@@ -98,5 +105,6 @@ public class RepresentService implements BoardService {
 		
 		return result;
 	}
+	
 	
 }

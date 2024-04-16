@@ -3,6 +3,7 @@ package com.groups.schicken.util;
 import com.groups.schicken.aws.S3Service;
 import com.groups.schicken.common.vo.FileVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +18,7 @@ public class FileManager {
     private FileMapper fileMapper;
 
     public boolean uploadFile(MultipartFile file, FileVO fileVO) throws Exception{
-        String uid = UUID.randomUUID().toString();
+        String uid = UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
         fileVO.setName(uid);
         fileVO.setOriginName(file.getOriginalFilename());
         fileVO.setExtension(file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1));
@@ -31,5 +32,11 @@ public class FileManager {
     }
     public List<FileVO> getFiles() {
         return null;
+    }
+    public ResponseEntity<byte[]> downFile(FileVO fileVO) throws Exception{
+    	fileMapper.downFile(fileVO);
+    	
+		return s3Service.downFile(fileVO);
+    	
     }
 }
