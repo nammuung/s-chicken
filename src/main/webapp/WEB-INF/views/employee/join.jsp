@@ -117,7 +117,7 @@
 
 
 								<input type="hidden" id="password" name="password">
-								<input type="file" name="attach" value="/static/img/기본.jpg">
+								<!-- <input type="file" name="attach" value="/static/img/기본.jpg"> -->
 									
 								<button type="submit" class="btn btn-primary mt-3">회원가입</button>
 							</form>

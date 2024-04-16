@@ -38,11 +38,13 @@
 
 								<!-- id input -->
 								<div class="form-outline mb-4">
-									<label class="form-label" for="id">ID</label> <input
-										type="text" id="id" name="id"
-										value="${cookie.rememberId.value}"
+									<label class="form-label" for="idz">ID</label> <input
+										type="text" id="idz" value="${cookie.rememberId.value}"
 										class="form-control form-control-lg" placeholder="ID를 입력하세요." />
 								</div>
+								<input type="hidden" id="id" name="id"
+									value="${cookie.rememberId.value}" />
+
 
 								<!-- Password input -->
 								<div class="form-outline mb-3">
@@ -70,8 +72,8 @@
 									</button>
 								</div>
 								<div class="mb-2">
-								<a href="/oauth2/authorization/kakao?prompt=login">
-									<img width="300" src="/kakao_login.png" alt="카카오로그인버튼" >
+									<a href="/oauth2/authorization/kakao?prompt=login"> <img
+										width="300" src="/kakao_login.png" alt="카카오로그인버튼">
 									</a>
 								</div>
 								<div class="mb-2">
@@ -99,9 +101,9 @@
 				<div class="modal-body">
 					<form id="passwordResetForm">
 						<div class="mb-3">
-							<label for="userid" class="form-label">ID</label> <input type="text"
-								class="form-control" id="userid" name="id" placeholder="ID를 입력하세요."
-								required>
+							<label for="userid" class="form-label">ID</label> <input
+								type="text" class="form-control" id="userid" name="id"
+								placeholder="ID를 입력하세요." required>
 						</div>
 						<div class="mb-3">
 							<label for="name" class="form-label">이름</label> <input
@@ -129,7 +131,6 @@
 	<!-- 파라미터를 초기화 시켜주는 스크립트 -->
 	<script type="text/javascript">
 		history.replaceState({}, null, location.pathname);
-		
 	</script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
