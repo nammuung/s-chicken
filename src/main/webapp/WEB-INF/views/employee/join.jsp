@@ -24,7 +24,7 @@
 					<div class="card">
 						<div class="card-body mt-3">
 						
-							<form class="d-flex flex-column align-items-center " action="./join" method="post" onsubmit="return submitForm()">
+							<form class="d-flex flex-column align-items-center " action="./join" method="post" enctype="multipart/form-data" onsubmit="return submitForm()">
 
 								<div class="row justify-content-center mb-3 w-50">
 									<div class="form-group mb-3 mt-3">
@@ -117,7 +117,7 @@
 
 
 								<input type="hidden" id="password" name="password">
-
+								<input type="file" name="attach" value="/static/img/기본.jpg">
 									
 								<button type="submit" class="btn btn-primary mt-3">회원가입</button>
 							</form>

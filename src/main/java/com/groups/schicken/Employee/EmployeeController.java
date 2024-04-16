@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groups.schicken.util.Pager;
@@ -76,9 +77,9 @@ public class EmployeeController {
 	
 	// 회원가입 요청
 	@PostMapping("join")
-	public String join(EmployeeVO employeeVO, Model model) throws Exception {
-		
-		int result = employeeService.join(employeeVO);
+	public String join(EmployeeVO employeeVO, Model model /*@RequestParam("attach") MultipartFile attach*/) throws Exception {
+	    
+		int result = employeeService.join(employeeVO/* , attach */);
 	    
 	    String msg = "가입 실패";
 	    String path = "./join";
@@ -93,6 +94,7 @@ public class EmployeeController {
 	    
 	    return "employee/result";
 	}
+
 
 	
 	@GetMapping("profile")
