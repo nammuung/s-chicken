@@ -18,8 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.board.BoardVO;
 
-import com.groups.schicken.util.FileManager;
-import com.groups.schicken.util.FileVO;
 import com.groups.schicken.util.Pager;
 
 import lombok.RequiredArgsConstructor;
@@ -31,8 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class RepresentController {
-	
-	
+
+
 	@Autowired
 	private RepresentService representService;
 
@@ -42,16 +40,16 @@ public class RepresentController {
 		return "represent";
 	}
 
-	
-	
+
+
 	@GetMapping("detail")
 	public String getDetail(BoardVO boardVO,Model model) throws Exception {
 
 		int result = representService.hit(boardVO);
 
 		boardVO = representService.getDetail(boardVO);
-		model.addAttribute("vo", boardVO);		
-		
+		model.addAttribute("vo", boardVO);
+
 		List<BoardVO> ar = representService.pastPage(boardVO);
 		System.out.println(ar);
 		model.addAttribute("move", ar);
