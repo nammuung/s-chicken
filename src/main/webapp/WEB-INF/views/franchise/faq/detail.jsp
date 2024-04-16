@@ -77,6 +77,7 @@
 <c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../../template/script.jsp"/>
+
 <script>
     const deleteButton = document.getElementById("deleteButton");
     deleteButton.addEventListener("click", async function (event) {
