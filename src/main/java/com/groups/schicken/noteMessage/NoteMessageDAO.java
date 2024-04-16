@@ -14,7 +14,9 @@ public interface NoteMessageDAO {
 
     Integer addReceivers(List<String> receivers, Long id);
 
-    List<NoteMessageVO> getList(EmployeeVO employee, Pager pager);
+    List<NoteMessageVO> getList(EmployeeVO employee, Pager pager, NoteMessageBoxType type);
 
     NoteMessageVO getMessage(NoteMessageVO noteMessage);
+
+    Integer moveBox(String id, String[] messages, NoteMessageBoxType to);
 }

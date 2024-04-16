@@ -1,6 +1,7 @@
 let noteMessageDatas;
 let noteMessageSaveBtn;
 let noteMessageDeleteBtn;
+let noteMessagePagination;
 
 let noteMessageBody;
 let listPage;
@@ -41,14 +42,18 @@ function senderNameSetting(senderName){
     return `<small class="linkable">${names[0]}</small><div>${names[1]} ${names[2]}</div>`
 }
 
+function contentSetForList(text){
+    return text.replace(/<br>/g,"\n").replace(/<[^>]*>?/g, '');
+}
+
 function drawNoteMessageTr(data){
     return `
         <div class="d-flex border-1 border-bottom mt-2">
             <div class="col-1 px-3 text-center form-check">
-                <input data-id="note-message-select" type="checkbox" class="form-check-input" style="margin-left: 1em; margin-top: 0.5em">
+                <input data-id="note-message-select" data-content="${data.id}" type="checkbox" class="form-check-input" style="margin-left: 1em; margin-top: 0.5em">
             </div>
             <div data-sender-id="${data.senderId}" class="col-2 px-3 text-center linkable text-black">${senderNameSetting(data.senderName)}</div>
-            <div data-content="${data.id}" class="col-6 px-3 text-center text-truncate linkable text-black">${data.content}</div>
+            <div data-content="${data.id}" class="col-6 px-3 text-center text-truncate linkable text-black">${contentSetForList(data.content)}</div>
             <div class="col-1 px-3 text-center">
                 ${data.file == null ? "" : `<a href='/fileDown?id=${data.file}'><i class='fas fa-save fa-lg anchorable' style='color: #7749F8;margin-top: 0.5em'></i></a>`}
             </div>
@@ -61,16 +66,35 @@ function drawNoteMessageTableRows(data){
     return data.map(d => drawNoteMessageTr(d)).join("");
 }
 
-function getNoteMessageList(page){
+function setPaginaion(pager){
+    let paginaion = "";
+
+    if(pager.page-3 > 0){
+        paginaion += `<li class="page-item"><a class="page-link" data-to-page="${pager.page-3}"> < </a></li>`;
+    }
+
+    for (let i = Math.max(1,pager.page-2); i <= Math.min(pager.totalPage,pager.page+2); i++) {
+        paginaion += `<li class="page-item"><a class="page-link ${pager.page == i ? "now-page" : ""}"  data-to-page="${i}">${i}</a></li>`;
+    }
+
+    if(pager.totalPage >= pager.page + 3){
+        paginaion += `<li class="page-item"><a class="page-link" data-to-page="${pager.page+3}"> > </a></li>`;
+    }
+
+    return paginaion
+}
+
+function getNoteMessageList(page, type){
     let param = "?page="+page;
 
-    fetch('/message/getList' + param)
+    fetch('/message/getList/' + type + param)
         .then(res => res.json())
         .then(r => {
-            noteMessageDatas.innerHTML=drawNoteMessageTableRows(r);
+            noteMessageDatas.innerHTML=drawNoteMessageTableRows(r.data);
             toggleSaveAndDeleteBtnByCheckbox();
             document.querySelectorAll("div[data-content]")
-                .forEach(div => div.addEventListener("click", evt => openMessage(evt.target.getAttribute("data-content"), page)))
+                .forEach(div => div.addEventListener("click", evt => openMessage(evt.target.getAttribute("data-content"), page)));
+            noteMessagePagination.innerHTML=setPaginaion(r.page);
         });
 }
 
@@ -90,6 +114,25 @@ function toggleSaveAndDeleteBtnByCheckbox(){
         }))
 }
 
+function moveBox(to, page){
+    let checkboxes = [...document.querySelectorAll('input[data-id="note-message-select"][data-content]')]
+        .filter(e => e.checked)
+        .map(e=>e.getAttribute("data-content"));
+
+
+    fetch('/message/moveBox/' + to,{
+        method:"post",
+        headers : {
+            "content-type": "application/json;charset=utf-8"
+        },
+        body : JSON.stringify(checkboxes)
+    }).then(res => {
+        if(res.ok) openListPage(page);
+
+        else alert('box를 옮기는데 실패했습니다.');
+    })
+}
+
 
 function openListPage(page){
     noteMessageBody.innerHTML = listPage;
@@ -97,11 +140,18 @@ function openListPage(page){
     noteMessageDatas = document.getElementById("note-message-datas");
     noteMessageSaveBtn = document.getElementById("note-message-save-btn");
     noteMessageDeleteBtn = document.getElementById("note-message-delete-btn");
+    noteMessagePagination = document.getElementById("note-message-pagination");
 
-    noteMessageSaveBtn.addEventListener("click",()=>{})
-    noteMessageDeleteBtn.addEventListener("click",()=>{})
+    noteMessageSaveBtn.addEventListener("click",()=>moveBox('save', page))
+    noteMessageDeleteBtn.addEventListener("click",()=>moveBox('delete', page))
+    noteMessagePagination.addEventListener("click",event=>{
+        let page = event.target.getAttribute("data-to-page");
+        if(page == null) return;
 
-    getNoteMessageList(page == null ? 1 : page);
+        openListPage(page);
+    })
+
+    getNoteMessageList(page == null ? 1 : page, 'receive');
 }
 
 export default {

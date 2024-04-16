@@ -9,6 +9,7 @@ let noteMessageForm;
 let noteMessageReceiverInput;
 let noteMessageSubmitBtn;
 let noteMessageTextArea;
+let noteMessageTextareaHidden;
 
 let noteMessageBody;
 let sendPage;
@@ -154,14 +155,15 @@ function noteMessageSubmit(){
 
 let noteMessageCheckBoolean = false;
 function noteMessageCheck(event){
-    let len = event.target.value.length;
+    let text = event.target.value;
 
-    document.getElementById("note-message-content-count").innerText = len;
-    if(len > 0 && noteMessageCheckBoolean){
+    document.getElementById("note-message-content-count").innerText = text.length;
+    noteMessageTextareaHidden.value=text.replace(/</g, "&lt;").replace(/\n/g,"<br>");
+    if(text.length > 0 && noteMessageCheckBoolean){
         return;
     }
 
-    if(len === 0){
+    if(text.length === 0){
         noteMessageCheckBoolean = false;
         noteMessageSubmitBtn.classList.add("disabled");
         return;
@@ -196,6 +198,7 @@ function openSendPage() {
     noteMessageReceiverInput = document.getElementById("note-message-receiver-input");
     noteMessageSubmitBtn = document.getElementById("note-message-submit-btn");
     noteMessageTextArea = document.getElementById("note-message-textarea");
+    noteMessageTextareaHidden = document.getElementById("note-message-textarea-hidden");
 
     addReceiversBtn.addEventListener("click", addReceivers);
     noteMessageSelectedList.addEventListener("click", selectItemToDelete);

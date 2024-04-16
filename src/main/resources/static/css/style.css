@@ -190,6 +190,11 @@
   border-color : #7749F888 !important;
 }
 
+#note-message-pagination .now-page{
+  background-color: #7749F8;
+  color:white;
+}
+
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/

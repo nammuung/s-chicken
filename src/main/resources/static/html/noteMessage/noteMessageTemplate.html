@@ -16,6 +16,12 @@
                 <div class="text-center">쪽지가 없습니다.</div>
             </div>
         </div>
+        <div class="col-12">
+            <nav class="mt-2">
+                <ul id="note-message-pagination" class="pagination justify-content-center">
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
 ^^^^^^^^^^
@@ -64,10 +70,11 @@
                 <div class="col-2 text-center py-2">내용</div>
                 <div class="col-10 py-2">
                     <div class="form-floating">
-                        <textarea class="form-control" name="content" placeholder="내용을 입력하세요" id="note-message-textarea"
+                        <textarea class="form-control" placeholder="내용을 입력하세요" id="note-message-textarea"
                                   maxlength="1000" style="height: 380px"></textarea>
                         <label for="note-message-textarea">최대 1000자 까지만 입력가능합니다. (현재 <span
                                 id="note-message-content-count">0</span>/1000 자)</label>
+                        <input type="hidden" id="note-message-textarea-hidden" name="content">
                     </div>
                 </div>
 

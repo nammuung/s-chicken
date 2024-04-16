@@ -39,7 +39,7 @@
             INNER JOIN department d ON d.id = e.department_id
             INNER JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
             LEFT JOIN attach a ON a.tbl_id='104' AND a.parent_id=nm.id
-        WHERE receiver_id=#{employee.id}
+        WHERE receiver_id=#{employee.id} AND box_type=#{type}
         ORDER BY nm.date desc
         LIMIT ${pager.startIndex}, ${pager.perPage}
     </select>
@@ -60,4 +60,13 @@
             LEFT JOIN attach a ON a.tbl_id='104' AND a.parent_id=nm.id
         WHERE nm.id = #{id}
     </select>
+
+    <update id="moveBox">
+        UPDATE note_receiver
+        SET box_type=#{to}
+        WHERE receiver_id=${id} AND note_id IN
+        <foreach collection="messages" separator="," open="(" close=")" item="message">
+            #{message}
+        </foreach>
+    </update>
 </mapper>
