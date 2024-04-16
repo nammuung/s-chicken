@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.order.product.ProductMapper">
+    <resultMap id="getProduct" type="ProductVO" autoMapping="true">
+        <id column="id" property="id"/>
+    </resultMap>
+    <select id="getProductList">
+        SELECT
+            p.*,
+            c.name category
+        FROM
+            product p
+        LEFT JOIN
+            code c
+            ON p.category_id = c.id AND c.type_id = '600'
+        <include refid="search"/>
+        ORDER BY p.id
+    </select>
+    <sql id="search">
+        <where>
+            <if test='id != null'>
+                p.id LIKE concat('%',#{id},'%')
+            </if>
+            <if test='name != null'>
+                AND p.name LIKE concat('%',#{name},'%')
+            </if>
+            <if test='standard != null'>
+                AND p.standard LIKE concat('%',#{standard},'%')
+            </if>
+        </where>
+    </sql>
+
+    <insert id="addProduct">
+        <selectKey order="BEFORE" keyProperty="id" resultType="Long">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO
+            product
+            (id, name, category_id, standard)
+        VALUES
+            (#{id}, #{name}, #{categoryId}, #{standard})
+    </insert>
+    <update id="updateProduct">
+        UPDATE
+            product
+        <set>
+            <if test="name != null">
+                 name = #{name}
+            </if>
+            <if test="categoryId != null">
+                ,category_id = #{categoryId}
+            </if>
+            <if test="standard != null">
+                ,standard = #{standard}
+            </if>
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+</mapper>
