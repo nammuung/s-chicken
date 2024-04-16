@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.department.DepartmentVO;
 import com.groups.schicken.franchise.FranchiseMapper;
 
@@ -24,9 +25,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.franchise.FranchiseVO;
 import com.groups.schicken.util.CodeVO;
+import com.groups.schicken.util.FileManager;
 import com.groups.schicken.util.Pager;
 
 import jakarta.mail.MessagingException;
@@ -51,7 +54,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-
+	@Autowired
+	FileManager fileManager;
 	
 
 	@Override
@@ -90,7 +94,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
 
 	// 회원 가입
-	public int join(EmployeeVO employeeVO)throws Exception{
+	public Integer join(EmployeeVO employeeVO)throws Exception{
 	    // 생년월일에서 하이픈 제거
 	    String residentNumbers = employeeVO.getResidentNumber().replaceAll("-", "");
 	    // 제거된 생년월일을 다시 설정
@@ -101,6 +105,14 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	    // 제거된 입사일을 다시 설정
 	    employeeVO.setDateOfEmployment(dateOfEmploymens);
 
+	    
+//	    FileVO file = new FileVO();
+//	    String id = dateOfEmploymens;
+//	    Long lid = Long.parseLong(id);
+//	    file.setParentId(lid);
+//
+//	    file.setTblId("1077");
+//	    fileManager.uploadFile(attach, file);
 	    // 나머지 코드는 그대로 유지
 	    employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
 	    int result = employeeDAO.join(employeeVO);

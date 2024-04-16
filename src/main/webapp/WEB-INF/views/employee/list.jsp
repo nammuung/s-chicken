@@ -23,8 +23,7 @@
                 <form class="search-form d-flex align-items-center" action="./list">
                     <label for="search">
                         <select class="form-select w-auto me-1" name="kind">
-                            <option value="kind1">부서</option>
-                            <option value="kind2">이름</option>
+                            <option value="kind1">이름</option>
                         </select>
                     </label>
                     <input type="text" id="search" name="search" placeholder="검색" >
@@ -56,7 +55,7 @@
                         </table>
                     </div>
                 </div>
-                <nav aria-label="Page navigation example">
+                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <li class="page-item" id="prev">
                             <input type="hidden" id="prev_val" value="${pager.startNum}">

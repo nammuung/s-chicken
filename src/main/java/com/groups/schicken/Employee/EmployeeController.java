@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
-
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groups.schicken.util.Pager;
@@ -38,7 +39,7 @@ public class EmployeeController {
 
 	// Login
 	@GetMapping("login")
-	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session) throws Exception {
+	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session, Model model) throws Exception {
 
 		//강제로 주소를 입력하거나 뒤로 로그인할때를 방지하는 용도
 		Object obj=(session.getAttribute("SPRING_SECURITY_CONTEXT"));
@@ -48,7 +49,10 @@ public class EmployeeController {
 			log.info("============오브젝트 Null=================================");
 			return "employee/login";
 		}
-
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		 String id = auth.getName();
+		 model.addAttribute("cc", id);
+		 System.out.println(id);
 		return "employee/join";
 
 	}
@@ -76,9 +80,9 @@ public class EmployeeController {
 	
 	// 회원가입 요청
 	@PostMapping("join")
-	public String join(EmployeeVO employeeVO, Model model) throws Exception {
-		
-		int result = employeeService.join(employeeVO);
+	public String join(EmployeeVO employeeVO, Model model /*@RequestParam("attach") MultipartFile attach*/) throws Exception {
+	    
+		int result = employeeService.join(employeeVO/* , attach */);
 	    
 	    String msg = "가입 실패";
 	    String path = "./join";
@@ -93,6 +97,7 @@ public class EmployeeController {
 	    
 	    return "employee/result";
 	}
+
 
 	
 	@GetMapping("profile")

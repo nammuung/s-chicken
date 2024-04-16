@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.department.DepartmentVO;
 import com.groups.schicken.util.CodeVO;
 import com.groups.schicken.util.Pager;
@@ -54,6 +55,7 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	
 	private RoleVO roleVO;
 	
+	private FileVO file;
 	
 	//OAuth2User, Token등 정보 저장
 	private Map<String, Object> attributes;
