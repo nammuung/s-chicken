@@ -4,7 +4,16 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.Employee.EmployeeDAO">
-
+	<sql id="search">
+  		<choose>
+  			<when test="kind=='kind1'">
+  			where department.name LIKE CONCAT ('%','#{search}','%')
+  			</when>
+  			<when test="kind=='kind2'">
+  			where employee.name LIKE CONCAT ('%','#{search}','%')
+  			</when>
+  		</choose>  
+  	</sql>
 
 
 	<insert id="join" parameterType="EmployeeVO">
@@ -39,12 +48,12 @@
 		employee.is_leaved,
 		employee.department_id,
 		employee.pos_id,
-		department.name AS "dept_name",
+		department.name AS dept_name,
 		department.contact_number ,
-		code.name AS "code_name"
+		code.name AS code_name 
 		FROM employee
 		INNER JOIN department ON employee.department_id = department.id
-		INNER JOIN code ON employee.pos_id = code.id WHERE employee.id = #{id};
+		INNER JOIN code ON employee.pos_id = code.id WHERE employee.id = #{id}
 	</select>
 
 
@@ -54,17 +63,19 @@
 
 
 
-	<select id="userList" resultType="employeeVO"
-		parameterType="Pager">
-		select *
-		from employee
-		order by id DESC
-		Limit #{startIndex}, #{perPage}
+	<select id="userList" resultType="employeeVO" parameterType="Pager" resultMap="employeeDetails">
+	SELECT employee.id,employee.name, department.name AS dept_name , code.name AS code_name 
+	FROM employee
+	INNER JOIN department ON employee.department_id = department.id
+	INNER JOIN code ON employee.pos_id = code.id 
+	 <include refid="search"/>
+	order by name DESC
+	Limit #{startIndex}, #{perPage}
 	</select>
 
 
 	<select id="getTotalCount">
-		select count(id) from employee;
+		select count(id) from employee
 	</select>
 
 
@@ -77,22 +88,31 @@
 	</update>
 
 
-	<select id="role" parameterType="EmployeeVO" resultMap="employeeDetails">
-	SELECT dr.id AS dept_id,  dr.rol_id, c.type_id , c.name 
-	FROM dept_role AS dr
-	INNER JOIN code AS c
-	ON dr.rol_id = c.id
+	<select id="role" parameterType="EmployeeVO" resultMap="role">
+	select * from code where type_id = 200
 	</select>
 
 
 
-	<select id="rolelist" parameterType="EmployeeVO" resultMap="role">
-	SELECT c.type_id , c.name ,c.use , d.name AS deptname, dr.id AS dept_role_id
-	FROM code c
-	LEFT OUTER JOIN dept_role dr ON c.id = dr.rol_id
-	LEFT OUTER JOIN department d ON dr.id = d.id
-	WHERE c.type_id = 200 AND c.use = 1
-	</select>
+	<select id="rolelist" resultType="RoleVO" parameterType="RoleVO">
+	select id, rol_id from dept_role where id = #{id}
+		</select>
+
+
+	<delete id="roledelete" >
+	delete FROM dept_role WHERE id = #{departmentId}
+	</delete>
+
+
+
+
+	<insert id="roleinsert">
+	insert into dept_role (id, rol_id)
+		<foreach collection="list" item="i" open="VALUES " separator=",">
+		(#{i.id}, #{i.rolId})
+        </foreach>
+	</insert>
+
 
 
 	<resultMap type="EmployeeVO" id="employeeDetails">
@@ -127,11 +147,11 @@
 			<result column="code_name" property="name" />
 			<result column="use" property="use" />
 		</association>
-		<association property="social" javaType="SocialVO">
+<!--		<association property="social" javaType="SocialVO">
 			<result column="social_id" property="social_id" />
 			<result column="kind" property="kind" />
 			<result column="employee_id" property="employeeId" />
-		</association>
+		</association>-->
 		
 	</resultMap>
 
@@ -147,10 +167,11 @@
 		</association>
 
 		<association property="roleVO" javaType="RoleVO">
-		<result column="dept_id" property="id"/>
+		<result column="dept_role_id" property="id"/>
 		<result column="rol_id" property="rolId"/>
 		</association>
 				<association property="position" javaType="CodeVO">
+			<result column="id" property="id" />	
 			<result column="type_id" property="typeId" />
 			<result column="name" property="name" />
 			<result column="use" property="use" />

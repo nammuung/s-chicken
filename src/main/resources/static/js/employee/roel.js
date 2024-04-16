@@ -3,36 +3,53 @@ const url = 'http://localhost:80/department/list';
 
 fetch(url)
   .then(response => {
-    return response.json(); // JSON 형식으로 응답을 반환
+    return response.json(); 
   })
   .then(data => {
-    // 부서 선택을 위한 셀렉트 박스 요소 가져오기
+    // 부서 select와 팀 select 요소를 가져옴
     const departmentSelect = document.getElementById("department");
+    const teamSelect = document.getElementById("team");
 
-    // 받아온 데이터를 기반으로 부서 셀렉트 박스 옵션 생성
-    data.forEach(department => {
+    // 부서와 팀을 저장할 배열 초기화
+    const departments = [];
+
+
+    // 부서와 팀을 분류하여 배열에 추가
+    data.forEach(item => {
+            departments.push(item); // 부서 배열에 추가
+    });
+
+    // 부서 select를 채워넣음
+    departments.forEach(department => {
         const option = document.createElement("option");
         option.value = department.id; // 부서의 id를 option의 값으로 설정
         option.textContent = department.name; // 부서의 이름을 option의 텍스트로 설정
         departmentSelect.appendChild(option); // 부서 select에 option을 추가
     });
 
-    // 부서 선택 시 체크박스 처리
-    departmentSelect.addEventListener("change", () => {
-      // 선택한 부서의 이름 가져오기
-      const selectedDepartmentName = departmentSelect.options[departmentSelect.selectedIndex].text;
+    // 부서 select의 변경 이벤트를 추가
+    departmentSelect.addEventListener('change', function() {
+        const selectedDepartmentId = parseInt(this.value); 
+        console.log(selectedDepartmentId);
+        const url2 = `http://localhost/employee/roles?id=${selectedDepartmentId}`;
+        fetch(url2)
+        .then(response => {
+            console.log(response);
+            return response.json();
+        })
+        .then(data => {
 
-      // 모든 체크박스의 상태 초기화
-      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-      checkboxes.forEach(checkbox => {
-        checkbox.checked = false; // 모든 체크박스의 체크 상태를 해제
-      });
+            document.getElementsByName("roleId").forEach(e => e.checked = false);
 
-      // 선택한 부서에 해당하는 체크박스 체크
-      const departmentCheckboxes = document.querySelectorAll(`input[type="checkbox"][value="${selectedDepartmentName}"]`);
-      departmentCheckboxes.forEach(checkbox => {
-        checkbox.checked = true; // 선택한 부서의 이름과 일치하는 체크박스를 체크
-      });
+            console.log(data);
+            data.forEach(d => {
+                console.log(d);
+                let checkbox = document.querySelector(`input[name='roleId'][value='${d.rolId}']`);
+                console.log(checkbox);
+            checkbox.checked = true; 
+            })
+        })
+ 
     });
   })
   .catch(error => {

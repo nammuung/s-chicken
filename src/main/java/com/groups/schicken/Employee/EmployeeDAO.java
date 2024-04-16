@@ -32,7 +32,11 @@ public interface EmployeeDAO {
 	
 	//role
 
-	public List<RoleVO> rolelist(EmployeeVO employeeVO) throws Exception;
+	public List<RoleVO> rolelist(RoleVO roleVO) throws Exception;
+	public List<RoleVO> role(EmployeeVO employeeVO) throws Exception;
 	
+	public int roledelete(String departmentId)throws Exception;
+	
+	public int roleinsert(List<RoleVO> list)throws Exception;
 	
 }

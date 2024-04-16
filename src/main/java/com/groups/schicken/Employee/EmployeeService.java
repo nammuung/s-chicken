@@ -1,9 +1,11 @@
 package com.groups.schicken.Employee;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.groups.schicken.department.DepartmentVO;
 import com.groups.schicken.franchise.FranchiseMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.groups.schicken.franchise.FranchiseVO;
+import com.groups.schicken.util.CodeVO;
 import com.groups.schicken.util.Pager;
 
 import jakarta.mail.MessagingException;
@@ -119,16 +122,21 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	}
 
 
-	public List<RoleVO> rolelist (EmployeeVO employeeVO)throws Exception{
-		return employeeDAO.rolelist(employeeVO);
+	public List<RoleVO> rolelist (RoleVO roleVO)throws Exception{
+		return employeeDAO.rolelist(roleVO);
 	}
+	
+	public List<RoleVO> role (EmployeeVO employeeVO)throws Exception{
+		return employeeDAO.role(employeeVO);
+	}
+	
+	
 	
 	
 	// 소셜 로그인
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
 		ClientRegistration clientRegistration = userRequest.getClientRegistration();  // 인가 서버에서 클라이언트의 정보를 가져와 매핑시킴
-		
 		
 		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
 		String email = user.getAttribute("email");
@@ -177,9 +185,6 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	
 	
 	
-	
-	
-	
 	 // 임시 비밀번호 생성 메서드
     private String generateTempPassword() {
         // 임시 비밀번호를 랜덤하게 생성하는 로직 추가 (예: UUID 사용)
@@ -223,8 +228,31 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
         }
     }
 
+    //@Transactional
+    public int rolecontrolle(String departmentId, String[] roleIds) throws Exception {
+    		List<RoleVO> list = new ArrayList<>();
+    		for(String roleId : roleIds) {
+    			list.add(RoleVO.of(departmentId, roleId));
+    		}
+    	
+            employeeDAO.roledelete(departmentId);
+          
+            employeeDAO.roleinsert(list);
+          
+            return 1;
+    }
 
 
 
+    public int update(EmployeeVO employeeVO)throws Exception{
+    	
+    	int result = employeeDAO.update(employeeVO);
+    	return result;
+    }
+
+    
+    
+    
+    
 
 }

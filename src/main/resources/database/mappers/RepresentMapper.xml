@@ -22,10 +22,10 @@
 	
 	<select id="getList" parameterType="Map" resultType="BoardVO">
 		SELECT * FROM represent r
-			WHERE is_deleted !=1 
+			WHERE is_deleted !=1 AND sort = 1
 			<include refid="search"/>
 			ORDER BY important DESC, id DESC
-			LIMIT #{pager.startIndex},#{pager.perPage}			
+			LIMIT #{pager.startIndex},#{pager.perPage}
 	</select>
 	
 	<select id="getDetail" parameterType="BoardVO" resultMap="getDetailResult">

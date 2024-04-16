@@ -1,4 +1,5 @@
 import sendForm from '/js/noteMessage/noteMessageSendForm.js'
+import listForm from '/js/noteMessage/noteMessageListForm.js'
 
 let noteMessageNav = document.getElementById("note-message-nav");
 let noteMessageBody = document.getElementById("note-message-body");
@@ -11,13 +12,14 @@ let noteMessageSaveBoxBtn = document.getElementById("note-message-save-box-btn")
 let noteMessageSendBoxBtn = document.getElementById("note-message-send-box-btn");
 let noteMessageDeleteBoxBtn = document.getElementById("note-message-delete-box-btn");
 
-let noteMessageDatas;
-let noteMessageSaveBtn;
-let noteMessageDeleteBtn;
+let noteMessageFrom;
+let noteMessageDate;
+let noteMessageEditor;
+let noteMessageAttach;
+let noteMessageBackList;
+let noteMessageReplyBtn;
 
 let pages = {
-    list : '',
-    send : '',
     read : ''
 }
 
@@ -27,113 +29,72 @@ window.onload=()=>{
         .then(r=>{
             const page = r.split("^^^^^^^^^^");
 
-            pages.list = page[0];
+            listForm.set(noteMessageBody, page[0], openRead);
             sendForm.set(noteMessageBody, page[1]);
             pages.read = page[2];
         })
 }
 
-function getToday(){
-    let now = new Date();
-    let year = now.getFullYear();
-    let month = now.getMonth() + 1;
-    month = (month >= 10 ? "" : "0") + month;
-    let date = now.getDate();
-
-    return '' + year + month + date;
-}
-
-function dateFormatting(date){
+function readFormDateFormat(date){
     let year = date.substring(0,4);
     let month = date.substring(4,6);
     let day = date.substring(6,8);
-
-    if(date.substring(0,8) !== getToday()){
-        return year + "." + month + "." + day;
-    }
-
     let hour = date.substring(8,10);
     let minute = date.substring(10,12);
+    let second = date.substring(12,14);
 
-    return hour + ':' + minute;
-}
-
-function senderNameSetting(senderName){
-    let names = senderName.split(" ");
-    return `<small class="linkable">${names[0]}</small><div>${names[1]} ${names[2]}</div>`
-}
-
-function drawNoteMessageTr(data){
-    return `
-        <div data-note-message="${data.id}" class="d-flex border-1 border-bottom mt-2">
-            <div class="col-1 px-3 text-center form-check">
-                <input data-id="note-message-select" type="checkbox" class="form-check-input" style="margin-left: 1em; margin-top: 0.5em">
-            </div>
-            <div data-sender-id="${data.senderId}" class="col-2 px-3 text-center linkable text-black">${senderNameSetting(data.senderName)}</div>
-            <div class="col-6 px-3 text-center text-truncate linkable text-black">${data.content}</div>
-            <div class="col-1 px-3 text-center">
-                ${data.file == null ? "" : "<i data-file-id='${data.file}' class='fas fa-save fa-lg anchorable' style='color: #7749F8;margin-top: 0.5em'></i>"}
-            </div>
-            <div class="col-2 px-3 text-center">${dateFormatting(data.date)}</div>
-        </div>
-    `
-}
-
-function drawNoteMessageTableRows(data){
-    return data.map(d => drawNoteMessageTr(d)).join("");
-}
-
-function getNoteMessageList(page){
-    let param = page == null? "?page=1" : "?page="+page;
-
-    fetch('/message/getList' + param)
-        .then(res => res.json())
-        .then(r => {
-            noteMessageDatas.innerHTML=drawNoteMessageTableRows(r);
-            toggleSaveAndDeleteBtnByCheckbox();
-        });
-}
-
-function toggleSaveAndDeleteBtnByCheckbox(){
-    let selCount = 0;
-    document.querySelectorAll("input[data-id='note-message-select']")
-        .forEach(ipt =>ipt.addEventListener("click",e => {
-            selCount += e.target.checked? 1 : -1;
-
-            if(selCount <= 0){
-                noteMessageSaveBtn.classList.add("disabled");
-                noteMessageDeleteBtn.classList.add("disabled");
-            } else {
-                noteMessageSaveBtn.classList.remove("disabled");
-                noteMessageDeleteBtn.classList.remove("disabled");
-            }
-        }))
+    return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
 }
 
 
 //============================================ 모달 페이지 전환 ==========================================================
 
+function openRead(messageId, page){
+    noteMessageBody.innerHTML = pages.read;
 
-function openListPage(){
-    noteMessageBody.innerHTML = pages['list'];
+    noteMessageFrom = document.getElementById("note-message-from");
+    noteMessageDate = document.getElementById("note-message-date");
+    noteMessageEditor = document.getElementById("note-message-editor");
+    noteMessageAttach = document.getElementById("note-message-attach");
+    noteMessageBackList = document.getElementById("note-message-back-list");
+    noteMessageReplyBtn = document.getElementById("note-message-reply-btn");
 
-    noteMessageDatas = document.getElementById("note-message-datas");
-    noteMessageSaveBtn = document.getElementById("note-message-save-btn");
-    noteMessageDeleteBtn = document.getElementById("note-message-delete-btn");
+    noteMessageBackList.addEventListener("click", ()=> listForm.open(page))
+    noteMessageReplyBtn.addEventListener("click", event=> sendForm.reply(event.target.getAttribute("data-sender-id")))
 
-    noteMessageSaveBtn.addEventListener("click",()=>{})
-    noteMessageDeleteBtn.addEventListener("click",()=>{})
+    fetch(`/message/getMessage?id=${messageId}`)
+        .then(res=>res.json())
+        .then(r => {
+            noteMessageFrom.innerHTML = `<h5 class="linkable text-black">${r.senderName}</h5>`;
+            noteMessageDate.innerHTML = `<p>${readFormDateFormat(r.date)}</p>`;
+            noteMessageEditor.value = r.content;
+            noteMessageAttach.innerHTML = `
+                <a href='/fileDown?id=${r.file}'>
+                    <i class='fas fa-save fa-lg anchorable' style='color: #7749F8;margin-top: 0.5em'></i>
+                    ${r.filename}
+                </a>`;
 
-    getNoteMessageList(0);
+            noteMessageReplyBtn.setAttribute("data-sender-id", r.senderId);
+
+            ClassicEditor.create(document.getElementById("note-message-editor"), {toolbar:[]})
+                .then(editor => {
+                    editor.enableReadOnlyMode("note-message-editor");
+                    editor.editing.view.change(writer => {
+                        writer.setStyle('height', '300px', editor.editing.view.document.getRoot());
+                        writer.setStyle('overflow', 'auto', editor.editing.view.document.getRoot());
+                        writer.setStyle('border-radius', '0.5em', editor.editing.view.document.getRoot());
+                    });
+                    editor.ui.view.toolbar.element.style.display = "none";
+                }).then(()=>document.getElementById("note-message-editor").classList.remove("d-none"))
+        });
 }
-
 
 
 //========================================== 이벤트 리스너 등록 ==========================================================
 noteMessageSendFormBtn.addEventListener("click", sendForm.open)
-noteMessageReceiveBoxBtn.addEventListener("click", ()=>openListPage())
+noteMessageReceiveBoxBtn.addEventListener("click", ()=>listForm.open())
 
 noteMessageNav.addEventListener("click", () => {
-    openListPage();
+    listForm.open();
     bsNoteMessageModal.show();
 })

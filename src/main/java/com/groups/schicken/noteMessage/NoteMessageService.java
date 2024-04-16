@@ -53,15 +53,30 @@ public class NoteMessageService {
         return result;
     }
 
-    public List<NoteMessageVO> getList(EmployeeVO loginEmp, Pager pager) {
+    public List<NoteMessageVO> getList(EmployeeVO loginEmp, Pager pager, NoteMessageBoxType type) {
         pager.makeIndex();
         Long totalCount = noteMessageDAO.getTotalCount(loginEmp);
         System.out.println("totalCount = " + totalCount);
 
         pager.makeNum(totalCount);
-        List<NoteMessageVO> list = noteMessageDAO.getList(loginEmp, pager);
+        List<NoteMessageVO> list = noteMessageDAO.getList(loginEmp, pager, type);
         System.out.println("list = " + list);
 
         return list;
+    }
+
+    public NoteMessageVO getMessage(NoteMessageVO noteMessage) {
+        return noteMessageDAO.getMessage(noteMessage);
+    }
+
+    @Transactional
+    public String[] moveBox(String id, String[] messages, NoteMessageBoxType to) {
+        Integer result = noteMessageDAO.moveBox(id, messages, to);
+
+        if(messages.length != result){
+            throw new RuntimeException("box를 옮기는데 실패했습니다.");
+        }
+
+        return messages;
     }
 }

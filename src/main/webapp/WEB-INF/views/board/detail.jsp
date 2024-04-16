@@ -25,7 +25,7 @@
                     <div class="d-flex justify-content-between p-3 border-bottom">
                         <div>
                             <span class="me-3">관리자</span>
-                            <b data-vo="${vo.title}"></b>
+                            <b>${vo.title}</b>
                         </div>
                         <span class="text-muted">${vo.writeDate}</span>
                     </div>
@@ -46,7 +46,11 @@
                     </div>
                     <div>      
                     	<c:forEach items="${vo.fileVO}" var="file">
-                    		<a href="/fileDown?id=${file.id}&extension=${file.extension}&originName=${file.originName}&name=${file.name}">${file.originName}</a>
+                            <table>
+                    		    <tr>
+                                    <td> 첨부파일 : <a href="/fileDown?id=${file.id}">${file.originName}</a></td>
+                                </tr>
+                            </table>
                     	</c:forEach>
                     </div>
                 </div>
