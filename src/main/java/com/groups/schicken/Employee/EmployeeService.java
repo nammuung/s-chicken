@@ -122,8 +122,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	}
 
 
-	public List<RoleVO> rolelist (EmployeeVO employeeVO)throws Exception{
-		return employeeDAO.rolelist(employeeVO);
+	public List<RoleVO> rolelist (RoleVO roleVO)throws Exception{
+		return employeeDAO.rolelist(roleVO);
 	}
 	
 	public List<RoleVO> role (EmployeeVO employeeVO)throws Exception{

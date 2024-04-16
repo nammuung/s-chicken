@@ -124,15 +124,10 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/roles")
-    @ResponseBody
-    public String rolelist1(EmployeeVO employeeVO) throws Exception {
-        List<RoleVO> roles = employeeService.rolelist(employeeVO);
-
-       
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonRoles = objectMapper.writeValueAsString(roles);
+    public ResponseEntity<List<RoleVO>> rolelist1(RoleVO roleVO) throws Exception {
+        List<RoleVO> roles = employeeService.rolelist(roleVO);
         
-        return jsonRoles;
+        return ResponseEntity.ok(roles);
     }
 	
 	@PostMapping("role")
@@ -142,7 +137,7 @@ public class EmployeeController {
 		System.out.println("roldId = " + Arrays.toString(roleId));
 		
 		employeeService.rolecontrolle(departmentId, roleId);
-	    return "employee/role";
+	    return "redirect:/employee/role";
 	}
 
 

@@ -83,13 +83,9 @@
 
 
 
-	<select id="rolelist" parameterType="EmployeeVO" resultMap="role">
-	SELECT c.id, c.type_id , c.name ,c.use , d.name AS deptname, dr.id AS dept_role_id
-	FROM code c
-	LEFT OUTER JOIN dept_role dr ON c.id = dr.rol_id
-	LEFT OUTER JOIN department d ON dr.id = d.id
-	WHERE c.type_id = 200 AND c.use = 1
-	</select>
+	<select id="rolelist" resultType="RoleVO" parameterType="RoleVO">
+	select id, rol_id from dept_role where id = #{id}
+		</select>
 
 
 	<delete id="roledelete" >

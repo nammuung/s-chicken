@@ -41,15 +41,15 @@
             </tr>
         </thead>
         <tbody>
-<%-- <%--              <c:forEach items="${list}" var="data">
+             <c:forEach items="${list}" var="data">
                 <tr>
                 	<input type="hidden"${data.position.id}/>
-                     <td>${c}</td>
+                      <td>${data.position.name}</td> 
                     <td class="text-center">
                         <input type="checkbox" name="roleId" value="${data.position.id}">
                     </td>
                 </tr>
-            </c:forEach>    --%>
+            </c:forEach>  
         </tbody>
     </table>
     <button type="submit" class="btn btn-primary mt-3">확인</button>
