@@ -1,4 +1,4 @@
-package com.groups.schicken.order;
+package com.groups.schicken.order.product;
 
 import lombok.Data;
 
