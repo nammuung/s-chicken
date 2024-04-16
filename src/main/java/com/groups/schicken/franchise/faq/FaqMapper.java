@@ -4,6 +4,7 @@ import com.groups.schicken.util.Pager;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface FaqMapper {
@@ -14,4 +15,7 @@ public interface FaqMapper {
     int updateFaq(FaqVO faqVO) throws Exception;
     Long getTotalCount(Pager pager) throws Exception;
     List<FaqVO> getAnotherFaq(FaqVO faqVO) throws Exception;
+    int setImportantFaq(FaqVO faqVO) throws Exception;
+    int deleteImportantFaq(FaqVO faqVO) throws Exception;
+    int sortImportantFaq(Map<String, Object> map) throws Exception;
 }

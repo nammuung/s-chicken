@@ -7,6 +7,11 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>S치킨-그룹웨어</title>
     <c:import url="../../template/head.jsp"/>
+    <style>
+        .ghost {
+            opacity: 0.4;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,15 +31,18 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-
-                            <div class="d-flex justify-content-center m-3 p-3">
+                            <div class="d-flex justify-content-end mt-3">
+                                <button class="btn btn-primary" id="changeSortButton">순서변경</button>
+                            </div>
+                            <div class="d-flex justify-content-center p-3">
                                 <h1><b>자주 묻는 질문</b></h1>
                             </div>
                             <div class="accordion accordion-flush" id="accordionFlushExample">
                                 <c:forEach items="${importantList}" var="item" varStatus="status">
-                                    <div class="accordion-item ms-3 me-3 p-3">
+                                    <div class="accordion-item ms-3 me-3 p-3" data-id="${item.id}">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${status.index}" aria-expanded="false" aria-controls="flush-collapse${status.index}">
+                                                <b><i class="bi bi-arrows-vertical handle d-none me-3"></i></b>
                                                 <b># ${item.title}</b>
                                             </button>
                                         </h2>
@@ -121,11 +129,58 @@
 <c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../../template/script.jsp"/>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
 <script>
     Array.prototype.slice.call(document.querySelector("select"))
         .forEach(options => {
             if(options.value == '${pager.kind}') options.selected = true;
         })
+
+    document.getElementById("changeSortButton").addEventListener("click", function(event) {
+        if(event.target.innerText =="순서변경"){
+            event.target.innerText = "저장";
+        } else {
+            event.target.innerText = "순서변경";
+            let data = []
+            const list = document.querySelectorAll(".accordion-item");
+            Array.prototype.slice.call(list)
+                .forEach((el,index)=>{
+                    data.push({
+                        id: Number(el.getAttribute("data-id")) ,
+                        sort:index+1
+                    })
+                })
+            console.log(data);
+            sortFaq(data)
+        }
+        var handle = document.querySelectorAll(".handle");
+        Array.prototype.slice.call(handle)
+            .forEach((el)=>{
+                el.classList.toggle("d-none")
+            })
+    })
+    $(".accordion").sortable({
+        handle: '.handle',
+        ghostClass: 'ghost',
+        animation: 150,
+    })
+    async function sortFaq(data) {
+        const response = await fetch("/v1/api/franchise/faq/sort",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        const result = await response.json();
+        if(result.status == "OK"){
+            alert("정렬이 완료되었습니다.")
+        } else {
+            alert("정렬이 실패되었습니다.")
+            location.reload();
+        }
+    }
 </script>
 </body>
 
