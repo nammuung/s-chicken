@@ -5,6 +5,7 @@ import com.groups.schicken.common.vo.FileVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class FileManager {
         fileMapper.uploadFile(fileVO);
         return true;
     }
+//    @Transactional
     public boolean deleteFile(FileVO fileVO) throws Exception {
         fileMapper.deleteFile(fileVO);
         return s3Service.deleteFile(fileVO);
@@ -34,7 +36,7 @@ public class FileManager {
         return null;
     }
     public ResponseEntity<byte[]> downFile(FileVO fileVO) throws Exception{
-    	fileMapper.downFile(fileVO);
+    	fileVO = fileMapper.downFile(fileVO);
     	
 		return s3Service.downFile(fileVO);
     	

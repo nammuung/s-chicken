@@ -49,7 +49,7 @@ public class RepresentController {
 
 		boardVO = representService.getDetail(boardVO);
 		model.addAttribute("vo", boardVO);
-
+		
 		List<BoardVO> ar = representService.pastPage(boardVO);
 		System.out.println(ar);
 		model.addAttribute("move", ar);
@@ -100,9 +100,9 @@ public class RepresentController {
 	}
 
 	@PostMapping("update")
-	public String setUpdate(BoardVO boardVO)throws Exception{
+	public String setUpdate(BoardVO boardVO,@RequestParam(value="attach") MultipartFile file)throws Exception{
 		System.out.println(boardVO.getImportant());
-		int result = representService.update(boardVO);
+		int result = representService.update(boardVO,file);
 		System.out.println("로직 들어오기");
 
 		return "redirect:./impList";

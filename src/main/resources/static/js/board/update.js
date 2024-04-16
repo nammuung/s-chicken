@@ -9,8 +9,17 @@ let content = document.getElementById("content")
 let sort = document.getElementById("sort")
 const frm = document.querySelector("#frm")
 let important = document.getElementById("important")
+let pic = document.querySelectorAll(".my-a")
 
-
+	
+	
+	if(pic.length==3){
+		const ment = document.getElementById("ment")
+		ment.innerHTML = "파일은 3개까지입니다."
+		ment.style.color = "red";
+		fini.disabled
+		}		
+	
 
 console.log(important.value);
 console.log(sort.dataset.sort);
@@ -25,6 +34,7 @@ console.log(sort.dataset.sort);
 			important.value=0;
 		}
 	})
+
 
 
 	function check1(){
@@ -73,6 +83,60 @@ console.log(sort.dataset.sort);
 		}
 	frm.submit();
 	})
+
+	document.getElementById("file-delete-btn")?.addEventListener("click", e => {
+		e.preventDefault();
+		let fileId = e.target.getAttribute("data-id");
+		let name = e.target.getAttribute("data-name")
+		// get example
+		// fetch("/fileDelee?id="+fileId+"&name="+jdsjbgj)
+		// .then(r =>r.json())
+		// .then(r => {
+			
+		// })
+	
+		let data = {
+			'id' :  fileId , //fileId
+			'name':	name
+		};
+		$.ajax({
+			url:"/fileDelete",
+			method: 'post',
+			data: JSON.stringify(data),
+			contentType:"application/json",
+			dataType : "JSON",
+			success : function(data){
+				console.log(data);
+			}
+				// data.text();
+	})
+
+		//post
+		// fetch("/fileDelete",{
+		// 	method:'post',
+		// 	headers : {
+		// 		'content-type' : 'application/json;charset=utf-8' //타입
+		// 	},
+		// 	body:JSON.stringify(data)
+		// 	// body:JSON.stringify({
+		// 	// 	'id' : fileId
+		// 	// })
+		// }).then( r => r.text() )
+		// .then( r=> console.log(r))
+	})
+
+
+
+	// const 
+
+	// let ad = {
+	// 	'id' : '1245'
+	// }
+	
+	// fetch("/fileDelete",{
+	// 	method:'post',
+	// 	body:JSON.stringify(ad)
+	// })
 	
 
 
