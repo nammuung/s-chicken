@@ -244,7 +244,11 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
 
 
-
+    public int update(EmployeeVO employeeVO)throws Exception{
+    	
+    	int result = employeeDAO.update(employeeVO);
+    	return result;
+    }
 
     
     

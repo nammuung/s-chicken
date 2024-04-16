@@ -4,7 +4,16 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.Employee.EmployeeDAO">
-
+	<sql id="search">
+  		<choose>
+  			<when test="kind=='kind1'">
+  			where department.name LIKE CONCAT ('%','#{search}','%')
+  			</when>
+  			<when test="kind=='kind2'">
+  			where employee.name LIKE CONCAT ('%','#{search}','%')
+  			</when>
+  		</choose>  
+  	</sql>
 
 
 	<insert id="join" parameterType="EmployeeVO">
@@ -39,9 +48,9 @@
 		employee.is_leaved,
 		employee.department_id,
 		employee.pos_id,
-		department.name AS "dept_name",
+		department.name AS dept_name,
 		department.contact_number ,
-		code.name AS "code_name"
+		code.name AS code_name 
 		FROM employee
 		INNER JOIN department ON employee.department_id = department.id
 		INNER JOIN code ON employee.pos_id = code.id WHERE employee.id = #{id}
@@ -54,12 +63,14 @@
 
 
 
-	<select id="userList" resultType="employeeVO"
-		parameterType="Pager">
-		select *
-		from employee
-		order by id DESC
-		Limit #{startIndex}, #{perPage}
+	<select id="userList" resultType="employeeVO" parameterType="Pager" resultMap="employeeDetails">
+	SELECT employee.id,employee.name, department.name AS dept_name , code.name AS code_name 
+	FROM employee
+	INNER JOIN department ON employee.department_id = department.id
+	INNER JOIN code ON employee.pos_id = code.id 
+	 <include refid="search"/>
+	order by name DESC
+	Limit #{startIndex}, #{perPage}
 	</select>
 
 
@@ -136,11 +147,11 @@
 			<result column="code_name" property="name" />
 			<result column="use" property="use" />
 		</association>
-		<association property="social" javaType="SocialVO">
+<!--		<association property="social" javaType="SocialVO">
 			<result column="social_id" property="social_id" />
 			<result column="kind" property="kind" />
 			<result column="employee_id" property="employeeId" />
-		</association>
+		</association>-->
 		
 	</resultMap>
 
