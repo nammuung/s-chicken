@@ -27,7 +27,7 @@
             <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
               <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
               <h2>${detail.name}</h2>
-              <h3>영업팀/사원</h3>
+              <h3>${detail.department.name}/${detail.position.name}</h3>
             </div>
           </div>
 
@@ -72,37 +72,37 @@
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">입사일</div>
-                    <div class="col-lg-9 col-md-8"></div>
+                    <div class="col-lg-9 col-md-8">${detail.dateOfEmployment}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">전화번호</div>
-                    <div class="col-lg-9 col-md-8">01076887260</div>
+                    <div class="col-lg-9 col-md-8">${detail.phoneNumber}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">이메일</div>
-                    <div class="col-lg-9 col-md-8">audrbs2368@gmail.com</div>
+                    <div class="col-lg-9 col-md-8">${detail.email}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">생일</div>
-                    <div class="col-lg-9 col-md-8">08월06일</div>
+                    <div class="col-lg-9 col-md-8">${detail.residentNumber}</div>
                   </div>
 
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">부서</div>
-                    <div class="col-lg-9 col-md-8">영업팀</div>
+                    <div class="col-lg-9 col-md-8">${detail.department.name}</div>
                   </div>
                   
 				<div class="row">
                     <div class="col-lg-3 col-md-4 label">직급</div>
-                    <div class="col-lg-9 col-md-8">사원</div>
+                    <div class="col-lg-9 col-md-8">${detail.position.name}</div>
                   </div>
                   
                   <div class="row">
                     <div class="col-lg-3 col-md-4 label">은행/계좌</div>
-                    <div class="col-lg-9 col-md-8">${detail.bankName}:${detail.accountNumber}</div>
+                    <div class="col-lg-9 col-md-8">${detail.bankName}/${detail.accountNumber}</div>
                   </div>
                   
                   <div class="row">
@@ -298,5 +298,8 @@
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
 </body>
-
+	<script type="text/javascript">
+		history.replaceState({}, null, location.pathname);
+		
+	</script>
 </html>

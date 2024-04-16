@@ -37,7 +37,7 @@
                                 <input name="title" value="${vo.title}" type="text" class="form-control" id="title" placeholder="제목을 입력해주세요.">
                             </div>
                             <input id="content" type="hidden" name="content">
-                            <div id="editor"></div>
+                            <div id="editor">${vo.content}</div>
 
                             <div class="form-check form-switch mt-3">
                                 <input class="form-check-input" type="checkbox" id="importantInput" name="isImportant">
@@ -64,7 +64,6 @@
             editor.editing.view.change(writer => {
                 writer.setStyle('height', '50vh', editor.editing.view.document.getRoot());
             });
-            editor.setData('${vo.content}')
         })
         .catch(error => {
             console.error(error);

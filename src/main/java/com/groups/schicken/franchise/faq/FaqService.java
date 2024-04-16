@@ -5,7 +5,9 @@ import com.groups.schicken.util.Pager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -25,7 +27,6 @@ public class FaqService {
         faqVO = faqMapper.getFaq(faqVO);
         List<FaqVO> anotherList = faqMapper.getAnotherFaq(faqVO);
         for (FaqVO  vo: anotherList){
-            System.out.println("vo = " + vo);
             if(vo.getId() > faqVO.getId()) faqVO.setNextFaq(vo);
             if(vo.getId() < faqVO.getId()) faqVO.setPreFaq(vo);
         }
@@ -39,7 +40,11 @@ public class FaqService {
     }
 
     public int updateFaq(FaqVO faqVO) throws Exception {
-        if (faqVO.getIsImportant() == null) faqVO.setIsImportant(false);
+        if (faqVO.getIsImportant() != null && faqVO.getIsImportant()){
+            faqMapper.setImportantFaq(faqVO);
+        } else {
+            faqMapper.deleteImportantFaq(faqVO);
+        }
         faqVO.setModifyDate(DateManager.getTodayDate());
         return faqMapper.updateFaq(faqVO);
     }
@@ -50,4 +55,16 @@ public class FaqService {
         return faqMapper.updateFaq(faqVO);
     }
 
+    @Transactional
+    public int sortFaq(List<HashMap<String, Object>> requestBody) throws Exception {
+        try {
+            for(HashMap<String, Object> body : requestBody){
+                faqMapper.sortImportantFaq(body);
+            }
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }

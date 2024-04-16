@@ -1,6 +1,5 @@
 package com.groups.schicken.noteMessage;
 
-import com.groups.schicken.common.vo.FileVO;
 import lombok.Data;
 
 @Data
@@ -11,4 +10,5 @@ public class NoteMessageVO {
     private String content;
     private String date;
     private String file;
+    private String filename;
 }

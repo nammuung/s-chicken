@@ -9,6 +9,7 @@ let noteMessageForm;
 let noteMessageReceiverInput;
 let noteMessageSubmitBtn;
 let noteMessageTextArea;
+let noteMessageTextareaHidden;
 
 let noteMessageBody;
 let sendPage;
@@ -19,7 +20,7 @@ function setPage(body, page){
 
 let selectedItems = {};
 let depAndEmp;
-function onSelectOrgChart({id, type}) {
+function onSelectOrgChart({id, type}, callback) {
     console.log("note-message-select", id, type)
 
     let opt = {
@@ -38,6 +39,11 @@ function onSelectOrgChart({id, type}) {
                         name : emps.text,
                         sort : emps.sort
                     });
+                }
+            })
+            .then(()=>{
+                if(callback != null){
+                    callback();
                 }
             })
     }
@@ -149,14 +155,15 @@ function noteMessageSubmit(){
 
 let noteMessageCheckBoolean = false;
 function noteMessageCheck(event){
-    let len = event.target.value.length;
+    let text = event.target.value;
 
-    document.getElementById("note-message-content-count").innerText = len;
-    if(len > 0 && noteMessageCheckBoolean){
+    document.getElementById("note-message-content-count").innerText = text.length;
+    noteMessageTextareaHidden.value=text.replace(/</g, "&lt;").replace(/\n/g,"<br>");
+    if(text.length > 0 && noteMessageCheckBoolean){
         return;
     }
 
-    if(len === 0){
+    if(text.length === 0){
         noteMessageCheckBoolean = false;
         noteMessageSubmitBtn.classList.add("disabled");
         return;
@@ -166,6 +173,16 @@ function noteMessageCheck(event){
     noteMessageSubmitBtn.classList.remove("disabled");
 }
 
+function replyTo(receiver){
+    openSendPage();
+    onSelectOrgChart({
+        id : receiver,
+        type : "person"
+    }, ()=>{
+        addReceivers();
+        document.getElementById("note-message-select-complete-btn").click();
+    })
+}
 
 function openSendPage() {
     noteMessageBody.innerHTML = sendPage;
@@ -181,6 +198,7 @@ function openSendPage() {
     noteMessageReceiverInput = document.getElementById("note-message-receiver-input");
     noteMessageSubmitBtn = document.getElementById("note-message-submit-btn");
     noteMessageTextArea = document.getElementById("note-message-textarea");
+    noteMessageTextareaHidden = document.getElementById("note-message-textarea-hidden");
 
     addReceiversBtn.addEventListener("click", addReceivers);
     noteMessageSelectedList.addEventListener("click", selectItemToDelete);
@@ -191,7 +209,9 @@ function openSendPage() {
     oc.init("note-message-org-chart", onSelectOrgChart, '', false, { checkbox: true, type : 'person' });
 }
 
+
 export default {
     set : setPage,
-    open : openSendPage
+    open : openSendPage,
+    reply : replyTo
 }

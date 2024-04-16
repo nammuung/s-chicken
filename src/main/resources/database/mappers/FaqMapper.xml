@@ -5,32 +5,68 @@
 
 <mapper namespace="com.groups.schicken.franchise.faq.FaqMapper">
     <select id="getImportantFaqList">
-        SELECT *
-        FROM franchise_faq
-        WHERE is_important = 1 AND is_deleted != 1
+        SELECT
+            ff.*
+        FROM
+            franchise_faq ff
+        LEFT JOIN
+            important_faq imf
+            ON ff.id = imf.faq_id
+        WHERE
+            ff.is_deleted != 1 AND imf.faq_id IS NOT NULL
+        ORDER BY
+            imf.sort
     </select>
     <select id="getFaqList">
-
-        SELECT *
-        FROM franchise_faq
-        WHERE is_important != 1 AND is_deleted != 1
-        <include refid="search"/>
-        ORDER BY id DESC
-        LIMIT ${startIndex}, ${perPage}
+        SELECT
+            *
+        FROM
+            franchise_faq
+        WHERE
+            is_deleted != 1
+            <include refid="search"/>
+        ORDER BY
+            id DESC
+        LIMIT
+            ${startIndex}, ${perPage}
     </select>
     <insert id="addFaq">
         <selectKey resultType="Long" order="BEFORE" keyProperty="id">
             SELECT nextval(seq1)
         </selectKey>
-        INSERT INTO franchise_faq
-        (id, title, content, write_date, is_important, is_deleted)
+        INSERT INTO
+            franchise_faq
+            (id, title, content, write_date, is_deleted)
         VALUES
-        (#{id}, #{title}, #{content}, #{writeDate}, #{isImportant}, 0)
+            (#{id}, #{title}, #{content}, #{writeDate}, 0)
+    </insert>
+    <insert id="addImportantFaq">
+        <selectKey resultType="Long" order="BEFORE" keyProperty="id">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO
+            important_faq
+            (id, faq_id, sort)
+        VALUES
+            (#{id}, #{faqId}, max(sort)+1)
     </insert>
     <select id="getFaq">
-        SELECT *
-        FROM franchise_faq
-        WHERE id = #{id}
+        SELECT
+            ff.id,
+            ff.title,
+            ff.content,
+            ff.write_date,
+            ff.is_deleted,
+            CASE
+                WHEN imf.faq_id IS NULL THEN '0'
+                ELSE '1'
+            END as is_important
+        FROM
+            franchise_faq ff
+        LEFT JOIN
+            important_faq imf ON ff.id = imf.faq_id
+        WHERE
+            ff.id = #{id}
     </select>
     <update id="updateFaq">
         UPDATE franchise_faq
@@ -47,21 +83,23 @@
             <if test="modifyDate != null">
                 modify_date = #{modifyDate},
             </if>
-            <if test="isImportant != null">
-                is_important = #{isImportant},
-            </if>
             <if test="isDeleted != null">
                 is_deleted = #{isDeleted}
             </if>
         </set>
-        WHERE id = #{id}
+        WHERE
+            id = #{id}
     </update>
     <select id="getTotalCount">
-        SELECT COUNT(*)
-        FROM franchise_faq
-        WHERE is_important != 1 AND is_deleted != 1
-        <include refid="search"/>
-        ORDER BY id DESC
+        SELECT
+            COUNT(*)
+        FROM
+            franchise_faq
+        WHERE
+            is_deleted != 1
+            <include refid="search"/>
+        ORDER BY
+            id DESC
     </select>
     <sql id="search">
         <choose>
@@ -78,11 +116,57 @@
     </sql>
     <select id="getAnotherFaq">
         SELECT
-        *
-        FROM franchise_faq
-        WHERE id in (
-        (SELECT id FROM franchise_faq WHERE id &lt; #{id} AND is_deleted != 1 AND is_important != 1 ORDER BY id DESC LIMIT 1),
-        (SELECT id FROM franchise_faq WHERE id &gt; #{id} AND is_deleted != 1 AND is_important != 1 ORDER BY id LIMIT 1)
-        )
+            *
+        FROM
+            franchise_faq
+        WHERE
+            id in
+            (
+                (
+                    SELECT
+                        id
+                    FROM
+                        franchise_faq
+                    WHERE
+                        id &lt; #{id} AND is_deleted != 1
+                    ORDER BY
+                        id DESC
+                    LIMIT
+                        1
+                ),
+                (
+                    SELECT
+                        id
+                    FROM
+                        franchise_faq
+                    WHERE
+                        id &gt; #{id} AND is_deleted != 1
+                    ORDER BY
+                        id
+                    LIMIT
+                        1
+                )
+            )
     </select>
+    <insert id="setImportantFaq">
+        INSERT INTO
+            important_faq
+            (faq_id, sort)
+        VALUES
+            (#{id}, (SELECT COALESCE(MAX(sort), 0) + 1 FROM important_faq sub))
+    </insert>
+    <delete id="deleteImportantFaq">
+        DELETE FROM
+            important_faq
+        WHERE
+            faq_id = #{id}
+    </delete>
+    <insert id="sortImportantFaq">
+        UPDATE
+            important_faq
+        SET
+            SORT = #{sort}
+        WHERE
+            faq_id = #{id}
+    </insert>
 </mapper>

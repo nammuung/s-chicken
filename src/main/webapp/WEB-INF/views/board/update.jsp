@@ -67,7 +67,13 @@ String strDate = simpleDate.format(date);
                                 <input type="hidden" name="_important" value="on">
                             </div>
                             <div>
-                            	<input type="file" name="attach">
+                            	<input type="file" name="attach" id="fini">
+                            	<div id="ment"></div>
+                                <c:forEach items="${vo.fileVO}" var="file">
+                                	
+                                	<div>현재파일 : ${file.originName} <a class="my-a" id="file-delete-btn" data-name="${file.name}" data-id="${file.id}" href="#">지우기</a></div>
+                                	
+                                </c:forEach>
                             </div>
 
 

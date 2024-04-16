@@ -24,38 +24,37 @@
 					<div class="card">
 						<div class="card-body mt-3">
 						
-							<form class="d-flex flex-column align-items-center ">
-									<div class="form-group mb-3 col-4">
-										<label for="department" class="form-label"><b>부서</b></label> <select
-											class="form-select" id="department">
-											<option value="0">부서 선택</option>
+							<form action="./role" method="post" class="d-flex flex-column align-items-center">
 
-										</select>
-									</div>
+    <div class="form-group mb-3 col-4">
+        <label for="department" class="form-label"><b>부서</b></label>
+        <select class="form-select" id="department" name="departmentId">
+            <option value="0">부서 선택</option>
+        </select>
+    </div>
 
-
-							<div>
-    <table>
+    <table id="roleTable">
         <thead>
             <tr>
                 <th>권한명</th>
                 <th>사용여부</th>
-                <!-- 추가 데이터 필드에 대한 테이블 헤더를 여기에 추가할 수 있습니다. -->
             </tr>
         </thead>
         <tbody>
-            <c:forEach items="${list}" var="data">
+             <c:forEach items="${list}" var="data">
                 <tr>
-                    <td>${data.position.name}</td>
-                    <td class="text-center"><input type="checkbox" value="${data.department.name}"></td>
-                    <!-- 추가 데이터 필드에 대한 셀을 여기에 추가할 수 있습니다. -->
+                	<input type="hidden"${data.position.id}/>
+                      <td>${data.position.name}</td> 
+                    <td class="text-center">
+                        <input type="checkbox" name="roleId" value="${data.position.id}">
+                    </td>
                 </tr>
-            </c:forEach>
+            </c:forEach>  
         </tbody>
     </table>
-</div>
-								<button type="submit" class="btn btn-primary mt-3">확인</button>
-							</form>
+    <button type="submit" class="btn btn-primary mt-3">확인</button>
+</form>
+
 						</div>
 					</div>
 				</div>

@@ -8,18 +8,6 @@ const del_title = document.createElement("b");
 
 
 del_title.innerHTML +=" 삭제 된게시";
-
-
-console.log(del_title.value);
-
-window.addEventListener('load',()=>{
-	console.log(title.getAttribute('data-vo'))
-	title.innerText = title.getAttribute('data-vo');
-	title.append()
-		
-})
-
-
 console.log(del_title)
 
 

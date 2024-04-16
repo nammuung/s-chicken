@@ -87,32 +87,36 @@
             </div>
         </c:if>
         <%--        </sec:authorize>--%>
+        <c:if test="${vo.comment != null}">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <span class="card-title">답변</span>
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span class="card-title p-0 m-0">답변</span>
+                    <div class="text-nowrap text-muted">
+                        <b class="me-1">${vo.comment.employee.name} 매니저</b> ${vo.comment.writeDate}
+                    </div>
+
                 </div>
                 <div class="card-body mt-3" id="commentBox">
                     <c:if test="${vo.comment != null}">
                         <div class="d-flex mb-2">
                             <div class="d-flex justify-content-between w-100">
                                 <div class="d-flex">
+                                    <div class="me-3 text-nowrap">
+                                        <b></b>
+                                    </div>
                                     <div class="me-3">
-                                        <b>${vo.comment.employee.name}</b>
-                                    </div>
-                                    <div>
-                                            ${vo.comment.content}
+                                        <c:out value="${vo.comment.content}" />
                                     </div>
                                 </div>
-                                <div>
-                                        ${vo.comment.writeDate}
-                                </div>
+
                             </div>
                         </div>
                     </c:if>
                 </div>
             </div>
         </div>
+        </c:if>
     </section>
 </main><!-- End #main -->
 <!-- ======= Footer ======= -->

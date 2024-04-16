@@ -1,5 +1,7 @@
 package com.groups.schicken.Employee;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groups.schicken.util.Pager;
 
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +40,7 @@ public class EmployeeController {
 	@GetMapping("login")
 	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session) throws Exception {
 
+		//강제로 주소를 입력하거나 뒤로 로그인할때를 방지하는 용도
 		Object obj=(session.getAttribute("SPRING_SECURITY_CONTEXT"));
 		log.info("{}",obj);
 		System.out.println(employeeVO.getId());
@@ -45,9 +49,6 @@ public class EmployeeController {
 			return "employee/login";
 		}
 
-
-		
-		
 		return "employee/join";
 
 	}
@@ -63,6 +64,10 @@ public class EmployeeController {
 	public void update() throws Exception {
 
 	}
+	
+
+	
+	
 	
 	//회원가입 페이지 이동
 	@GetMapping("join")
@@ -110,10 +115,27 @@ public class EmployeeController {
 	}
 
 	@GetMapping("role")
-	public String rolelist(EmployeeVO employeeVO ,Model model) throws Exception {
-	    List<RoleVO> roles = employeeService.rolelist(employeeVO); 
+	public String role(EmployeeVO employeeVO ,Model model) throws Exception {
+	    List<RoleVO> roles = employeeService.role(employeeVO);
 	    model.addAttribute("list", roles);  
 	    return "employee/role";
+	}
+
+	@GetMapping("/roles")
+    public ResponseEntity<List<RoleVO>> rolelist1(RoleVO roleVO) throws Exception {
+        List<RoleVO> roles = employeeService.rolelist(roleVO);
+        
+        return ResponseEntity.ok(roles);
+    }
+	
+	@PostMapping("role")
+	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("roleId") String[] roleId , Model model)throws Exception {
+//	    employeeService.rolecontrolle(employeeVO);
+		System.out.println(departmentId);
+		System.out.println("roldId = " + Arrays.toString(roleId));
+		
+		employeeService.rolecontrolle(departmentId, roleId);
+	    return "redirect:/employee/role";
 	}
 
 
