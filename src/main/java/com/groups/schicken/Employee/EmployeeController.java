@@ -52,6 +52,7 @@ public class EmployeeController {
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		 String id = auth.getName();
 		 model.addAttribute("cc", id);
+		 System.out.println(id);
 		return "employee/join";
 
 	}
