@@ -16,10 +16,10 @@ let noteMessageFrom;
 let noteMessageDate;
 let noteMessageEditor;
 let noteMessageAttach;
+let noteMessageBackList;
+let noteMessageReplyBtn;
 
 let pages = {
-    list : '',
-    send : '',
     read : ''
 }
 
@@ -35,24 +35,46 @@ window.onload=()=>{
         })
 }
 
+function readFormDateFormat(date){
+    let year = date.substring(0,4);
+    let month = date.substring(4,6);
+    let day = date.substring(6,8);
+    let hour = date.substring(8,10);
+    let minute = date.substring(10,12);
+    let second = date.substring(12,14);
+
+    return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+}
+
 
 //============================================ 모달 페이지 전환 ==========================================================
 
-function openRead(messageId){
+function openRead(messageId, page){
     noteMessageBody.innerHTML = pages.read;
 
     noteMessageFrom = document.getElementById("note-message-from");
     noteMessageDate = document.getElementById("note-message-date");
     noteMessageEditor = document.getElementById("note-message-editor");
     noteMessageAttach = document.getElementById("note-message-attach");
+    noteMessageBackList = document.getElementById("note-message-back-list");
+    noteMessageReplyBtn = document.getElementById("note-message-reply-btn");
+
+    noteMessageBackList.addEventListener("click", ()=> listForm.open(page))
+    noteMessageReplyBtn.addEventListener("click", event=> sendForm.reply(event.target.getAttribute("data-sender-id")))
 
     fetch(`/message/getMessage?id=${messageId}`)
         .then(res=>res.json())
         .then(r => {
-            noteMessageFrom.innerHTML = `<h5>${r.senderName}</h5>`;
-            noteMessageDate.innerHTML = r.date;
+            noteMessageFrom.innerHTML = `<h5 class="linkable text-black">${r.senderName}</h5>`;
+            noteMessageDate.innerHTML = `<p>${readFormDateFormat(r.date)}</p>`;
             noteMessageEditor.value = r.content;
-            noteMessageAttach.innerHTML = r.filename;
+            noteMessageAttach.innerHTML = `
+                <a href='/fileDown?id=${r.file}'>
+                    <i class='fas fa-save fa-lg anchorable' style='color: #7749F8;margin-top: 0.5em'></i>
+                    ${r.filename}
+                </a>`;
+
+            noteMessageReplyBtn.setAttribute("data-sender-id", r.senderId);
 
             ClassicEditor.create(document.getElementById("note-message-editor"), {toolbar:[]})
                 .then(editor => {
@@ -60,15 +82,17 @@ function openRead(messageId){
                     editor.editing.view.change(writer => {
                         writer.setStyle('height', '300px', editor.editing.view.document.getRoot());
                         writer.setStyle('overflow', 'auto', editor.editing.view.document.getRoot());
+                        writer.setStyle('border-radius', '0.5em', editor.editing.view.document.getRoot());
                     });
-                })
+                    editor.ui.view.toolbar.element.style.display = "none";
+                }).then(()=>document.getElementById("note-message-editor").classList.remove("d-none"))
         });
 }
 
 
 //========================================== 이벤트 리스너 등록 ==========================================================
 noteMessageSendFormBtn.addEventListener("click", sendForm.open)
-noteMessageReceiveBoxBtn.addEventListener("click", listForm.open)
+noteMessageReceiveBoxBtn.addEventListener("click", ()=>listForm.open())
 
 noteMessageNav.addEventListener("click", () => {
     listForm.open();

@@ -19,7 +19,7 @@ function setPage(body, page){
 
 let selectedItems = {};
 let depAndEmp;
-function onSelectOrgChart({id, type}) {
+function onSelectOrgChart({id, type}, callback) {
     console.log("note-message-select", id, type)
 
     let opt = {
@@ -38,6 +38,11 @@ function onSelectOrgChart({id, type}) {
                         name : emps.text,
                         sort : emps.sort
                     });
+                }
+            })
+            .then(()=>{
+                if(callback != null){
+                    callback();
                 }
             })
     }
@@ -166,6 +171,16 @@ function noteMessageCheck(event){
     noteMessageSubmitBtn.classList.remove("disabled");
 }
 
+function replyTo(receiver){
+    openSendPage();
+    onSelectOrgChart({
+        id : receiver,
+        type : "person"
+    }, ()=>{
+        addReceivers();
+        document.getElementById("note-message-select-complete-btn").click();
+    })
+}
 
 function openSendPage() {
     noteMessageBody.innerHTML = sendPage;
@@ -191,7 +206,9 @@ function openSendPage() {
     oc.init("note-message-org-chart", onSelectOrgChart, '', false, { checkbox: true, type : 'person' });
 }
 
+
 export default {
     set : setPage,
-    open : openSendPage
+    open : openSendPage,
+    reply : replyTo
 }

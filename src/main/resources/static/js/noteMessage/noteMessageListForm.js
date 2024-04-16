@@ -62,7 +62,7 @@ function drawNoteMessageTableRows(data){
 }
 
 function getNoteMessageList(page){
-    let param = page == null? "?page=1" : "?page="+page;
+    let param = "?page="+page;
 
     fetch('/message/getList' + param)
         .then(res => res.json())
@@ -70,7 +70,7 @@ function getNoteMessageList(page){
             noteMessageDatas.innerHTML=drawNoteMessageTableRows(r);
             toggleSaveAndDeleteBtnByCheckbox();
             document.querySelectorAll("div[data-content]")
-                .forEach(div => div.addEventListener("click", evt => openMessage(evt.target.getAttribute("data-content"))))
+                .forEach(div => div.addEventListener("click", evt => openMessage(evt.target.getAttribute("data-content"), page)))
         });
 }
 
@@ -91,7 +91,7 @@ function toggleSaveAndDeleteBtnByCheckbox(){
 }
 
 
-function openListPage(){
+function openListPage(page){
     noteMessageBody.innerHTML = listPage;
 
     noteMessageDatas = document.getElementById("note-message-datas");
@@ -101,7 +101,7 @@ function openListPage(){
     noteMessageSaveBtn.addEventListener("click",()=>{})
     noteMessageDeleteBtn.addEventListener("click",()=>{})
 
-    getNoteMessageList(0);
+    getNoteMessageList(page == null ? 1 : page);
 }
 
 export default {
