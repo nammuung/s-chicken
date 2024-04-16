@@ -140,7 +140,7 @@
                     <div class="row mb-3">
                       <label for="fullName" class="col-md-4 col-lg-3 col-form-label">이름</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="fullName" type="text" class="form-control" id="fullName" value="남명균">
+                        <input name="fullName" type="text" class="form-control" id="fullName" value="${detail.name}" disabled >
                       </div>
                     </div>
 
@@ -148,28 +148,28 @@
                     <div class="row mb-3">
                       <label for="company" class="col-md-4 col-lg-3 col-form-label">입사일</label>
                       <div class="col-md-8 col-lg-9">
-                        <input id="joinDate" type="date" class="form-control">
+                        <input id="joinDate" type="text" class="form-control" value="${detail.dateOfEmployment}"disabled>
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Job" class="col-md-4 col-lg-3 col-form-label">전화번호</label>
                       <div class="col-md-8 col-lg-9">
-                        <input name="phone" type="text" class="form-control" id="phone" value="01076887260">
+                        <input name="phone" type="text" class="form-control" id="phone" value="${detail.phoneNumber}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Country" class="col-md-4 col-lg-3 col-form-label">이메일</label>
                       <div class="col-md-8 col-lg-9">
-                        <input id="email" type="email" class="form-control" placeholder="이메일">
+                        <input id="email" type="email" class="form-control" placeholder="이메일" value="${detail.email}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="Address" class="col-md-4 col-lg-3 col-form-label">생년월일</label>
                       <div class="col-md-8 col-lg-9">
-                        <input id="birth" type="date" class="form-control">
+                        <input id="birth" type="text" class="form-control" value="${detail.residentNumber}">
                       </div>
                     </div>
 
@@ -298,8 +298,8 @@
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
 </body>
-	<script type="text/javascript">
+<!-- 	<script type="text/javascript">
 		history.replaceState({}, null, location.pathname);
 		
-	</script>
+	</script> -->
 </html>

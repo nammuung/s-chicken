@@ -96,13 +96,13 @@
             </a>
             <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="charts-chartjs.html">
-                        <i class="bi bi-circle"></i><span>Chart.js</span>
+                    <a href="/employee/list">
+                        <i class="bi bi-circle"></i><span>직원목록</span>
                     </a>
                 </li>
                 <li>
                     <a href="charts-apexcharts.html">
-                        <i class="bi bi-circle"></i><span>ApexCharts</span>
+                        <i class="bi bi-circle"></i><span>퇴사자 목록</span>
                     </a>
                 </li>
                 <li>
@@ -144,7 +144,7 @@
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="../member/profile">
+            <a class="nav-link collapsed" href="../employee/profile?id=${cc}">
                 <i class="bi bi-person"></i>
                 <span>마이페이지</span>
             </a>

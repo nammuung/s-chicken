@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
-
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
@@ -39,7 +39,7 @@ public class EmployeeController {
 
 	// Login
 	@GetMapping("login")
-	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session) throws Exception {
+	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session, Model model) throws Exception {
 
 		//강제로 주소를 입력하거나 뒤로 로그인할때를 방지하는 용도
 		Object obj=(session.getAttribute("SPRING_SECURITY_CONTEXT"));
@@ -49,7 +49,9 @@ public class EmployeeController {
 			log.info("============오브젝트 Null=================================");
 			return "employee/login";
 		}
-
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		 String id = auth.getName();
+		 model.addAttribute("cc", id);
 		return "employee/join";
 
 	}

@@ -76,7 +76,7 @@ WHERE
 	FROM employee
 	INNER JOIN department ON employee.department_id = department.id
 	INNER JOIN code ON employee.pos_id = code.id 
-	 <include refid="search"/>
+	 <include refid="search"/> AND employee.is_leaved = 1
 	order by name DESC
 	Limit #{startIndex}, #{perPage}
 	</select>
@@ -140,6 +140,7 @@ WHERE
 		<result column="is_leaved" property="isLeaved" />
 		<result column="department_id" property="departmentId" />
 		<result column="pos_id" property="posId" />
+		
 
 		<association property="department" javaType="DepartmentVO">
 			<result column="dept_name" property="name" />
