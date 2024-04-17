@@ -40,7 +40,7 @@ public class NoteMessageController {
     }
 
     @GetMapping("getList/{type}")
-    public ResponseEntity<Map> getList(@AuthenticationPrincipal EmployeeVO loginEmp, Pager pager, @PathVariable NoteMessageBoxType type){
+    public ResponseEntity<Map> getList(@AuthenticationPrincipal EmployeeVO loginEmp, Pager pager, @PathVariable("type") NoteMessageBoxType type){
         System.out.println("loginEmp = " + loginEmp);
         System.out.println("pager = " + pager);
 

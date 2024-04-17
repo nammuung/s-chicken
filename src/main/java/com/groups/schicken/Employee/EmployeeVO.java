@@ -1,10 +1,12 @@
 package com.groups.schicken.Employee;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
@@ -57,13 +59,25 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	
 	private FileVO file;
 	
+	private List<RoleVO> roleVOs;
+	
 	//OAuth2User, Token등 정보 저장
 	private Map<String, Object> attributes;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		//GrantedAuthority -> 현재 사용자가 가지고 있는 권한
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		
+		for(RoleVO roleVO:roleVOs) {
+			GrantedAuthority g = new SimpleGrantedAuthority(roleVO.getName());
+			
+			log.warn("====== ROLE : {}", g.getAuthority());
+			authorities.add(g);
+		}
+		//return null;
+		return authorities;
+		
 	}
 	@Override
 	public String getPassword() {

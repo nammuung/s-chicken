@@ -57,17 +57,39 @@ FROM
 LEFT JOIN 
     department ON employee.department_id = department.id
 LEFT JOIN 
-    code ON employee.pos_id = code.id 
+    code ON employee.pos_id = code.id  AND  code.type_id = 300
 LEFT JOIN 
-    attach a ON a.tbl_id = 1077 AND a.parent_id = employee.id  
+    attach a ON a.tbl_id = 1077 AND a.parent_id = employee.id 
 WHERE 
     employee.id = #{id}
 	</select>
 
 
-	<select id="getDetail" parameterType="String">
-		SELECT * from employee where id=#{id}
+	<select id="getDetail" parameterType="String" resultMap="getDetailMap">
+		SELECT 
+			emp.*,
+			c.id role_id,
+			c.name role_name 
+		from
+			employee emp
+		LEFT JOIN 
+			department dept
+			ON emp.department_id = dept.id
+		LEFT JOIN
+			dept_role r
+			ON r.id = dept.id
+		LEFT JOIN
+			code c
+			ON c.id = r.rol_id and c.type_id = '200'
+		 where emp.id=#{id}
 	</select>
+	
+	<resultMap id="getDetailMap" type="EmployeeVO" autoMapping="true">
+		<id column="id" property="id"/>
+		<collection  property="roleVOs" ofType="RoleVO" columnPrefix="role_" autoMapping="true">
+			<id column="id" property="id"/>
+		</collection>
+	</resultMap>
 
 
 
@@ -76,7 +98,7 @@ WHERE
 	FROM employee
 	INNER JOIN department ON employee.department_id = department.id
 	INNER JOIN code ON employee.pos_id = code.id 
-	 <include refid="search"/> AND employee.is_leaved = 1
+	 <include refid="search"/> AND employee.is_leaved = 1 and code.type_id =300 
 	order by name DESC
 	Limit #{startIndex}, #{perPage}
 	</select>

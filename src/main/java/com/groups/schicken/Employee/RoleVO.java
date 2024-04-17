@@ -15,14 +15,12 @@ import lombok.ToString;
 @AllArgsConstructor
 public class RoleVO {
 
-	private String id;
-	private String rolId;	
-	private String roleName;
+	private String id;	
+	private String name;
 		
-	public static RoleVO of(String id, String rolId) {
+	public static RoleVO of(String id, String name) {
 		return RoleVO.builder()
 				.id(id)
-				.rolId(rolId)
 				.build();
 	} 
 }
