@@ -24,8 +24,21 @@
     </delete>
     
     <select id="downFile" parameterType="FileVO" resultType="FileVO">
-		SELECT * FROM attach
-			WHERE id=#{id}
+		SELECT
+            *
+        FROM
+            attach
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="name != null">
+                AND name = #{name}
+            </if>
+            <if test="tblId != null and parentId != null">
+                AND tbl_id = #{tblId} AND parent_id = #{parentId}
+            </if>
+        </where>
 		
 	</select>
 </mapper>

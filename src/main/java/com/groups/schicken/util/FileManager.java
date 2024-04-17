@@ -21,7 +21,7 @@ public class FileManager {
     public boolean uploadFile(MultipartFile file, FileVO fileVO) throws Exception{
         String uid = UUID.randomUUID().toString()+"_"+file.getOriginalFilename();
         fileVO.setName(uid);
-        fileVO.setOriginName(file.getOriginalFilename());
+        fileVO.setOriginName(file.getOriginalFilename().substring(0,file.getOriginalFilename().lastIndexOf(".")));
         fileVO.setExtension(file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1));
         s3Service.uploadFile(file, fileVO);
         fileMapper.uploadFile(fileVO);
