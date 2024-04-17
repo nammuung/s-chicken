@@ -61,7 +61,7 @@
 		            </div>
 		        </div>
 		        <form id="frm" action="./update" method="get">
-		        	<input type="text" name="id" value="${vo.id}" hidden>
+		        	<input type="text" id="id" name="id" value="${vo.id}" hidden>
 		        	<input type="text" id="title" name="title" value="${vo.title}" hidden>
 		        </form>
             </div>
@@ -76,21 +76,23 @@
                         </div>
 
 	                        <div class="mb-2">
-	                            <i class="bi bi-caret-up-fill toggle-sidebar-btn button"></i>
-	                            <span class="me-3">이전</span>
-	                            <a href="/${board}/detail?id=${move[0].id}" class="link-body-emphasis">
-	                            ${move[0].title}
-	                            <c:if test="${move[0].id eq null}">이전글이 없습니다</c:if>
-	                            </a>
+	                        	<c:if test="${not empty move[0].id}">
+		                            <i class="bi bi-caret-up-fill toggle-sidebar-btn button"></i>
+		                            <span class="me-3">이전</span>
+		                            <a href="/${board}/detail?id=${move[0].id}" class="link-body-emphasis">
+		                            ${move[0].title}	                            
+	                            	</a>
+	                            </c:if>
 	                        </div>
 
                         <div>
-                            <i class="bi bi-caret-down-fill toggle-sidebar-btn button"></i>
-                            <span class="me-3">다음</span>
-                            <a href="/${board}/detail?id=${next[0].id}" class="link-body-emphasis">
-                            ${next[0].title}
-                            <c:if test="${next[0].id eq null}">다음글이 없습니다</c:if> 
-                            </a>
+	                        <c:if test="${not empty next[0].id}">
+	                            <i class="bi bi-caret-down-fill toggle-sidebar-btn button"></i>
+	                            <span class="me-3">다음</span>
+	                            <a href="/${board}/detail?id=${next[0].id}" class="link-body-emphasis">
+	                            ${next[0].title}                             
+                            	</a>
+                            </c:if>
                         </div>
                     </div>
                 </div>
@@ -98,20 +100,38 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">댓글</span>
+
+                    	<span class="card-title">댓글</span>
+
                 </div>
-                <div class="card-body mt-3">
-                    <div class="d-flex align-items-center mb-2">
-                        <img width="50" height="50" src="avatar.png" alt="프로필" class="me-3">
-                        <div class="d-flex flex-column">
-                            <span><b>김경모 사원</b></span>
-                            <span>영업3팀</span>
-                        </div>
-                    </div>
-                    <div>
-                        <p>군사재판을 관할하기 위하여 특별법원으로서 군사법원을 둘 수 있다.</p>
-                        <p>대통령은 국회에 출석하여 발언하거나 서한으로 의견을 표시할 수 있다.</p>
-                    </div>
+                
+                <div id="reply-list-div" class="card-body mt-3">	
+                
+                
+                
+                					
+                                  
+                </div>
+                <div class="card-footer">
+                	<h3 class="comment-reply-title"><span>Leave a comment</span></h3>
+						
+							<div class="row">
+								<input type="hidden" name="boardNum" value="${dto.boardNum}">
+								
+								<div class="col-12">
+									<div class="form-box form-group">
+										<textarea id="replyText" name="replyText" class="form-control form-control-custom" placeholder="댓글을 남겨보세요."></textarea>
+									</div>
+								</div>
+								
+								<div class="row justify-content-end p-3">
+									<div class="button" id="add_btn">
+										<button type="button" id="replyAdd" class="btn btn-primary" data-id="${vo.id}" data-writerId="${vo.writerId}">댓글달기</button>
+									</div>
+								</div>
+								
+							</div>
+						
                 </div>
             </div>
         </div>

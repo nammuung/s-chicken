@@ -9,20 +9,46 @@
 				<when test='pager.kind != null and pager.kind.equals("kind1")'>AND r.title LIKE CONCAT('%',#{pager.search},'%')</when>
 				<when test='pager.kind != null and pager.kind.equals("kind2")'>AND r.writer_id LIKE CONCAT('%',#{pager.search},'%')</when>
 				<otherwise>AND (r.title LIKE CONCAT('%',#{search},'%') OR r.writer_id LIKE CONCAT('%',#{pager.search},'%')) </otherwise>					
-			</choose>
-				
+			</choose>				
 	</sql>
 	
-	<select id="getTotalCount" parameterType="Map" resultType="Long">
+	<select id="allTotalCount" parameterType="Map" resultType="Long">
 		SELECT COUNT(id) FROM represent r
 		WHERE is_deleted !=1
 		<include refid="search"/>
+	</select>	
+	
+	<select id="allList" parameterType="Map" resultType="BoardVO">
+		SELECT * FROM represent r
+			WHERE r.is_deleted !=1
+			<include refid="search"/>
+			ORDER BY important DESC, id DESC
+			LIMIT #{pager.startIndex},#{pager.perPage}
 	</select>
 	
+	<select id="getTotalCount" parameterType="Map" resultType="Long">
+		SELECT COUNT(id) FROM represent r
+		WHERE is_deleted !=1 AND r.sort = 1
+		<include refid="search"/>
+	</select>	
 	
 	<select id="getList" parameterType="Map" resultType="BoardVO">
 		SELECT * FROM represent r
-			WHERE is_deleted !=1 AND sort = 1
+			WHERE r.is_deleted !=1 AND r.sort = 1
+			<include refid="search"/>
+			ORDER BY important DESC, id DESC
+			LIMIT #{pager.startIndex},#{pager.perPage}
+	</select>
+		
+	<select id="cacTotalCount" parameterType="Map" resultType="Long">
+		SELECT COUNT(id) FROM represent r
+		WHERE is_deleted !=1 AND r.sort = 0
+		<include refid="search"/>
+	</select>
+	
+	<select id="cacgetList">
+		SELECT * FROM represent r
+			WHERE r.is_deleted !=1 AND r.sort = 0
 			<include refid="search"/>
 			ORDER BY important DESC, id DESC
 			LIMIT #{pager.startIndex},#{pager.perPage}
@@ -59,7 +85,6 @@
 	</resultMap>
 
 <!-- FileVO를 매핑하는 resultMap -->
-
 	
 	<insert id="add" parameterType="BoardVO" keyProperty="id">
 		<selectKey order="BEFORE" resultType="Long" keyProperty="id">
@@ -82,7 +107,8 @@
 			SELECT id, title, sort
 			FROM represent
 			WHERE id  &lt; #{id}
-			AND sort = 1
+			AND sort = #{sort}
+			AND is_deleted !=1
 			ORDER BY id DESC
 			LIMIT 1
 	</select>
@@ -97,11 +123,11 @@
 		SELECT id, title,sort
 			FROM represent
 			WHERE id &gt; #{id}	
-			AND sort = 1
+			AND sort = #{sort}
+			AND is_deleted !=1
 			ORDER BY id
 			LIMIT 1
 	</select>
-
 	
 	<update id="update" parameterType="BoardVO">
 		UPDATE represent
@@ -119,12 +145,10 @@
 		WHERE id=#{id}
 	</update>
 
-
 	<update id="delete" parameterType="BoardVO">
 		UPDATE represent SET
 		is_deleted=1,title=#{title}
 		WHERE id=#{id}
 	</update>
-
 
 </mapper>

@@ -30,6 +30,8 @@ public class Pager {
 	private String search;
 	private String kind;
 	
+	private String board;
+	
 	
 	public void makeIndex() {
 		//인덱스번호 1 ->0

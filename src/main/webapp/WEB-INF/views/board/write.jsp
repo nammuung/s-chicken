@@ -30,7 +30,7 @@ SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
 String strDate = simpleDate.format(date);
 %>
     <div class="pagetitle">
-        <h1>공지사항</h1>
+        <h1 id="board">${board}공지사항</h1>
     </div>
     <section class="section">
         <div class="row">
