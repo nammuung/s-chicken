@@ -153,9 +153,9 @@
                                 </div>
 
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-end mt-3">
-                            <button id="addButton" class="btn btn-primary">추가</button>
+                            <div class="d-flex justify-content-end mt-3">
+                                <button id="addButton" class="btn btn-primary">추가</button>
+                            </div>
                         </div>
                     </div>
                 </div>
