@@ -102,7 +102,7 @@
                                 </ul>
                                 <div class="tab-content pt-2">
                                     <div class="tab-pane fade show active profile-overview" id="supplier-overview">
-                                        <div class="text-nowrap text-end mt-3 ms-1">
+                                        <form id="detailForm" class="text-nowrap text-end mt-3 ms-1">
                                             <div class="mb-3 row">
                                                 <label for="id" class="col-2 col-form-label">품번</label>
                                                 <div class="col-4">
@@ -141,7 +141,7 @@
                                             <div class="d-flex justify-content-end mb-2 me-2 position-absolute end-0 bottom-0">
                                                 <button class="btn btn-primary">수정</button>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
 

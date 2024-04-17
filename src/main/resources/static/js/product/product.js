@@ -1,6 +1,11 @@
 const searchButton = document.getElementById("searchButton");
+const detailForm = document.getElementById("detailForm");
+
+
 searchButton.addEventListener("click", function () {
     const searchForm = document.getElementById("searchForm");
+
+
     const formData = new FormData(searchForm);
     const searchData = {
         "id": formData.get("id"),
@@ -53,11 +58,6 @@ const hot = new Handsontable(container, {
     licenseKey: 'non-commercial-and-evaluation', // for non-commercial use only
     // manualColumnResize: true,
 });
-hot.addHook("afterSelection", (row, col) => {
-    console.log(row,col)
-})
-
-
 // Handsontable의 사용자 지정 셀 렌더러 정의
 function checkboxRenderer(instance, td, row, col, prop, value, cellProperties) {
     var checkbox = document.createElement('input');
@@ -68,12 +68,17 @@ function checkboxRenderer(instance, td, row, col, prop, value, cellProperties) {
     checkbox.style.marginTop="4px";
     checkbox.addEventListener('change', function(event) {
         var checked = event.target.checked;
+
         for(let i = 0; i < instance.countRows(); i++) {
             instance.setDataAtCell(i,0,false)
         }
         instance.setDataAtCell(row, col, checked);
         const id = instance.getDataAtCell(row, 1);
-        loadProductDetail(id);
+        detailForm.reset();
+        if (checked){
+            loadProductDetail(id);
+        }
+
     });
 
     Handsontable.dom.empty(td);
