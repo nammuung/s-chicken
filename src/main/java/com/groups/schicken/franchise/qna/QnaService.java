@@ -50,6 +50,7 @@ public class QnaService {
 
     public QnaVO getQna(QnaVO qnaVO) throws Exception {
         qnaVO = qnaMapper.getQna(qnaVO);
+        System.out.println("qnaVO = " + qnaVO);
         List<QnaVO> anotherList = qnaMapper.getAnotherQna(qnaVO);
         for (QnaVO  vo: anotherList){
             if(vo.getId() > qnaVO.getId()) qnaVO.setNextQna(vo);

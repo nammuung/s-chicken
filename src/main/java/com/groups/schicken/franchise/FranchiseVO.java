@@ -4,9 +4,12 @@ import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.FileVO;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 public class FranchiseVO implements UserDetails {
@@ -27,11 +30,13 @@ public class FranchiseVO implements UserDetails {
     private EmployeeVO manager = new EmployeeVO();
     private FileVO register;
     private FileVO contract;
+    private String Role="ROLE_FRANCHISE";
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        return null;
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.Role));
+        return authorities;
     }
     @Override
     public String getPassword() {
