@@ -24,7 +24,7 @@
                 , dept.upper_id "parent"
                 , 'dept' AS "type"
                 , 1 + depth AS depth
-                , dept.sort
+                , dept.sort#
             FROM department dept
                 INNER JOIN OC ON dept.upper_id = OC.id AND OC.type = 'dept'
         )

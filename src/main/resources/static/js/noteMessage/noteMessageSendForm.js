@@ -145,15 +145,12 @@ function noteMessageSubmit(){
             alert(r)
             if(r === "쪽지를 보냈습니다."){
                 /* 보낸 쪽지함으로 이동 */
-                console.log("in if : ", r);
-                return;
+                document.getElementById("note-message-send-box-btn").click();
             }
-
-            console.log("out if : ", r);
         })
 }
 
-let noteMessageCheckBoolean = false;
+let noteMessageCheckBoolean;
 function noteMessageCheck(event){
     let text = event.target.value;
 
@@ -188,6 +185,7 @@ function openSendPage() {
     noteMessageBody.innerHTML = sendPage;
     selectedItems = {};
     depAndEmp = [];
+    noteMessageCheckBoolean = false;
 
     addReceiversBtn = document.getElementById("add-receivers-btn");
     noteMessageSelectedList = document.getElementById("note-message-selected-list");
@@ -200,11 +198,11 @@ function openSendPage() {
     noteMessageTextArea = document.getElementById("note-message-textarea");
     noteMessageTextareaHidden = document.getElementById("note-message-textarea-hidden");
 
-    addReceiversBtn.addEventListener("click", addReceivers);
-    noteMessageSelectedList.addEventListener("click", selectItemToDelete);
-    removeReceiversBtn.addEventListener("click", deleteSelectedItems);
-    noteMessageSubmitBtn.addEventListener("click", noteMessageSubmit);
-    noteMessageTextArea.addEventListener("keyup", noteMessageCheck);
+    addReceiversBtn.addEventListener("click", (e)=>addReceivers(e));
+    noteMessageSelectedList.addEventListener("click", (e)=>selectItemToDelete(e));
+    removeReceiversBtn.addEventListener("click", (e)=>deleteSelectedItems(e));
+    noteMessageSubmitBtn.addEventListener("click", (e)=>noteMessageSubmit(e));
+    noteMessageTextArea.addEventListener("keyup", (e)=>noteMessageCheck(e));
 
     oc.init("note-message-org-chart", onSelectOrgChart, '', false, { checkbox: true, type : 'person' });
 }

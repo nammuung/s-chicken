@@ -46,10 +46,21 @@ function readFormDateFormat(date){
     return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
 }
 
+function drawReceiverItem(datas){
+    let divs = "";
 
-//============================================ 모달 페이지 전환 ==========================================================
+    datas.forEach(data => {
+        divs += `
+            <div class="note-message-receiver-item text-center">
+                ${data.name}
+        </div>
+    `
+    })
 
-function openRead(messageId, page){
+    return divs;
+}
+
+function openRead(messageId, page, type){
     noteMessageBody.innerHTML = pages.read;
 
     noteMessageFrom = document.getElementById("note-message-from");
@@ -59,20 +70,38 @@ function openRead(messageId, page){
     noteMessageBackList = document.getElementById("note-message-back-list");
     noteMessageReplyBtn = document.getElementById("note-message-reply-btn");
 
-    noteMessageBackList.addEventListener("click", ()=> listForm.open(page))
-    noteMessageReplyBtn.addEventListener("click", event=> sendForm.reply(event.target.getAttribute("data-sender-id")))
+    noteMessageBackList.addEventListener("click", ()=> listForm.open(page, type))
 
-    fetch(`/message/getMessage?id=${messageId}`)
+    if(type === 'send'){
+        noteMessageReplyBtn.classList.add("d-none");
+    } else {
+        noteMessageReplyBtn.addEventListener("click", event=> sendForm.reply(event.target.getAttribute("data-sender-id")))
+    }
+
+    document.getElementById("note-message-detail-title").innerText = type === 'send' ? "To" : "From";
+
+    fetch(`/message/getMessage?id=${messageId}&type=${type}`)
         .then(res=>res.json())
         .then(r => {
-            noteMessageFrom.innerHTML = `<h5 class="linkable text-black">${r.senderName}</h5>`;
+            if(type === 'send'){
+                noteMessageFrom.innerHTML = `
+                    <div id="note-message-receivers-list"
+                         class="d-flex flex-row flex-nowrap overflow-auto py-2 border-top border-1 border-black">
+                        ${drawReceiverItem(r.receiversVO)}
+                    </div>
+                `
+            } else {
+                noteMessageFrom.innerHTML = `<h5 class="linkable text-black">${r.senderName}</h5>`;
+            }
             noteMessageDate.innerHTML = `<p>${readFormDateFormat(r.date)}</p>`;
             noteMessageEditor.value = r.content;
-            noteMessageAttach.innerHTML = `
+            if(r.file != null) {
+                noteMessageAttach.innerHTML = `
                 <a href='/fileDown?id=${r.file}'>
                     <i class='fas fa-save fa-lg anchorable' style='color: #7749F8;margin-top: 0.5em'></i>
                     ${r.filename}
                 </a>`;
+            }
 
             noteMessageReplyBtn.setAttribute("data-sender-id", r.senderId);
 
@@ -91,10 +120,13 @@ function openRead(messageId, page){
 
 
 //========================================== 이벤트 리스너 등록 ==========================================================
-noteMessageSendFormBtn.addEventListener("click", sendForm.open)
-noteMessageReceiveBoxBtn.addEventListener("click", ()=>listForm.open())
+noteMessageSendFormBtn.addEventListener("click", sendForm.open);
+noteMessageReceiveBoxBtn.addEventListener("click", ()=>listForm.open(1, 'receive'));
+noteMessageSaveBoxBtn.addEventListener("click", ()=>listForm.open(1,'save'));
+noteMessageDeleteBoxBtn.addEventListener("click", ()=>listForm.open(1,'delete'));
+noteMessageSendBoxBtn.addEventListener("click", ()=>listForm.open(1,'send'));
 
 noteMessageNav.addEventListener("click", () => {
-    listForm.open();
+    listForm.open(1,'receive');
     bsNoteMessageModal.show();
-})
+});

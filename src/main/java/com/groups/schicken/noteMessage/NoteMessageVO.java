@@ -1,6 +1,9 @@
 package com.groups.schicken.noteMessage;
 
+import com.groups.schicken.Employee.EmployeeVO;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class NoteMessageVO {
@@ -11,4 +14,5 @@ public class NoteMessageVO {
     private String date;
     private String file;
     private String filename;
+    private List<EmployeeVO> receiversVO;
 }
