@@ -1,14 +1,16 @@
 <!-- 쪽지 메인페이지 -->
 <div class="note-message-content">
     <div class="d-flex">
-        <button id="note-message-save-btn" class="btn btn-primary btn-sm disabled ms-1">보관</button>
-        <button id="note-message-delete-btn" class="btn btn-outline-danger btn-sm disabled ms-1">삭제</button>
+        <div id="note-message-btn-div" class="d-flex flex-grow-1">
+        </div>
+        <h3 id="note-message-list-title" class="w-25 text-center"></h3>
+        <div style="width: 36%!important;"> </div>
         <span class="ms-auto close" data-bs-dismiss="modal" aria-label="Close" style="font-size: x-large">&times;</span>
     </div>
     <div class="row pt-3">
         <b class="col-1 border-2 border-schicken border-bottom text-center"></b>
-        <b class="col-2 border-2 border-schicken border-bottom text-center">보낸사람</b>
-        <b class="col-6 border-2 border-schicken border-bottom text-center">내용</b>
+        <b class="col-3 border-2 border-schicken border-bottom text-center">보낸사람</b>
+        <b class="col-5 border-2 border-schicken border-bottom text-center">내용</b>
         <b class="col-1 border-2 border-schicken border-bottom text-center">파일</b>
         <b class="col-2 border-2 border-schicken border-bottom text-center">수신날짜</b>
         <div class="col-12">
@@ -101,8 +103,7 @@
                 <div class="col-12">
                     <p><a id="note-message-back-list" href="#">< 뒤로가기</a></p>
                 </div>
-                <h4 class="col-12">
-                    From
+                <h4 id="note-message-detail-title" class="col-12">
                 </h4>
                 <div id="note-message-from" class="col-5 note-message-from"></div>
                 <div class="col-3"></div>

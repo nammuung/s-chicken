@@ -45,17 +45,26 @@ public class NoteMessageController {
         System.out.println("pager = " + pager);
 
         Map<String, Object> map = new HashMap<>();
-        List<NoteMessageVO> list = noteMessageService.getList(loginEmp, pager, type);
+        List<NoteMessageVO> list;
+        if(type.equals(NoteMessageBoxType.send)){
+            list = noteMessageService.getSendList(loginEmp, pager);
+        } else {
+            list = noteMessageService.getList(loginEmp, pager, type);
+        }
 
         map.put("data", list);
         map.put("page", pager);
+
+        if(list == null){
+            return ResponseEntity.badRequest().build();
+        }
 
         return ResponseEntity.ok(map);
     }
 
     @GetMapping("getMessage")
-    public ResponseEntity<NoteMessageVO> getMessage(NoteMessageVO noteMessage){
-        noteMessage = noteMessageService.getMessage(noteMessage);
+    public ResponseEntity<NoteMessageVO> getMessage(NoteMessageVO noteMessage, NoteMessageBoxType type){
+        noteMessage = noteMessageService.getMessage(noteMessage, type);
 
         if(noteMessage == null){
             return ResponseEntity.notFound().build();
@@ -71,6 +80,16 @@ public class NoteMessageController {
             return ResponseEntity.ok(result);
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body(new String[]{e.getMessage()});
+        }
+    }
+
+    @PostMapping("delete")
+    public ResponseEntity<String> deleteMessage(@AuthenticationPrincipal EmployeeVO loginEmp, @RequestBody String[] messages){
+        try{
+            Boolean result = noteMessageService.deleteMessage(loginEmp.getId(), messages);
+            return ResponseEntity.ok(result.toString());
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("삭제 실패");
         }
     }
 }

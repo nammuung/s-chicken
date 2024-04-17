@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface NoteMessageDAO {
-    Long getTotalCount(EmployeeVO employee);
+    Long getTotalCount(EmployeeVO employee, NoteMessageBoxType type);
 
     Integer addMessage(NoteMessageVO message);
 
@@ -19,4 +19,8 @@ public interface NoteMessageDAO {
     NoteMessageVO getMessage(NoteMessageVO noteMessage);
 
     Integer moveBox(String id, String[] messages, NoteMessageBoxType to);
+
+    NoteMessageVO getMessageWithReceivers(NoteMessageVO noteMessage);
+
+    List<NoteMessageVO> getSendList(EmployeeVO employee, Pager pager);
 }
