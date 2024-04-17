@@ -6,15 +6,14 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.board.BoardService;
 import com.groups.schicken.board.BoardVO;
-import com.groups.schicken.util.FileManager;
+import com.groups.schicken.common.util.FileManager;
 import com.groups.schicken.common.vo.FileVO;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 @Service
 public class RepresentService implements BoardService {
 

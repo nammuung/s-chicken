@@ -2,8 +2,8 @@ package com.groups.schicken.noteMessage;
 
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.FileVO;
-import com.groups.schicken.util.FileManager;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.util.FileManager;
+import com.groups.schicken.common.vo.Pager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

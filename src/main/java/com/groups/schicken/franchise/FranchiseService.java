@@ -1,11 +1,10 @@
 package com.groups.schicken.franchise;
 
 import com.groups.schicken.Employee.EmployeeService;
-import com.groups.schicken.util.FileManager;
+import com.groups.schicken.common.util.FileManager;
 import com.groups.schicken.common.vo.FileVO;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +20,7 @@ public class FranchiseService {
     private final PasswordEncoder passwordEncoder;
 
     public List<FranchiseVO> getFranchiseList(Pager pager) throws Exception {
+        System.out.println("서비스 ");
         return franchiseMapper.getFranchiseList(pager);
     }
     public FranchiseVO getFranchise(FranchiseVO franchiseVO) throws Exception {

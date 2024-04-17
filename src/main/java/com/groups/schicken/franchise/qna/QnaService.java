@@ -3,10 +3,9 @@ package com.groups.schicken.franchise.qna;
 import com.groups.schicken.Employee.EmployeeService;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.franchise.FranchiseVO;
-import com.groups.schicken.util.DateManager;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.util.DateManager;
+import com.groups.schicken.common.vo.Pager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

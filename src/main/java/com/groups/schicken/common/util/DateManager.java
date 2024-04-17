@@ -1,4 +1,4 @@
-package com.groups.schicken.util;
+package com.groups.schicken.common.util;
 
 import org.springframework.stereotype.Component;
 

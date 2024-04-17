@@ -1,11 +1,10 @@
-package com.groups.schicken.util;
+package com.groups.schicken.common.util;
 
-import com.groups.schicken.aws.S3Service;
+import com.groups.schicken.common.aws.S3Service;
 import com.groups.schicken.common.vo.FileVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

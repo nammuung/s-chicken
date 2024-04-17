@@ -1,7 +1,7 @@
 package com.groups.schicken.noteMessage;
 
 import com.groups.schicken.Employee.EmployeeVO;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

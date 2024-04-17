@@ -12,13 +12,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.department.DepartmentVO;
-import com.groups.schicken.util.CodeVO;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.CodeVO;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
 //@Getter
@@ -68,16 +64,17 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		//GrantedAuthority -> 현재 사용자가 가지고 있는 권한
 		List<GrantedAuthority> authorities = new ArrayList<>();
-		
-		for(RoleVO roleVO:roleVOs) {
-			GrantedAuthority g = new SimpleGrantedAuthority(roleVO.getName());
-			
-			log.warn("====== ROLE : {}", g.getAuthority());
-			authorities.add(g);
+		if(roleVOs == null){
+			return authorities;
+		} else {
+			for(RoleVO roleVO:roleVOs) {
+				GrantedAuthority g = new SimpleGrantedAuthority(roleVO.getName());
+
+				log.warn("====== ROLE : {}", g.getAuthority());
+				authorities.add(g);
+			}
 		}
-		//return null;
 		return authorities;
-		
 	}
 	@Override
 	public String getPassword() {

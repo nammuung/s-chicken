@@ -1,4 +1,4 @@
-package com.groups.schicken.config;
+package com.groups.schicken.common.config;
 
 import java.util.Properties;
 

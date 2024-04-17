@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 
 @Mapper
 public interface EmployeeDAO {

@@ -1,7 +1,7 @@
 package com.groups.schicken.noteMessage;
 
 import com.groups.schicken.Employee.EmployeeVO;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

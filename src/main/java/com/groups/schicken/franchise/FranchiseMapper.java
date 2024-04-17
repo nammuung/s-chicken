@@ -1,6 +1,6 @@
 package com.groups.schicken.franchise;
 
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
