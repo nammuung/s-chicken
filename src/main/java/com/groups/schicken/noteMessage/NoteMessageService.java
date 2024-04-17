@@ -55,7 +55,7 @@ public class NoteMessageService {
 
     public List<NoteMessageVO> getList(EmployeeVO loginEmp, Pager pager, NoteMessageBoxType type) {
         pager.makeIndex();
-        Long totalCount = noteMessageDAO.getTotalCount(loginEmp);
+        Long totalCount = noteMessageDAO.getTotalCount(loginEmp, type);
         System.out.println("totalCount = " + totalCount);
 
         pager.makeNum(totalCount);
@@ -65,7 +65,22 @@ public class NoteMessageService {
         return list;
     }
 
-    public NoteMessageVO getMessage(NoteMessageVO noteMessage) {
+    public List<NoteMessageVO> getSendList(EmployeeVO loginEmp, Pager pager) {
+        pager.makeIndex();
+        Long totalCount = noteMessageDAO.getTotalCount(loginEmp, NoteMessageBoxType.send);
+        System.out.println("totalCount = " + totalCount);
+
+        pager.makeNum(totalCount);
+        List<NoteMessageVO> list = noteMessageDAO.getSendList(loginEmp, pager);
+        System.out.println("list = " + list);
+
+        return list;
+    }
+
+    public NoteMessageVO getMessage(NoteMessageVO noteMessage, NoteMessageBoxType type) {
+        if(type.equals(NoteMessageBoxType.send)){
+            return noteMessageDAO.getMessageWithReceivers(noteMessage);
+        }
         return noteMessageDAO.getMessage(noteMessage);
     }
 
@@ -78,5 +93,15 @@ public class NoteMessageService {
         }
 
         return messages;
+    }
+
+    @Transactional
+    public Boolean deleteMessage(String id, String[] messages) {
+        Integer result = noteMessageDAO.moveBox(id, messages, NoteMessageBoxType.completeDelete);
+        if(result != messages.length){
+            throw new RuntimeException("삭제 실패");
+        }
+
+        return true;
     }
 }

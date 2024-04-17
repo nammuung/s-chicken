@@ -42,6 +42,38 @@ public class RepresentService implements BoardService {
 		
 		return representDAO.getList(map);
 	}
+	
+	@Override
+	public List<BoardVO> cacList(Pager pager, BoardVO boardVO) throws Exception {
+		Map<String, Object> map = new HashMap<String,Object>();
+		
+		map.put("pager", pager);
+		map.put("boadVO",boardVO);
+		
+		pager.makeIndex();
+		pager.makeNum(representDAO.cacTotalCount(map));	
+		System.out.println(pager.getStartIndex());
+		System.out.println(pager.getPerPage());
+		System.out.println(pager.getTotalPage());
+		System.out.println(pager.getLastNum());
+		
+		return representDAO.cacgetList(map);
+
+	}
+	
+	@Override
+	public List<BoardVO> allgetList(Pager pager, BoardVO boardVO) throws Exception {
+		Map<String, Object> map = new HashMap<String,Object>();
+		
+		map.put("pager", pager);
+		map.put("boardVO", boardVO);
+		
+		pager.makeIndex();
+		pager.makeNum(representDAO.getTotalCount(map));
+		
+		return representDAO.allList(map);
+	}
+
 
 	@Override
 	public int add(BoardVO boardVO,MultipartFile attach) throws Exception {
@@ -125,6 +157,10 @@ public class RepresentService implements BoardService {
 		
 		return result;
 	}
+
+
+
+
 	
 	
 }

@@ -89,12 +89,12 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">계약서</div>
-                                        <div class="col-lg-9 col-md-8"><a href="${vo.contract.url}">${vo.contract.originName}</a></div>
+                                        <div class="col-lg-9 col-md-8"><a href="/fileDown?id=${vo.contract.id}">${vo.contract.originName}.${vo.contract.extension}</a></div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">사업자등록증</div>
-                                        <div class="col-lg-9 col-md-8"><a href="${vo.register.url}">${vo.register.originName}</a></div>
+                                        <div class="col-lg-9 col-md-8"><a href="/fileDown?id=${vo.register.id}">${vo.register.originName}.${vo.register.extension}</a></div>
                                     </div>
 
                                 </div>

@@ -7,6 +7,27 @@
     <resultMap id="getProduct" type="ProductVO" autoMapping="true">
         <id column="id" property="id"/>
     </resultMap>
+    <select id="getCategory">
+        SELECT
+            *
+        FROM
+            code
+        WHERE
+            type_id = '600'
+    </select>
+    <select id="getProduct">
+        SELECT
+            p.*,
+            c.name category
+        FROM
+            product p
+        LEFT JOIN
+            code c
+            ON p.category_id = c.id AND c.type_id = '600'
+        <include refid="search"/>
+        ORDER BY
+            p.id
+    </select>
     <select id="getProductList">
         SELECT
             p.*,
@@ -21,21 +42,24 @@
     </select>
     <sql id="search">
         <where>
-            <if test='id != null'>
+            <if test='id != null and !id.equals("")'>
                 p.id LIKE concat('%',#{id},'%')
             </if>
-            <if test='name != null'>
+            <if test='name != null and !name.equals("")'>
                 AND p.name LIKE concat('%',#{name},'%')
             </if>
-            <if test='standard != null'>
+            <if test='standard != null and !standard.equals("")'>
                 AND p.standard LIKE concat('%',#{standard},'%')
+            </if>
+            <if test='categoryId != null and !categoryId.equals("")'>
+                AND p.category_id = #{categoryId}
             </if>
         </where>
     </sql>
 
     <insert id="addProduct">
-        <selectKey order="BEFORE" keyProperty="id" resultType="Long">
-            SELECT nextval(seq1)
+        <selectKey order="BEFORE" keyProperty="id" resultType="String">
+            SELECT MAX(id)+1 FROM product
         </selectKey>
         INSERT INTO
             product

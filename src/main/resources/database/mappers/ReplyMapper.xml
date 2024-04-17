@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.board.reply.ReplyDAO">
+	
+	<select id="totalCount">
+		SELECT COUNT(*) FROM reply
+		WHERE parent_id=#{replyVO.parentId} 
+	</select>
+	
+	<select id="list">
+		SELECT * FROM reply
+			WHERE parent_id=#{replyVO.parentId}
+			ORDER BY id DESC
+		LIMIT #{pager.startIndex},#{pager.perPage}
+	</select>
+	
+	<insert id="add" keyProperty="id">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Long">
+			SELECT nextval(seq3)
+		</selectKey>
+		INSERT INTO reply VALUES
+		(#{id},#{content},#{date},0,0,0,0,#{parentId},#{writerId})
+	</insert>
+
+	<update id="update">
+		UPDATE reply
+		SET reply_Text=#{replyText}
+		WHERE id=#{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM reply
+		WHERE id=#{id}
+	</delete>
+</mapper>

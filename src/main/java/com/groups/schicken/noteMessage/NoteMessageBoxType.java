@@ -1,5 +1,5 @@
 package com.groups.schicken.noteMessage;
 
 public enum NoteMessageBoxType {
-    receive, save, delete
+    receive, save, delete, completeDelete, send
 }

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.auth.policy.Principal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groups.schicken.util.Pager;
 
@@ -51,8 +53,10 @@ public class EmployeeController {
 		}
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		 String id = auth.getName();
+		 log.info("{}===============================================",id);
+		 session.setAttribute("cc", id);
 		 model.addAttribute("cc", id);
-		 System.out.println(id);
+		 System.out.println("sssssssssssssssssssssssssssssssssssss"+id);
 		return "employee/join";
 
 	}
@@ -101,7 +105,12 @@ public class EmployeeController {
 
 	
 	@GetMapping("profile")
-	public String userDetail(EmployeeVO employeeVO, Model model)throws Exception{
+	public String userDetail(@AuthenticationPrincipal Principal principal,  EmployeeVO employeeVO, Model model)throws Exception{
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String id = auth.getName();
+		log.info("{}===============================================",id);
+		model.addAttribute("cc", id);
+		employeeVO.setId(id);
 		employeeVO = employeeService.userDetail(employeeVO);
 		model.addAttribute("detail", employeeVO);
 		return "employee/profile";

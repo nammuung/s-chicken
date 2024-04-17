@@ -25,8 +25,20 @@ public class ProductApi {
                     .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
         }
     }
+    @GetMapping("{id}")
+    public ResponseEntity<?> getProductList(@PathVariable String id) throws Exception {
+        ProductVO productVO = new ProductVO();
+        productVO.setId(id);
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), productService.getProduct(productVO)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
     @PostMapping
-    public ResponseEntity<?> addProduct(ProductVO productVO) throws Exception {
+    public ResponseEntity<?> addProduct(@RequestBody ProductVO productVO) throws Exception {
         try {
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "제품 추가 완료", productService.addProduct(productVO)));
         } catch (Exception e){
@@ -37,9 +49,9 @@ public class ProductApi {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateProduct(ProductVO productVO) throws Exception {
+    public ResponseEntity<?> updateProduct(@RequestBody ProductVO productVO) throws Exception {
         try {
-            return ResponseEntity.ok(productService.updateProduct(productVO));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "제품 수정 완료", productService.updateProduct(productVO)));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

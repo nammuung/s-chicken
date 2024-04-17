@@ -20,9 +20,9 @@
     </insert>
 
     <select id="getTotalCount">
-        SELECT COUNT(*)
+        SELECT COUNT(DISTINCT note_id)
         FROM note_receiver
-        WHERE receiver_id = #{id}
+        WHERE receiver_id=#{employee.id} AND box_type=#{type}
     </select>
 
     <select id="getList">
@@ -44,6 +44,31 @@
         LIMIT ${pager.startIndex}, ${pager.perPage}
     </select>
 
+    <select id="getSendList">
+        SELECT
+              nm.id
+            , nm.content
+            , nm.date
+            , concat(nr.name , ' ' , IF(nr.count = 0 , '' , concat('외 ', nr.count, '명'))) AS "sender_name"
+            , a.id AS "file"
+        FROM note_message nm
+            INNER JOIN (
+                SELECT
+                      nr.note_id
+                    , max(concat(d.name , ' ' , c.name , ' ' , e.name)) AS "name"
+                    , count(*)-1 AS "count"
+                FROM employee e
+                    INNER JOIN department d ON e.department_id = d.id
+                    INNER JOIN code c ON c.id = e.pos_id AND c.type_id = 300
+                    INNER JOIN note_receiver nr ON nr.receiver_id = e.id
+                GROUP BY nr.note_id
+            ) nr ON nr.note_id = nm.id
+        LEFT JOIN attach a ON a.tbl_id='104' AND a.parent_id=nm.id
+        WHERE sender_id=#{employee.id}
+        ORDER BY nm.date desc
+        LIMIT ${pager.startIndex}, ${pager.perPage}
+    </select>
+
     <select id="getMessage">
         SELECT
               nm.id
@@ -60,6 +85,32 @@
             LEFT JOIN attach a ON a.tbl_id='104' AND a.parent_id=nm.id
         WHERE nm.id = #{id}
     </select>
+
+    <select id="getMessageWithReceivers" resultMap="getMessageWithReceiversResult">
+        SELECT
+              nm.id
+            , nm.content
+            , nm.date
+            , a.id AS "file"
+            , a.origin_name AS "filename"
+            , e.id AS "receivers_id"
+            , concat(d.name, ' ', c.name, ' ', e.name) AS "receivers_name"
+        FROM note_message nm
+            INNER JOIN note_receiver nr ON nr.note_id = nm.id
+            INNER JOIN employee e ON e.id = nr.receiver_id
+            INNER JOIN department d ON d.id = e.department_id
+            INNER JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
+            LEFT JOIN attach a ON a.tbl_id='104' AND a.parent_id=nr.note_id
+        WHERE nm.id = #{id};
+    </select>
+
+    <resultMap id="getMessageWithReceiversResult" type="NoteMessageVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="receiversVO" column="receivers" javaType="List" ofType="EmployeeVO">
+            <id column="receivers_id" property="id"/>
+            <result column="receivers_name" property="name"/>
+        </collection>
+    </resultMap>
 
     <update id="moveBox">
         UPDATE note_receiver

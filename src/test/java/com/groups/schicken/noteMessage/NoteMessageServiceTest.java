@@ -40,7 +40,7 @@ class NoteMessageServiceTest {
         Pager pager = new Pager();
         pager.setPage(0L);
 
-        var list = noteMessageService.getList(employeeVO, pager);
+        var list = noteMessageService.getList(employeeVO, pager, NoteMessageBoxType.receive);
         System.out.println("list = " + list);
 
         assertEquals(0, list.size());
@@ -51,7 +51,7 @@ class NoteMessageServiceTest {
         NoteMessageVO messageVO = new NoteMessageVO();
         messageVO.setId(1021L);
 
-        var message = noteMessageService.getMessage(messageVO);
+        var message = noteMessageService.getMessage(messageVO, NoteMessageBoxType.send);
         System.out.println("message = " + message);
     }
 }

@@ -34,7 +34,7 @@ public class S3Service {
     public FileVO uploadFile(MultipartFile file, FileVO fileVO) throws Exception {
         try{
             String fileName = fileVO.getName();
-            String fileUrl = "https://"+bucket+"/test"+fileVO.getName();
+            String fileUrl = "https://s3.ap-northeast-2.amazonaws.com/"+bucket+"/"+fileVO.getName();
             ObjectMetadata data = new ObjectMetadata();
             data.setContentType(file.getContentType());
             data.setContentLength(file.getSize());

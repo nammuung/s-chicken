@@ -4,6 +4,9 @@ import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.util.Pager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,9 +29,15 @@ public class FranchiseController {
 
     @GetMapping("/franchise/detail")
     public String getFranchise(Model model,FranchiseVO franchiseVO) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         franchiseVO = franchiseService.getFranchise(franchiseVO);
         model.addAttribute("vo", franchiseVO);
-//        return "franchise/detailForEmployee"; 본사 직원 화면
+        if (authentication != null) {
+            boolean hasFranchiseAuthority = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_FRANCHISE"));
+            if (!hasFranchiseAuthority) {
+                return "franchise/detailForEmployee";// 본사 직원 화면
+            }
+        }
         return "franchise/detailForFranchise"; // 가맹점 화면
     }
 

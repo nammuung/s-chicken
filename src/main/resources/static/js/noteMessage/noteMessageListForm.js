@@ -1,7 +1,11 @@
 let noteMessageDatas;
 let noteMessageSaveBtn;
 let noteMessageDeleteBtn;
+let noteMessageExceptBtn;
+let noteMessageDeleteAcceptBtn;
+
 let noteMessagePagination;
+let noteMessageBtnDiv;
 
 let noteMessageBody;
 let listPage;
@@ -39,7 +43,12 @@ function dateFormatting(date){
 
 function senderNameSetting(senderName){
     let names = senderName.split(" ");
-    return `<small class="linkable">${names[0]}</small><div>${names[1]} ${names[2]}</div>`
+    let name = "";
+    for (let i = 1; i < names.length; i++) {
+        name += names[i] + " ";
+    }
+
+    return `<small class="linkable">${names[0]}</small><div>${name}</div>`
 }
 
 function contentSetForList(text){
@@ -52,8 +61,8 @@ function drawNoteMessageTr(data){
             <div class="col-1 px-3 text-center form-check">
                 <input data-id="note-message-select" data-content="${data.id}" type="checkbox" class="form-check-input" style="margin-left: 1em; margin-top: 0.5em">
             </div>
-            <div data-sender-id="${data.senderId}" class="col-2 px-3 text-center linkable text-black">${senderNameSetting(data.senderName)}</div>
-            <div data-content="${data.id}" class="col-6 px-3 text-center text-truncate linkable text-black">${contentSetForList(data.content)}</div>
+            <div data-sender-id="${data.senderId}" class="col-3 px-3 text-center linkable text-black">${senderNameSetting(data.senderName)}</div>
+            <div data-content="${data.id}" class="col-5 px-3 text-center text-truncate linkable text-black">${contentSetForList(data.content)}</div>
             <div class="col-1 px-3 text-center">
                 ${data.file == null ? "" : `<a href='/fileDown?id=${data.file}'><i class='fas fa-save fa-lg anchorable' style='color: #7749F8;margin-top: 0.5em'></i></a>`}
             </div>
@@ -63,6 +72,10 @@ function drawNoteMessageTr(data){
 }
 
 function drawNoteMessageTableRows(data){
+    if(data.length === 0){
+        return `<div class="d-flex justify-content-center border-1 border-bottom mt-2">쪽지가 없습니다.</div>`
+    }
+
     return data.map(d => drawNoteMessageTr(d)).join("");
 }
 
@@ -84,37 +97,103 @@ function setPaginaion(pager){
     return paginaion
 }
 
+function setBtnByMessageList(page, type){
+    noteMessageBtnDiv.innerHTML ={
+        'receive' : `            
+            <button id="note-message-save-btn" data-kind='note-message-util-btn' class="btn btn-primary btn-sm disabled ms-1 align-self-start">보관</button>
+            <button id="note-message-delete-btn" data-kind='note-message-util-btn' class="btn btn-outline-danger btn-sm disabled ms-1 align-self-start">삭제</button>`,
+        'save' : `
+            <button id="note-message-except-btn" data-kind='note-message-util-btn' class="btn btn-outline-secondary btn-sm disabled ms-1 align-self-start">제외</button>`,
+        'delete' : `
+            <button id="note-message-delete-accept-btn" data-kind='note-message-util-btn' class="btn btn-danger btn-sm disabled ms-1 align-self-start">완전삭제</button>
+            <button id="note-message-except-btn" data-kind='note-message-util-btn' class="btn btn-outline-secondary btn-sm disabled ms-1 align-self-start">제외</button>`,
+        'send' : ``
+    }[type];
+
+    switch (type) {
+        case "receive" :
+            noteMessageSaveBtn = document.getElementById("note-message-save-btn");
+            noteMessageDeleteBtn = document.getElementById("note-message-delete-btn");
+            noteMessageSaveBtn.addEventListener("click", () => moveBox('save'));
+            noteMessageDeleteBtn.addEventListener("click", () => moveBox('delete'));
+            break;
+        case "save" :
+            noteMessageExceptBtn = document.getElementById("note-message-except-btn");
+            noteMessageExceptBtn.addEventListener("click", () => moveBox('receive'));
+            break;
+        case "delete" :
+            noteMessageExceptBtn = document.getElementById("note-message-except-btn");
+            noteMessageDeleteAcceptBtn = document.getElementById("note-message-delete-accept-btn");
+            noteMessageExceptBtn.addEventListener("click", () => moveBox('receive'));
+            noteMessageDeleteAcceptBtn.addEventListener("click", () => deleteMessageComplete());
+            break;
+    }
+}
+
+function deleteMessageComplete(){
+    let checkboxes = [...document.querySelectorAll('input[data-id="note-message-select"][data-content]')]
+        .filter(e => e.checked)
+        .map(e=>e.getAttribute("data-content"));
+
+
+    fetch('/message/delete',{
+        method:"post",
+        headers : {
+            "content-type": "application/json;charset=utf-8"
+        },
+        body : JSON.stringify(checkboxes)
+    }).then(res => {
+        if(res.ok) openListPage(1, 'delete');
+
+        else alert('삭제하는데 실패했습니다.');
+    })
+}
+
+
+function getListTitle(type){
+    return {
+        'receive' : '받은 쪽지함',
+        'save' : '쪽지 보관함',
+        'delete' : '휴지통',
+        'send' : '보낸 쪽지함'
+    }[type]
+}
+
 function getNoteMessageList(page, type){
     let param = "?page="+page;
+
+    setBtnByMessageList(page, type);
+
+    document.getElementById("note-message-list-title").innerText = getListTitle(type);
 
     fetch('/message/getList/' + type + param)
         .then(res => res.json())
         .then(r => {
             noteMessageDatas.innerHTML=drawNoteMessageTableRows(r.data);
-            toggleSaveAndDeleteBtnByCheckbox();
+            toggleMessageUtilBtnsByCheckbox();
             document.querySelectorAll("div[data-content]")
-                .forEach(div => div.addEventListener("click", evt => openMessage(evt.target.getAttribute("data-content"), page)));
+                .forEach(div => div.addEventListener("click", evt => openMessage(evt.target.getAttribute("data-content"), page, type)));
             noteMessagePagination.innerHTML=setPaginaion(r.page);
         });
 }
 
-function toggleSaveAndDeleteBtnByCheckbox(){
+function toggleMessageUtilBtnsByCheckbox(){
     let selCount = 0;
     document.querySelectorAll("input[data-id='note-message-select']")
         .forEach(ipt =>ipt.addEventListener("click",e => {
             selCount += e.target.checked? 1 : -1;
 
             if(selCount <= 0){
-                noteMessageSaveBtn.classList.add("disabled");
-                noteMessageDeleteBtn.classList.add("disabled");
+                document.querySelectorAll("button[data-kind='note-message-util-btn']")
+                    .forEach(e=>e.classList.add("disabled"))
             } else {
-                noteMessageSaveBtn.classList.remove("disabled");
-                noteMessageDeleteBtn.classList.remove("disabled");
+                document.querySelectorAll("button[data-kind='note-message-util-btn']")
+                    .forEach(e=>e.classList.remove("disabled"))
             }
         }))
 }
 
-function moveBox(to, page){
+function moveBox(to){
     let checkboxes = [...document.querySelectorAll('input[data-id="note-message-select"][data-content]')]
         .filter(e => e.checked)
         .map(e=>e.getAttribute("data-content"));
@@ -127,31 +206,28 @@ function moveBox(to, page){
         },
         body : JSON.stringify(checkboxes)
     }).then(res => {
-        if(res.ok) openListPage(page);
+        if(res.ok) getNoteMessageList(1, to);
 
         else alert('box를 옮기는데 실패했습니다.');
     })
 }
 
 
-function openListPage(page){
+function openListPage(page, type){
     noteMessageBody.innerHTML = listPage;
 
     noteMessageDatas = document.getElementById("note-message-datas");
-    noteMessageSaveBtn = document.getElementById("note-message-save-btn");
-    noteMessageDeleteBtn = document.getElementById("note-message-delete-btn");
     noteMessagePagination = document.getElementById("note-message-pagination");
+    noteMessageBtnDiv = document.getElementById("note-message-btn-div");
 
-    noteMessageSaveBtn.addEventListener("click",()=>moveBox('save', page))
-    noteMessageDeleteBtn.addEventListener("click",()=>moveBox('delete', page))
     noteMessagePagination.addEventListener("click",event=>{
         let page = event.target.getAttribute("data-to-page");
         if(page == null) return;
 
-        openListPage(page);
+        getNoteMessageList(page,type);
     })
 
-    getNoteMessageList(page == null ? 1 : page, 'receive');
+    getNoteMessageList(page == null ? 1 : page, type);
 }
 
 export default {

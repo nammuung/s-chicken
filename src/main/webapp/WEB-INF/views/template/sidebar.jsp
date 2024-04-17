@@ -22,17 +22,17 @@
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="/notice/list">
+                    <a href="/all/list">
                         <i class="bi bi-circle"></i><span>전체</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/represent/impList">
+                    <a href="/represent/list">
                         <i class="bi bi-circle"></i><span>대표 공지</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/notice/cacList">
+                    <a href="/cac/cacList">
                         <i class="bi bi-circle"></i><span>경조사 공지</span>
                     </a>
                 </li>

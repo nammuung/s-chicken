@@ -5,7 +5,10 @@ import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.util.Pager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,12 +67,17 @@ public class QnaController {
     }
 
     @GetMapping("list")
-    public String getFranchiseQnaList(Model model, Pager pager) throws Exception {
-        FranchiseVO franchiseVO = new FranchiseVO();
-        franchiseVO.setId("210"); //가맹점 아이디 임의 설정
-
-//        List<QnaVO> list = qnaService.getAllFranchiseQnaList(pager); 매니저 로그인 시
-        List<QnaVO> list = qnaService.getFranchiseQnaList(franchiseVO, pager); //가맹점 로그인 시
+    public String getFranchiseQnaList(@AuthenticationPrincipal FranchiseVO franchiseVO, Model model, Pager pager) throws Exception {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<QnaVO> list = null;
+        if (authentication != null) {
+            boolean hasFranchiseAuthority = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_FRANCHISE"));
+            if (hasFranchiseAuthority) {
+                list = qnaService.getFranchiseQnaList(franchiseVO, pager); //가맹점 로그인 시
+            } else {
+                list = qnaService.getAllFranchiseQnaList(pager); //매니저 로그인 시
+            }
+        }
 
         model.addAttribute("list", list);
         model.addAttribute("pager", pager);
