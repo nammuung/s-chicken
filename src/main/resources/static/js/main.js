@@ -6,6 +6,29 @@
 * License: https://bootstrapmade.com/license/
 */
 
+
+//김경모
+//데이터의 키값이랑 같은 엘리먼트 아이디 찾아서 set
+function dataSetterWithId(datas){
+  for(let key of Object.keys(datas)){
+    const element = document.getElementById(key);
+    try {
+      element.value = datas[key];
+    } catch (err){
+      console.log(err);
+    }
+  }
+}
+//화면상의 아이디가 설정된 모든 데이터 get
+function dataGetterWithId(){
+  const elementsWithId = document.querySelectorAll("[id]");
+  const data = {};
+  elementsWithId.forEach(element=>{
+    if(element.value) data[element.id] = element.value;
+  })
+  return data;
+}
+
 (function() {
   "use strict";
 
