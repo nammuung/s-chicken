@@ -9,9 +9,15 @@ let content = document.getElementById("content")
 let sort = document.getElementById("sort")
 const frm = document.querySelector("#frm")
 let important = document.getElementById("important")
+let board = document.getElementById("board")
 
+	console.log(sort.value);
+	console.log(board.innerHTML);
+
+		if(board.innerHTML=="represent공지사항"){
+			sort.value =1;
+		}
 	
-
 	function check1(){
 
 		
