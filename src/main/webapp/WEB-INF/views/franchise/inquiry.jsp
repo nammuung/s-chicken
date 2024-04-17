@@ -8,6 +8,11 @@
     <title>S치킨-그룹웨어</title>
     <c:import url="../template/head.jsp"/>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9487982a6e9b4d2638f7bb9426cd5683&libraries=services"></script>
+    <style>
+        .selected {
+            background-color: #ececec;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,25 +40,26 @@
                     <input type="text" name="search" placeholder="검색" value="${pager.search}" title="Enter search keyword">
                     <button type="submit" title="Search"><i class="bi bi-search"></i></button>
                 </form>
-
-                <ul class="list-group overflow-scroll" style="height: 50vh">
-                    <c:forEach items="${list}" var="item">
-                        <li class="list-group-item cursor d-flex justify-content-between align-items-center" onclick="focusMarker('${item.address}')">
-                            <a href="#" class="d-flex flex-column link-dark">
-                                <b>${item.name}</b>
-                                <span>${item.contactNumber}</span>
-                            </a>
-                            <div>
-                                <a href="/franchise/detail?id=${item.id}" class="link-dark me-1">
-                                    <i class="bi bi-bar-chart-fill"></i>
+                <div class="overflow-auto" style="height: 50vh;">
+                    <ul class="list-group">
+                        <c:forEach items="${list}" var="item" varStatus="status">
+                            <li id="item${status.index}" class="list-group-item cursor d-flex justify-content-between align-items-center" onclick="focusMarker('${item.address}',${status.index})">
+                                <a href="#" class="d-flex flex-column link-dark">
+                                    <b>${item.name}</b>
+                                    <span>${item.contactNumber}</span>
                                 </a>
-                                <a href="/franchise/detail?id=${item.id}" class="link-dark">
-                                    <i class="bi bi-info-circle-fill"></i>
-                                </a>
-                            </div>
-                        </li>
-                    </c:forEach>
-                </ul>
+                                <div>
+                                    <a href="/franchise/detail?id=${item.id}" class="link-dark me-1">
+                                        <i class="bi bi-bar-chart-fill"></i>
+                                    </a>
+                                    <a href="/franchise/detail?id=${item.id}" class="link-dark">
+                                        <i class="bi bi-info-circle-fill"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -129,7 +135,13 @@
         })
     })()
 
-    function focusMarker(address){
+    function focusMarker(address,index){
+        const item = document.getElementById("item"+index);
+        Array.prototype.slice.call(document.querySelectorAll(".list-group-item"))
+            .forEach(el => {
+                el.classList.remove("selected");
+            })
+        item.classList.add("selected");
         geocoder.addressSearch(address, function(result, status) {
             // 정상적으로 검색이 완료됐으면
             if (status === kakao.maps.services.Status.OK) {
@@ -140,29 +152,6 @@
         })
 
     }
-    // 키워드로 장소를 검색합니다
-    // ps.keywordSearch('서울 교촌치킨', placesSearchCB);
-    // 키워드 검색 완료 시 호출되는 콜백함수 입니다
-    // function placesSearchCB (data, status, pagination) {
-    //     if (status === kakao.maps.services.Status.OK) {
-    //
-    //         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-    //         // LatLngBounds 객체에 좌표를 추가합니다
-    //         var bounds = new kakao.maps.LatLngBounds();
-    //
-    //         for (var i=0; i<data.length; i++) {
-    //             console.log(data[i])
-    //             // displayMarker(data[i]);
-    //             bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-    //         }
-    //
-    //         // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-    //         map.setBounds(bounds);
-    //     }
-    // }
-
-
-    // 주소-좌표 변환 객체를 생성합니다
 
 
 
