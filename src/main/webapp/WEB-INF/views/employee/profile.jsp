@@ -274,29 +274,20 @@
 												</div>
 											</div>
 
-											<div class="row mb-3">
-												<label for="accountNumber"
-													class="col-md-4 col-lg-3 col-form-label">우편번호</label>
-												<div class="col-md-8 col-lg-6 d-flex">
-													<input type="text" id="sample6_postcode" placeholder="우편번호"
-														class="form-control" value="${detail.postcode}"> <input
-														type="button" onclick="sample6_execDaumPostcode()"
-														value="우편번호 찾기" class="btn btn-primary"><br>
-												</div>
-											</div>
+									<label for="address" class="form-label"><b>주소</b></label>
+									<div class="form-group mb-3 d-flex">
+										<input type="text" id="postcode" name="postcode" placeholder="우편번호"
+											class="form-control"> <input type="button"
+											onclick="openPostcodePopup()" value="우편번호 찾기"
+											class="btn btn-primary" name="">
+									</div>
 
-
-											<div class="row mb-3">
-												<label for="address"
-													class="col-md-4 col-lg-3 col-form-label">주소</label>
-												<div class="col-md-8 col-lg-9 d-flex">
-													<input type="text" id="sample6_address"
-														class="form-control" placeholder="주소"
-														value="${detail.address}"> <input type="text"
-														id="sample6_detailAddress" class="form-control ml-2"
-														placeholder="상세주소" value="${detail.addressDetail}">
-												</div>
-											</div>
+									<div class="form-group mb-3 d-flex">
+										<input type="text" id="address" name="address" class="form-control"
+											placeholder="주소"> <input type="text"
+											id="addressDetail" name="addressDetail" class="form-control ml-2"
+											placeholder="상세주소">
+									</div>
 
 
 											<div class="text-center">
@@ -366,10 +357,12 @@
 	<!-- ======= Script ======= -->
 	<c:import url="../template/script.jsp" />
 </body>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 	<script src="/js/employee/address.js"></script>
 	<script src="/js/employee/department.js"> </script>
- 	<script type="text/javascript">
+<!--  	<script type="text/javascript">
 		history.replaceState({}, null, location.pathname);
 		
-	</script>
+	</script> -->
 </html>
