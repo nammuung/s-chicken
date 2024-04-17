@@ -46,7 +46,7 @@
                 	<input type="hidden"${data.position.id}/>
                       <td>${data.position.name}</td> 
                     <td class="text-center">
-                        <input type="checkbox" name="roleId" value="${data.position.id}">
+                        <input type="checkbox" name="rolId" value="${data.position.id}">
                     </td>
                 </tr>
             </c:forEach>  

@@ -1,11 +1,10 @@
 package com.groups.schicken.board;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 
 public interface BoardService {
 	

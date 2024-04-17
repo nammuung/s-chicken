@@ -1,9 +1,8 @@
 package com.groups.schicken.franchise;
 
 import com.groups.schicken.common.vo.MessageVO;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

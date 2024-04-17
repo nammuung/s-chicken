@@ -136,7 +136,8 @@
 									<div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
 										<!-- Profile Edit Form -->
-										<form  action="./profile" method="post" enctype="multipart/form-data" onsubmit="return submitForm()">
+										<form action="./profile" method="post"
+											enctype="multipart/form-data" onsubmit="return submitForm()">
 											<div class="row mb-3">
 												<label for="profileImage"
 													class="col-md-4 col-lg-3 col-form-label">프로필</label>
@@ -204,17 +205,16 @@
 												<div class="col-md-8 col-lg-9">
 													<select class="form-select" id="department">
 														<option value="0">부서 선택</option>
-														
+
 													</select>
 												</div>
 											</div>
-																						<div class="row mb-3">
-												<label for="team"
-													class="col-md-4 col-lg-3 col-form-label">팀</label>
+											<div class="row mb-3">
+												<label for="team" class="col-md-4 col-lg-3 col-form-label">팀</label>
 												<div class="col-md-8 col-lg-9">
 													<select class="form-select" id="team" name="departmentId">
 														<option value="0">팀 선택</option>
-														
+
 													</select>
 												</div>
 											</div>
@@ -222,7 +222,7 @@
 											<div class="row mb-3">
 												<label for="posId" class="col-md-4 col-lg-3 col-form-label">직급</label>
 												<div class="col-md-8 col-lg-9">
-													<select class="form-select" id="posId" name="posId" value="${detail.posId}">
+													<select class="form-select" id="posId" name="posId">
 														<option value="0">직급 선택</option>
 														<option value="2">사원</option>
 														<option value="3">주임</option>
@@ -237,30 +237,23 @@
 														<option value="12">부사장</option>
 														<option value="13">사장</option>
 													</select>
+
 												</div>
 											</div>
 
 
-											<!--                     <div class="row mb-3">
-                      <label for="Address" class="col-md-4 col-lg-3 col-form-label">연차</label>
-                      <div class="col-md-8 col-lg-9">
-                            <select class="form-select" id="연차">
-                             <option value="0">14</option>
-                             <option value="1">15</option>
-                             </select>
-                      </div>
-                    </div> -->
 
 											<div class="row mb-3">
 												<label for="bankName"
 													class="col-md-4 col-lg-3 col-form-label">은행명</label>
 												<div class="col-md-8 col-lg-9">
-													<select class="form-select" id="bankName" name="bankName" value="${detail.bankName}">
-												<option value="0">은행 선택</option>
-												<option value="국민은행">국민은행</option>
-												<option value="신한은행">신한은행</option>
-												<option value="농협">농협</option>
-												<option value="신협">신협</option>
+													<select class="form-select" id="bankName" name="bankName"
+														value="${detail.bankName}">
+														<option value="0">은행 선택</option>
+														<option value="국민은행">국민은행</option>
+														<option value="신한은행">신한은행</option>
+														<option value="농협">농협</option>
+														<option value="신협">신협</option>
 													</select>
 												</div>
 											</div>
@@ -274,20 +267,20 @@
 												</div>
 											</div>
 
-									<label for="address" class="form-label"><b>주소</b></label>
-									<div class="form-group mb-3 d-flex">
-										<input type="text" id="postcode" name="postcode" placeholder="우편번호"
-											class="form-control"> <input type="button"
-											onclick="openPostcodePopup()" value="우편번호 찾기"
-											class="btn btn-primary" name="">
-									</div>
+											<label for="address" class="form-label"><b>주소</b></label>
+											<div class="form-group mb-3 d-flex">
+												<input type="text" id="postcode" name="postcode"
+													placeholder="우편번호" class="form-control"> <input
+													type="button" onclick="openPostcodePopup()" value="우편번호 찾기"
+													class="btn btn-primary" name="">
+											</div>
 
-									<div class="form-group mb-3 d-flex">
-										<input type="text" id="address" name="address" class="form-control"
-											placeholder="주소"> <input type="text"
-											id="addressDetail" name="addressDetail" class="form-control ml-2"
-											placeholder="상세주소">
-									</div>
+											<div class="form-group mb-3 d-flex">
+												<input type="text" id="address" name="address"
+													class="form-control" placeholder="주소"> <input
+													type="text" id="addressDetail" name="addressDetail"
+													class="form-control ml-2" placeholder="상세주소">
+											</div>
 
 
 											<div class="text-center">
@@ -302,14 +295,14 @@
 
 									<div class="tab-pane fade pt-3" id="profile-change-password">
 										<!-- Change Password Form -->
-										<form>
+										<form action="./updatePassword" method="post">
 
 											<div class="row mb-3">
-												<label for="currentPassword"
+												<label for="password"
 													class="col-md-4 col-lg-3 col-form-label">현재 비밀번호</label>
 												<div class="col-md-8 col-lg-9">
 													<input name="password" type="password" class="form-control"
-														id="currentPassword">
+														id="password">
 												</div>
 											</div>
 
@@ -357,12 +350,26 @@
 	<!-- ======= Script ======= -->
 	<c:import url="../template/script.jsp" />
 </body>
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-	<script src="/js/employee/address.js"></script>
-	<script src="/js/employee/department.js"> </script>
+<script src="/js/employee/address.js"></script>
+<script src="/js/employee/department.js">
+	
+</script>
+<script src="/js/employee/password.js"></script>
+<script src="/js/employee/employeeupdate.js"></script>
 <!--  	<script type="text/javascript">
 		history.replaceState({}, null, location.pathname);
 		
 	</script> -->
+	<script>
+	var posIdValue = "${detail.posId}";
+	// Get the select element
+	var selectElement = document.getElementById("posId");
+
+	// Set the value of the select element to the posIdValue
+	selectElement.value = posIdValue;
+
+	</script>
 </html>

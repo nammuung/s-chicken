@@ -1,14 +1,15 @@
 package com.groups.schicken.franchise;
 
 import com.groups.schicken.common.vo.ResultVO;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/api/")
@@ -21,7 +22,9 @@ public class FranchiseApi {
     @GetMapping("franchise")
     public ResponseEntity<?> getFranchise(Pager pager) throws Exception {
         System.out.println("pager = " + pager);
-        return ResponseEntity.ok(franchiseService.getFranchiseList(pager));
+        List<FranchiseVO> list = franchiseService.getFranchiseList(pager);
+        System.out.println("조회 종료");
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("franchise/{id}")

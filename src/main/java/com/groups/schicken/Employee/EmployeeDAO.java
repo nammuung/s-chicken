@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 
 @Mapper
 public interface EmployeeDAO {
@@ -38,5 +38,10 @@ public interface EmployeeDAO {
 	public int roledelete(String departmentId)throws Exception;
 	
 	public int roleinsert(List<RoleVO> list)throws Exception;
+	
+	//password 변경
+	
+
+	public int passupdate(EmployeeVO employeeVO)throws Exception;
 	
 }

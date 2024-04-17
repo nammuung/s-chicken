@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.groups.schicken.common.vo.FileVO;
-import com.groups.schicken.department.DepartmentVO;
 import com.groups.schicken.franchise.FranchiseMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +23,13 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.franchise.FranchiseVO;
-import com.groups.schicken.util.CodeVO;
-import com.groups.schicken.util.FileManager;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.util.FileManager;
+import com.groups.schicken.common.vo.Pager;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -221,6 +216,13 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		return true;
     }
 
+    
+    // 비밀번호 변경
+    public int passupdate(EmployeeVO employeeVO)throws Exception{
+    	employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
+    	return employeeDAO.passupdate(employeeVO);
+    }
+    
  // 임시 비밀번호를 이메일로 전송하는 메서드
     private void sendTempPasswordEmail(String to, String tempPassword) {
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -243,10 +245,11 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
     }
 
     //@Transactional
-    public int rolecontrolle(String departmentId, String[] roleIds) throws Exception {
+    public int rolecontrolle(String departmentId, String[] rolIds) throws Exception {
     		List<RoleVO> list = new ArrayList<>();
-    		for(String roleId : roleIds) {
-    			list.add(RoleVO.of(departmentId, roleId));
+    		for(String rolId : rolIds) {
+    			list.add(RoleVO.ofs(departmentId, rolId));
+    			log.info("{} =      :",rolId);
     		}
     	
             employeeDAO.roledelete(departmentId);
