@@ -79,13 +79,20 @@
                     </div>
                     <div class="card-body mt-3 row">
                         <div class="me-3" style="width: 500px">
-                            <b>결과</b>
+                            <div class="mb-1">
+                                <b >결과</b>
+                            </div>
                             <div class="mb-3" style=" box-shadow: 0 0 0 1px #ccc inset;">
                                 <div id="example"></div>
                             </div>
+                            <div class="d-flex justify-content-end mt-3">
+                                <button id="exportButton" class="btn btn-primary">내보내기</button>
+                            </div>
                         </div>
                         <div class="col ">
-                            <b>결과</b>
+                            <div class="mb-1">
+                                <b >상세</b>
+                            </div>
                             <div class="border position-relative" style="height: 50vh">
 
                                 <ul class="nav nav-tabs nav-tabs-bordered">
@@ -139,7 +146,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-end mb-2 me-2 position-absolute end-0 bottom-0">
-                                                <button type="button" class="btn btn-primary" id="modifyButton">수정</button>
+                                                <button type="button" class="btn btn-primary d-none" id="modifyButton">수정</button>
                                             </div>
                                         </form>
                                     </div>

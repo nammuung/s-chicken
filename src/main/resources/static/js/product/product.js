@@ -4,6 +4,7 @@ const detailForm = document.getElementById("detailForm");
 
 searchButton.addEventListener("click", function () {
     searchProduct()
+    modifyButton.classList.add("d-none")
 })
 // let data
 async function searchProduct(){
@@ -78,7 +79,10 @@ function checkboxRenderer(instance, td, row, col, prop, value, cellProperties) {
         const id = instance.getDataAtCell(row, 1);
         detailForm.reset();
         if (checked){
+            modifyButton.classList.remove("d-none")
             loadProductDetail(id);
+        } else {
+            modifyButton.classList.add("d-none")
         }
 
     });
@@ -169,3 +173,20 @@ async function modifyProduct(data){
         searchProduct()
     }
 }
+
+const exportPlugin = hot.getPlugin('exportFile');
+const exportButton = document.getElementById("exportButton");
+exportButton.addEventListener("click", function(){
+    exportPlugin.downloadFile('csv', {
+        bom: false,
+        columnDelimiter: ',',
+        columnHeaders: true,
+        exportHiddenColumns: true,
+        fileExtension: 'csv',
+        filename: '품목_[YYYY]-[MM]-[DD]',
+        mimeType: 'text/csv',
+        rowDelimiter: '\r\n',
+        rowHeaders: false,
+        range:[0,1]
+    });
+})
