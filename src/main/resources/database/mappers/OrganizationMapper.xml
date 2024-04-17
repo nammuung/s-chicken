@@ -27,6 +27,7 @@
                 , dept.sort#
             FROM department dept
                 INNER JOIN OC ON dept.upper_id = OC.id AND OC.type = 'dept'
+            WHERE dept.is_deleted = 0
         )
     </sql>
     <select id="getOrgChart">
