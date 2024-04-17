@@ -39,4 +39,9 @@ public interface EmployeeDAO {
 	
 	public int roleinsert(List<RoleVO> list)throws Exception;
 	
+	//password 변경
+	
+
+	public int passupdate(EmployeeVO employeeVO)throws Exception;
+	
 }

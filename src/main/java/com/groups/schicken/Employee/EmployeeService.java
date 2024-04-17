@@ -216,6 +216,13 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		return true;
     }
 
+    
+    // 비밀번호 변경
+    public int passupdate(EmployeeVO employeeVO)throws Exception{
+    	employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
+    	return employeeDAO.passupdate(employeeVO);
+    }
+    
  // 임시 비밀번호를 이메일로 전송하는 메서드
     private void sendTempPasswordEmail(String to, String tempPassword) {
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -238,10 +245,11 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
     }
 
     //@Transactional
-    public int rolecontrolle(String departmentId, String[] roleIds) throws Exception {
+    public int rolecontrolle(String departmentId, String[] rolIds) throws Exception {
     		List<RoleVO> list = new ArrayList<>();
-    		for(String roleId : roleIds) {
-    			list.add(RoleVO.of(departmentId, roleId));
+    		for(String rolId : rolIds) {
+    			list.add(RoleVO.ofs(departmentId, rolId));
+    			log.info("{} =      :",rolId);
     		}
     	
             employeeDAO.roledelete(departmentId);

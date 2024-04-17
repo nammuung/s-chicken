@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.amazonaws.auth.policy.Principal;
+import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.common.vo.Pager;
 
 import jakarta.servlet.http.HttpSession;
@@ -42,27 +43,43 @@ public class EmployeeController {
 			return "employee/login";
 		}
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		 String id = auth.getName();
-		 log.info("{}===============================================",id);
-		 session.setAttribute("cc", id);
-		 model.addAttribute("cc", id);
-		 System.out.println("sssssssssssssssssssssssssssssssssssss"+id);
+		    String id = auth.getName();
+		    model.addAttribute("id",id);
 		return "employee/join";
 
 	}
 	
 	
 
-	@GetMapping("update")
-	public void update(Model model) throws Exception {
+//	@GetMapping("update")
+//	public void update(Model model) throws Exception {
+//
+//	}
 
-	}
-
-	@PostMapping("update")
-	public void update() throws Exception {
-
-	}
+//	@PostMapping("update")
+//	public void update() throws Exception {
+//
+//	}
 	
+	@PostMapping("updatePassword")
+	public String updatePassword(Model model ,EmployeeVO employeeVO) throws Exception {
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		    String id = auth.getName();
+		    employeeVO.setId(id);
+	    int result = employeeService.passupdate(employeeVO);
+	    
+	    String msg = "비밀번호 변경 실패";
+	    String path = "./profile?id=" + id;
+
+	    if (result > 0) {
+	        msg = "비밀번호 변경 성공";
+	        path = "./profile?id=" + id;
+	    }
+
+	    model.addAttribute("msg", msg);
+	    model.addAttribute("path", path);
+	    return "employee/result";
+	}
 
 	
 	
@@ -96,11 +113,9 @@ public class EmployeeController {
 	
 	@GetMapping("profile")
 	public String userDetail(@AuthenticationPrincipal Principal principal,  EmployeeVO employeeVO, Model model)throws Exception{
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String id = auth.getName();
-		log.info("{}===============================================",id);
-		model.addAttribute("cc", id);
-		employeeVO.setId(id);
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		    String id = auth.getName();
+		    model.addAttribute("id", id);
 		employeeVO = employeeService.userDetail(employeeVO);
 		model.addAttribute("detail", employeeVO);
 		return "employee/profile";
@@ -133,14 +148,15 @@ public class EmployeeController {
     }
 	
 	@PostMapping("role")
-	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("roleId") String[] roleId , Model model)throws Exception {
+	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("rolId") String[] rolId , Model model)throws Exception {
 //	    employeeService.rolecontrolle(employeeVO);
 		System.out.println(departmentId);
-		System.out.println("roldId = " + Arrays.toString(roleId));
+		System.out.println("rolId = " + Arrays.toString(rolId));
 		
-		employeeService.rolecontrolle(departmentId, roleId);
+		employeeService.rolecontrolle(departmentId, rolId);
 	    return "redirect:/employee/role";
 	}
+
 
 
 	

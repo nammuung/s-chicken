@@ -133,7 +133,9 @@ WHERE
 	delete FROM dept_role WHERE id = #{departmentId}
 	</delete>
 
-
+	<update id="passupdate" parameterType="EmployeeVO">
+	update employee SET password = #{password} where employee.id = #{id}
+	</update>
 
 
 	<insert id="roleinsert">
