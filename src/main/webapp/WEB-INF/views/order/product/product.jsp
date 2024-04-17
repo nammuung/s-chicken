@@ -112,25 +112,25 @@
                                         <form id="detailForm" class="text-nowrap text-end mt-3 ms-1">
                                             <div class="mb-3 row">
                                                 <label for="id" class="col-2 col-form-label">품번</label>
-                                                <div class="col-4">
+                                                <div class="col-6">
                                                     <input type="text" readonly class="form-control" id="id" name="id" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="name" class="col-2 col-form-label">품목</label>
-                                                <div class="col-4">
+                                                <div class="col-6">
                                                     <input type="text" class="form-control" id="name" name="name" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="standard" class="col-2 col-form-label">규격</label>
-                                                <div class="col-4">
+                                                <div class="col-6">
                                                     <input type="text" class="form-control" id="standard" name="standard" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="category" class="col-2 col-form-label">카테고리</label>
-                                                <div class="col-4">
+                                                <div class="col-6">
                                                     <select type="text" class="form-control form-select" id="category" name="categoryId">
                                                         <option value=""></option>
                                                         <c:forEach items="${category}" var="item">
@@ -141,7 +141,7 @@
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="stock" class="col-2 col-form-label">재고</label>
-                                                <div class="col-4">
+                                                <div class="col-6">
                                                     <input type="text" disabled readonly class="form-control" id="stock" value="">
                                                 </div>
                                             </div>

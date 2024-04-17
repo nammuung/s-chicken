@@ -20,6 +20,7 @@ async function searchProduct(){
     const result = await response.json();
     const data = result.data;
     renderTable(data);
+    detailForm.reset();
 }
 function renderTable(data){
     hot.loadData(data)
