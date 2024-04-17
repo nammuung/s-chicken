@@ -3,9 +3,11 @@ const detailForm = document.getElementById("detailForm");
 
 
 searchButton.addEventListener("click", function () {
+    searchProduct()
+})
+// let data
+async function searchProduct(){
     const searchForm = document.getElementById("searchForm");
-
-
     const formData = new FormData(searchForm);
     const searchData = {
         "id": formData.get("id"),
@@ -13,10 +15,6 @@ searchButton.addEventListener("click", function () {
         "standard": formData.get("standard"),
         "categoryId": formData.get("categoryId"),
     }
-    searchProduct(searchData)
-})
-// let data
-async function searchProduct(searchData){
     const response = await fetch(`/v1/api/products?id=${searchData.id}&name=${searchData.name}&standard=${searchData.standard}&categoryId=${searchData.categoryId}`);
     const result = await response.json();
     const data = result.data;
@@ -38,6 +36,10 @@ const hot = new Handsontable(container, {
 
         },
         {
+            data:'category',
+
+        },
+        {
             data:'name',
         },
         {
@@ -52,8 +54,8 @@ const hot = new Handsontable(container, {
     autoWrapRow: true,
     autoWrapCol: true,
     width: "100%",
-    colWidths:[20,100,100,100],
-    colHeaders: ['','ID', '품명', '규격'],
+    colWidths:[22,25,100,100,100],
+    colHeaders: ['','ID','카테고리', '품명', '규격'],
     stretchH:"all",
     licenseKey: 'non-commercial-and-evaluation', // for non-commercial use only
     // manualColumnResize: true,
@@ -96,4 +98,74 @@ async function loadProductDetail(id){
                 option.selected = true;
             }
         })
+}
+
+const modalEl = document.getElementById("common-modal")
+const modal = new bootstrap.Modal(modalEl);
+const addButton = document.getElementById("addButton");
+addButton.addEventListener("click",function (){
+    modal.show()
+})
+
+const saveButton = document.getElementById("saveButton");
+saveButton.addEventListener("click", function(){
+    const addForm = document.getElementById("addForm");
+    const formData = new FormData(addForm);
+    const name = formData.get("name");
+    const standard = formData.get("standard");
+    const categoryId = formData.get("categoryId");
+    const data = {
+        "name": name,
+        "standard": standard,
+        "categoryId": categoryId
+    }
+    saveProduct(data)
+})
+
+async function saveProduct(data){
+    const response = await fetch("/v1/api/products", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    const result = await response.json();
+    alert(result.message);
+    if (result.status === "OK") {
+        modal.hide()
+    }
+}
+
+const modifyButton = document.getElementById("modifyButton");
+modifyButton.addEventListener("click", function(){
+    const detailForm = document.getElementById("detailForm");
+    const formData = new FormData(detailForm);
+    const id = formData.get("id");
+    const name = formData.get("name");
+    const standard = formData.get("standard");
+    const categoryId = formData.get("categoryId");
+    const data = {
+        "id": id,
+        "name": name,
+        "standard": standard,
+        "categoryId": categoryId
+    }
+    console.log(data);
+    modifyProduct(data)
+})
+
+async function modifyProduct(data){
+    const response = await fetch("/v1/api/products", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    const result = await response.json();
+    alert(result.message);
+    if(result.status === "OK"){
+        searchProduct()
+    }
 }

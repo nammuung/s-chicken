@@ -58,8 +58,8 @@
     </sql>
 
     <insert id="addProduct">
-        <selectKey order="BEFORE" keyProperty="id" resultType="Long">
-            SELECT nextval(seq1)
+        <selectKey order="BEFORE" keyProperty="id" resultType="String">
+            SELECT MAX(id)+1 FROM product
         </selectKey>
         INSERT INTO
             product

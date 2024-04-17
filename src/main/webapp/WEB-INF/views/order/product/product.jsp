@@ -106,25 +106,25 @@
                                             <div class="mb-3 row">
                                                 <label for="id" class="col-2 col-form-label">품번</label>
                                                 <div class="col-4">
-                                                    <input type="text" disabled class="form-control" id="id" value="">
+                                                    <input type="text" readonly class="form-control" id="id" name="id" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="name" class="col-2 col-form-label">품목</label>
                                                 <div class="col-4">
-                                                    <input type="text" class="form-control" id="name" value="">
+                                                    <input type="text" class="form-control" id="name" name="name" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="standard" class="col-2 col-form-label">규격</label>
                                                 <div class="col-4">
-                                                    <input type="text" class="form-control" id="standard" value="">
+                                                    <input type="text" class="form-control" id="standard" name="standard" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="category" class="col-2 col-form-label">카테고리</label>
                                                 <div class="col-4">
-                                                    <select type="text" class="form-control form-select" id="category">
+                                                    <select type="text" class="form-control form-select" id="category" name="categoryId">
                                                         <option value=""></option>
                                                         <c:forEach items="${category}" var="item">
                                                             <option value="${item.id}">${item.name}</option>
@@ -139,7 +139,7 @@
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-end mb-2 me-2 position-absolute end-0 bottom-0">
-                                                <button class="btn btn-primary">수정</button>
+                                                <button type="button" class="btn btn-primary" id="modifyButton">수정</button>
                                             </div>
                                         </form>
                                     </div>
@@ -148,7 +148,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end mt-3">
-                            <button class="btn btn-primary">추가</button>
+                            <button id="addButton" class="btn btn-primary">추가</button>
                         </div>
                     </div>
                 </div>
@@ -156,6 +156,46 @@
         </div>
     </section>
 </main><!-- End #main -->
+<div class="modal" tabindex="-1" id="common-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">상품추가</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm" class="text-nowrap text-end mt-3 ms-3">
+                    <div class="mb-3 row">
+                        <label for="name" class="col-2 col-form-label">품목</label>
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="name" value="">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="standard" class="col-2 col-form-label">규격</label>
+                        <div class="col-4">
+                            <input type="text" class="form-control" name="standard" value="">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="category" class="col-2 col-form-label">카테고리</label>
+                        <div class="col-4">
+                            <select type="text" class="form-control form-select" name="categoryId">
+                                <c:forEach items="${category}" var="item">
+                                    <option value="${item.id}">${item.name}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveButton">저장</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- ======= Footer ======= -->
 <c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
