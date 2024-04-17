@@ -33,23 +33,45 @@
                         <b>검색</b>
                         <form id="searchForm">
                             <div class="mb-3 row">
-                                <label for="product" class="col-2 col-form-label">품번</label>
-                                <div class="col-3">
-                                    <input type="text" class="form-control" name="id" value="">
+                                <div class="row col">
+                                    <label for="searchId" class="col-3 col-form-label text-nowrap">품번</label>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="searchId" name="id" value="">
+                                    </div>
+                                </div>
+                                <div class="row col">
+                                    <label for="searchName" class="col-3 col-form-label text-nowrap">품목</label>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="searchName" name="name" value="">
+                                    </div>
+                                </div>
+                                <div class="row col">
+                                    <label for="searchStandard" class="col-3 col-form-label text-nowrap">규격</label>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="searchStandard" name="standard" value="">
+                                    </div>
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="product" class="col-2 col-form-label">품목</label>
-                                <div class="col-3">
-                                    <input type="text" class="form-control" name="name" value="">
+                                <div class="row col">
+                                    <label for="searchCategory" class="col-3 col-form-label text-nowrap">카테고리</label>
+                                    <div class="col-9">
+                                        <select type="text" class="form-control form-select" id="searchCategory" name="categoryId">
+                                            <option value="">전체</option>
+                                            <c:forEach items="${category}" var="item">
+                                                <option value="${item.id}">${item.name}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row col">
+
+                                </div>
+                                <div class="row col">
+
                                 </div>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="product" class="col-2 col-form-label">규격</label>
-                                <div class="col-3">
-                                    <input type="text" class="form-control" name="standard" value="">
-                                </div>
-                            </div>
+
                             <div class="d-flex justify-content-center">
                                 <button type="button" class="btn btn-primary" id="searchButton">검색</button>
                             </div>
@@ -80,23 +102,40 @@
                                 </ul>
                                 <div class="tab-content pt-2">
                                     <div class="tab-pane fade show active profile-overview" id="supplier-overview">
-                                        <div class="text-nowrap text-end mt-3">
+                                        <div class="text-nowrap text-end mt-3 ms-1">
                                             <div class="mb-3 row">
-                                                <label for="product" class="col-1 col-form-label">품목</label>
-                                                <div class="col-2">
-                                                    <input type="text" class="form-control" id="product" value="">
+                                                <label for="id" class="col-2 col-form-label">품번</label>
+                                                <div class="col-4">
+                                                    <input type="text" disabled class="form-control" id="id" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
-                                                <label for="product" class="col-1 col-form-label">규격</label>
-                                                <div class="col-2">
-                                                    <input type="text" class="form-control" id="product" value="">
+                                                <label for="name" class="col-2 col-form-label">품목</label>
+                                                <div class="col-4">
+                                                    <input type="text" class="form-control" id="name" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
-                                                <label for="product" class="col-1 col-form-label">재고</label>
-                                                <div class="col-2">
-                                                    <input type="text" class="form-control" id="product" value="">
+                                                <label for="standard" class="col-2 col-form-label">규격</label>
+                                                <div class="col-4">
+                                                    <input type="text" class="form-control" id="standard" value="">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="category" class="col-2 col-form-label">카테고리</label>
+                                                <div class="col-4">
+                                                    <select type="text" class="form-control form-select" id="category">
+                                                        <option value=""></option>
+                                                        <c:forEach items="${category}" var="item">
+                                                            <option value="${item.id}">${item.name}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="stock" class="col-2 col-form-label">재고</label>
+                                                <div class="col-4">
+                                                    <input type="text" disabled readonly class="form-control" id="stock" value="">
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-end mb-2 me-2 position-absolute end-0 bottom-0">

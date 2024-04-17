@@ -6,12 +6,13 @@ searchButton.addEventListener("click", function () {
         "id": formData.get("id"),
         "name": formData.get("name"),
         "standard": formData.get("standard"),
+        "categoryId": formData.get("categoryId"),
     }
     searchProduct(searchData)
 })
 // let data
 async function searchProduct(searchData){
-    const response = await fetch(`/v1/api/products?id=${searchData.id}&name=${searchData.name}&standard=${searchData.standard}`);
+    const response = await fetch(`/v1/api/products?id=${searchData.id}&name=${searchData.name}&standard=${searchData.standard}&categoryId=${searchData.categoryId}`);
     const result = await response.json();
     const data = result.data;
     renderTable(data);
@@ -29,7 +30,7 @@ const hot = new Handsontable(container, {
         },
         {
             data:'id',
-            className: 'htCenter'
+
         },
         {
             data:'name',
@@ -39,6 +40,7 @@ const hot = new Handsontable(container, {
             autoColumnSize: true
         }
     ],
+    className: 'htCenter htMiddle',
     readOnly: true,
     // rowHeaders: true,
     height: '50vh',
@@ -70,8 +72,23 @@ function checkboxRenderer(instance, td, row, col, prop, value, cellProperties) {
             instance.setDataAtCell(i,0,false)
         }
         instance.setDataAtCell(row, col, checked);
+        const id = instance.getDataAtCell(row, 1);
+        loadProductDetail(id);
     });
 
     Handsontable.dom.empty(td);
     td.appendChild(checkbox);
+}
+async function loadProductDetail(id){
+    const response = await fetch("/v1/api/products/"+id);
+    const result = await response.json();
+    const data = result.data;
+    dataSetterWithId(data);
+    const categoty = document.getElementById("category");
+    Array.prototype.slice.call(categoty)
+        .forEach(option=>{
+            if(option.value === data.categoryId){
+                option.selected = true;
+            }
+        })
 }
