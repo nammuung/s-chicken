@@ -9,7 +9,6 @@ let noteMessageForm;
 let noteMessageReceiverInput;
 let noteMessageSubmitBtn;
 let noteMessageTextArea;
-let noteMessageTextareaHidden;
 
 let noteMessageBody;
 let sendPage;
@@ -195,7 +194,6 @@ function openSendPage() {
     noteMessageReceiverInput = document.getElementById("note-message-receiver-input");
     noteMessageSubmitBtn = document.getElementById("note-message-submit-btn");
     noteMessageTextArea = document.getElementById("note-message-textarea");
-    noteMessageTextareaHidden = document.getElementById("note-message-textarea-hidden");
 
     addReceiversBtn.addEventListener("click", (e)=>addReceivers(e));
     noteMessageSelectedList.addEventListener("click", (e)=>selectItemToDelete(e));
