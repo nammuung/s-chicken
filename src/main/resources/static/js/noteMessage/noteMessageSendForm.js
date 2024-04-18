@@ -155,7 +155,6 @@ function noteMessageCheck(event){
     let text = event.target.value;
 
     document.getElementById("note-message-content-count").innerText = text.length;
-    noteMessageTextareaHidden.value=text.replace(/</g, "&lt;").replace(/\n/g,"<br>");
     if(text.length > 0 && noteMessageCheckBoolean){
         return;
     }
