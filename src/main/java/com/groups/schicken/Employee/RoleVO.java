@@ -23,6 +23,7 @@ public class RoleVO {
 	public static RoleVO of(String id, String name) {
 		return RoleVO.builder()
 				.id(id)
+				.name(name)
 				.build();
 	} 
 
@@ -30,6 +31,7 @@ public class RoleVO {
 	public static RoleVO ofs(String id, String rolId) {
 		return RoleVO.builder()
 				.id(id)
+				.rolId(rolId)
 				.build();
 	} 
 }

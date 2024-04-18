@@ -23,9 +23,11 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.franchise.FranchiseVO;
 import com.groups.schicken.common.util.FileManager;
+import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.common.vo.Pager;
 
 import jakarta.mail.MessagingException;
@@ -90,7 +92,12 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	}
 
 
-	// 회원 가입
+	/**
+	 * 
+	 * @param employeeVO 
+	 * @return
+	 * @throws Exception
+	 */
 	public Integer join(EmployeeVO employeeVO)throws Exception{
 	    // 생년월일에서 하이픈 제거
 	    String residentNumbers = employeeVO.getResidentNumber().replaceAll("-", "");
@@ -102,17 +109,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	    // 제거된 입사일을 다시 설정
 	    employeeVO.setDateOfEmployment(dateOfEmploymens);
 
-	    
-//	    FileVO file = new FileVO();
-//	    String id = dateOfEmploymens;
-//	    Long lid = Long.parseLong(id);
-//	    file.setParentId(lid);
-//
-//	    file.setTblId("1077");
-//	    fileManager.uploadFile(attach, file);
-	    // 나머지 코드는 그대로 유지
 	    employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
-	    int result = employeeDAO.join(employeeVO);
+	    int result = employeeDAO.join(employeeVO);	
 
 
 	    return result;
@@ -200,12 +198,10 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
         return UUID.randomUUID().toString().substring(0, 8); // 임시로 8자리 생성
     }
 
-    // 비밀번호 재설정 및 임시 비밀번호 전송 메서드
+    // 메일용 비밀번호 재설정 및 임시 비밀번호 전송 메서드
     public boolean resetPassword(EmployeeVO employeeVO)throws Exception {
         // 임시 비밀번호 생성
         String tempPassword = generateTempPassword();
-
-        // DB 업데이트 하는거 필요함
         
         employeeVO.setPassword(passwordEncoder.encode(tempPassword));
         employeeDAO.password(employeeVO);
@@ -215,13 +211,66 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
         sendTempPasswordEmail(employeeVO.getEmail(), tempPassword);
 		return true;
     }
-
     
-    // 비밀번호 변경
-    public int passupdate(EmployeeVO employeeVO)throws Exception{
-    	employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
+    
+    public int employeeResetPassword(EmployeeVO employeeVO, String hiddenId)throws Exception{
+    		
+    		EmployeeVO a = employeeDAO.passwordinfo(employeeVO);
+    		String infoPassword=a.getDateOfEmployment();
+    	
+    	System.out.println(infoPassword);
+    	employeeVO.setPassword(passwordEncoder.encode(infoPassword));
+    	
     	return employeeDAO.passupdate(employeeVO);
     }
+    
+    
+    public int passupdate(EmployeeVO employeeVO, String currentPassword, String newPassword, String hiddenId) throws Exception {
+        // 비밀번호 DB에서 꺼내옴
+        EmployeeVO emp = employeeDAO.passwordinfo(employeeVO);
+        String infoPassword =  emp.getPassword();
+        
+        System.out.println("DB에 저장된 패스워드: " + infoPassword);
+        System.out.println("사용자가 입력한 현재 패스워드: " + currentPassword);
+        
+        // true면 비밀번호가 동일하다 false는 비밀번호가 다르다.
+        boolean isCurrentPasswordCorrect = passwordEncoder.matches(currentPassword, infoPassword);
+        
+        System.out.println(isCurrentPasswordCorrect);
+        
+        if(isCurrentPasswordCorrect) {
+            // 현재 비밀번호가 일치하면 새 비밀번호로 업데이트
+            String encodedNewPassword = passwordEncoder.encode(newPassword);
+            employeeVO.setPassword(encodedNewPassword);
+            return employeeDAO.passupdate(employeeVO);
+        } else {
+            // 현재 비밀번호가 일치하지 않으면 -1을 반환하여 변경 실패를 나타냄
+            return -1;
+        }
+    }
+
+    
+    public int updateEmployee(EmployeeVO employeeVO, MultipartFile attach) throws Exception{
+        int result = 0; // 기본적으로 반환할 결과 값을 0으로 설정
+
+        // 파일이 첨부되었는지 확인
+        if (attach != null && !attach.isEmpty()) {
+            FileVO file = new FileVO();
+
+            String id = employeeVO.getId();
+            Long lid = Long.parseLong(id);
+            file.setParentId(lid);
+            file.setTblId("1077");
+            fileManager.uploadFile(attach, file);
+        }
+
+        // 파일 첨부 여부와 상관없이 직원 정보를 업데이트
+        result = employeeDAO.updateEmployee(employeeVO);
+
+        return result;
+    }
+
+    
     
  // 임시 비밀번호를 이메일로 전송하는 메서드
     private void sendTempPasswordEmail(String to, String tempPassword) {
@@ -253,7 +302,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
     		}
     	
             employeeDAO.roledelete(departmentId);
-          
+          System.out.println(list);
             employeeDAO.roleinsert(list);
           
             return 1;
@@ -261,11 +310,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
 
 
-    public int update(EmployeeVO employeeVO)throws Exception{
-    	
-    	int result = employeeDAO.update(employeeVO);
-    	return result;
-    }
+
 
     
     

@@ -35,6 +35,9 @@ public class FileManager {
         return null;
     }
     public ResponseEntity<byte[]> downFile(FileVO fileVO) throws Exception{
+    	if(fileVO==null || fileVO.getId() == null) {
+    		return null;
+    	}
     	fileVO = fileMapper.downFile(fileVO);
     	
 		return s3Service.downFile(fileVO);
