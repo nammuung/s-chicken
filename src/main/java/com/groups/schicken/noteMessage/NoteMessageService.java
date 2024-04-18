@@ -87,14 +87,14 @@ public class NoteMessageService {
     }
 
     @Transactional
-    public String[] moveBox(String id, String[] messages, NoteMessageBoxType to) {
+    public Boolean moveBox(String id, String[] messages, NoteMessageBoxType to) {
         Integer result = noteMessageDAO.moveBox(id, messages, to);
 
         if(messages.length != result){
             throw new RuntimeException("box를 옮기는데 실패했습니다.");
         }
 
-        return messages;
+        return true;
     }
 
     @Transactional
