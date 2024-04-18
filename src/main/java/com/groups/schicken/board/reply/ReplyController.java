@@ -35,9 +35,17 @@ public class ReplyController {
 	}
 	
 	@PostMapping("delete")
-	public ResponseEntity<Integer> update(@RequestBody ReplyVO replyVO) throws Exception{
+	public ResponseEntity<Integer> delete(@RequestBody ReplyVO replyVO) throws Exception{
 		
 		int result = replyService.delete(replyVO);
+		
+		return ResponseEntity.ok(result);
+	}
+	
+	@PostMapping("update")
+	public ResponseEntity<Integer> update(@RequestBody ReplyVO replyVO)throws Exception{
+		
+		int result = replyService.update(replyVO);
 		
 		return ResponseEntity.ok(result);
 	}
