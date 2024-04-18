@@ -88,10 +88,6 @@ function removeHyphen(dateString) {
 
 
 // 폼이 서브밋될 때 실행되는 함수
-/**
- * 
- * @returns 테스트
- */
 function submitForm() {
   // 생년월일과 입사일 입력 필드의 값을 yyyy-mm-dd 형식으로 변환
   let resident = document.getElementById("residentNumber").value;

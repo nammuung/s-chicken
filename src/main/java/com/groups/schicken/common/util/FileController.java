@@ -1,4 +1,4 @@
-package com.groups.schicken.util;
+package com.groups.schicken.common.util;
 
 import com.groups.schicken.common.vo.FileVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.groups.schicken.common.vo.FileVO;
 @Controller
 public class FileController {
 

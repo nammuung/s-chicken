@@ -7,8 +7,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.groups.schicken.util.DateManager;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.util.DateManager;
+import com.groups.schicken.common.vo.Pager;
 
 @Service
 public class ReplyService {

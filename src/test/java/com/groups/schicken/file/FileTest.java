@@ -1,6 +1,6 @@
 package com.groups.schicken.file;
 
-import com.groups.schicken.util.FileManager;
+import com.groups.schicken.common.util.FileManager;
 import com.groups.schicken.common.vo.FileVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

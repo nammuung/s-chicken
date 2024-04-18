@@ -42,7 +42,8 @@ fetch("/reply/list?parentId="+id,{
 					</div>
 					<div>
 					<button data-btn-type="delete" type="button" class="btn btn-primary" data-delete="${reply.id}">삭제하기</button>
-					
+					<button data-btn-type="modify" type="button" class="btn btn-primary" data-modify="${reply.id}">수정하기</button>
+					<button data-btn-type="realmodify" type="button" class="btn btn-primary" data-realmodify="${reply.id}" hidden>수정</button>
 						${reply.date}
 					</div>
 				</div>
@@ -66,20 +67,52 @@ fetch("/reply/list?parentId="+id,{
 			let btnType = e.target.getAttribute("data-btn-type");
 			let content = e.target.getAttribute("data-content")
 
-			let data = {
-				'id' : hhard
-			}
+			
 
 			if(btnType === 'modify'){
+				console.log("들어가니?")
 				hhard = e.target.getAttribute("data-modify");
 				const div = document.querySelector("div[data-id='"+hhard+"']")
+				const text = document.createElement("textarea")
+				text.setAttribute('id','text')
+				div.parentNode.replaceChild(text,div)
 
-				div.parentNode.replaceChild(document.createElement("textarea"),div)
+				let modifyButton = document.querySelector("button[data-modify='" +hhard +"']");
+				let modifyReal = document.querySelector("button[data-realmodify='" +hhard +"']");			
+				modifyButton.setAttribute('hidden', 'true');
+				modifyReal.removeAttribute('hidden')
+				const text_id = document.getElementById('text')
+				
+				modifyReal.addEventListener('click',()=>{
+					console.log(text_id.value);
+					let data = {
+					'id' : hhard,
+					'content': text_id.value
+				}
+					console.log(data)
+					
+					
+					fetch("/reply/update",{
+					method:"post",
+					body:JSON.stringify(data),
+					headers:{
+						"content-type" :"application/json"
+					}
+				}).then(r=>window.location.reload())
+					
+				})
+				
 
 			}
 
 			if(btnType === 'delete'){
-				hhard = e.target.getAttribute("data-delete");	
+				hhard = e.target.getAttribute("data-delete");
+
+				let data = {
+					'id' : hhard
+					//'content':div.inner
+				}
+
 				fetch("/reply/delete",{
 					method:'post',
 					body:JSON.stringify(data),

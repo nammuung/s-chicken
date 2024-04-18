@@ -1,4 +1,4 @@
-package com.groups.schicken.util;
+package com.groups.schicken.common.util;
 
 import com.groups.schicken.common.vo.FileVO;
 import org.apache.ibatis.annotations.Mapper;

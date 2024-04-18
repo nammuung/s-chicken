@@ -1,4 +1,4 @@
-package com.groups.schicken.aws;
+package com.groups.schicken.common.aws;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

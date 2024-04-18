@@ -5,14 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.groups.schicken.board.BoardVO;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.Pager;
 
 @Controller
 @RequestMapping("/reply/*")
@@ -37,9 +35,17 @@ public class ReplyController {
 	}
 	
 	@PostMapping("delete")
-	public ResponseEntity<Integer> update(@RequestBody ReplyVO replyVO) throws Exception{
+	public ResponseEntity<Integer> delete(@RequestBody ReplyVO replyVO) throws Exception{
 		
 		int result = replyService.delete(replyVO);
+		
+		return ResponseEntity.ok(result);
+	}
+	
+	@PostMapping("update")
+	public ResponseEntity<Integer> update(@RequestBody ReplyVO replyVO)throws Exception{
+		
+		int result = replyService.update(replyVO);
 		
 		return ResponseEntity.ok(result);
 	}

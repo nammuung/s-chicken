@@ -39,12 +39,12 @@ fetch(url)
         })
         .then(data => {
 
-            document.getElementsByName("roleId").forEach(e => e.checked = false);
+            document.getElementsByName("rolId").forEach(e => e.checked = false);
 
             console.log(data);
             data.forEach(d => {
                 console.log(d);
-                let checkbox = document.querySelector(`input[name='roleId'][value='${d.rolId}']`);
+                let checkbox = document.querySelector(`input[name='rolId'][value='${d.rolId}']`);
                 console.log(checkbox);
             checkbox.checked = true; 
             })

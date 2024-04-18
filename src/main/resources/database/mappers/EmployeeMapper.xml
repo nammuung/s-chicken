@@ -13,15 +13,34 @@
 </sql>
 
 
+<select id="passwordinfo" resultType="employeeVO">
+   select password , date_of_employment from employee where id = #{id};
+</select>
+
+
 
 
 	<insert id="join" parameterType="EmployeeVO">
 		<selectKey resultType="String" keyProperty="id"
 			order="BEFORE">
-			SELECT concat (#{residentNumber}, nextval(seq4))
+			SELECT concat (#{dateOfEmployment}, nextval(seq4))
 		</selectKey>
 		INSERT INTO employee
-		(id,password,name,phone_number,email,address,address_detail,postcode,date_of_employment,resident_number,salary,account_Number,bank_name,is_leaved,department_id,pos_id)
+		(
+		id,
+		password,
+		name,
+		phone_number,
+		email,address,
+		address_detail,
+		postcode,
+		date_of_employment,
+		resident_number,
+		salary,
+		account_Number,
+		bank_name,
+		is_leaved,
+		department_id,pos_id)
 		VALUES (#{id}, #{password}, #{name}, #{phoneNumber}, #{email},
 		#{address}, #{addressDetail}, #{postcode},
 		#{dateOfEmployment}, #{residentNumber}, 10000, #{accountNumber}, #{bankName}, 1,
@@ -104,6 +123,24 @@ WHERE
 	</select>
 
 
+	<update id="updateEmployee" parameterType="EmployeeVO">
+	UPDATE employee
+	SET
+    employee.phone_number = #{phoneNumber},
+    employee.email = #{email},
+    employee.account_number = #{accountNumber},
+    employee.bank_name = #{bankName},
+    employee.department_id = #{departmentId},
+    employee.pos_id = #{posId},
+    employee.postcode = #{postcode},
+    employee.address = #{address},
+    employee.address_detail = #{addressDetail}
+	WHERE id = #{id}
+	</update>
+
+
+
+
 	<select id="getTotalCount">
 		select count(id) from employee <include refid="search"/>
 	</select>
@@ -116,6 +153,7 @@ WHERE
 		AND name = #{name}
 		AND email = #{email}
 	</update>
+
 
 
 	<select id="role" parameterType="EmployeeVO" resultMap="role">
@@ -133,7 +171,9 @@ WHERE
 	delete FROM dept_role WHERE id = #{departmentId}
 	</delete>
 
-
+	<update id="passupdate" parameterType="EmployeeVO">
+	update employee SET password = #{password} where employee.id = #{id}
+	</update>
 
 
 	<insert id="roleinsert">
@@ -142,6 +182,9 @@ WHERE
 		(#{i.id}, #{i.rolId})
         </foreach>
 	</insert>
+
+
+	
 
 
 

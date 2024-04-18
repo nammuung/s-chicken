@@ -1,34 +1,28 @@
 package com.groups.schicken.Employee;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.auth.policy.Principal;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.groups.schicken.util.Pager;
+import com.groups.schicken.common.vo.MessageVO;
+import com.groups.schicken.common.vo.Pager;
 
 import jakarta.servlet.http.HttpSession;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -52,28 +46,85 @@ public class EmployeeController {
 			return "employee/login";
 		}
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		 String id = auth.getName();
-		 log.info("{}===============================================",id);
-		 session.setAttribute("cc", id);
-		 model.addAttribute("cc", id);
-		 System.out.println("sssssssssssssssssssssssssssssssssssss"+id);
+		    String id = auth.getName();
+		    model.addAttribute("id",id);
 		return "employee/join";
 
 	}
 	
+
 	
+	@PostMapping("updatePassword")
+	public String updatePassword(@RequestParam("password") String currentPassword, 
+	                             @RequestParam("newpassword") String newPassword, 
+	                             @RequestParam("renewpassword") String confirmNewPassword, 
+	                             @RequestParam("hiddenId") String hiddenId,
+	                             Model model, EmployeeVO employeeVO) throws Exception {
+	    // 인증 정보에서 ID 가져오기
+		
+		  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		  String id = auth.getName(); 
+		  employeeVO.setId(id);
+		 
 
-	@GetMapping("update")
-	public void update(Model model) throws Exception {
+	    // 새 비밀번호와 확인 비밀번호 일치 여부 확인
+	    if (!newPassword.equals(confirmNewPassword)) {
+	        model.addAttribute("msg", "새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+	        model.addAttribute("path", "./profile?id=" + hiddenId);
+	        return "employee/result";
+	    }
 
+	    // 비밀번호 업데이트 시도						// ▽ 요기에 아이디가 필요함	
+	    int result = employeeService.passupdate(employeeVO, currentPassword, newPassword, hiddenId);
+
+	    String msg = "비밀번호 변경 실패";
+	    String path = "./profile?id=" + hiddenId;
+
+	    if (result > 0) {
+	        msg = "비밀번호 변경 성공";
+	    }
+
+	    model.addAttribute("msg", msg);
+	    model.addAttribute("path", path);
+	    return "employee/result";
 	}
 
-	@PostMapping("update")
-	public void update() throws Exception {
+	@PostMapping("employeeResetPassword")
+	public String employeeResetPassword(Model model, EmployeeVO employeeVO, @RequestParam("hiddenId") String hiddenId)throws Exception{
+		  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		  String id = auth.getName(); 
+		  employeeVO.setId(hiddenId);
+	    int result = employeeService.employeeResetPassword(employeeVO, hiddenId);
+		String msg = "비밀번호가 초기화 되었습니다.";
+		String path = "./profile?id=" + hiddenId;
+	    model.addAttribute("msg", msg);
+	    model.addAttribute("path", path);
+		return "employee/result";
+	}
 
+	
+	@PostMapping("updateEmployee")
+	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach)throws Exception{
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		    String id = auth.getName();
+		    employeeVO.setId(id);
+		    
+		    int result = employeeService.updateEmployee(employeeVO, attach);
+		    
+		    
+		    String msg = "수정을 실패 하였습니다.";
+		    String path = "./profile?id=" + id;
+
+		    if (result > 0) {
+		        msg = "수정을 성공 하였습니다.";
+		        path = "./profile?id=" + id;
+		    }
+
+		    model.addAttribute("msg", msg);
+		    model.addAttribute("path", path);
+		    return "employee/result";
 	}
 	
-
 	
 	
 	
@@ -106,11 +157,14 @@ public class EmployeeController {
 	
 	@GetMapping("profile")
 	public String userDetail(@AuthenticationPrincipal Principal principal,  EmployeeVO employeeVO, Model model)throws Exception{
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String id = auth.getName();
-		log.info("{}===============================================",id);
-		model.addAttribute("cc", id);
-		employeeVO.setId(id);
+		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		    String id = auth.getName();
+		    model.addAttribute("id", id);
+		    if(employeeVO.getId().isBlank()) {
+		    	employeeVO = new EmployeeVO();
+		    	employeeVO.setId(id);
+		    }
+		    
 		employeeVO = employeeService.userDetail(employeeVO);
 		model.addAttribute("detail", employeeVO);
 		return "employee/profile";
@@ -123,6 +177,17 @@ public class EmployeeController {
 		List<EmployeeVO> ar = employeeService.userList(pager);
 		model.addAttribute("list", ar);
 		model.addAttribute("pager",pager);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication != null) {
+			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
+			if (!hasPersonnel) {
+			    String msg = "권한이 없습니다.";
+			    String path = "../";
+			    model.addAttribute("msg", msg);
+			    model.addAttribute("path", path);
+				return "employee/result";
+			}
+		}
 		return "employee/list";
 		
 		
@@ -143,14 +208,14 @@ public class EmployeeController {
     }
 	
 	@PostMapping("role")
-	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("roleId") String[] roleId , Model model)throws Exception {
-//	    employeeService.rolecontrolle(employeeVO);
+	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("rolId") String[] rolId , Model model)throws Exception {
 		System.out.println(departmentId);
-		System.out.println("roldId = " + Arrays.toString(roleId));
+		System.out.println("rolId = " + Arrays.toString(rolId));
 		
-		employeeService.rolecontrolle(departmentId, roleId);
+		employeeService.rolecontrolle(departmentId, rolId);
 	    return "redirect:/employee/role";
 	}
+
 
 
 	

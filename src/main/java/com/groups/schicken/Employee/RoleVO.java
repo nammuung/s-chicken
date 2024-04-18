@@ -17,10 +17,21 @@ public class RoleVO {
 
 	private String id;	
 	private String name;
+	private String rolId;	
+	private String roleName;
 		
 	public static RoleVO of(String id, String name) {
 		return RoleVO.builder()
 				.id(id)
+				.name(name)
+				.build();
+	} 
+
+
+	public static RoleVO ofs(String id, String rolId) {
+		return RoleVO.builder()
+				.id(id)
+				.rolId(rolId)
 				.build();
 	} 
 }

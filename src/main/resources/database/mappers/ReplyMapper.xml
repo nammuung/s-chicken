@@ -27,7 +27,7 @@
 
 	<update id="update">
 		UPDATE reply
-		SET reply_Text=#{replyText}
+		SET content=#{content}
 		WHERE id=#{id}
 	</update>
 	
