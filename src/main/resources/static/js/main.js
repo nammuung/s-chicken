@@ -8,13 +8,16 @@
 
 
 //김경모
+var deleteCookie = function(name) {
+  document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;path=/;';
+}
 
 //사이드 네비게이션 열림, 닫힘 저장
 $('.nav-link').click(function () {
   if(!$(this).hasClass("collapsed")){
-    document.cookie = "navToggle=" + $(this).data("bs-target")
+    document.cookie = "navToggle="+$(this).data("bs-target")+"; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT"
   } else {
-    document.cookie = "navToggle="
+    deleteCookie("navToggle")
   }
 });
 //     애니메이션
