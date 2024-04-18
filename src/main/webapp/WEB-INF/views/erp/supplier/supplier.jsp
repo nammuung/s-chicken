@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>S치킨-그룹웨어</title>
     <c:import url="../../template/head.jsp"/>
+
 </head>
 
 <body>
@@ -16,7 +17,7 @@
 <c:import url="../../template/sidebar.jsp"/>
 <main id="main" class="main erp" style="height: 80vh">
     <div class="pagetitle">
-        <h1>품목 관리</h1>
+        <h1>납품처 관리</h1>
     </div>
     <section class="section">
         <div class="row">
@@ -27,35 +28,24 @@
                         <form id="searchForm">
                             <div class="mb-3 row">
                                 <div class="row col">
-                                    <label for="searchId" class="col-3 col-form-label text-nowrap">품번</label>
+                                    <label for="searchId" class="col-3 col-form-label text-nowrap">납품처</label>
                                     <div class="col-9">
                                         <input type="text" class="form-control" id="searchId" name="id" value="">
                                     </div>
                                 </div>
                                 <div class="row col">
-                                    <label for="searchName" class="col-3 col-form-label text-nowrap">품목</label>
+                                    <label for="searchName" class="col-3 col-form-label text-nowrap">등록자</label>
                                     <div class="col-9">
                                         <input type="text" class="form-control" id="searchName" name="name" value="">
                                     </div>
                                 </div>
                                 <div class="row col">
-                                    <label for="searchStandard" class="col-3 col-form-label text-nowrap">규격</label>
-                                    <div class="col-9">
-                                        <input type="text" class="form-control" id="searchStandard" name="standard" value="">
-                                    </div>
+
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <div class="row col">
-                                    <label for="searchCategory" class="col-3 col-form-label text-nowrap">카테고리</label>
-                                    <div class="col-9">
-                                        <select type="text" class="form-control form-select" id="searchCategory" name="categoryId">
-                                            <option value="">전체</option>
-                                            <c:forEach items="${category}" var="item">
-                                                <option value="${item.id}">${item.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
+
                                 </div>
                                 <div class="row col">
 
@@ -200,7 +190,7 @@
 <c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../../template/script.jsp"/>
-<script src="/js/product/product.js" type="module"></script>
+<script src="/js/supplier/supplier.js" type="module"></script>
 </body>
 
 </html>

@@ -1,3 +1,5 @@
+import handsontable from "/js/lib/handsontable.js";
+
 const searchButton = document.getElementById("searchButton");
 const detailForm = document.getElementById("detailForm");
 
@@ -25,58 +27,17 @@ async function searchProduct(){
 function renderTable(data){
     hot.loadData(data)
 }
-const container = document.querySelector('#example');
-const hot = new Handsontable(container, {
-    data:[],
-    columns: [
-        {
-            renderer: checkboxRenderer,
-            manualColumnResize: false
-        },
-        {
-            data:'id',
 
-        },
-        {
-            data:'category',
-
-        },
-        {
-            data:'name',
-        },
-        {
-            data:'standard',
-            autoColumnSize: true
-        }
-    ],
-    className: 'htCenter htMiddle',
-    readOnly: true,
-    // rowHeaders: true,
-    height: '50vh',
-    autoWrapRow: true,
-    autoWrapCol: true,
-    width: "100%",
-    colWidths:[22,25,100,100,100],
-    colHeaders: ['','ID','카테고리', '품명', '규격'],
-    stretchH:"all",
-    licenseKey: 'non-commercial-and-evaluation', // for non-commercial use only
-    // manualColumnResize: true,
-});
-// Handsontable의 사용자 지정 셀 렌더러 정의
-function checkboxRenderer(instance, td, row, col, prop, value, cellProperties) {
-    var checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = value === true;
-    checkbox.style.width="20px";
-    checkbox.style.height="20px";
-    checkbox.style.marginTop="4px";
-    checkbox.addEventListener('change', function(event) {
-        var checked = event.target.checked;
-
-        for(let i = 0; i < instance.countRows(); i++) {
-            instance.setDataAtCell(i,0,false)
-        }
-        instance.setDataAtCell(row, col, checked);
+const options = {
+    useCheckbox: true,
+    checkboxSize:30,
+    colHeaders:['ID','카테고리', '품명', '규격'],
+    dataKeys:['id','category','name','standard'],
+    colWidths: [2,10,10,20],
+    containerWidth: 500,
+}
+const callbacks = {
+    checkbox: ({checked, instance, td, row, col})=>{
         const id = instance.getDataAtCell(row, 1);
         detailForm.reset();
         if (checked){
@@ -85,12 +46,11 @@ function checkboxRenderer(instance, td, row, col, prop, value, cellProperties) {
         } else {
             modifyButton.classList.add("d-none")
         }
-
-    });
-
-    Handsontable.dom.empty(td);
-    td.appendChild(checkbox);
+    }
 }
+console.log("모듈진입")
+let hot = handsontable("#example", options, [], callbacks);
+console.log("모듈탈출")
 async function loadProductDetail(id){
     const response = await fetch("/v1/api/products/"+id);
     const result = await response.json();
