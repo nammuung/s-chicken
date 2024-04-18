@@ -20,7 +20,19 @@ function checkboxRenderer(instance, td, row, col, prop, value, cellProperties,) 
 }
 let callback
 
-function handsontable (containerId, options, data, callbacks) {
+function handsontable (
+    containerId,
+    options={
+        useCheckbox: true,
+        checkboxSize:30,
+        colHeaders:[],
+        dataKeys:[],
+        colWidths: [],
+        containerWidth: 500,
+    },
+    data=[],
+    callbacks
+) {
     callback = callbacks;
     let columns = [];
     console.log("초입")

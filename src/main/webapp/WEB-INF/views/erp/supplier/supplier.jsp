@@ -28,15 +28,15 @@
                         <form id="searchForm">
                             <div class="mb-3 row">
                                 <div class="row col">
-                                    <label for="searchId" class="col-3 col-form-label text-nowrap">납품처</label>
+                                    <label for="searchName" class="col-3 col-form-label text-nowrap">납품처</label>
                                     <div class="col-9">
-                                        <input type="text" class="form-control" id="searchId" name="id" value="">
+                                        <input type="text" class="form-control" id="searchName" name="name" value="">
                                     </div>
                                 </div>
                                 <div class="row col">
-                                    <label for="searchName" class="col-3 col-form-label text-nowrap">등록자</label>
+                                    <label for="searchWriter" class="col-3 col-form-label text-nowrap">등록자</label>
                                     <div class="col-9">
-                                        <input type="text" class="form-control" id="searchName" name="name" value="">
+                                        <input type="text" class="form-control" id="searchWriter" name="writer" value="">
                                     </div>
                                 </div>
                                 <div class="row col">
@@ -81,52 +81,75 @@
                                 <ul class="nav nav-tabs nav-tabs-bordered">
 
                                     <li class="nav-item">
-                                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#supplier-overview">품목 정보</button>
+                                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#supplier-overview">납품처 정보</button>
                                     </li>
 
                                     <li class="nav-item">
-                                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">납품처</button>
+                                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#item-list">납품 품목</button>
                                     </li>
 
+                                    <li class="nav-item">
+                                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#supplier-edit">수정</button>
+                                    </li>
 
                                 </ul>
-                                <div class="tab-content pt-2">
-                                    <div class="tab-pane fade show active profile-overview" id="supplier-overview">
-                                        <form id="detailForm" class="text-nowrap text-end mt-3 ms-1">
-                                            <div class="mb-3 row">
-                                                <label for="id" class="col-2 col-form-label">품번</label>
-                                                <div class="col-4">
-                                                    <input type="text" readonly class="form-control" id="id" name="id" value="">
+                                <div class="tab-content profile">
+                                    <div class="mt-2 p-2 tab-pane fade show active supplier-overview profile-overview" id="supplier-overview">
+                                        <form id="detailForm" class="text-nowrap text-end">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="mb-3 row">
+                                                        <label for="name" class="col-4 col-form-label label">납품처명</label>
+                                                        <div id="test" class="col-8 text-start align-self-center" sw="inner_name">
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="ownerName" class="col-4 col-form-label label">대표명</label>
+                                                        <div class="col-8 text-start align-self-center" sw="inner_ownerName">
+                                                            대표명
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="contactNumber" class="col-4 col-form-label label">연락처</label>
+                                                        <div class="col-8 text-start align-self-center" sw="inner_contactNumber">
+                                                            연락처
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="address" class="col-4 col-form-label label">주소</label>
+                                                        <div class="col-8 text-start align-self-center" sw="inner_address">
+                                                            주소
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="addressDetail" class="col-4 col-form-label label">상세주소</label>
+                                                        <div class="col-8 text-start align-self-center" sw="inner_addressDetail">
+                                                            상세 주소
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="name" class="col-2 col-form-label">품목</label>
-                                                <div class="col-4">
-                                                    <input type="text" class="form-control" id="name" name="name" value="">
+                                                <div class="col-6">
+                                                    <div class="mb-3 row">
+                                                        <label for="contractDate" class="col-4 col-form-label label">계약일</label>
+                                                        <div class="col-8 text-start align-self-center" sw="inner_contractDate">
+                                                            계약일
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="registerNumber" class="col-4 col-form-label label">사업자번호</label>
+                                                        <div class="col-8 text-start align-self-center" sw="inner_registrationNumber">
+                                                            사업자번호
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="attach" class="col-4 col-form-label label">사업자등록증</label>
+                                                        <div class="col-8 text-start align-self-center">
+                                                            사업자등록증
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="standard" class="col-2 col-form-label">규격</label>
-                                                <div class="col-4">
-                                                    <input type="text" class="form-control" id="standard" name="standard" value="">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="category" class="col-2 col-form-label">카테고리</label>
-                                                <div class="col-4">
-                                                    <select type="text" class="form-control form-select" id="category" name="categoryId">
-                                                        <option value=""></option>
-                                                        <c:forEach items="${category}" var="item">
-                                                            <option value="${item.id}">${item.name}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 row">
-                                                <label for="stock" class="col-2 col-form-label">재고</label>
-                                                <div class="col-4">
-                                                    <input type="text" disabled readonly class="form-control" id="stock" value="">
-                                                </div>
+
                                             </div>
                                             <div class="d-flex justify-content-end mb-2 me-2 position-absolute end-0 bottom-0">
                                                 <button type="button" class="btn btn-primary d-none" id="modifyButton">수정</button>
@@ -134,7 +157,77 @@
                                         </form>
                                     </div>
                                 </div>
+                                <div class="tab-content">
+                                    <div class="mt-2 p-2 tab-pane fade item-list" id="item-list">
+                                    </div>
+                                </div>
+                                <div class="tab-content ">
+                                    <div class="mt-2 p-2 tab-pane fade supplier-edit" id="supplier-edit">
+                                        <form id="editForm" class="text-nowrap text-end">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="mb-3 row">
+                                                        <label for="name" class="col-4 col-form-label">납품처명</label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" id="name" name="name" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="ownerName" class="col-4 col-form-label">대표명</label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" id="ownerName" name="ownerName" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="contactNumber" class="col-4 col-form-label">연락처</label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" id="contactNumber">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="address" class="col-4 col-form-label">주소</label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" id="address" name="address" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="addressDetail" class="col-4 col-form-label">상세주소</label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" id="addressDetail" name="addressDetail" value="">
+                                                        </div>
+                                                    </div>
 
+
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="mb-3 row">
+                                                        <label for="contractDate" class="col-4 col-form-label">계약일</label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" id="contractDate" name="contractDate" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="registrationNumber" class="col-4 col-form-label">사업자번호</label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" id="registrationNumber" name="registrationNumber" value="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="attach" class="col-4 col-form-label">사업자등록증</label>
+                                                        <div class="col-8">
+                                                            <input type="text" class="form-control" id="attach" name="attach" value="">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="d-flex justify-content-end mb-2 me-2 position-absolute end-0 bottom-0">
+                                                <button type="button" class="btn btn-primary d-none" id="modifyButton">수정</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             <div class="d-flex justify-content-end mt-3">
                                 <button id="addButton" class="btn btn-primary">추가</button>
@@ -190,7 +283,19 @@
 <c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../../template/script.jsp"/>
+<script>
+
+
+    //사용자단
+    // sw.setState("name", "김경모");
+    // sw.init();
+
+
+
+
+</script>
 <script src="/js/supplier/supplier.js" type="module"></script>
+
 </body>
 
 </html>

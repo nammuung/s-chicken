@@ -10,10 +10,25 @@ const options = {
 }
 const callbacks = {
     checkbox: ({checked, instance, td, row, col})=>{
-        console.log(checked)
         const id = instance.getDataAtCell(row, 1);
-        console.log(id)
     }
 }
-const data = [{id:1, name:"test", value:"test"}]
-const hot = handsontable("#example", options, data, callbacks);
+const hot = handsontable("#example", options, [], callbacks);
+
+
+const data = {
+    "name": 1,
+    "ownerName": "test",
+    "contactNumber": "test",
+    "address": "test",
+    "addressDetail": "test",
+    "contractDate":"test",
+    "registrationNumber":"test",
+}
+sw.init()
+sw.matchData(data);
+sw.buttons["addButton"].addEventListener("click",()=>{
+    console.log("Hello")
+})
+console.log(sw)
+
