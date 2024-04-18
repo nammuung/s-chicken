@@ -26,6 +26,8 @@ public class NoteMessageService {
             throw new RuntimeException("쪽지의 내용에는 빈 값이 올 수 없습니다.");
         }
 
+        message.setContent(message.getContent().replaceAll("<","&lt;").replaceAll("\n", "<br>"));
+
         Integer result = noteMessageDAO.addMessage(message);
         if(result == 0){
             return 0;
