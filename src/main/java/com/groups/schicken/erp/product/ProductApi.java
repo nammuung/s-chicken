@@ -1,4 +1,4 @@
-package com.groups.schicken.order.product;
+package com.groups.schicken.erp.product;
 
 import com.groups.schicken.common.vo.ResultVO;
 import lombok.RequiredArgsConstructor;
