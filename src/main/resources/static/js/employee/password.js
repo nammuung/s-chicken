@@ -1,9 +1,11 @@
 let dateOfEmployment = document.getElementById('dateOfEmployment');
-let form = document.getElementById('reset')
 
-let resetpassword = document.getElementById('resertPassword');
-resetpassword.addEventListener('click', function(){
-  console.log("click");
+
+let form = document.getElementById('reset');
+let resetPassword = document.getElementById('resertPassword');
+
+resetPassword.addEventListener('click', function(event) {
+  event.preventDefault(); // 기본 동작 막기
   form.submit();
 });
 

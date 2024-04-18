@@ -128,7 +128,13 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		return employeeDAO.userList(pager);
 	}
 
-
+	public List<EmployeeVO> isuserList(Pager  pager)throws Exception{
+		pager.makeIndex();
+		pager.makeNum(employeeDAO.getTotalCount2(pager));
+		return employeeDAO.isuserList(pager);
+	}
+	
+	
 	public List<RoleVO> rolelist (RoleVO roleVO)throws Exception{
 		return employeeDAO.rolelist(roleVO);
 	}

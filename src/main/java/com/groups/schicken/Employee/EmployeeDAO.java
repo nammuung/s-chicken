@@ -21,8 +21,10 @@ public interface EmployeeDAO {
 	public EmployeeVO userDetail(EmployeeVO employeeVO)throws Exception;
 	
 	public List<EmployeeVO> userList(Pager pager)throws Exception;
+	public List<EmployeeVO> isuserList(Pager pager)throws Exception;
 	
 	public Long getTotalCount(Pager pager)throws Exception;
+	public Long getTotalCount2(Pager pager)throws Exception;
 	
 	public EmployeeVO passwordinfo (EmployeeVO employeeVO)throws Exception;
 

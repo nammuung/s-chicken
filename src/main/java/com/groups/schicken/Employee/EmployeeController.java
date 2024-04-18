@@ -192,7 +192,26 @@ public class EmployeeController {
 		
 		
 	}
-
+	@GetMapping("isuserList")
+	public String isuserList(Pager pager, Model model) throws Exception{
+		List<EmployeeVO> ar = employeeService.isuserList(pager);
+		model.addAttribute("list", ar);
+		model.addAttribute("pager",pager);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication != null) {
+			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
+			if (!hasPersonnel) {
+			    String msg = "권한이 없습니다.";
+			    String path = "../";
+			    model.addAttribute("msg", msg);
+			    model.addAttribute("path", path);
+				return "employee/result";
+			}
+		}
+		return "employee/isuserList";
+	}
+	
+	
 	@GetMapping("role")
 	public String role(EmployeeVO employeeVO ,Model model) throws Exception {
 	    List<RoleVO> roles = employeeService.role(employeeVO);
