@@ -8,6 +8,16 @@
 
 
 //김경모
+
+//사이드 네비게이션 열림, 닫힘 저장
+$('.nav-link').click(function () {
+  if(!$(this).hasClass("collapsed")){
+    document.cookie = "navToggle=" + $(this).data("bs-target")
+  } else {
+    document.cookie = "navToggle="
+  }
+});
+//     애니메이션
 const animateCSS = (element, animation, prefix = 'animate__') =>
     // We create a Promise and return it
     new Promise((resolve, reject) => {
