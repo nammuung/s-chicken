@@ -4,9 +4,8 @@ import lombok.Data;
 
 @Data
 public class Message {
-    private String id;
     private String from;
     private String to;
     private String date;
-    private String content;
+    private Object content;
 }
