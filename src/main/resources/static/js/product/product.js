@@ -5,6 +5,7 @@ const detailForm = document.getElementById("detailForm");
 searchButton.addEventListener("click", function () {
     searchProduct()
     modifyButton.classList.add("d-none")
+    detailForm.reset()
 })
 // let data
 async function searchProduct(){
@@ -20,7 +21,6 @@ async function searchProduct(){
     const result = await response.json();
     const data = result.data;
     renderTable(data);
-    detailForm.reset();
 }
 function renderTable(data){
     hot.loadData(data)
@@ -125,6 +125,7 @@ saveButton.addEventListener("click", function(){
         "categoryId": categoryId
     }
     saveProduct(data)
+    detailForm.reset()
 })
 
 async function saveProduct(data){
@@ -156,8 +157,9 @@ modifyButton.addEventListener("click", function(){
         "standard": standard,
         "categoryId": categoryId
     }
-    console.log(data);
-    modifyProduct(data)
+    if(confirm("수정 하시겠습니까?")){
+        modifyProduct(data)
+    }
 })
 
 async function modifyProduct(data){

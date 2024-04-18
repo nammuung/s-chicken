@@ -9,11 +9,6 @@
     <c:import url="../../template/head.jsp"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
-    <style>
-        /*col:nth-child(2) {*/
-        /*    width: 30px!important;*/
-        /*}*/
-    </style>
 </head>
 
 <body>
@@ -21,7 +16,7 @@
 <c:import url="../../template/header.jsp"/>
 <!-- ======= Sidebar ======= -->
 <c:import url="../../template/sidebar.jsp"/>
-<main id="main" class="main" style="height: 80vh">
+<main id="main" class="main erp" style="height: 80vh">
     <div class="pagetitle">
         <h1>품목 관리</h1>
     </div>
@@ -86,7 +81,7 @@
                                 <div id="example"></div>
                             </div>
                             <div class="d-flex justify-content-end mt-3">
-                                <button id="exportButton" class="btn btn-primary">내보내기</button>
+                                <button id="exportButton" class="btn btn-primary"><i class="bi bi-file-earmark-spreadsheet-fill"></i> 저장</button>
                             </div>
                         </div>
                         <div class="col ">
@@ -112,25 +107,25 @@
                                         <form id="detailForm" class="text-nowrap text-end mt-3 ms-1">
                                             <div class="mb-3 row">
                                                 <label for="id" class="col-2 col-form-label">품번</label>
-                                                <div class="col-6">
+                                                <div class="col-4">
                                                     <input type="text" readonly class="form-control" id="id" name="id" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="name" class="col-2 col-form-label">품목</label>
-                                                <div class="col-6">
+                                                <div class="col-4">
                                                     <input type="text" class="form-control" id="name" name="name" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="standard" class="col-2 col-form-label">규격</label>
-                                                <div class="col-6">
+                                                <div class="col-4">
                                                     <input type="text" class="form-control" id="standard" name="standard" value="">
                                                 </div>
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="category" class="col-2 col-form-label">카테고리</label>
-                                                <div class="col-6">
+                                                <div class="col-4">
                                                     <select type="text" class="form-control form-select" id="category" name="categoryId">
                                                         <option value=""></option>
                                                         <c:forEach items="${category}" var="item">
@@ -141,7 +136,7 @@
                                             </div>
                                             <div class="mb-3 row">
                                                 <label for="stock" class="col-2 col-form-label">재고</label>
-                                                <div class="col-6">
+                                                <div class="col-4">
                                                     <input type="text" disabled readonly class="form-control" id="stock" value="">
                                                 </div>
                                             </div>
