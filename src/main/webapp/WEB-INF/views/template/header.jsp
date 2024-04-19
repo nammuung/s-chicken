@@ -51,8 +51,10 @@
                         </li>
                         <li data-no-notification><hr class="dropdown-divider"></li>
                     </ul>
-                    <div class="dropdown-footer border-top border-1">
-                        <a href="/notification">모든 알림 보기</a>
+                    <div id="notification-list-footer" class="dropdown-footer border-top border-1 p-0">
+                        <a href="/notificationPage" class="d-block w-100 p-2">
+                            모든 알림 보기
+                        </a>
                     </div>
 
                 </div><!-- End Notification Dropdown Items -->

@@ -12,7 +12,7 @@ public class NotificationController {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    @GetMapping("/notification")
+    @GetMapping("/notificationPage")
     public String getNotificationPage(){
         return "notification/notification";
     }
