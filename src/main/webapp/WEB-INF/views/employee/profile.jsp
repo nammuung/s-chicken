@@ -187,7 +187,7 @@
 													</div>
 												</div>
 											</div>
-
+											<input type="hidden" name="id" id="id" value="${detail.id}"/>
 											<div class="row mb-3">
 												<label for="name" class="col-md-4 col-lg-3 col-form-label">이름</label>
 												<div class="col-md-8 col-lg-9">
