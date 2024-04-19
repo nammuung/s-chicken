@@ -57,7 +57,7 @@ public class EmployeeController {
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		    String id = auth.getName();
 		    model.addAttribute("id",id);
-		return "employee/join";
+		    return "redirect:/";
 
 	}
 	
