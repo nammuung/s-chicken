@@ -4,6 +4,9 @@ import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.common.util.FileManager;
 import com.groups.schicken.common.vo.Pager;
+import com.groups.schicken.notification.Noticer;
+import com.groups.schicken.notification.NotificationType;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,11 +17,11 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class NoteMessageService {
-    @Autowired
-    NoteMessageDAO noteMessageDAO;
-    @Autowired
-    FileManager fileManager;
+    private final NoteMessageDAO noteMessageDAO;
+    private final FileManager fileManager;
+    private final Noticer noticer;
 
     @Transactional
     public Integer sendMessage(NoteMessageVO message, List<String> receivers, MultipartFile attach) throws RuntimeException {
@@ -38,19 +41,21 @@ public class NoteMessageService {
             throw new RuntimeException("발송 실패");
         }
 
-        if(attach == null || attach.isEmpty()){
-            return result;
+
+        if(attach != null && !attach.isEmpty()) {
+            FileVO file = new FileVO();
+            file.setParentId(message.getId());
+            file.setTblId("104");
+            try {
+                fileManager.uploadFile(attach, file);
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                throw new RuntimeException("파일 첨부 실패");
+            }
         }
 
-        FileVO file = new FileVO();
-        file.setParentId(message.getId());
-        file.setTblId("104");
-        try {
-            fileManager.uploadFile(attach, file);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new RuntimeException("파일 첨부 실패");
-        }
+        System.out.println("noticer = " + noticer);
+        noticer.sendNotice("쪽지가 왔습니다", "" + message.getId(), NotificationType.NoteMessage, receivers);
 
         return result;
     }
