@@ -33,101 +33,39 @@
                 </a>
             </li><!-- End Search Icon-->
 
+            <!-- 알림 드롭다운 -->
             <li class="nav-item dropdown">
-
-                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                <a id="notification-icon" class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-bell"></i>
-                    <span class="badge bg-primary badge-number">4</span>
+                    <span id="notification-badge" class="badge bg-danger badge-number d-none" style="padding: 5px;"> </span>
                 </a><!-- End Notification Icon -->
 
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow w-22rem">
-                    <ul class="notifications">
-                    <li class="notification-item">
-                        <i class="bi bi-exclamation-circle text-warning"></i>
-                        <div>
-                            <h4>Lorem Ipsum</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
-                            <p>30 min. ago</p>
-                        </div>
-                    </li>
-
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="notification-item readed">
-                        <i class="bi bi-x-circle text-danger"></i>
-                        <div>
-                            <h4>읽은 알림</h4>
-                            <p>읽은 알림 입니다.</p>
-                            <p>1 hr. ago</p>
-                        </div>
-                    </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item readed">
-                            <i class="bi bi-x-circle text-danger"></i>
+                    <ul id="schicken-notification-list" class="notifications">
+                        <li data-no-notification class="notification-item">
                             <div>
-                                <h4>읽은 알림</h4>
-                                <p>읽은 알림 입니다.</p>
-                                <p>1 hr. ago</p>
+                                <h4></h4>
+                                <p>알림이 없습니다.</p>
+                                <p></p>
                             </div>
                         </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item readed">
-                            <i class="bi bi-x-circle text-danger"></i>
-                            <div>
-                                <h4>읽은 알림</h4>
-                                <p>읽은 알림 입니다.</p>
-                                <p>1 hr. ago</p>
-                            </div>
-                        </li>
-
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="notification-item">
-                        <i class="bi bi-check-circle text-success"></i>
-                        <div>
-                            <h4>Sit rerum fuga</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
-                            <p>2 hrs. ago</p>
-                        </div>
-                    </li>
-
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="notification-item">
-                        <i class="bi bi-info-circle text-primary"></i>
-                        <div>
-                            <h4>Dicta reprehenderit</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
-                            <p>4 hrs. ago</p>
-                        </div>
-                    </li>
+                        <li data-no-notification><hr class="dropdown-divider"></li>
                     </ul>
-                    <hr class="dropdown-divider">
-                    <div class="dropdown-footer">
-                        <a href="#">모든 알림 보기</a>
+                    <div id="notification-list-footer" class="dropdown-footer border-top border-1 p-0">
+                        <a href="/notificationPage" class="d-block w-100 p-2">
+                            모든 알림 보기
+                        </a>
                     </div>
 
                 </div><!-- End Notification Dropdown Items -->
 
             </li><!-- End Notification Nav -->
 
+            <!-- 채팅 드롭다운 -->
             <li class="nav-item dropdown">
 
                 <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-chat-left-text"></i>
-                    <span class="badge bg-success badge-number">3</span>
                 </a><!-- End Messages Icon -->
 
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow w-22rem">
@@ -213,10 +151,11 @@
 
             </li><!-- End Messages Nav -->
 
+            <!-- 쪽지 창 -->
             <li class="nav-item dropdown">
                 <a id="note-message-nav"  class="nav-link nav-icon" href="#">
                     <i class="bi bi-envelope-paper"></i>
-                    <span class="badge bg-warning badge-number">3</span>
+                    <span class="badge bg-danger badge-number" style="padding: 5px;"> </span>
                 </a><!-- End Messages Icon -->
             </li><!-- End NoteMessages Nav -->
 
