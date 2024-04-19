@@ -148,7 +148,7 @@
 		FROM employee
 		INNER JOIN 
 		department ON employee.department_id = department.id
-		LEFT JOIN 
+		INNER JOIN 
 		code ON employee.pos_id = code.id AND code.type_id = 300
 		<include refid="search" />
 		AND employee.is_leaved = 0
