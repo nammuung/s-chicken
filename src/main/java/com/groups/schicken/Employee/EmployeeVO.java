@@ -103,7 +103,11 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	}
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
+		
+		if (this.isLeaved == false) {
+			return false;
+		} 
+		
 		return true;
 	}
 

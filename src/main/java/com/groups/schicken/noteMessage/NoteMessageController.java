@@ -74,12 +74,12 @@ public class NoteMessageController {
     }
 
     @PostMapping("moveBox/{to}")
-    public  ResponseEntity<String[]> moveBox(@AuthenticationPrincipal EmployeeVO loginEmp, @RequestBody String[] messages, @PathVariable NoteMessageBoxType to){
+    public  ResponseEntity<String> moveBox(@AuthenticationPrincipal EmployeeVO loginEmp, @RequestBody String[] messages, @PathVariable NoteMessageBoxType to){
         try {
-            String[] result = noteMessageService.moveBox(loginEmp.getId(), messages, to);
-            return ResponseEntity.ok(result);
+            Boolean result = noteMessageService.moveBox(loginEmp.getId(), messages, to);
+            return ResponseEntity.ok(result + " 이동 성공");
         } catch (RuntimeException e){
-            return ResponseEntity.badRequest().body(new String[]{e.getMessage()});
+            return ResponseEntity.badRequest().body("이동 실패");
         }
     }
 
@@ -87,7 +87,7 @@ public class NoteMessageController {
     public ResponseEntity<String> deleteMessage(@AuthenticationPrincipal EmployeeVO loginEmp, @RequestBody String[] messages){
         try{
             Boolean result = noteMessageService.deleteMessage(loginEmp.getId(), messages);
-            return ResponseEntity.ok(result.toString());
+            return ResponseEntity.ok(result + " 삭제 성공");
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("삭제 실패");
         }

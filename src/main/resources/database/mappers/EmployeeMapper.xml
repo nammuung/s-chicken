@@ -4,18 +4,18 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.Employee.EmployeeDAO">
-<sql id="search">
-  <choose>
-    <when test="kind=='kind1'">
-      where employee.name LIKE CONCAT('%', #{search}, '%')
-    </when>
-  </choose>  
-</sql>
+	<sql id="search">
+		<choose>
+			<when test="kind=='kind1'">
+				where employee.name LIKE CONCAT('%', #{search}, '%')
+			</when>
+		</choose>
+	</sql>
 
 
-<select id="passwordinfo" resultType="employeeVO">
-   select password , date_of_employment from employee where id = #{id};
-</select>
+	<select id="passwordinfo" resultType="employeeVO">
+		select password , date_of_employment from employee where id = #{id};
+	</select>
 
 
 
@@ -41,9 +41,12 @@
 		bank_name,
 		is_leaved,
 		department_id,pos_id)
-		VALUES (#{id}, #{password}, #{name}, #{phoneNumber}, #{email},
-		#{address}, #{addressDetail}, #{postcode},
-		#{dateOfEmployment}, #{residentNumber}, 10000, #{accountNumber}, #{bankName}, 1,
+		VALUES (#{id},
+		#{password}, #{name}, #{phoneNumber}, #{email},
+		#{address},
+		#{addressDetail}, #{postcode},
+		#{dateOfEmployment}, #{residentNumber},
+		10000, #{accountNumber}, #{bankName}, 1,
 		#{departmentId}, #{posId})
 	</insert>
 
@@ -51,104 +54,142 @@
 
 	<select id="userDetail" parameterType="EmployeeVO"
 		resultMap="employeeDetails">
-SELECT 
-    employee.id,
-    employee.name,
-    employee.phone_number,
-    employee.email,
-    employee.address,
-    employee.address_detail,
-    employee.postcode,
-    employee.date_of_employment,
-    employee.resident_number,
-    employee.salary,
-    employee.account_number,
-    employee.bank_name,
-    employee.is_leaved,
-    employee.department_id,
-    employee.pos_id,
-    department.name AS dept_name,
-    department.contact_number,
-    code.name AS code_name,
-    a.id  AS file_Id
-FROM 
-    employee
-LEFT JOIN 
-    department ON employee.department_id = department.id
-LEFT JOIN 
-    code ON employee.pos_id = code.id  AND  code.type_id = 300
-LEFT JOIN 
-    attach a ON a.tbl_id = 1077 AND a.parent_id = employee.id 
-WHERE 
-    employee.id = #{id}
+		SELECT
+		employee.id,
+		employee.name,
+		employee.phone_number,
+		employee.email,
+		employee.address,
+		employee.address_detail,
+		employee.postcode,
+		employee.date_of_employment,
+		employee.resident_number,
+		employee.salary,
+		employee.account_number,
+		employee.bank_name,
+		employee.is_leaved,
+		employee.department_id,
+		employee.pos_id,
+		department.name AS dept_name,
+		department.contact_number,
+		code.name AS code_name,
+		a.id AS file_Id
+		FROM
+		employee
+		LEFT JOIN
+		department ON employee.department_id = department.id
+		LEFT JOIN
+		code ON employee.pos_id = code.id AND code.type_id = 300
+		LEFT JOIN
+		attach a ON a.tbl_id = 1077 AND a.parent_id = employee.id
+		WHERE
+		employee.id = #{id}
 	</select>
 
 
-	<select id="getDetail" parameterType="String" resultMap="getDetailMap">
-		SELECT 
-			emp.*,
-			c.id role_id,
-			c.name role_name 
+	<select id="getDetail" parameterType="String"
+		resultMap="getDetailMap">
+		SELECT
+		emp.*,
+		c.id role_id,
+		c.name role_name
 		from
-			employee emp
-		LEFT JOIN 
-			department dept
-			ON emp.department_id = dept.id
+		employee emp
 		LEFT JOIN
-			dept_role r
-			ON r.id = dept.id
+		department dept
+		ON emp.department_id = dept.id
 		LEFT JOIN
-			code c
-			ON c.id = r.rol_id and c.type_id = '200'
-		 where emp.id=#{id}
+		dept_role r
+		ON r.id = dept.id
+		LEFT JOIN
+		code c
+		ON c.id = r.rol_id and c.type_id = '200'
+		where emp.id=#{id}
 	</select>
-	
-	<resultMap id="getDetailMap" type="EmployeeVO" autoMapping="true">
-		<id column="id" property="id"/>
-		<collection  property="roleVOs" ofType="RoleVO" columnPrefix="role_" autoMapping="true">
-			<id column="id" property="id"/>
+
+	<resultMap id="getDetailMap" type="EmployeeVO"
+		autoMapping="true">
+		<id column="id" property="id" />
+		<collection property="roleVOs" ofType="RoleVO"
+			columnPrefix="role_" autoMapping="true">
+			<id column="id" property="id" />
 		</collection>
 	</resultMap>
 
 
 
-	<select id="userList" resultType="employeeVO" parameterType="Pager" resultMap="employeeDetails">
-	SELECT employee.id,employee.name, department.name AS dept_name , code.name AS code_name 
-	FROM employee
-	INNER JOIN department ON employee.department_id = department.id
-	INNER JOIN code ON employee.pos_id = code.id 
-	 <include refid="search"/> AND employee.is_leaved = 1 and code.type_id =300 
-	order by name DESC
-	Limit #{startIndex}, #{perPage}
+	<select id="userList" resultType="employeeVO"
+		parameterType="Pager" resultMap="employeeDetails">
+		SELECT 
+		employee.id,
+		employee.name, 
+		department.name AS dept_name ,
+		code.name AS code_name
+		FROM employee
+		INNER JOIN department ON employee.department_id = department.id
+		INNER JOIN code ON employee.pos_id = code.id
+		<include refid="search" />
+		AND employee.is_leaved = 1 and code.type_id =300
+		order by name DESC
+		Limit #{startIndex}, #{perPage}
+	</select>
+
+
+	<!-- 퇴사자 -->
+	<select id="isuserList" resultType="employeeVO"
+		parameterType="Pager" resultMap="employeeDetails">
+		SELECT 
+		employee.id, 
+		employee.name, 
+		employee.is_leaved, 
+		department.name
+		AS dept_name, 
+		code.name AS code_name
+		FROM employee
+		INNER JOIN 
+		department ON employee.department_id = department.id
+		INNER JOIN 
+		code ON employee.pos_id = code.id AND code.type_id = 300
+		<include refid="search" />
+		AND employee.is_leaved = 0
+		ORDER BY employee.name DESC
+		Limit  #{startIndex}, #{perPage}
 	</select>
 
 
 	<update id="updateEmployee" parameterType="EmployeeVO">
-	UPDATE employee
-	SET
-    employee.phone_number = #{phoneNumber},
-    employee.email = #{email},
-    employee.account_number = #{accountNumber},
-    employee.bank_name = #{bankName},
-    employee.department_id = #{departmentId},
-    employee.pos_id = #{posId},
-    employee.postcode = #{postcode},
-    employee.address = #{address},
-    employee.address_detail = #{addressDetail}
-	WHERE id = #{id}
+		UPDATE employee
+		SET
+		employee.phone_number = #{phoneNumber},
+		employee.email = #{email},
+		employee.account_number = #{accountNumber},
+		employee.bank_name = #{bankName},
+		employee.department_id = #{departmentId},
+		employee.pos_id = #{posId},
+		employee.postcode = #{postcode},
+		employee.address = #{address},
+		employee.address_detail = #{addressDetail},
+		employee.is_leaved = #{isLeaved}
+		WHERE id = #{id}
 	</update>
 
 
 
 
 	<select id="getTotalCount">
-		select count(id) from employee <include refid="search"/>
+		select count(id) from employee
+		<include refid="search" />
+	</select>
+		<select id="getTotalCount2">
+		SELECT COUNT(id) FROM (select * from employee where  employee.is_leaved =0) AS employee
+		<include refid="search" /> 
 	</select>
 
 
 
 	<update id="password" parameterType="EmployeeVO">
-		update employee set password =#{password}
+		update employee set password
+		=#{password}
 		WHERE id = #{id}
 		AND name = #{name}
 		AND email = #{email}
@@ -157,34 +198,35 @@ WHERE
 
 
 	<select id="role" parameterType="EmployeeVO" resultMap="role">
-	select * from code where type_id = 200
+		select * from code where type_id = 200
 	</select>
 
 
 
 	<select id="rolelist" resultType="RoleVO" parameterType="RoleVO">
-	select id, rol_id from dept_role where id = #{id}
-		</select>
+		select id, rol_id from dept_role where id = #{id}
+	</select>
 
 
-	<delete id="roledelete" >
-	delete FROM dept_role WHERE id = #{departmentId}
+	<delete id="roledelete">
+		delete FROM dept_role WHERE id = #{departmentId}
 	</delete>
 
 	<update id="passupdate" parameterType="EmployeeVO">
-	update employee SET password = #{password} where employee.id = #{id}
+		update employee SET password = #{password} where employee.id = #{id}
 	</update>
 
 
 	<insert id="roleinsert">
-	insert into dept_role (id, rol_id)
-		<foreach collection="list" item="i" open="VALUES " separator=",">
-		(#{i.id}, #{i.rolId})
-        </foreach>
+		insert into dept_role (id, rol_id)
+		<foreach collection="list" item="i" open="VALUES "
+			separator=",">
+			(#{i.id}, #{i.rolId})
+		</foreach>
 	</insert>
 
 
-	
+
 
 
 
@@ -205,7 +247,7 @@ WHERE
 		<result column="is_leaved" property="isLeaved" />
 		<result column="department_id" property="departmentId" />
 		<result column="pos_id" property="posId" />
-		
+
 
 		<association property="department" javaType="DepartmentVO">
 			<result column="dept_name" property="name" />
@@ -221,21 +263,19 @@ WHERE
 			<result column="code_name" property="name" />
 			<result column="use" property="use" />
 		</association>
-		
 
-				<association property="file" javaType="FileVO">
+
+		<association property="file" javaType="FileVO">
 			<result column="file_Id" property="id" />
 		</association>
-<!--		<association property="social" javaType="SocialVO">
-			<result column="social_id" property="social_id" />
-			<result column="kind" property="kind" />
-			<result column="employee_id" property="employeeId" />
-		</association>-->
-		
+		<!-- <association property="social" javaType="SocialVO"> <result column="social_id" 
+			property="social_id" /> <result column="kind" property="kind" /> <result 
+			column="employee_id" property="employeeId" /> </association> -->
+
 	</resultMap>
 
 
-<resultMap type="EmployeeVO" id="role">
+	<resultMap type="EmployeeVO" id="role">
 
 		<association property="department" javaType="DepartmentVO">
 			<result column="deptname" property="name" />
@@ -246,15 +286,15 @@ WHERE
 		</association>
 
 		<association property="roleVO" javaType="RoleVO">
-		<result column="dept_role_id" property="id"/>
-		<result column="rol_id" property="rolId"/>
+			<result column="dept_role_id" property="id" />
+			<result column="rol_id" property="rolId" />
 		</association>
-				<association property="position" javaType="CodeVO">
-			<result column="id" property="id" />	
+		<association property="position" javaType="CodeVO">
+			<result column="id" property="id" />
 			<result column="type_id" property="typeId" />
 			<result column="name" property="name" />
 			<result column="use" property="use" />
 		</association>
-		
+
 	</resultMap>
 </mapper>

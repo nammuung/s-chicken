@@ -101,7 +101,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="charts-apexcharts.html">
+                    <a href="/employee/isuserList">
                         <i class="bi bi-circle"></i><span>퇴사자 목록</span>
                     </a>
                 </li>

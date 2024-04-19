@@ -62,19 +62,26 @@
 											data-bs-target="#profile-change-password">Change
 											Password</button>
 									</li>
-									 <li class="nav-item">
-									<form action="./employeeResetPassword" method="post" id="reset">
-									
-									<input type="hidden" value="${detail.id}" name="hiddenId">
-									<input type="hidden" value="${detail.dateOfEmployment}" name="dateOf">
-                                    <button id="resertPassword" class="nav-link text-danger" type="submit" <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+									<li class="nav-item">
+										<form action="./employeeResetPassword" method="post"
+											id="reset">
+
+											<input type="hidden" value="${detail.id}" name="hiddenId">
+											<input type="hidden" value="${detail.dateOfEmployment}"
+												name="dateOf">
+											<button id="resertPassword" class="nav-link text-danger"
+												type="submit"
+												<sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
                 
             											</sec:authorize>
-														<sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+												<sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
                 										disabled 
-            											</sec:authorize>><sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">비밀번호 초기화</sec:authorize></button>
-                                    </form>
-                                	</li>
+            											</sec:authorize>>
+												<sec:authorize
+													access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">비밀번호 초기화</sec:authorize>
+											</button>
+										</form>
+									</li>
 								</ul>
 								<!-- Detail -->
 								<div class="tab-content pt-2">
@@ -86,7 +93,7 @@
 										<div class="row">
 											<div class="col-lg-3 col-md-4 label ">사원 번호</div>
 											<div class="col-lg-9 col-md-8">${detail.id}</div>
-											
+
 										</div>
 
 										<div class="row">
@@ -139,6 +146,14 @@
 											<div class="col-lg-9 col-md-8">${detail.addressDetail}</div>
 										</div>
 
+										<sec:authorize
+											access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+											<div class="row">
+												<div class="col-lg-3 col-md-4 label">퇴사여부</div>
+												  <div class="col-lg-9 col-md-8">${detail.isLeaved == 'true' ? '재직자' : '퇴사자'}</div>
+											</div>
+										</sec:authorize>
+
 										<div class="row">
 											<div class="col-lg-3 col-md-4 label">연차</div>
 											<div class="col-lg-9 col-md-8">
@@ -157,20 +172,22 @@
 												<label for="profileImage"
 													class="col-md-4 col-lg-3 col-form-label">프로필</label>
 												<div class="col-md-8 col-lg-9">
-													<img src="/fileDown?id=${detail.file.id}" alt="Profile" onerror="this.onerror=null; this.src='/img/기본.jpg';">
+													<img src="/fileDown?id=${detail.file.id}" alt="Profile"
+														onerror="this.onerror=null; this.src='/img/기본.jpg';">
 													<div class="pt-2">
 														<input type="file" id="fileInput" name="attach"
 															style="display: none;" /> <a href="#"
 															class="btn btn-primary btn-sm"
 															title="Upload new profile image" id="uploadLink"> <i
-															class="bi bi-upload"></i></a> <a href="#"
+															class="bi bi-upload"></i></a>
+														<!-- <a href="#"
 															class="btn btn-danger btn-sm"
 															title="Remove my profile image"> <i
-															class="bi bi-trash"></i></a>
+															class="bi bi-trash"></i></a> -->
 													</div>
 												</div>
 											</div>
-
+											<input type="hidden" name="id" id="id" value="${detail.id}"/>
 											<div class="row mb-3">
 												<label for="name" class="col-md-4 col-lg-3 col-form-label">이름</label>
 												<div class="col-md-8 col-lg-9">
@@ -195,7 +212,7 @@
 													class="col-md-4 col-lg-3 col-form-label">전화번호</label>
 												<div class="col-md-8 col-lg-9">
 													<input name="phoneNumber" type="text" class="form-control"
-														id="phoneNumber" value="${detail.phoneNumber}"/>
+														id="phoneNumber" value="${detail.phoneNumber}" />
 												</div>
 											</div>
 
@@ -203,7 +220,7 @@
 												<label for="email" class="col-md-4 col-lg-3 col-form-label">이메일</label>
 												<div class="col-md-8 col-lg-9">
 													<input id="email" type="email" class="form-control"
-														name="email" placeholder="이메일" value="${detail.email}"/>
+														name="email" placeholder="이메일" value="${detail.email}" />
 												</div>
 											</div>
 
@@ -212,12 +229,13 @@
 													class="col-md-4 col-lg-3 col-form-label">생년월일</label>
 												<div class="col-md-8 col-lg-9">
 													<input id="residentNumber" type="text" class="form-control"
-														name="residentNumber" value="${detail.residentNumber}" <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+														name="residentNumber" value="${detail.residentNumber}"
+														<sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
                 
             											</sec:authorize>
 														<sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
                 										disabled 
-            											</sec:authorize> >
+            											</sec:authorize>>
 												</div>
 											</div>
 
@@ -225,42 +243,44 @@
 												<label for="department"
 													class="col-md-4 col-lg-3 col-form-label">부서</label>
 												<div class="col-md-8 col-lg-9">
-													<select class="form-select" id="department" <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
-                
-            											</sec:authorize>
+													<select class="form-select" id="department"
+														<sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+        
+            </sec:authorize>
 														<sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
-                										disabled 
-            											</sec:authorize> >
-														<option value="0">부서 선택</option>
-
+                disabled value="gld"
+            </sec:authorize>>
+														<option value="${detail.departmentId}">${detail.department.name}</option>
 													</select>
 												</div>
 											</div>
 											<div class="row mb-3">
 												<label for="team" class="col-md-4 col-lg-3 col-form-label">팀</label>
 												<div class="col-md-8 col-lg-9">
-													<select class="form-select" id="team" name="departmentId" <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
-                
-            											</sec:authorize>
+													<select class="form-select" id="team" name="departmentId"
+														<sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+        
+            </sec:authorize>
 														<sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
-                										disabled 
-            											</sec:authorize> >
-														<option value="0">팀 선택</option>
-
+                disabled 
+            </sec:authorize>>
+														<option value="${detail.departmentId}">${detail.department.name}</option>
 													</select>
 												</div>
 											</div>
 
+
 											<div class="row mb-3">
 												<label for="posId" class="col-md-4 col-lg-3 col-form-label">직급</label>
 												<div class="col-md-8 col-lg-9">
-													<select class="form-select" id="posId" name="posId" <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+													<select class="form-select" id="posId" name="posId"
+														<sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
                 
             											</sec:authorize>
 														<sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
                 										disabled 
             											</sec:authorize>>
-														<option value="0">직급 선택</option>
+														<option value="${detail.posId}">${detail.position.name}</option>
 														<option value="2">사원</option>
 														<option value="3">주임</option>
 														<option value="4">계장</option>
@@ -274,9 +294,12 @@
 														<option value="12">부사장</option>
 														<option value="13">사장</option>
 													</select>
-
 												</div>
 											</div>
+
+
+
+
 
 
 
@@ -305,6 +328,23 @@
 												</div>
 											</div>
 
+											<sec:authorize
+												access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+
+
+												<div class="row mb-3">
+													<label for="isLeaved"
+														class="col-md-4 col-lg-3 col-form-label">퇴사여부</label>
+													<div class="col-md-8 col-lg-9">
+        <select class="form-select" id="isLeaved" name="isLeaved">
+            <option value="true" ${detail.isLeaved == "true" ? 'selected' : ''}>재직자</option>
+<option value="false" ${detail.isLeaved == "false" ? 'selected' : ''}>퇴사자</option>
+
+        </select>
+													</div>
+												</div>
+											</sec:authorize>
+
 											<label for="address" class="form-label"><b>주소</b></label>
 											<div class="form-group mb-3 d-flex">
 												<input type="text" id="postcode" name="postcode"
@@ -325,8 +365,8 @@
 
 
 											<div class="text-center">
-												<button type="submit" class="btn btn-primary">Save
-													Changes</button>
+												<button type="submit" class="btn btn-primary"
+													onclick="enableFields()">Save Changes</button>
 											</div>
 										</form>
 										<!-- End Profile Edit Form -->
@@ -406,17 +446,16 @@
 	</script> -->
 <script>
 	var posIdValue = "${detail.posId}";
-	var bankNameValue =	"${detail.bankName}";
-		
-	
+	var bankNameValue = "${detail.bankName}";
+
 	// Get the select element
 	var selectElement = document.getElementById("posId");
 	var bselectElement = document.getElementById("bankName");
 
-
 	// Set the value of the select element to the posIdValue
 	selectElement.value = posIdValue;
 	bselectElement.value = bankNameValue;
-
+	/////////////////////////////
+	// Set the selected department
 </script>
 </html>

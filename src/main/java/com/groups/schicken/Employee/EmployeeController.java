@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,10 +46,18 @@ public class EmployeeController {
 			log.info("============오브젝트 Null=================================");
 			return "employee/login";
 		}
+		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
+		String user = contextImpl.getAuthentication().getPrincipal().toString();
+		
+		if(user.equals("anonymousUser")) {
+			return "employee/login";
+		}
+		
+		
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		    String id = auth.getName();
 		    model.addAttribute("id",id);
-		return "employee/join";
+		    return "redirect:/";
 
 	}
 	
@@ -104,10 +113,9 @@ public class EmployeeController {
 
 	
 	@PostMapping("updateEmployee")
-	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach)throws Exception{
+	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id)throws Exception{
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		    String id = auth.getName();
-		    employeeVO.setId(id);
+			/* employeeVO.setId(id); */
 		    
 		    int result = employeeService.updateEmployee(employeeVO, attach);
 		    
@@ -192,7 +200,26 @@ public class EmployeeController {
 		
 		
 	}
-
+	@GetMapping("isuserList")
+	public String isuserList(Pager pager, Model model) throws Exception{
+		List<EmployeeVO> ar = employeeService.isuserList(pager);
+		model.addAttribute("list", ar);
+		model.addAttribute("pager",pager);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication != null) {
+			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
+			if (!hasPersonnel) {
+			    String msg = "권한이 없습니다.";
+			    String path = "../";
+			    model.addAttribute("msg", msg);
+			    model.addAttribute("path", path);
+				return "employee/result";
+			}
+		}
+		return "employee/isuserList";
+	}
+	
+	
 	@GetMapping("role")
 	public String role(EmployeeVO employeeVO ,Model model) throws Exception {
 	    List<RoleVO> roles = employeeService.role(employeeVO);

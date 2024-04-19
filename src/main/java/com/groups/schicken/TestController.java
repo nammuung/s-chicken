@@ -11,9 +11,15 @@ import java.util.List;
 public class TestController {
 
 
+	/*
+	 * @GetMapping("/") public String test(@RequestParam("path")String path){ return
+	 * path; }
+	 */
+
+    
     @GetMapping("/")
-    public String test(@RequestParam("path")String path){
-        return path;
+    public String test(){
+        return "home";
     }
 
 }

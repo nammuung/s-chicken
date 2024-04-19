@@ -108,8 +108,9 @@
   overflow-y: auto !important;
 }
 
-.mh-600px{
-  min-height: 600px !important;
+.h-620px{
+  height: 620px !important;
+  overflow-y: auto !important;
 }
 
 .anchorable{
