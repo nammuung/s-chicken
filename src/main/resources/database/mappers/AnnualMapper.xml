@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.annual.AnnualDAO">
+
+
+<!-- <select id="list" resultMap="annualMap">
+  SELECT employee.id, date_of_employment , name FROM employee
+</select> -->
+
+
+
+<!-- <resultMap id="annualMap" type="AnnualVO" autoMapping="true">
+	<id property="id" column="id"/>
+	<association property="emp" javaType="EmployeeVO" columnPrefix="emp_" autoMapping="true"/>
+    </resultMap> -->
+    
+    
+    
+    
+<insert id="annualInsert" parameterType="AnnualVO">
+    <selectKey resultType="Long" keyProperty="id" order="BEFORE">
+        SELECT nextval(seq5)
+    </selectKey>
+    insert into annual 
+    values 
+    (
+    #{id},
+    #{employeeId},
+    #{remainderAnnual},
+    0,
+    #{history},
+    null,
+    #{annualDate}
+    )
+    </insert>
+    
+    
+</mapper>

@@ -106,8 +106,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="charts-echarts.html">
-                        <i class="bi bi-circle"></i><span>ECharts</span>
+                    <a href="/annual/annualInsert">
+                        <i class="bi bi-circle"></i><span>연차</span>
                     </a>
                 </li>
             </ul>

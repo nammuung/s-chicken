@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.department.DepartmentVO;
+import com.groups.schicken.annual.AnnualVO;
 import com.groups.schicken.common.vo.CodeVO;
 
 import lombok.Data;
@@ -47,6 +48,8 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	private CodeVO position;
 	
 
+	private AnnualVO annualVO;
+	
 	
 	//소셜 Login
 	private SocialVO socialVO;

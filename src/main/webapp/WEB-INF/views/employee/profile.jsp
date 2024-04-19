@@ -157,7 +157,7 @@
 										<div class="row">
 											<div class="col-lg-3 col-md-4 label">연차</div>
 											<div class="col-lg-9 col-md-8">
-												<a href=".">연차내역확인</a>
+												<a href="../annual/list">연차내역확인</a>
 											</div>
 										</div>
 
