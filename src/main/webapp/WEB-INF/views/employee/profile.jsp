@@ -146,12 +146,13 @@
 											<div class="col-lg-9 col-md-8">${detail.addressDetail}</div>
 										</div>
 
-										<sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
-                																<div class="row">
-											<div class="col-lg-3 col-md-4 label">퇴사여부</div>
-											<div class="col-lg-9 col-md-8">${detail.isLeaved}</div>
-										</div>
-            											</sec:authorize>								
+										<sec:authorize
+											access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+											<div class="row">
+												<div class="col-lg-3 col-md-4 label">퇴사여부</div>
+												  <div class="col-lg-9 col-md-8">${detail.isLeaved == 'true' ? '재직자' : '퇴사자'}</div>
+											</div>
+										</sec:authorize>
 
 										<div class="row">
 											<div class="col-lg-3 col-md-4 label">연차</div>
@@ -239,39 +240,41 @@
 											</div>
 
 											<div class="row mb-3">
-    <label for="department" class="col-md-4 col-lg-3 col-form-label">부서</label>
-    <div class="col-md-8 col-lg-9">
-        <select class="form-select" id="department"
-            <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+												<label for="department"
+													class="col-md-4 col-lg-3 col-form-label">부서</label>
+												<div class="col-md-8 col-lg-9">
+													<select class="form-select" id="department"
+														<sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
         
             </sec:authorize>
-            <sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+														<sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
                 disabled value="gld"
             </sec:authorize>>
-            <option value="${detail.departmentId}">${detail.department.name}</option>
-        </select>
-    </div>
-</div>
-<div class="row mb-3">
-    <label for="team" class="col-md-4 col-lg-3 col-form-label">팀</label>
-    <div class="col-md-8 col-lg-9">
-        <select class="form-select" id="team" name="departmentId"
-            <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+														<option value="${detail.departmentId}">${detail.department.name}</option>
+													</select>
+												</div>
+											</div>
+											<div class="row mb-3">
+												<label for="team" class="col-md-4 col-lg-3 col-form-label">팀</label>
+												<div class="col-md-8 col-lg-9">
+													<select class="form-select" id="team" name="departmentId"
+														<sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
         
             </sec:authorize>
-            <sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+														<sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
                 disabled 
             </sec:authorize>>
-            <option value="${detail.departmentId}">${detail.department.name}</option>
-        </select>
-    </div>
-</div>
+														<option value="${detail.departmentId}">${detail.department.name}</option>
+													</select>
+												</div>
+											</div>
 
 
 											<div class="row mb-3">
 												<label for="posId" class="col-md-4 col-lg-3 col-form-label">직급</label>
 												<div class="col-md-8 col-lg-9">
-													<select class="form-select" id="posId" name="posId" <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+													<select class="form-select" id="posId" name="posId"
+														<sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
                 
             											</sec:authorize>
 														<sec:authorize access="!hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
@@ -325,21 +328,22 @@
 												</div>
 											</div>
 
-<sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
-                
-            											
-											<div class="row mb-3">
-												<label for="isLeaved"
-													class="col-md-4 col-lg-3 col-form-label">퇴사여부</label>
-												<div class="col-md-8 col-lg-9">
-													<select class="form-select" id="isLeaved" name="isLeaved" >
-														<option value="1">${detail.isLeaved}</option>
-														<option value="true">true</option>
-														<option value="false">false</option>
-													</select>
+											<sec:authorize
+												access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+
+
+												<div class="row mb-3">
+													<label for="isLeaved"
+														class="col-md-4 col-lg-3 col-form-label">퇴사여부</label>
+													<div class="col-md-8 col-lg-9">
+        <select class="form-select" id="isLeaved" name="isLeaved">
+            <option value="true" ${detail.isLeaved == "true" ? 'selected' : ''}>재직자</option>
+<option value="false" ${detail.isLeaved == "false" ? 'selected' : ''}>퇴사자</option>
+
+        </select>
+													</div>
 												</div>
-											</div>
-</sec:authorize>
+											</sec:authorize>
 
 											<label for="address" class="form-label"><b>주소</b></label>
 											<div class="form-group mb-3 d-flex">
@@ -361,8 +365,8 @@
 
 
 											<div class="text-center">
-												<button type="submit" class="btn btn-primary" onclick="enableFields()">Save
-													Changes</button>
+												<button type="submit" class="btn btn-primary"
+													onclick="enableFields()">Save Changes</button>
 											</div>
 										</form>
 										<!-- End Profile Edit Form -->

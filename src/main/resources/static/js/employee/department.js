@@ -94,7 +94,7 @@ function submitForm() {
   let employment = document.getElementById("dateOfEmployment").value;
 
   // 하이픈 제거
-  let password = removeHyphen(resident);
+  let password = removeHyphen(employment);
 
   // 비밀번호 입력 필드에 생년월일을 설정 (하이픈 제거된 값)
   document.getElementById("password").value = password;
