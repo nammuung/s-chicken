@@ -1,5 +1,7 @@
 package com.groups.schicken.board.reply;
 
+import com.groups.schicken.Employee.EmployeeVO;
+
 import lombok.Data;
 
 @Data
@@ -9,12 +11,10 @@ public class ReplyVO {
 	
 	private String content;
 	private String date;
-	private Long ref;
-	private Long step;
-	private Long depth;
 	private String profile;
 	private String parentId;
+	private String writerId;
 	
-	private Long writerId;
+	private EmployeeVO employeeVO;
 	
 }

@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.board.BoardVO;
-
 import com.groups.schicken.common.vo.Pager;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +41,7 @@ public class RepresentController {
 
 	@GetMapping("detail")
 	public String getDetail(@AuthenticationPrincipal EmployeeVO employeeVO, BoardVO boardVO,Model model) throws Exception {
-		//System.out.println(employeeVO.getName());
+		boardVO.setWriterId(employeeVO.getId());
 		System.out.println(boardVO.getSort()+"김범서");
 		int result = representService.hit(boardVO);
 
@@ -62,32 +61,33 @@ public class RepresentController {
 	}
 
 	@GetMapping("write")
-	public String getWrite(Model model,Pager pager,BoardVO boardVO) throws Exception {
+	public String getWrite(Pager pager,BoardVO boardVO) throws Exception {
 		
 		
 		return "board/write";
 	}
 
 	@PostMapping("write")
-	public String getWrite(BoardVO boardVO,@RequestParam("attach") MultipartFile attach) throws Exception {
-
+	public String getWrite(@AuthenticationPrincipal EmployeeVO employeeVO,BoardVO boardVO,@RequestParam("attach") MultipartFile attach) throws Exception {
+		boardVO.setWriterId(employeeVO.getId());
 		int result = representService.add(boardVO,attach);
 		System.out.println(attach+"++++++++++++++++++++++++++");
 		return "redirect:./list";		
 	}
 	
 	@GetMapping("list")
-	public String getImpList(Pager pager,Model model,BoardVO boardVO) throws Exception {
-
+	public String getImpList(@AuthenticationPrincipal EmployeeVO employeeVO ,Pager pager,Model model,BoardVO boardVO) throws Exception {
+		
 		List<BoardVO> ar = representService.getList(pager,boardVO);
-
+		System.out.println(boardVO.getEmployeeVO());
 		model.addAttribute("list",ar);
 		model.addAttribute("pager", pager);
 		
 		System.out.println(ar);
 		
-		System.out.println(pager.isLast());
-		System.out.println(pager.isStart());
+		System.out.println(pager.isLast()+"김범서");
+		System.out.println(pager.getLastNum());
+		
 
 				
 		return "board/list";
