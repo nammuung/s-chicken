@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +46,14 @@ public class EmployeeController {
 			log.info("============오브젝트 Null=================================");
 			return "employee/login";
 		}
+		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
+		String user = contextImpl.getAuthentication().getPrincipal().toString();
+		
+		if(user.equals("anonymousUser")) {
+			return "employee/login";
+		}
+		
+		
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		    String id = auth.getName();
 		    model.addAttribute("id",id);
