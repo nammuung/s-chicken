@@ -35,12 +35,6 @@ public class AnnualController {
 		int result = annualService.annualInsert(annualVO);
 		 String msg = "연차가 등록 되었습니다.";
 		    String path = "../";
-
-		    if (result > 0) {
-		        msg = "연차 등록 실패 하였습니다.";
-		        path = "../";
-		    }
-
 		    model.addAttribute("msg", msg);
 		    model.addAttribute("path", path);
 		return "employee/result";
