@@ -104,9 +104,8 @@ public class EmployeeController {
 
 	
 	@PostMapping("updateEmployee")
-	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach)throws Exception{
+	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id)throws Exception{
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		    String id = auth.getName();
 			/* employeeVO.setId(id); */
 		    
 		    int result = employeeService.updateEmployee(employeeVO, attach);
