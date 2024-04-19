@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.notification.NoticeDAO">
+    <insert id="insertNotice">
+        INSERT INTO notification (id, receiver_id, content, time, type, occurer)
+        <foreach collection="receivers" item="receiver" open="VALUES " separator=",">
+            (nextval(seq2), #{receiver}, #{notification.content}, #{notification.time}, #{notification.type}, #{notification.occurer})
+        </foreach>
+    </insert>
+</mapper>

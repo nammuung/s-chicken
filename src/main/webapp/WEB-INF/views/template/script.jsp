@@ -34,3 +34,6 @@
 
 <!-- Template Main JS File -->
 <script src="/js/main.js"></script>
+
+<!-- WebSocket -->
+<script src="/js/websocket/notification.js" type="module"></script>

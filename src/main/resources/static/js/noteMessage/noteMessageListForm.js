@@ -10,6 +10,15 @@ let noteMessageBtnDiv;
 let noteMessageBody;
 let listPage;
 let openMessage;
+
+let nowBox;
+
+let listTitle =  {
+        'receive' : '받은 쪽지함',
+        'save' : '쪽지 보관함',
+        'delete' : '휴지통',
+        'send' : '보낸 쪽지함'
+    }
 function setPage(body, page, readFunc){
     noteMessageBody = body;
     listPage = page;
@@ -55,11 +64,11 @@ function contentSetForList(text){
     return text.replace(/<br>/g,"\n").replace(/<[^>]*>?/g, '');
 }
 
-function drawNoteMessageTr(data){
+function drawNoteMessageTr(data, type){
     return `
         <div class="d-flex border-1 border-bottom mt-2">
             <div class="col-1 px-3 text-center form-check">
-                <input data-id="note-message-select" data-content="${data.id}" type="checkbox" class="form-check-input" style="margin-left: 1em; margin-top: 0.5em">
+                <input data-id="note-message-select" data-content="${data.id}" type="checkbox" class="form-check-input ${type === 'send' ? "d-none" : ""}" style="margin-left: 1em; margin-top: 0.5em">
             </div>
             <div data-sender-id="${data.senderId}" class="col-3 px-3 text-center linkable text-black">${senderNameSetting(data.senderName)}</div>
             <div data-content="${data.id}" class="col-5 px-3 text-center text-truncate linkable text-black">${contentSetForList(data.content)}</div>
@@ -71,12 +80,12 @@ function drawNoteMessageTr(data){
     `
 }
 
-function drawNoteMessageTableRows(data){
+function drawNoteMessageTableRows(data, type){
     if(data.length === 0){
         return `<div class="d-flex justify-content-center border-1 border-bottom mt-2">쪽지가 없습니다.</div>`
     }
 
-    return data.map(d => drawNoteMessageTr(d)).join("");
+    return data.map(d => drawNoteMessageTr(d, type)).join("");
 }
 
 function setPaginaion(pager){
@@ -142,34 +151,29 @@ function deleteMessageComplete(){
             "content-type": "application/json;charset=utf-8"
         },
         body : JSON.stringify(checkboxes)
-    }).then(res => {
-        if(res.ok) openListPage(1, 'delete');
+    }).then(async res => {
+        if(res.ok) {
+            alert(await res.text());
+            getNoteMessageList(1, 'delete');
+        }
 
         else alert('삭제하는데 실패했습니다.');
     })
 }
 
-
-function getListTitle(type){
-    return {
-        'receive' : '받은 쪽지함',
-        'save' : '쪽지 보관함',
-        'delete' : '휴지통',
-        'send' : '보낸 쪽지함'
-    }[type]
-}
-
 function getNoteMessageList(page, type){
     let param = "?page="+page;
 
+    nowBox = type
+
     setBtnByMessageList(page, type);
 
-    document.getElementById("note-message-list-title").innerText = getListTitle(type);
+    document.getElementById("note-message-list-title").innerText = listTitle[type];
 
     fetch('/message/getList/' + type + param)
         .then(res => res.json())
         .then(r => {
-            noteMessageDatas.innerHTML=drawNoteMessageTableRows(r.data);
+            noteMessageDatas.innerHTML=drawNoteMessageTableRows(r.data, type);
             toggleMessageUtilBtnsByCheckbox();
             document.querySelectorAll("div[data-content]")
                 .forEach(div => div.addEventListener("click", evt => openMessage(evt.target.getAttribute("data-content"), page, type)));
@@ -206,7 +210,10 @@ function moveBox(to){
         },
         body : JSON.stringify(checkboxes)
     }).then(res => {
-        if(res.ok) getNoteMessageList(1, to);
+        if(res.ok) {
+            alert(`쪽지를 ${listTitle[to]}으로 이동했습니다.`);
+            getNoteMessageList(1, nowBox);
+        }
 
         else alert('box를 옮기는데 실패했습니다.');
     })

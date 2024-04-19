@@ -51,13 +51,35 @@ function drawReceiverItem(datas){
 
     datas.forEach(data => {
         divs += `
-            <div class="note-message-receiver-item text-center">
+            <li class="list-group-item linkable text-black text-center">
                 ${data.name}
-        </div>
+        </li>
     `
     })
 
     return divs;
+}
+
+function drawReceiverList(data){
+    if(data.length === 1)
+        return `<h5 class="linkable text-black">${data[0].name}</h5>`;
+
+    return `
+<div class="accordion" id="note-message-receivers-accordion">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button collapsed py-1" type="button" data-bs-toggle="collapse" data-bs-target="#note-message-receivers-name-list" aria-expanded="false" aria-controls="note-message-receivers-name-list">
+        받은 사람 리스트
+      </button>
+    </h2>
+    <div id="note-message-receivers-name-list" class="accordion-collapse collapse" data-bs-parent="#note-message-receivers-accordion">
+      <div class="accordion-body list-group p-0">
+       ${drawReceiverItem(data)}
+       </div>
+    </div>
+  </div>
+</div>
+    `
 }
 
 function openRead(messageId, page, type){
@@ -80,16 +102,12 @@ function openRead(messageId, page, type){
 
     document.getElementById("note-message-detail-title").innerText = type === 'send' ? "To" : "From";
 
+
     fetch(`/message/getMessage?id=${messageId}&type=${type}`)
         .then(res=>res.json())
         .then(r => {
             if(type === 'send'){
-                noteMessageFrom.innerHTML = `
-                    <div id="note-message-receivers-list"
-                         class="d-flex flex-row flex-nowrap overflow-auto py-2 border-top border-1 border-black">
-                        ${drawReceiverItem(r.receiversVO)}
-                    </div>
-                `
+                noteMessageFrom.innerHTML = drawReceiverList(r.receiversVO);
             } else {
                 noteMessageFrom.innerHTML = `<h5 class="linkable text-black">${r.senderName}</h5>`;
             }
