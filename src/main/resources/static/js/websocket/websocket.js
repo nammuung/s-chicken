@@ -1,5 +1,7 @@
 import "/js/websocket/stompClient.js";
 
+let waitting = [];
+
 let subs = {};
 const stompClient = new StompJs.Client({
     brokerURL : 'ws://localhost/ws',
@@ -8,8 +10,12 @@ const stompClient = new StompJs.Client({
     heartbeatIncoming : 4000,
     heartbeatOutgoing : 4000
 });
+stompClient.activate();
 
 stompClient.onConnect = function (frame){
+    waitting.forEach(e => {
+        addHandler(e.sub, e.handler, e.id);
+    })
     console.log(frame);
 }
 
@@ -18,20 +24,21 @@ stompClient.onStompError = function (frame) {
     console.log('Additional details: ' + frame.body);
 };
 
-stompClient.activate();
 
-/**
- * 메세지를 받아 callback에 message의 content를 보내줌
- * @param message 서버가 보내준 message
- * @param callback
- */
 function receiveMessage(message, callback){
-    console.log("message = " , message);
-    callback(message.content);
+    callback(JSON.parse(message.body));
 }
 
-function addHandler(id, sub, handler){
-    subs[id] = stompClient.subscribe(sub, message => receiveMessage(message, handler));
+function addHandler(sub, handler, id){
+    if(id == null) id = crypto.randomUUID();
+
+    if(stompClient.connected){
+        subs[id] = stompClient.subscribe('/sub/' + sub, message => receiveMessage(message, handler));
+    } else {
+        waitting.push({sub, handler, id});
+    }
+
+    return id;
 }
 
 async function deleteHandler(id) {
@@ -45,7 +52,7 @@ async function deleteHandler(id) {
 
 function sendMessage(pub, message){
     stompClient.publish({
-        destination : pub,
+        destination : "/pub/" + pub,
         body : JSON.stringify(message)
     })
 }

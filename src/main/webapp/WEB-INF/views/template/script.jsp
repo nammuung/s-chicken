@@ -36,4 +36,4 @@
 <script src="/js/main.js"></script>
 
 <!-- WebSocket -->
-<script src="/js/websocket/websocket.js" type="module"></script>
+<script src="/js/websocket/notification.js" type="module"></script>
