@@ -9,13 +9,15 @@
     <!-- css 파일 -->
     <link rel="stylesheet" href="/css/documentDetail.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	<script src="/js/document/documentDetail.js"></script>
+	
 
 	<c:import url="../../template/head.jsp"></c:import>
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 </head>
 
 <body>
@@ -53,7 +55,7 @@
                         <div style="text-align: right;">
 
                             <!-- Button to Open the Modal -->
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+							<button type="button" id="modal_show" class="btn btn-primary">
 							  결재선지정
 							</button>
 
@@ -146,7 +148,7 @@
                                             <span class="sign_rank">직급</span>
                                         </span>
                                         <span class="sign_date_wrap">
-                                            <span class="sign_date " id="">이름</span>
+                                            <span class="sign_date " id="name">이름</span>
                                         </span>
 
                                         <span class="sign_wrap">
@@ -163,7 +165,7 @@
                                             <span class="sign_rank">직급</span>
                                         </span>
                                         <span class="sign_date_wrap">
-                                            <span class="sign_date " id="">이름</span>
+                                            <span class="sign_date " id="name">이름</span>
                                         </span>
                                         <span class="sign_wrap">
                                             <span class="sign_name"><strong>서명</strong></span>
@@ -179,7 +181,7 @@
                                             <span class="sign_rank">직급</span>
                                         </span>
                                         <span class="sign_date_wrap">
-                                            <span class="sign_date " id="">이름</span>
+                                            <span class="sign_date " id="name">이름</span>
                                         </span>
                                         <span class="sign_wrap">
                                             <span class="sign_name"><strong>서명</strong></span>
@@ -195,7 +197,7 @@
                                             <span class="sign_rank">직급</span>
                                         </span>
                                         <span class="sign_date_wrap">
-                                            <span class="sign_date " id="">이름</span>
+                                            <span class="sign_date " id="name">이름</span>
                                         </span>
                                         <span class="sign_wrap">
                                             <span class="sign_name"><strong>서명</strong></span>
@@ -284,7 +286,7 @@
     </span>
 
     <!-- The Modal -->
-	<div class="modal fade" id="myModal">
+	<div class="modal" id="myModal">
 	  <div class="modal-dialog modal-dialog-scrollable" id="modalContent">
 	    <div class="modal-content">
 	      <!-- Modal Header -->
@@ -300,16 +302,16 @@
 	            <div class="col-md-5 card mmdd">
 	                <div class="card-body">
 	                조직도
-	                	<div id="org-chart"></div>
+	                	<div id="note-message-org-chart"></div>
 	                </div>
 
 	            </div>
 	            <div class="col-md-2 mmdd d-flex justify-content-center align-items-center flex-column">
                     <div class="text-center">
-				        <button class="btn btn-primary btn-sm mb-3"> >> </button>
+				        <button class="btn btn-primary btn-sm mb-3" id="addbtn"> >> </button>
 				    </div>
 				    <div class="text-center">
-				        <button class="btn btn-primary btn-sm mt-3"> &lt;&lt; </button>
+				        <button class="btn btn-primary btn-sm mt-3" id="delbtn"> &lt;&lt; </button>
 				    </div>
                 </div>
 	            <div class="col-md-5 mmdd">
@@ -317,28 +319,16 @@
 	                  <div style="text-align: left;">결재자</div>
 
                       <div>
-                        <table>
-                            <colgroup>
-                                <col wid="20%"/>
-                                <col wid="50%"/>
-                                <col wid="20%"/>
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th>선택</th>
-                                    <th>이름</th>
-                                    <th>직책</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                        <ul class="list-group" id="approval_List">
+
+                        </ul>
                       </div>
 
 	                  <div class="text-right mt-2 align-self-end">
 	                      <div class="col-auto">
 	                          <div class="mb-2">
 	                          <button class="btn btn-primary btn-sm">저장하기</button>
-	                          <button class="btn btn-primary btn-sm">등록하기</button>
+	                          <button class="btn btn-primary btn-sm" id="register">등록하기</button>
 	                          </div>
 	                      </div>
 	                  </div>
@@ -360,7 +350,7 @@
 	</div>
 
     <c:import url="../../template/script.jsp"></c:import>
-<script src="/js/orgChart/orgChart.js"></script>
+
 <script>
     ClassicEditor
         .create(document.querySelector('#editor'))
@@ -374,6 +364,8 @@
         });
 
 </script>
+<script src="/js/document/documentDetail.js" type="module"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 
 </body>
 
