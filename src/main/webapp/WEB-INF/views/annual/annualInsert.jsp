@@ -36,6 +36,8 @@
 									<button class="btn btn-primary" type="button" onclick="plus()">+</button>
 								</div>
 
+								
+
 								<div class="row justify-content-center  mb-3 w-30">
 									<label for="managerId" class="form-label"><b>직원 조회</b></label>
 									<div class="form-group mb-3 d-flex">

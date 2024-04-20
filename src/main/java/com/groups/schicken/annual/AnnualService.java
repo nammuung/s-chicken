@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,10 +62,39 @@ public class AnnualService {
         LocalDate today = LocalDate.now();
         String date = String.format("%04d%02d%02d", today.getYear(), today.getMonthValue(), today.getDayOfMonth());
         annualVO.setAnnualDate(date);
+        Integer s = annualVO.getRemainderAnnual();
+        if(s <= 0) {
+        	annualVO.setAnnual(s);
+        }
+        Integer totla = annualVO.getRemainderAnnual()-annualVO.getAnnual();
+        annualVO.setAnnualTotal(totla);
 		int result = annualDAO.annualInsert(annualVO);
 			
 		return result;
 	}
 	
+    public List<AnnualVO> annualList(AnnualVO annualVO) throws Exception{
+        // 기존 메서드 구현을 그대로 유지하고, 새로운 기능을 추가
+        List<AnnualVO> annualList = annualDAO.annualList(annualVO);
+        return calculateRemainingAnnual(annualList);
+    }
+	
+    private List<AnnualVO> calculateRemainingAnnual(List<AnnualVO> annualList) {
+        List<AnnualVO> resultList = new ArrayList<>();
+
+        int remainderAnnual = 0;
+        for (AnnualVO annual : annualList) {
+            int receivedAnnual = annual.getRemainderAnnual(); // 받은 연차
+            int usedAnnual = annual.getAnnual(); // 사용한 연차
+
+            remainderAnnual += (receivedAnnual - usedAnnual); // 남은 연차 계산
+
+            // 남은 연차를 구한 후에는 연차 객체에 설정
+            annual.setAnnualTotal(remainderAnnual);
+            resultList.add(annual);
+        }
+
+        return resultList;
+    }
 	
 }

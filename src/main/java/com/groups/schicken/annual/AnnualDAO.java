@@ -21,5 +21,10 @@ public interface AnnualDAO {
 
 	public  List<EmployeeVO> list() throws Exception;
 	
+
+
+
+
+	public List<AnnualVO> annualList(AnnualVO annualVO)throws Exception;
 	
 }
