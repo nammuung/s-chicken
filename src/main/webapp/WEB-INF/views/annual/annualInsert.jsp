@@ -1,30 +1,26 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>S치킨-그룹웨어</title>
-<c:import url="../template/head.jsp" />
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>S치킨-그룹웨어</title>
 </head>
-
 <body>
-	<!-- ======= Header ======= -->
-	<c:import url="../template/header.jsp" />
-	<!-- ======= Sidebar ======= -->
-	<c:import url="../template/sidebar.jsp" />
+<!-- ======= Header ======= -->
 	<main id="main" class="main">
 		<div class="pagetitle">
-			<h1>연차</h1>
+
 		</div>
-		<section class="section">
-<div class="row">
-    <div class="col-6">
-        <div class="card">
+	<section class="section">
+			<div class="row">
+				<div class="col-12">
+					<div class="card">
+
 						<div class="card-body mt-3 ">
 							<form id="joinForm" method="POST" onsubmit="return validateForm()">
-								<div class="form-group mb-3 col-5">
+								<div class="form-group mb-3 ">
 									<label for="history" class="form-label"><b>제목</b></label> <input
 										id="history" name="history" type="text" class="form-control"
 										placeholder="사유를 적어주세요.">
@@ -33,14 +29,14 @@
 								<label for="remainderAnnual" class="form-label"><b>연차 개수</b></label>
 								<div class="input-group mb-3">
 									<button class="btn btn-primary" type="button" onclick="minus()">-</button>
-									<div class="col-1">
+									<div class="">
 									<input type="text" class=" form-control text-center"
 										id="remainderAnnual" name="remainderAnnual" value="0" readonly>
 										</div>
 									<button class="btn btn-primary" type="button" onclick="plus()">+</button>
 								</div>
 
-								<div class="row justify-content-center col-5 mb-3 w-30">
+								<div class="row justify-content-center  mb-3 w-30">
 									<label for="managerId" class="form-label"><b>직원 조회</b></label>
 									<div class="form-group mb-3 d-flex">
 										<input id="managerId" name="employeeId" type="hidden"
@@ -57,11 +53,12 @@
 						</div>
 					</div>
 				</div>
+				</div>
 			</div>
 		</section>
 	</main>
 	<!-- End #main -->
-	<div class="modal" tabindex="-1" id="dept-modal">
+	<div class="modal" tabindex="-1" id="dept-modal" >
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -80,13 +77,12 @@
 		</div>
 	</div>
 	<!-- ======= Footer ======= -->
-	<c:import url="../template/footer.jsp" />
 	<!-- ======= Script ======= -->
 	<c:import url="../template/script.jsp" />
 	<script
 		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-	<script type="module">
+	<script type="module ">
     import orgChart from "/js/orgChart/orgChart.js";
     const searchButton = document.getElementById("searchButton");
     searchButton.addEventListener("click", ()=>{
@@ -110,7 +106,6 @@ function validateForm() {
         alert("제목을 입력하세요.");
         return false;
     }
-
     if (employeeIdInput === "") {
         alert("직원을 선택하세요.");
         return false;

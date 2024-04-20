@@ -16,7 +16,7 @@ public class AnnualVO {
 	private String annualDate;  // 년도
 	private String history; // 내역
 	private Long documentId;  // 문서번호
-	
+	private String writerId;
 	private EmployeeVO emp;
 	
 }

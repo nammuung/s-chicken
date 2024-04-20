@@ -6,19 +6,10 @@
 <mapper namespace="com.groups.schicken.annual.AnnualDAO">
 
 
-<!-- <select id="list" resultMap="annualMap">
+ <select id="list" resultType="EmployeeVO">
   SELECT employee.id, date_of_employment , name FROM employee
-</select> -->
+</select> 
 
-
-
-<!-- <resultMap id="annualMap" type="AnnualVO" autoMapping="true">
-	<id property="id" column="id"/>
-	<association property="emp" javaType="EmployeeVO" columnPrefix="emp_" autoMapping="true"/>
-    </resultMap> -->
-    
-    
-    
     
 <insert id="annualInsert" parameterType="AnnualVO">
     <selectKey resultType="Long" keyProperty="id" order="BEFORE">
@@ -33,7 +24,8 @@
     0,
     #{history},
     null,
-    #{annualDate}
+    #{annualDate},
+    #{writerId}
     )
     </insert>
     
