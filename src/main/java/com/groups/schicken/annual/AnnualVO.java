@@ -1,5 +1,7 @@
 package com.groups.schicken.annual;
 
+import org.eclipse.tags.shaded.org.apache.xpath.operations.Bool;
+
 import com.groups.schicken.Employee.EmployeeVO;
 
 import lombok.Data;
@@ -16,8 +18,9 @@ public class AnnualVO {
 	private String annualDate;  // 년도
 	private String history; // 내역
 	private Long documentId;  // 문서번호
-	private String writerId;
-	private Integer annualTotal;
+	private String writerId; // 작성자
+	private Integer annualTotal; // 갯수 구하는용도
+	private Boolean isAnnual;
 	private EmployeeVO emp;
 	
 }

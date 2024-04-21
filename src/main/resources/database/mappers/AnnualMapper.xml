@@ -7,13 +7,20 @@
 
 
 <select id="annualList" resultType="AnnualVO">
-select * from annual where employee_id = #{employeeId}
+select * from annual where employee_id = #{employeeId} and is_annual = 0
 </select>
 
-<!--  <resultMap id="list" type="EmployeeVO" autoMapping="true">
-        <id property="id" column="id"/>
- </resultMap>
- -->
+
+<select id="annuals" resultType="AnnualVO">
+select * from annual
+</select>
+
+<update id="deleteAnnual" parameterType="AnnualVO">
+UPDATE annual
+SET is_annual = 1
+WHERE is_annual = 0
+AND YEAR(STR_TO_DATE(annual_date, '%Y%m%d')) != YEAR(CURDATE());
+</update>
 
  <select id="list" resultType="EmployeeVO">
   SELECT employee.id, date_of_employment , name FROM employee
@@ -34,7 +41,8 @@ select * from annual where employee_id = #{employeeId}
     #{history},
     null,
     #{annualDate},
-    #{writerId}
+    #{writerId},
+    #{isAnnual}
     )
     </insert>
     
