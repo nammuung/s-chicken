@@ -21,264 +21,266 @@
 </head>
 
 <body>
+    <form class="form-control"  method="POST">    
+        <span>
+            <p style="line-height: 150%; font-family: 맑은 고딕; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;"><span
+                    style="font-family: 맑은 고딕; font-size: 10pt;"></span>&nbsp;</p>
+                <input type="hidden" name="status" value="400">
+                <input type="hidden" name="templateId" value="1">
+                <input type="hidden" name="employeeId" value="123">
+            <table
+                style="border: 0px solid rgb(0, 0, 0); border-image: none; width: 800px; font-family: malgun gothic,dotum,arial,tahoma; margin-top: 1px; border-collapse: collapse;">
+                <!-- Header -->
+                <colgroup>
+                    <col width="310" />
+                    <col width="490" />
+                </colgroup>
+                
+                <tbody>
+                    <tr>
+                        <td style="padding: 0px !important; border: 0px currentColor; border-image: none;text-align: right;font-weight: bold; vertical-align: middle;"
+                        colspan="2" class="">
+                            <div class="mb-2">
+                                <button class="btn btn-primary">인쇄미리보기</button>
+                                <button class="btn btn-primary" id="sangsin">상신</button>
+                                <button class="btn btn-primary">취소</button>
+                            </div>
+                            <button class="btn btn-primary">불러오기</button>
+                            <button class="btn btn-primary">임시저장</button>
+                        </td>
+                    </tr>
 
-    <span>
-        <p style="line-height: 150%; font-family: 맑은 고딕; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;"><span
-                style="font-family: 맑은 고딕; font-size: 10pt;"></span>&nbsp;</p>
+                    <tr>
 
-        <table
-            style="border: 0px solid rgb(0, 0, 0); border-image: none; width: 800px; font-family: malgun gothic,dotum,arial,tahoma; margin-top: 1px; border-collapse: collapse;">
-            <!-- Header -->
-            <colgroup>
-                <col width="310" />
-                <col width="490" />
-            </colgroup>
-            <form class="form-control" method="POST" action="../document/add" enctype="multipart/form-data">
-            <tbody>
-                <tr>
-                    <td style="padding: 0px !important; border: 0px currentColor; border-image: none;text-align: right;font-weight: bold; vertical-align: middle;"
-                    colspan="2" class="">
-                        <div class="mb-2">
-                            <button class="btn btn-primary">인쇄미리보기</button>
-                            <button class="btn btn-primary">상신</button>
-                            <button class="btn btn-primary">취소</button>
-                        </div>
-                        <button class="btn btn-primary">불러오기</button>
-                        <button class="btn btn-primary">임시저장</button>
-                    </td>
-                </tr>
+                        <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
+                            colspan="2" class=""> 상여금신청서
+                            <div style="text-align: right;">
 
-                <tr>
+                                <!-- Button to Open the Modal -->
+                                <button type="button" id="modal_show" class="btn btn-primary">
+                                결재선지정
+                                </button>
 
-                    <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
-                        colspan="2" class=""> 상여금신청서
-                        <div style="text-align: right;">
+                            </div>
+                        </td>
 
-                            <!-- Button to Open the Modal -->
-							<button type="button" id="modal_show" class="btn btn-primary">
-							  결재선지정
-							</button>
+                        <!-- <td><button>결제미리보기</button></td> -->
 
-                        </div>
-                    </td>
+                    </tr>
 
-                    <!-- <td><button>결제미리보기</button></td> -->
+                    <tr>
+                        <td
+                            style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 506px; text-align: left; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
 
-                </tr>
+                            <table
+                                style="border: 1px solid rgb(0, 0, 0); border-image: none; width: 356px; height: 130px; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; margin-top: 1px; border-collapse: collapse;">
+                                <!-- User -->
+                                <colgroup>
+                                    <col width="100" />
+                                    <col width="210" />
+                                </colgroup>
 
-                <tr>
-                    <td
-                        style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 506px; text-align: left; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
+                                <tbody>
+                                    <tr>
+                                        <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
+                                            문서번호
+                                        </td>
+                                        <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+                                            <div style="width: 100%; text-align: center;">
+                                                <input type="text" class="form-control" name="" style="text-align: center;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
+                                            문서종류
+                                        </td>
+                                        <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+                                            <div style="width: 100%; text-align: center;">
+                                                <input type="text" class="form-control" id="" name="" style="text-align: center;" value="상여신청서" readonly>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
+                                            신청일
+                                        </td>
+                                        <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+                                            <div style="width: 100%; text-align: center;">
+                                                <input type="text" class="form-control" id="" name="writeDate" style="text-align: center;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
+                                            기안자
+                                        </td>
+                                        <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+                                            <div style="width: 100%; text-align: center;">
+                                                <input type="text" class="form-control" id="" name="" style="text-align: center;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
+                                            부서
+                                        </td>
+                                        <td style="background: rgb(255, 255, 255); padding: 0; border: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+                                            <div style="width: 100%; text-align: center;">
+                                                <input type="text" class="form-control" id="" name="" style="text-align: center;">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td
+                            style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 500px; text-align: right; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
 
-                        <table
-                            style="border: 1px solid rgb(0, 0, 0); border-image: none; width: 356px; height: 130px; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; margin-top: 1px; border-collapse: collapse;">
-                            <!-- User -->
-                            <colgroup>
-                                <col width="100" />
-                                <col width="210" />
-                            </colgroup>
+                            <p style="text-align: right; line-height: 150%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt; margin-top: 0px; margin-bottom: 0px;">
+                                <span class="sign_type1_inline"style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
+                                    data-is-reception="" data-group-type="type1" data-group-max-count="7" data-group-name="결재선" data-group-seq="0">
+                                    <span class="sign_tit_wrap">
+                                        <span class="sign_tit"><strong>결재선</strong></span>
+                                    </span>
 
-                            <tbody>
-                                <tr>
-                                    <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
-                                        문서번호
-                                    </td>
-                                    <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                                        <div style="width: 100%; text-align: center;">
-                                            <input type="text" class="form-control" id="" name="" style="text-align: center;">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
-                                        문서종류
-                                    </td>
-                                    <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                                        <div style="width: 100%; text-align: center;">
-                                            <input type="text" class="form-control" id="" name="" style="text-align: center;" value="상여신청서" readonly>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
-                                        신청일
-                                    </td>
-                                    <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                                        <div style="width: 100%; text-align: center;">
-                                            <input type="text" class="form-control" id="" name="" style="text-align: center;">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
-                                        기안자
-                                    </td>
-                                    <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                                        <div style="width: 100%; text-align: center;">
-                                            <input type="text" class="form-control" id="" name="" style="text-align: center;">
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
-                                        부서
-                                    </td>
-                                    <td style="background: rgb(255, 255, 255); padding: 0; border: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                                        <div style="width: 100%; text-align: center;">
-                                            <input type="text" class="form-control" id="" name="" style="text-align: center;">
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                    <td
-                        style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 500px; text-align: right; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
+                                    <span class="sign_member_wrap" id="">
+                                        <span class="sign_member">
+                                            <span class="sign_rank_wrap">
+                                                <span class="sign_rank">직급</span>
+                                            </span>
+                                            <span class="sign_date_wrap">
+                                                <span class="sign_date " id="name">이름</span>
+                                            </span>
 
-                        <p style="text-align: right; line-height: 150%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt; margin-top: 0px; margin-bottom: 0px;">
-                            <span class="sign_type1_inline"style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
-                                data-is-reception="" data-group-type="type1" data-group-max-count="7" data-group-name="결재선" data-group-seq="0">
-                                <span class="sign_tit_wrap">
-                                    <span class="sign_tit"><strong>결재선</strong></span>
-                                </span>
-
-                                <span class="sign_member_wrap" id="">
-                                    <span class="sign_member">
-                                        <span class="sign_rank_wrap">
-                                            <span class="sign_rank">직급</span>
-                                        </span>
-                                        <span class="sign_date_wrap">
-                                            <span class="sign_date " id="name">이름</span>
-                                        </span>
-
-                                        <span class="sign_wrap">
-                                            <span class="sign_name"><strong>서명</strong></span>
-                                        </span>
-                                        <span class="sign_date_wrap">
-                                            <span class="sign_date " id="">날짜</span>
+                                            <span class="sign_wrap">
+                                                <span class="sign_name"><strong>서명</strong></span>
+                                            </span>
+                                            <span class="sign_date_wrap">
+                                                <span class="sign_date " id="">날짜</span>
+                                            </span>
                                         </span>
                                     </span>
-                                </span>
-                                <span class="sign_member_wrap" id="">
-                                    <span class="sign_member">
-                                        <span class="sign_rank_wrap">
-                                            <span class="sign_rank">직급</span>
-                                        </span>
-                                        <span class="sign_date_wrap">
-                                            <span class="sign_date " id="name">이름</span>
-                                        </span>
-                                        <span class="sign_wrap">
-                                            <span class="sign_name"><strong>서명</strong></span>
-                                        </span>
-                                        <span class="sign_date_wrap">
-                                            <span class="sign_date " id="">날짜</span>
-                                        </span>
-                                    </span>
-                                </span>
-                                <span class="sign_member_wrap" id="">
-                                    <span class="sign_member">
-                                        <span class="sign_rank_wrap">
-                                            <span class="sign_rank">직급</span>
-                                        </span>
-                                        <span class="sign_date_wrap">
-                                            <span class="sign_date " id="name">이름</span>
-                                        </span>
-                                        <span class="sign_wrap">
-                                            <span class="sign_name"><strong>서명</strong></span>
-                                        </span>
-                                        <span class="sign_date_wrap">
-                                            <span class="sign_date " id="">날짜</span>
+                                    <span class="sign_member_wrap" id="">
+                                        <span class="sign_member">
+                                            <span class="sign_rank_wrap">
+                                                <span class="sign_rank">직급</span>
+                                            </span>
+                                            <span class="sign_date_wrap">
+                                                <span class="sign_date " id="name">이름</span>
+                                            </span>
+                                            <span class="sign_wrap">
+                                                <span class="sign_name"><strong>서명</strong></span>
+                                            </span>
+                                            <span class="sign_date_wrap">
+                                                <span class="sign_date " id="">날짜</span>
+                                            </span>
                                         </span>
                                     </span>
-                                </span>
-                                <span class="sign_member_wrap" id="">
-                                    <span class="sign_member">
-                                        <span class="sign_rank_wrap">
-                                            <span class="sign_rank">직급</span>
-                                        </span>
-                                        <span class="sign_date_wrap">
-                                            <span class="sign_date " id="name">이름</span>
-                                        </span>
-                                        <span class="sign_wrap">
-                                            <span class="sign_name"><strong>서명</strong></span>
-                                        </span>
-                                        <span class="sign_date_wrap">
-                                            <span class="sign_date " id="">날짜</span>
+                                    <span class="sign_member_wrap" id="">
+                                        <span class="sign_member">
+                                            <span class="sign_rank_wrap">
+                                                <span class="sign_rank">직급</span>
+                                            </span>
+                                            <span class="sign_date_wrap">
+                                                <span class="sign_date " id="name">이름</span>
+                                            </span>
+                                            <span class="sign_wrap">
+                                                <span class="sign_name"><strong>서명</strong></span>
+                                            </span>
+                                            <span class="sign_date_wrap">
+                                                <span class="sign_date " id="">날짜</span>
+                                            </span>
                                         </span>
                                     </span>
+                                    <span class="sign_member_wrap" id="">
+                                        <span class="sign_member">
+                                            <span class="sign_rank_wrap">
+                                                <span class="sign_rank">직급</span>
+                                            </span>
+                                            <span class="sign_date_wrap">
+                                                <span class="sign_date " id="name">이름</span>
+                                            </span>
+                                            <span class="sign_wrap">
+                                                <span class="sign_name"><strong>서명</strong></span>
+                                            </span>
+                                            <span class="sign_date_wrap">
+                                                <span class="sign_date " id="">날짜</span>
+                                            </span>
+                                        </span>
+                                    </span>
+
                                 </span>
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table
+                style="border: 0px solid rgb(0, 0, 0); border-image: none; width: 800px; height: 89px; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; margin-top: 10px; border-collapse: collapse;">
+                <colgroup>
+                    <col width="100" />
+                    <col width="300" />
 
-                            </span>
-                        </p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table
-            style="border: 0px solid rgb(0, 0, 0); border-image: none; width: 800px; height: 89px; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; margin-top: 10px; border-collapse: collapse;">
-            <colgroup>
-                <col width="100" />
-                <col width="300" />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            대상자 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
 
-            </colgroup>
-            <tbody>
-                <tr>
-                    <td
-                        style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
-                        대상자 </td>
-                    <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
-                        colspan="5">
+                            <input type="text" class="form-control" id="" name="des" style="width: 100%;">
+                        </td>
+                    </tr>
 
-                        <input type="text" class="form-control" id="title" name="title" style="width: 100%;">
-                    </td>
-                </tr>
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            참조 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
 
-                <tr>
-                    <td
-                        style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
-                        참조 </td>
-                    <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
-                        colspan="5">
+                            <input type="text" class="form-control" id="" name="" style="width: 100%; text-align: center;">
+                        </td>
+                    </tr>
 
-                        <input type="text" class="form-control" id="title" name="title" style="width: 100%; text-align: center;">
-                    </td>
-                </tr>
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            제목1 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
 
-                <tr>
-                    <td
-                        style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
-                        제목 </td>
-                    <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
-                        colspan="5">
-
-                        <input type="text" class="form-control" id="title" name="title" style="width: 100%;">
-                    </td>
-                </tr>
+                            <input type="text" class="form-control" id="title" name="title" style="width: 100%;">
+                        </td>
+                    </tr>
 
 
-            </tbody>
-        </table>
-        <table
-            style="border: 0px solid rgb(0, 0, 0); border-image: none; width: 800px; height: 10px; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; margin-top: 1px; border-collapse: collapse;">
-            <tbody>
-                <tr>
-                    <td style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;"
-                        colspan="2">
-                        상여사유
-                    </td>
-                </tr>
-                <tr>
-                    <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                         <div id="editor"></div>
-                    </td>
-                </tr>
+                </tbody>
+            </table>
+            <table
+                style="border: 0px solid rgb(0, 0, 0); border-image: none; width: 800px; height: 10px; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; margin-top: 1px; border-collapse: collapse;">
+                <tbody>
+                    <tr>
+                        <td style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;"
+                            colspan="2">
+                            상여사유
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+                            <div id="editor"></div>
+                        </td>
+                    </tr>
 
-            </tbody>
-        </table>
-        <div>
-            <label for="file">파일첨부하기</label><br>
-           <input type="file">
-        </div>
+                </tbody>
+            </table>
+            <div>
+                <label for="file">파일첨부하기</label><br>
+            <input type="file" name="attach">
+            </div>
     </form>
         <p
             style="line-height: 150%; font-family: &quot;맑은 고딕&quot;; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;">
@@ -352,16 +354,8 @@
     <c:import url="../../template/script.jsp"></c:import>
 
 <script>
-    ClassicEditor
-        .create(document.querySelector('#editor'))
-        .then(editor => {
-            editor.editing.view.change(writer => {
-                writer.setStyle('height', '20vh', editor.editing.view.document.getRoot());
-            });
-        })
-        .catch(error => {
-            console.error(error);
-        });
+   
+
 
 </script>
 <script src="/js/document/documentDetail.js" type="module"></script>

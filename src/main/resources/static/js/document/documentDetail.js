@@ -6,12 +6,29 @@ import oc from "/js/orgChart/orgChart.js";
 	const approval_List = document.getElementById("approval_List");
 	const del_btn = document.getElementById("delbtn");
 	const register = document.getElementById("register");
-	const modal_show = document.getElementById("modal_show")
+	const modal_show = document.getElementById("modal_show");
+	const sangsin = document.getElementById("sangsin");
+	const frm= document.querySelector("form");
+	const content = document.getElementById("editor")
+	
+	sangsin.addEventListener("click",(e)=>{
+		e.preventDefault();
+
+		const formData = new FormData(frm);
+		formData.append("content", editor.getData())
+		fetch('/document/add',{
+			method:"post",
+			body:formData,
+		}).then(r=>console.log(r))
+	})
+	
 function hyuga(){
     
     const vacation = document.getElementById("vacation");
     const yoen_sel = document.getElementById("yoen_sel");
     const ban_sel = document.getElementById("ban_sel");
+
+	const submit_all= document.querySelector("form");
 
     if(vacation.value == "yoen"){        
         yoen_sel.style.display="table-row";
@@ -151,8 +168,19 @@ function hyuga(){
 	modal_show.addEventListener("click",()=>{
 		myModal.show();
 	})
-		
-		
+let editor
+ClassicEditor
+	    .create(document.querySelector('#editor'))
+		.then(newEditor => {
+			editor = newEditor
+		    newEditor.editing.view.change(writer => {
+		        writer.setStyle('height', '20vh', newEditor.editing.view.document.getRoot());
+    });
+})
+.catch(error => {
+    console.error(error);
+});
+
 		
 		
 		
