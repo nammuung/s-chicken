@@ -53,9 +53,8 @@ async function setDetailDataToEditModal(id) {
 //name 이벤트 리스너 추가
 function addNameEventListener(){
     [...container.querySelectorAll("a.detail")].forEach(
-        el=>el.addEventListener("click", function (){
-            setDetailDataToEditModal(el.dataset.id);
-            console.log("Detail")
+        el=>el.addEventListener("click",async function (){
+            await setDetailDataToEditModal(el.dataset.id);
             editModal.show();
         })
     )

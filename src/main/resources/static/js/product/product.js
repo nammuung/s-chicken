@@ -47,7 +47,6 @@ function addNameEventListener(){
     [...container.querySelectorAll("a.detail")].forEach(
         el=>el.addEventListener("click",async function (){
             await setDetailDataToEditModal(el.dataset.id);
-            console.log("Detail")
             editModal.show();
         })
     )

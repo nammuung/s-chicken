@@ -166,6 +166,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/items">
+                        <i class="bi bi-circle"></i><span>계약품목 관리</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/supplier">
                         <i class="bi bi-circle"></i><span>납품처 관리</span>
                     </a>
