@@ -1,61 +1,34 @@
-import handsontable from "/js/lib/handsontable.js";
+import {checkboxRenderer, handsontable, scaleArrayToSum} from "../lib/handsontable.js";
+import {addProduct, getProduct, getProductList, updateProduct} from "../api/product.js";
 
+searchProduct()
+sw.init()
+//품목 검색
 const searchButton = document.getElementById("searchButton");
-const detailForm = document.getElementById("detailForm");
-
-
-searchButton.addEventListener("click", function () {
-    searchProduct()
-    modifyButton.classList.add("d-none")
-    detailForm.reset()
+searchButton.addEventListener("click", async function () {
+    searchProduct();
 })
-// let data
 async function searchProduct(){
     const searchForm = document.getElementById("searchForm");
     const formData = new FormData(searchForm);
-    const searchData = {
-        "id": formData.get("id"),
-        "name": formData.get("name"),
-        "standard": formData.get("standard"),
-        "categoryId": formData.get("categoryId"),
-    }
-    const response = await fetch(`/v1/api/products?id=${searchData.id}&name=${searchData.name}&standard=${searchData.standard}&categoryId=${searchData.categoryId}`);
-    const result = await response.json();
+    const result = await getProductList(formData);
     const data = result.data;
-    renderTable(data);
-}
-function renderTable(data){
-    hot.loadData(data)
+    data.forEach((object,index) => {
+        data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
+    })
+    hot.loadData(data);
+    [...container.querySelectorAll("a.detail")].forEach(
+        el=>el.addEventListener("click", function (){
+            editModalShow(el.dataset.id);
+        })
+    )
 }
 
-const options = {
-    useCheckbox: true,
-    checkboxSize:30,
-    colHeaders:['ID','카테고리', '품명', '규격'],
-    dataKeys:['id','category','name','standard'],
-    colWidths: [2,10,10,20],
-    containerWidth: 500,
-}
-const callbacks = {
-    checkbox: ({checked, instance, td, row, col})=>{
-        const id = instance.getDataAtCell(row, 1);
-        detailForm.reset();
-        if (checked){
-            modifyButton.classList.remove("d-none")
-            loadProductDetail(id);
-        } else {
-            modifyButton.classList.add("d-none")
-        }
-    }
-}
-console.log("모듈진입")
-let hot = handsontable("#example", options, [], callbacks);
-console.log("모듈탈출")
-async function loadProductDetail(id){
-    const response = await fetch("/v1/api/products/"+id);
-    const result = await response.json();
+//디테일 모달
+async function editModalShow(id){
+    const result = await getProduct(id);
     const data = result.data;
-    dataSetterWithId(data);
+    sw.matchData(data)
     const categoty = document.getElementById("category");
     Array.prototype.slice.call(categoty)
         .forEach(option=>{
@@ -63,79 +36,63 @@ async function loadProductDetail(id){
                 option.selected = true;
             }
         })
+    editModal.show();
 }
-
-const modalEl = document.getElementById("common-modal")
-const modal = new bootstrap.Modal(modalEl);
-const addButton = document.getElementById("addButton");
-addButton.addEventListener("click",function (){
-    modal.show()
+// 테이블 초기화
+const container = document.getElementById('example')
+const myCheckboxRenderer = checkboxRenderer(()=>{
+    console.log("Hello")
 })
+const tableOptions = {
+    data:[],
+    colHeaders : ['','ID','카테고리', '품명', '규격'],
+    columns : [
+        {renderer:myCheckboxRenderer},
+        {data:"id"},
+        {data:"category"},
+        {data:"name", renderer:"html"},
+        {data:"standard"},
+    ],
+    colWidths : scaleArrayToSum(Array(5)),
+}
+const hot = handsontable(container, tableOptions);
 
-const saveButton = document.getElementById("saveButton");
-saveButton.addEventListener("click", function(){
+
+//모달
+const registerModalEl = document.getElementById("register-modal")
+const editModalEl = document.getElementById("edit-modal")
+const registerModal = new bootstrap.Modal(registerModalEl);
+const editModal = new bootstrap.Modal(editModalEl);
+
+
+//품목 추가
+const addButton = document.getElementById("addButton");
+addButton.addEventListener("click", async function(){
     const addForm = document.getElementById("addForm");
     const formData = new FormData(addForm);
-    const name = formData.get("name");
-    const standard = formData.get("standard");
-    const categoryId = formData.get("categoryId");
-    const data = {
-        "name": name,
-        "standard": standard,
-        "categoryId": categoryId
-    }
-    saveProduct(data)
-    detailForm.reset()
-})
-
-async function saveProduct(data){
-    const response = await fetch("/v1/api/products", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-    const result = await response.json();
+    const result = await addProduct(formData);
     alert(result.message);
     if (result.status === "OK") {
-        modal.hide()
-    }
-}
-
-const modifyButton = document.getElementById("modifyButton");
-modifyButton.addEventListener("click", function(){
-    const detailForm = document.getElementById("detailForm");
-    const formData = new FormData(detailForm);
-    const id = formData.get("id");
-    const name = formData.get("name");
-    const standard = formData.get("standard");
-    const categoryId = formData.get("categoryId");
-    const data = {
-        "id": id,
-        "name": name,
-        "standard": standard,
-        "categoryId": categoryId
-    }
-    if(confirm("수정 하시겠습니까?")){
-        modifyProduct(data)
+        await searchProduct();
+        registerModal.hide()
+        addForm.reset();
     }
 })
 
-async function modifyProduct(data){
-    const response = await fetch("/v1/api/products", {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-    const result = await response.json();
-    alert(result.message);
-    if(result.status === "OK"){
-        searchProduct()
+//품목 수정
+const editButton = document.getElementById("editButton");
+editButton.addEventListener("click", async function(){
+    const editForm = document.getElementById("editForm");
+    const formData = new FormData(editForm);
+    if(confirm("수정 하시겠습니까?")){
+        const result = await updateProduct(formData);
+        alert(result.message);
+        if(result.status === "OK"){
+            await searchProduct()
+        }
     }
-}
+})
+
 
 const exportPlugin = hot.getPlugin('exportFile');
 const exportButton = document.getElementById("exportButton");
