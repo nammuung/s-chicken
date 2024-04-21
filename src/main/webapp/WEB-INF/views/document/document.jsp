@@ -66,13 +66,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>20240312001</td>
-                                    <td class="text-start">3월 출장비 지출결의서입니다.</td>
-                                    <td>지출결의서</td>
-                                    <td>2024.03.12</td>
-                                    <td>진행중</td>
-                                </tr>
+                                <c:forEach items="${list}" var="vo">
+                                    <tr>
+                                        <td>${vo.id}</td>
+                                        <td class="text-start">${vo.content}</td>
+                                        <td>${vo.templateVO.tempName}</td>
+                                        <td>${vo.writeDate}</td>
+                                        <c:if test="${vo.status eq 0}"> <td>진행중</td> </c:if>
+                                        <c:if test="${vo.status eq 1}"> <td>반려</td> </c:if>
+                                        <c:if test="${vo.status eq 2}"> <td>완료</td> </c:if>
+                                    </tr>
+                                </c:forEach>
                             </tbody>
                         </table>
                     </div>

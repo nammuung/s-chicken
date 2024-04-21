@@ -4,19 +4,44 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.document.DocumentDAO">
+	
+
+	
 	<insert id="add" keyProperty="id">
 		<selectKey keyProperty="id" order="BEFORE" resultType="Long">
 			SELECT nextval(seq3)
 		</selectKey>
 		INSERT INTO document
-		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writer},#{des})
-		
+		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writer},#{des})		
 	</insert>
 	
 	<insert id="appAdd">
 		INSERT INTO approval
 		VALUES(#{documentId},#{employeeId},#{rank},#{result},#{date},#{comment})
 	</insert>
+	
+	<insert id="tempAdd">
+		INSERT INTO template
+		VALUES(#{templateId},#{tempName},#{type})
+	</insert>
+	
+	<select id="allList" resultMap="allListResult">
+		SELECT doc.*,
+		tem.*
+		FROM document doc
+		LEFT JOIN template tem ON doc.template_id = tem.temp_id
+		ORDER BY id DESC
+		LIMIT #{pager.startIndex},#{pager.perPage}
+	</select>
+	
+	<resultMap id="allListResult" type="DocumentVO" autoMapping="true">
+		<association property="templateVO" javaType="TemplateVO" autoMapping="true"/>
+	</resultMap>
+	
+	<select id="allTotalCount" parameterType="Map" resultType="Long">
+		SELECT COUNT(id) FROM document r
+
+	</select>	
 
 </mapper>
 

@@ -32,7 +32,8 @@
         <span>
             <p style="line-height: 150%; font-family: 맑은 고딕; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;"><span
                     style="font-family: 맑은 고딕; font-size: 10pt;"></span>&nbsp;</p>
-                <input type="hidden" name="status" value="400">
+                <input type="hidden" name="status" value="0">
+                
                 <input type="hidden" name="templateId" value="1">
                 <input type="hidden" name="writer" value="123">
             <table
@@ -104,7 +105,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" id="" name="" style="text-align: center;" value="상여신청서" readonly>
+                                                <input type="text" class="form-control" id="" name="tempName" style="text-align: center;" value="상여신청서" readonly>
                                             </div>
                                         </td>
                                     </tr>

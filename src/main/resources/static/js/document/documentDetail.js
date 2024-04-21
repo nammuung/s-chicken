@@ -26,10 +26,10 @@ import oc from "/js/orgChart/orgChart.js";
 		fetch('/document/add',{
 			method:"post",
 			body:formData,
-		}).then(r=>window.close(relativePath))
+		}).then(r=>console.log(r))
 	})
 	
-	
+//	window.close(relativePath)
 	
 function hyuga(){
     

@@ -1,10 +1,12 @@
 package com.groups.schicken.document;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.groups.schicken.common.vo.Pager;
+
 
 
 @Controller
@@ -37,8 +42,12 @@ public class DocumentController {
 	}
 	
 	@GetMapping("document")
-	public void documentList() {
+	public void documentList(Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
+		List<DocumentVO> ar = documentService.list(documentVO, templateVO, pager);
 		
+		model.addAttribute("list", ar);
+		model.addAttribute("pager", pager);		
+
 	}
 	@GetMapping("ref")
 	public void documentRef() {
@@ -59,17 +68,24 @@ public class DocumentController {
 	
 	@PostMapping("add")
 
-	public ResponseEntity<?> add(DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach)throws Exception{
+	public ResponseEntity<?> add(DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach,TemplateVO templateVO)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
 		
 		int result = documentService.add(documentVO);
 		approvalVO.setDocumentId(documentVO.getId());
 		approvalVO.setResult(0);
+		
 				
 		String ranks = (String) map.get("rank");
 		String ids = (String)map.get("employeeId");
 		String[] rankArray = ranks.split(",");
 		String[] idsArray = ids.split(",");
+		String[] date = documentVO.getWriteDate().split(" ");
+		
+
+		
+		documentVO.setWriteDate(date[0]);
+		
 		
 		Long[] longRankArray = new Long[rankArray.length]; 
 		Long[] longIdsArray = new Long[idsArray.length]; 
@@ -83,6 +99,7 @@ public class DocumentController {
 		    
 		    result = documentService.appAdd(approvalVO);
 		}
+		
 
 		return ResponseEntity.ok(documentVO);
 	}

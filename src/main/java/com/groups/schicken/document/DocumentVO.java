@@ -17,6 +17,7 @@ public class DocumentVO {
 	private String writer;
 	private String des;
 	
+	private TemplateVO templateVO;
 	private FileVO fileVO;
 
 }
