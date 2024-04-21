@@ -26,6 +26,12 @@ const sw = {
             case "data":
                 el.setAttribute("data-"+variable , sw.state[variable]);
                 break;
+            case "value":
+                el.value = sw.state[variable]
+                break;
+            case "href":
+                el.setAttribute("href", sw.state[variable])
+                break;
             default:
                 break;
         }
