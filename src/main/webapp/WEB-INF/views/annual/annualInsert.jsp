@@ -15,7 +15,7 @@
 		</div>
 	<section class="section">
 			<div class="row">
-				<div class="col-12">
+				<div class="col-auto">
 					<div class="card">
 
 						<div class="card-body mt-3 ">
@@ -81,8 +81,6 @@
 	<!-- ======= Footer ======= -->
 	<!-- ======= Script ======= -->
 	<c:import url="../template/script.jsp" />
-	<script
-		src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 	<script type="module ">
     import orgChart from "/js/orgChart/orgChart.js";
