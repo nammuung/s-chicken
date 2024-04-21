@@ -53,6 +53,7 @@ public class SupplierAPI {
 
     @PutMapping("/supplier")
     public ResponseEntity<?> updateSupplier(SupplierVO supplierVO) throws Exception {
+        System.out.println(supplierVO);
         try {
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "수정 완료",supplierService.updateSupplier(supplierVO)));
         } catch (Exception e) {
