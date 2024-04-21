@@ -4,8 +4,9 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.erp.product.ProductMapper">
-    <resultMap id="getProduct" type="ProductVO" autoMapping="true">
+    <resultMap id="getProductMap" type="ProductVO" autoMapping="true">
         <id column="id" property="id"/>
+        <association property="category" javaType="CodeVO" columnPrefix="category_" autoMapping="true"/>
     </resultMap>
     <select id="getCategory">
         SELECT
@@ -15,23 +16,24 @@
         WHERE
             type_id = '600'
     </select>
-    <select id="getProduct">
+    <select id="getProduct" resultMap="getProductMap">
         SELECT
             p.*,
-            c.name category
+            c.name category_name
         FROM
             product p
         LEFT JOIN
             code c
             ON p.category_id = c.id AND c.type_id = '600'
-        <include refid="search"/>
+        WHERE
+            p.id = #{id}
         ORDER BY
             p.id
     </select>
-    <select id="getProductList">
+    <select id="getProductList" resultMap="getProductMap">
         SELECT
             p.*,
-            c.name category
+            c.name category_name
         FROM
             product p
         LEFT JOIN
@@ -51,21 +53,21 @@
             <if test='standard != null and !standard.equals("")'>
                 AND p.standard LIKE concat('%',#{standard},'%')
             </if>
-            <if test='categoryId != null and !categoryId.equals("")'>
-                AND p.category_id = #{categoryId}
+            <if test='category != null and !category.id.equals("")'>
+                AND p.category_id = #{category.id}
             </if>
         </where>
     </sql>
 
     <insert id="addProduct">
         <selectKey order="BEFORE" keyProperty="id" resultType="String">
-            SELECT MAX(id)+1 FROM product
+            SELECT nextval(seq1)
         </selectKey>
         INSERT INTO
             product
             (id, name, category_id, standard)
         VALUES
-            (#{id}, #{name}, #{categoryId}, #{standard})
+            (#{id}, #{name}, #{category.id}, #{standard})
     </insert>
     <update id="updateProduct">
         UPDATE
@@ -74,8 +76,8 @@
             <if test="name != null">
                  name = #{name}
             </if>
-            <if test="categoryId != null">
-                ,category_id = #{categoryId}
+            <if test="category != null">
+                ,category_id = #{category.id}
             </if>
             <if test="standard != null">
                 ,standard = #{standard}

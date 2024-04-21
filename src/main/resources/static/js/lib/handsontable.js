@@ -4,7 +4,6 @@ export const handsontable = (container, options) => {
         ...options,
         className: 'htCenter htMiddle',
         readOnly: true,
-        height: '50vh',
         autoWrapRow: true,
         autoWrapCol: true,
         width: "100%",

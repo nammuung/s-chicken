@@ -9,14 +9,14 @@ const editModal = new bootstrap.Modal(editModalEl);
 sw.init()
 
 
-const searchButton = document.getElementById("searchButton");
+const searchButton = document.getElementById("supplierSearchButton");
 
 searchSupplier();
 searchButton.addEventListener("click", function () {
     searchSupplier();
 })
 async function searchSupplier(){
-    const searchForm = document.getElementById("searchForm");
+    const searchForm = document.getElementById("supplierSearchForm");
     const formData = new FormData(searchForm);
     const result = await getSupplierList(formData);
     const data = result.data;
@@ -81,6 +81,7 @@ const tableOptions = {
         {data:"managerName"}
     ],
     colWidths : scaleArrayToSum(Array(7)),
+    height:"50vh",
 }
 const hot = handsontable(container, tableOptions);
 

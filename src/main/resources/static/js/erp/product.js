@@ -4,15 +4,16 @@ import {addProduct, getProduct, getProductList, updateProduct} from "../api/prod
 sw.init()
 searchProduct()
 //품목 검색
-const searchButton = document.getElementById("searchButton");
+const searchButton = document.getElementById("productSearchButton");
 searchButton.addEventListener("click", async function () {
     searchProduct();
 })
 async function searchProduct(){
-    const searchForm = document.getElementById("searchForm");
-    const formData = new FormData(searchForm);
+    const productSearchForm = document.getElementById("productSearchForm");
+    const formData = new FormData(productSearchForm);
     const result = await getProductList(formData);
     const data = result.data;
+    console.log(data)
     data.forEach((object,index) => {
         data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
     })
@@ -37,7 +38,7 @@ async function setDetailDataToEditModal(id){
     const category = document.getElementById("category");
     Array.prototype.slice.call(category)
         .forEach(option=>{
-            if(option.value === data.categoryId){
+            if(option.value === data.category.id){
                 option.selected = true;
             }
         })
@@ -67,11 +68,12 @@ const tableOptions = {
     columns : [
         {renderer:myCheckboxRenderer},
         {data:"id"},
-        {data:"category"},
+        {data:"category.name"},
         {data:"name", renderer:"html"},
         {data:"standard"},
     ],
     colWidths : scaleArrayToSum(Array(5)),
+    height:"50vh",
 }
 const hot = handsontable(container, tableOptions);
 
