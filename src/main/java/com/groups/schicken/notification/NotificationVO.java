@@ -11,12 +11,12 @@ public class NotificationVO {
     private String content;
     private String time;
     private NotificationType type;
-    private Object occurer;
+    private String link;
 
-    public static NotificationVO of(String content, Object occurer, NotificationType type){
+    public static NotificationVO of(String content, NotificationType type, String link){
         return NotificationVO.builder()
                 .content(content)
-                .occurer(occurer)
+                .link(link)
                 .type(type)
                 .build();
     }

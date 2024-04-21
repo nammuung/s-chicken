@@ -30,12 +30,13 @@ function receiveMessage(message, callback){
 }
 
 function addHandler(sub, handler, id){
-    if(id == null) id = crypto.randomUUID();
+    if(id == null) {
+        id = crypto.randomUUID();
+        waitting.push({sub, handler, id});
+    }
 
     if(stompClient.connected){
         subs[id] = stompClient.subscribe('/sub/' + sub, message => receiveMessage(message, handler));
-    } else {
-        waitting.push({sub, handler, id});
     }
 
     return id;

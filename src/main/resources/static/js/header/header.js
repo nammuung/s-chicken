@@ -148,3 +148,8 @@ noteMessageNav.addEventListener("click", () => {
     listForm.open(1,'receive');
     bsNoteMessageModal.show();
 });
+
+export const openNoteMessage = (link) => {
+    openRead(link, 1, 'receive');
+    bsNoteMessageModal.show();
+}

@@ -14,9 +14,9 @@ public class Noticer {
     private final SimpMessagingTemplate messagingTemplate;
     private final NoticeDAO noticeDAO;
 
-    public void sendNotice(String content, String ouccrer, NotificationType type ,List<String> receivers){
+    public void sendNotice(String content, String link, NotificationType type ,List<String> receivers){
         System.out.println("content = " + content);
-        sendNotice(NotificationVO.of(content, ouccrer, type), receivers);
+        sendNotice(NotificationVO.of(content, type, link), receivers);
     }
 
     public void sendNotice(NotificationVO notification){
@@ -29,6 +29,7 @@ public class Noticer {
         int result = noticeDAO.insertNotice(notification, receivers);
         System.out.println("insert result = " + result);
         for (String receiver : receivers) {
+            System.out.println("받는 주소 : /sub/noti/" + receiver);
             messagingTemplate.convertAndSend("/sub/noti/" + receiver, notification);
         }
     }
