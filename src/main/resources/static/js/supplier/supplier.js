@@ -24,11 +24,7 @@ async function searchSupplier(){
         data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
     })
     hot.loadData(data);
-    [...container.querySelectorAll("a.detail")].forEach(
-        el=>el.addEventListener("click", function (){
-            editModalShow(el.dataset.id);
-        })
-    )
+    addNameEventListener();
 }
 async function loadSupplierDetail(id){
     const result = await getSupplier(id);
@@ -36,18 +32,42 @@ async function loadSupplierDetail(id){
     sw.matchData(data);
 }
 //선택한 컬럼 아이디에 해당하는 모달 오픈
-function editModalShow(id) {
-    loadSupplierDetail(id);
+let selectedRowId = null; //체크된 열 아이디
+const editButton = document.getElementById("editButton");
+editButton.addEventListener("click", async function(){
+    if(selectedRowId == null) {
+        alert("품목을 선택해 주세요.")
+        return;
+    }
+    await setDetailDataToEditModal(selectedRowId);
     editModal.show();
-}
-
-function registerModalShow(){
-    registerModal.show();
-}
+})
 // 테이블 초기화
 const container = document.querySelector("#example");
-const myCheckboxRenderer = checkboxRenderer(()=>{
-    console.log("Hello")
+
+async function setDetailDataToEditModal(id) {
+    const result = await getSupplier(id);
+    const data = result.data;
+    sw.matchData(data)
+}
+//name 이벤트 리스너 추가
+function addNameEventListener(){
+    [...container.querySelectorAll("a.detail")].forEach(
+        el=>el.addEventListener("click", function (){
+            setDetailDataToEditModal(el.dataset.id);
+            console.log("Detail")
+            editModal.show();
+        })
+    )
+}
+
+const myCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
+    if(checked){
+        selectedRowId = instance.getDataAtCell(row,1);
+    } else {
+        selectedRowId = null
+    }
+    addNameEventListener();
 })
 const tableOptions = {
     data:[],
@@ -67,8 +87,8 @@ const hot = handsontable(container, tableOptions);
 
 
 //수정
-const editButton = document.getElementById('editButton');
-editButton.addEventListener('click', async function () {
+const editSubmitButton = document.getElementById('editSubmitButton');
+editSubmitButton.addEventListener('click', async function () {
     if(confirm("수정하시겠습니까?")){
         const editForm = document.getElementById("editForm");
         const formData = new FormData(editForm);
@@ -82,8 +102,8 @@ editButton.addEventListener('click', async function () {
 
 
 //추가
-const addButton = document.getElementById('addButton');
-addButton.addEventListener('click', async function () {
+const addSubmitButton = document.getElementById('addSubmitButton');
+addSubmitButton.addEventListener('click', async function () {
     if(confirm("추가하시겠습니까?")){
         const addForm = document.getElementById("addForm");
         const formData = new FormData(addForm);

@@ -1,8 +1,8 @@
 import {checkboxRenderer, handsontable, scaleArrayToSum} from "../lib/handsontable.js";
 import {addProduct, getProduct, getProductList, updateProduct} from "../api/product.js";
 
-searchProduct()
 sw.init()
+searchProduct()
 //품목 검색
 const searchButton = document.getElementById("searchButton");
 searchButton.addEventListener("click", async function () {
@@ -17,31 +17,50 @@ async function searchProduct(){
         data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
     })
     hot.loadData(data);
-    [...container.querySelectorAll("a.detail")].forEach(
-        el=>el.addEventListener("click", function (){
-            editModalShow(el.dataset.id);
-        })
-    )
+    addNameEventListener();
 }
 
-//디테일 모달
-async function editModalShow(id){
+let selectedRowId = null; //체크된 열 아이디
+const editButton = document.getElementById("editButton");
+editButton.addEventListener("click", async function(){
+    if(selectedRowId == null) {
+        alert("품목을 선택해 주세요.")
+        return;
+    }
+    await setDetailDataToEditModal(selectedRowId);
+    editModal.show();
+})
+async function setDetailDataToEditModal(id){
     const result = await getProduct(id);
     const data = result.data;
     sw.matchData(data)
-    const categoty = document.getElementById("category");
-    Array.prototype.slice.call(categoty)
+    const category = document.getElementById("category");
+    Array.prototype.slice.call(category)
         .forEach(option=>{
             if(option.value === data.categoryId){
                 option.selected = true;
             }
         })
-    editModal.show();
+}
+//name 이벤트 리스너 추가
+function addNameEventListener(){
+    [...container.querySelectorAll("a.detail")].forEach(
+        el=>el.addEventListener("click",async function (){
+            await setDetailDataToEditModal(el.dataset.id);
+            console.log("Detail")
+            editModal.show();
+        })
+    )
 }
 // 테이블 초기화
 const container = document.getElementById('example')
-const myCheckboxRenderer = checkboxRenderer(()=>{
-    console.log("Hello")
+const myCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
+    if(checked){
+        selectedRowId = instance.getDataAtCell(row,1);
+    } else {
+        selectedRowId = null
+    }
+    addNameEventListener();
 })
 const tableOptions = {
     data:[],
@@ -66,8 +85,8 @@ const editModal = new bootstrap.Modal(editModalEl);
 
 
 //품목 추가
-const addButton = document.getElementById("addButton");
-addButton.addEventListener("click", async function(){
+const addSubmitButton = document.getElementById("addSubmitButton");
+addSubmitButton.addEventListener("click", async function(){
     const addForm = document.getElementById("addForm");
     const formData = new FormData(addForm);
     const result = await addProduct(formData);
@@ -80,8 +99,8 @@ addButton.addEventListener("click", async function(){
 })
 
 //품목 수정
-const editButton = document.getElementById("editButton");
-editButton.addEventListener("click", async function(){
+const editSubmitButton = document.getElementById("editSubmitButton");
+editSubmitButton.addEventListener("click", async function(){
     const editForm = document.getElementById("editForm");
     const formData = new FormData(editForm);
     if(confirm("수정 하시겠습니까?")){

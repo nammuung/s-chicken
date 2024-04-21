@@ -82,6 +82,7 @@
                             </div>
                             <div class="d-flex justify-content-start">
                                 <button id="" class="btn btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#register-modal"><i class="bi bi-database-add"></i>신규</button>
+                                <button id="editButton" class="btn btn-outline-primary me-1" ><i class="bi bi-pencil"></i>수정</button>
                                 <button id="exportButton" class="btn btn-primary"><i class="bi bi-file-earmark-spreadsheet-fill"></i> 저장</button>
                             </div>
                         </div>
@@ -132,7 +133,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="addButton">저장</button>
+                <button type="button" class="btn btn-primary" id="addSubmitButton">저장</button>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
@@ -212,7 +213,7 @@
                                 </div>
                             </form>
                             <div class="position-absolute end-0 bottom-0">
-                                <button type="button" class="btn btn-primary" id="editButton">수정</button>
+                                <button type="button" class="btn btn-primary" id="editSubmitButton">수정</button>
                             </div>
                         </div>
                     </div>
