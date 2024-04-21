@@ -11,7 +11,15 @@ public class DocumentService {
 	public int add(DocumentVO documentVO)throws Exception{
 		System.out.println("들어옴");
 		int result =documentDAO.add(documentVO);
+				
 		return result;
 	}
 	
+	public int appAdd(ApprovalVO approvalVO)throws Exception{
+			
+			int result = documentDAO.appAdd(approvalVO);
+			
+			return result;
+		
+	}	
 }

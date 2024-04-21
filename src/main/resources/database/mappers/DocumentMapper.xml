@@ -9,8 +9,13 @@
 			SELECT nextval(seq3)
 		</selectKey>
 		INSERT INTO document
-		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{employeeId},#{des})
+		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writer},#{des})
 		
+	</insert>
+	
+	<insert id="appAdd">
+		INSERT INTO approval
+		VALUES(#{documentId},#{employeeId},#{rank},#{result},#{date},#{comment})
 	</insert>
 
 </mapper>

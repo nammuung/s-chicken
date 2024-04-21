@@ -14,7 +14,7 @@ public class DocumentVO {
 	private String writeDate;
 	private String status;
 	private Long templateId;
-	private Long employeeId;
+	private String writer;
 	private String des;
 	
 	private FileVO fileVO;

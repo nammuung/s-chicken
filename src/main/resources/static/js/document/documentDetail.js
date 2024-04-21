@@ -9,18 +9,27 @@ import oc from "/js/orgChart/orgChart.js";
 	const modal_show = document.getElementById("modal_show");
 	const sangsin = document.getElementById("sangsin");
 	const frm= document.querySelector("form");
-	const content = document.getElementById("editor")
 	
+	
+	const employeeIdInputs = document.querySelectorAll('.sign_member_wrap input[class="employeeId"]');
+	let employeeArr =[];
+	let rankArr=[];
+	 let relativePath = '/document/pay/pay';
 	sangsin.addEventListener("click",(e)=>{
 		e.preventDefault();
-
+		
+		
 		const formData = new FormData(frm);
 		formData.append("content", editor.getData())
+		formData.append("employeeId",employeeArr)
+		formData.append("rank",rankArr)
 		fetch('/document/add',{
 			method:"post",
 			body:formData,
-		}).then(r=>console.log(r))
+		}).then(r=>window.close(relativePath))
 	})
+	
+	
 	
 function hyuga(){
     
@@ -129,26 +138,37 @@ function hyuga(){
 		
 		register.addEventListener("click",()=>{
 			
-			
+		
+		
 			let goList = approval_List.querySelectorAll("li")
 
 			
 			const approve = document.querySelectorAll(".sign_member_wrap");			
 			const element_level = approve[0].querySelector(".sign_rank");
+			
+			
 
 			for(let i = 0 ; i<3;i++){
-				approve[i].querySelector("#name").innerHTML ="";
+			approve[i].querySelector("#name").innerHTML ="";
 			approve[i].querySelector(".sign_rank").innerHTML ="";
+			rankArr=[];
+			employeeArr=[];
 			}
 			
 			
 			let approve_arr = 4 - arr.length;			
 			
-			for(let i = approve_arr ; i <= 3;i++){
+			for(let i = approve_arr, j = 1 ; i <= 3;i++,j++){
 			approve[i].querySelector("#name").innerHTML = goList[i-approve_arr].getAttribute("data-name");
-			approve[i].querySelector(".sign_rank").innerHTML = goList[i-approve_arr].getAttribute("data-level");			
-			}
+			approve[i].querySelector(".sign_rank").innerHTML = goList[i-approve_arr].getAttribute("data-level");	
+			rankArr.push(j);
+			employeeArr.push(goList[i-approve_arr].getAttribute("data-id"));
 			
+			console.log(rankArr)
+			console.log(employeeArr)
+			}
+
+
 			if(goList.length==0){
 				alert("결재자는 최소 1명 이상입니다")
 			}else{
