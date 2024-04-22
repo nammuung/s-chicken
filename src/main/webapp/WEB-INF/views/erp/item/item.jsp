@@ -73,7 +73,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-start">
-                                <button id="addButton" class="btn btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#register-modal"><i class="bi bi-database-add"></i>신규</button>
+                                <button id="addButton" class="btn btn-outline-primary me-1"><i class="bi bi-database-add"></i>신규</button>
                                 <button id="editButton" class="btn btn-outline-primary me-1" ><i class="bi bi-pencil"></i>수정</button>
                                 <button id="exportButton" class="btn btn-primary"><i class="bi bi-file-earmark-spreadsheet-fill"></i> 저장</button>
                             </div>
@@ -164,7 +164,7 @@
                                                 <div class="mb-3 row">
                                                     <label for="category" class="col-4 col-form-label">단위</label>
                                                     <div class="col-8">
-                                                        <select type="text" class="form-control form-select" id="unit" name="unit.id">
+                                                        <select type="text" class="form-control form-select" name="unit.id">
                                                             <option value="">선택</option>
                                                             <c:forEach items="${unit}" var="item">
                                                                 <option value="${item.id}">${item.name}</option>
@@ -208,42 +208,44 @@
                     <div class="tab-content pt-2">
                         <div class="tab-pane fade show active profile-overview" id="supplier-overview">
                             <form id="editForm" class="text-nowrap text-end">
+                                <input type="hidden" name="id" sw="value_id"/>
                                 <div class="row">
                                     <div class="col-6">
-                                        <input type="hidden" name="id" sw="value_id">
-                                        <input type="hidden" name="managerId" sw="value_managerId">
                                         <div class="mb-3 row">
-                                            <label for="editName" class="col-4 col-form-label">품목명</label>
+                                            <label for="addName" class="col-4 col-form-label">품목명</label>
                                             <div class="col-8">
-                                                <input type="text" class="form-control" id="editName" name="name" sw="value_name">
+                                                <input type="text" disabled class="form-control" id="addName" name="product.name" sw="value_productName">
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label for="editOwnerName" class="col-4 col-form-label">규격</label>
+                                            <label for="addStandard" class="col-4 col-form-label">거래처</label>
                                             <div class="col-8">
-                                                <input type="text" class="form-control" id="editOwnerName" name="ownerName" sw="value_standard">
+                                                <input type="text" disabled class="form-control" id="addStandard" name="supplier.name" sw="value_supplierName">
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
-                                            <label for="category" class="col-4 col-form-label">카테고리</label>
-                                            <div class="col-8">
-                                                <select type="text" class="form-control form-select" id="category" name="categoryId">
-                                                    <option value=""></option>
-                                                    <c:forEach items="${category}" var="item">
-                                                        <option value="${item.id}">${item.name}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </div>
-                                        </div>
-
-
-
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 row">
-                                            <label for="editStock" class="col-4 col-form-label">재고</label>
+                                            <label for="editName" class="col-4 col-form-label">계약단가</label>
                                             <div class="col-8">
-                                                <input type="text" disabled class="form-control" id="editStock" name="stock" sw="value_stock">
+                                                <input type="text" class="form-control" name="contractPrice" sw="value_contractPrice">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="editOwnerName" class="col-4 col-form-label">최소구매수량</label>
+                                            <div class="col-8">
+                                                <input type="text" class="form-control" name="minQuantity" sw="value_minQuantity">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="category" class="col-4 col-form-label">단위</label>
+                                            <div class="col-8">
+                                                <select type="text" class="form-control form-select" id="unit" name="unit.id">
+                                                    <option value="">선택</option>
+                                                    <c:forEach items="${unit}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>

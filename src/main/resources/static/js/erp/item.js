@@ -10,6 +10,7 @@ const container = document.getElementById('example')
 const myCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
     if(checked){
         selectedRowId = instance.getDataAtCell(row,1);
+        setDetailDataToEditModal(selectedRowId)
     } else {
         selectedRowId = null
     }
@@ -100,14 +101,18 @@ editButton.addEventListener("click", async function(){
 async function setDetailDataToEditModal(id){
     const result = await getItem(id);
     const data = result.data;
-    sw.matchData(data)
-    const category = document.getElementById("category");
-    Array.prototype.slice.call(category)
+    const unit = document.getElementById("unit");
+    console.log(data)
+    Array.prototype.slice.call(unit)
         .forEach(option=>{
-            if(option.value === data.categoryId){
+            console.log(option.value);
+            if(option.value === data.unit.id){
                 option.selected = true;
             }
         })
+    sw.matchData({supplierName: data.supplier.name})
+    sw.matchData({productName: data.product.name})
+    sw.matchData(data)
 }
 //name 이벤트 리스너 추가
 function addNameEventListener(){
@@ -132,6 +137,10 @@ const editModal = new bootstrap.Modal(editModalEl);
 const addSubmitButton = document.getElementById("addSubmitButton");
 addSubmitButton.addEventListener("click", async function(){
     if(selectedSupplier != null && selectedProduct != null){
+        if(!checkValidation()) {
+            alert("정보를 기입해주세요.")
+            return;
+        }
         const addForm = document.getElementById("addForm");
         const formData = new FormData(addForm);
         const result = await addItem(formData);
@@ -144,16 +153,33 @@ addSubmitButton.addEventListener("click", async function(){
     }
 })
 
+const checkValidation = () => {
+    const inputs = [...document.querySelectorAll("#addForm input")]
+    const selects = [...document.querySelectorAll("#addForm select")]
+    let valid = true;
+    inputs.forEach(el => {
+        if(el.value == "" || el.value == undefined || el.value == null || el.value == 0){
+            valid = false;
+        }
+    })
+    selects.forEach(el => {
+        if(el.value == "" || el.value == undefined || el.value == null || el.value == 0){
+            valid = false;
+        }
+    })
+    return valid;
+}
+
 //품목 수정
 const editSubmitButton = document.getElementById("editSubmitButton");
 editSubmitButton.addEventListener("click", async function(){
     const editForm = document.getElementById("editForm");
     const formData = new FormData(editForm);
     if(confirm("수정 하시겠습니까?")){
-        const result = await updateProduct(formData);
+        const result = await updateItem(formData);
         alert(result.message);
         if(result.status === "OK"){
-            await searchProduct()
+            await searchItem()
         }
     }
 })
@@ -203,6 +229,7 @@ productTap.addEventListener("shown.bs.tab", function (){
 })
 const addButton = document.getElementById("addButton")
 addButton.addEventListener("click", function(){
+    registerModal.show();
     productSearchButton.click();
     const tableHeight = document.querySelector(".modal-body .position-relative").getBoundingClientRect().height- document.getElementById("productSearchContainer").getBoundingClientRect().height-document.getElementById("next")-document.getElementById("nextButton1").getBoundingClientRect().height -20
     const productTableOptions = {

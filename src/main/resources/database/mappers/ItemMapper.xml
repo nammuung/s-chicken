@@ -43,6 +43,7 @@
             emp.id employee_id,
             emp.name employee_name,
             pos.name employee_position_name,
+            uni.id unit_id,
             uni.name unit_name
         FROM
             item i
@@ -68,36 +69,44 @@
         ORDER BY create_date
     </select>
 
-    <select id="getItem">
+    <select id="getItem" resultMap="getItemMap">
         SELECT
-        i.*,
-        sup.id supplier_id,
-        sup.name supplier_name,
-        prd.id product_id,
-        prd.name product_name,
-        emp.id employee_id,
-        emp.name employee_name,
-        pos.name employee_position_name,
-        uni.name unit_name
+            i.*,
+            sup.id supplier_id,
+            sup.name supplier_name,
+            prd.id product_id,
+            prd.name product_name,
+            prd.standard product_standard,
+            cat.name product_category_name,
+            emp.id employee_id,
+            emp.name employee_name,
+            pos.name employee_position_name,
+            uni.id unit_id,
+            uni.name unit_name
         FROM
-        item i
+            item i
         LEFT JOIN
-        supplier sup
-        ON i.supplier_id = sup.id
+            supplier sup
+            ON i.supplier_id = sup.id
         LEFT JOIN
-        product prd
-        ON i.product_id = prd.id
+            product prd
+            ON i.product_id = prd.id
         LEFT JOIN
-        employee emp
-        ON i.writer_id = emp.id
+            code cat
+            ON prd.category_id = cat.id AND cat.type_id = '600'
         LEFT JOIN
-        code uni
-        ON emp.pos_id = uni.id  AND  uni.type_id = '300'
+            employee emp
+            ON i.writer_id = emp.id
         LEFT JOIN
-        code pos
-        ON i.uni_id = pos.id AND pos.type_id = '500'
-        <include refid="search"/>
-        ORDER BY create_date
+            code pos
+            ON emp.pos_id = pos.id  AND  pos.type_id = '300'
+        LEFT JOIN
+            code uni
+            ON i.uni_id = uni.id AND uni.type_id = '500'
+        WHERE
+            i.id = #{id}
+        ORDER BY
+            create_date
     </select>
 
     <insert id="addItem">
@@ -119,16 +128,16 @@
                 min_quantity = #{minQuantity}
             </if>
             <if test="contractPrice != null">
-                contract_price = #{contractPrice}
+                ,contract_price = #{contractPrice}
             </if>
             <if test="modifyDate != null">
-                modify_date = #{modifyDate}
+                ,modify_date = #{modifyDate}
             </if>
             <if test="unit != null">
-                unit_id = #{unit.id}
+                ,uni_id = #{unit.id}
             </if>
             <if test="use != null">
-                use = #{use}
+                ,use = #{use}
             </if>
         </set>
         WHERE
