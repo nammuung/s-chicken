@@ -93,7 +93,7 @@
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">계약서</div>
                                         <div class="col-lg-9 col-md-8">
-                                            <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="미리보기">
+                                            <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="미리보기" onclick="filePreView('/fileDown?id=${vo.contract.id}', '${vo.contract.name}', '${vo.contract.extension}')">
                                                 ${vo.contract.originName}
                                             </a>
                                             <a href="/fileDown?id=${vo.contract.id}" class="link-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="저장">
@@ -113,7 +113,7 @@
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">사업자등록증</div>
                                         <div class="col-lg-9 col-md-8">
-                                            <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="미리보기">
+                                            <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="미리보기" onclick="filePreView('/fileDown?id=${vo.register.id}', '${vo.register.name}', '${vo.register.extension}')">
                                                 ${vo.register.originName}
                                             </a>
                                             <a href="/fileDown?id=${vo.register.id}" class="link-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="저장">

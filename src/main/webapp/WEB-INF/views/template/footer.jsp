@@ -38,6 +38,14 @@
     </div>
 </div>
 
+<div class="modal" tabindex="-1" id="filePreView-modal">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <img src="" id="filePreView-img">
+        </div>
+    </div>
+</div>
+
 <footer id="footer" class="footer">
     <div class="copyright">
         &copy; Copyright <strong><span>S-Chicken</span></strong>. All Rights Reserved

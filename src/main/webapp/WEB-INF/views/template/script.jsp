@@ -41,3 +41,8 @@
 
 <%--axios--%>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<%--filepreview--%>
+<script src="/js/lib/pdf/build/pdf.mjs" type="module"></script>
+<script src="/js/lib/filePreView.js"></script>
