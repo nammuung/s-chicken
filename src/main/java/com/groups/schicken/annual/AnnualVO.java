@@ -1,5 +1,7 @@
 package com.groups.schicken.annual;
 
+import java.util.List;
+
 import org.eclipse.tags.shaded.org.apache.xpath.operations.Bool;
 
 import com.groups.schicken.Employee.EmployeeVO;
@@ -22,5 +24,7 @@ public class AnnualVO {
 	private Integer annualTotal; // 갯수 구하는용도
 	private Boolean isAnnual;
 	private EmployeeVO emp;
-	
+	private List<AnnualVO> resultList;
+	 
+	 
 }

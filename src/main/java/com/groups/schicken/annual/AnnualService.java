@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@Transactional(rollbackFor = Exception.class) // error 났을때 rollbac설정
+//@Transactional(rollbackFor = Exception.class) // error 났을때 rollbac설정
 public class AnnualService {
 
 	@Autowired
@@ -100,19 +100,13 @@ public class AnnualService {
 	}
 
 	
-public List<AnnualVO> annualList(AnnualVO annualVO) throws Exception {
-		
-		
-		List<AnnualVO> annualList = annualDAO.annualList(annualVO);
-		
-		return calculateRemainingAnnual(annualList);
-	}
+	public List<AnnualVO> annualList(AnnualVO annualVO) throws Exception {
+	    List<AnnualVO> annualList = annualDAO.annualList(annualVO); // 배열
 
-	private List<AnnualVO> calculateRemainingAnnual(List<AnnualVO> annualList) {
-	    List<AnnualVO> resultList = new ArrayList<>();
+	    List<AnnualVO> resultList = new ArrayList<>(); // 새로운 배열
 	    int remainderAnnual = 0;
 	    String currentYear = ""; // 현재 년도
-
+	    
 	    for (AnnualVO annual : annualList) {
 	        String annualDate = annual.getAnnualDate(); // 작성날짜
 	        String yearOfAnnual = annualDate.substring(0, 4); // 날짜에서 연도 추출
@@ -120,26 +114,28 @@ public List<AnnualVO> annualList(AnnualVO annualVO) throws Exception {
 	        // 새로운 연도인지 확인
 	        if (!yearOfAnnual.equals(currentYear)) {
 	            if (!currentYear.isEmpty()) {
-	                
 	                remainderAnnual = 0;
 	            }
 	            currentYear = yearOfAnnual; // currentYear를 새로운 연도로 업데이트
 	        }
-
+	        	
 	        int receivedAnnual = annual.getRemainderAnnual(); // 받은 연차
 	        int usedAnnual = annual.getAnnual(); // 사용한 연차
 
+	        
 	        remainderAnnual += (receivedAnnual - usedAnnual); // 남은 연차 계산
-
+	        
 	        annual.setAnnualTotal(remainderAnnual);
 	        resultList.add(annual);
 	    }
-	    		
+	    System.out.println(resultList);
+	    // resultList를 annualVO에 담아서 다시 선택
 
-	    
-		 
 	    return resultList;
 	}
+
+
+	
 	 
 
 

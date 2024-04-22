@@ -9,10 +9,10 @@
 <select id="annualList" resultType="AnnualVO">
 <!--select * from annual where employee_id = #{employeeId} and is_annual = 0 order by annual_date DESC-->
 SELECT *,
-    #{annualTotal} AS annual_total
+    #{annualTotal} AS annualTotal
 FROM annual
 WHERE employee_id = #{employeeId} AND is_annual = 0
-ORDER BY annual_date DESC, annual_total ASC;
+ORDER BY annual_date DESC, annualTotal ASC;
 </select>
 
 
