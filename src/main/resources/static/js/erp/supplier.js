@@ -54,8 +54,8 @@ async function setDetailDataToEditModal(id) {
     formData.append("supplier.id", id);
     const items = await getItemList(formData);
     const productTable = document.querySelector("#productTable tbody")
-    console.log(items)
-    items.data.forEach((item,index) => {
+    productTable.innerHTML = ""
+        items.data.forEach((item,index) => {
         productTable.innerHTML += `
             <tr>
                 <td>
