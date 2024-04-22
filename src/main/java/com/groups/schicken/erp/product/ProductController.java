@@ -1,4 +1,4 @@
-package com.groups.schicken.order.product;
+package com.groups.schicken.erp.product;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,8 +12,8 @@ public class ProductController {
 
     @GetMapping("/products")
     public String getProductList(ProductVO productVO, Model model) throws Exception {
-        System.out.println("productService.getCategory() = " + productService.getCategory());
+        model.addAttribute("unit", productService.getUnit());
         model.addAttribute("category", productService.getCategory());
-        return "order/product/product";
+        return "erp/product/product";
     }
 }

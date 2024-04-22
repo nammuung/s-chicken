@@ -19,25 +19,36 @@ if(commentButton){
         alert(result.message);
         if (result.status === "OK"){
             const commentInputContainer = document.getElementById("commentInputContainer");
-            commentInputContainer.style.display = "none";
-            content.value = "";
-            commentBox.innerHTML = `
-                     <div class="d-flex mb-2">
-                        <div class="d-flex justify-content-between w-100">
-                            <div class="d-flex">
-                                <div class="me-3">
-                                    <b>${result.data.employee.name}</b>
+            animateCSS(commentInputContainer, "fadeOutUp").then(()=>{
+                commentInputContainer.classList.add("d-none")
+                commentInputContainer.insertAdjacentHTML("afterend",
+                    `
+                        <div class="col-12 animate__animated animate__fadeInUp">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <span class="card-title p-0 m-0">답변</span>
+                                    <div class="text-nowrap text-muted">
+                                        <b class="me-1">${result.data.employee.name} 매니저</b> ${result.data.writeDate}
+                                    </div>
                                 </div>
-                                <div>
-                                        ${result.data.content}
+                                <div class="card-body mt-3" id="commentBox">
+                                    <div class="d-flex mb-2">
+                                        <div class="d-flex justify-content-between w-100">
+                                            <div class="d-flex">
+                                                <div class="me-3 text-nowrap">
+                                                    <b></b>
+                                                </div>
+                                                <div class="me-3">
+                                                    ${result.data.content}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                ${result.data.writeDate}
-                            </div>
-                        </div>
-                    </div>
-                `
+                        </div>  
+                `)
+            })
         }
     })
 }

@@ -17,10 +17,10 @@
         </li><!-- End Dashboard Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link <c:if test="${cookie.navToggle.value ne '#components-nav'}">collapsed</c:if>" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>공지사항</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="components-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#components-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/all/list">
                         <i class="bi bi-circle"></i><span>전체</span>
@@ -40,10 +40,10 @@
         </li><!-- End Components Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link <c:if test="${cookie.navToggle.value ne '#forms-nav'}">collapsed</c:if>" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-journal-text"></i><span>전자결재</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="forms-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#forms-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/document/list">
                         <i class="bi bi-circle"></i><span>결재 문서</span>
@@ -73,10 +73,10 @@
         </li><!-- End Forms Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link <c:if test="${cookie.navToggle.value ne '#tables-nav'}">collapsed</c:if>" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-layout-text-window-reverse"></i><span>시설예약</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="tables-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#tables-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="tables-general.html">
                         <i class="bi bi-circle"></i><span>시설목록</span>
@@ -91,10 +91,10 @@
         </li><!-- End Tables Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link <c:if test="${cookie.navToggle.value ne '#charts-nav'}">collapsed</c:if>" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-bar-chart"></i><span>인사관리</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="charts-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#charts-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/employee/list">
                         <i class="bi bi-circle"></i><span>직원목록</span>
@@ -114,10 +114,10 @@
         </li><!-- End Charts Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-gem"></i><span>가맹점 관리</span><i class="bi bi-chevron-down ms-auto"></i>
+            <a class="nav-link <c:if test="${cookie.navToggle.value ne '#icons-nav'}">collapsed</c:if>" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-houses"></i><span>가맹점 관리</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="icons-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#icons-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/franchise/join">
                         <i class="bi bi-circle"></i><span>가맹점 가입</span>
@@ -129,6 +129,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/franchise/sales">
+                        <i class="bi bi-circle"></i><span>가맹점 매출 조회</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/franchise/qna/list">
                         <i class="bi bi-circle"></i><span>가맹점 QnA</span>
                     </a>
@@ -136,6 +141,43 @@
                 <li>
                     <a href="/franchise/faq/list">
                         <i class="bi bi-circle"></i><span>가맹점 F.A.Q</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <c:if test="${cookie.navToggle.value ne '#erp-nav'}">collapsed</c:if>" data-bs-target="#erp-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-box-seam"></i><span>ERP</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="erp-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#erp-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/order/franchise">
+                        <i class="bi bi-circle"></i><span>주문</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/order/head">
+                        <i class="bi bi-circle"></i><span>발주</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/products">
+                        <i class="bi bi-circle"></i><span>품목 관리</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/items">
+                        <i class="bi bi-circle"></i><span>계약품목 관리</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/supplier">
+                        <i class="bi bi-circle"></i><span>납품처 관리</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/sales">
+                        <i class="bi bi-circle"></i><span>매출 관리</span>
                     </a>
                 </li>
             </ul>
@@ -163,12 +205,6 @@
                 <span>메신저</span>
             </a>
         </li><!-- End Contact Page Nav -->
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="pages-blank.html">
-                <i class="bi bi-file-earmark"></i>
-                <span>쪽지함</span>
-            </a>
-        </li><!-- End Blank Page Nav -->
     </ul>
 </aside><!-- End Sidebar-->
+

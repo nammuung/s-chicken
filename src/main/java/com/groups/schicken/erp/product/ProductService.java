@@ -1,5 +1,6 @@
-package com.groups.schicken.order.product;
+package com.groups.schicken.erp.product;
 
+import com.groups.schicken.common.vo.CodeVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,11 @@ public class ProductService {
         return productMapper.updateProduct(productVO);
     }
 
-    public List<Map<String, Object>> getCategory() throws Exception {
+    public List<CodeVO> getCategory() throws Exception {
         return productMapper.getCategory();
+    }
+
+    public List<CodeVO> getUnit() throws Exception{
+        return productMapper.getUnit();
     }
 }

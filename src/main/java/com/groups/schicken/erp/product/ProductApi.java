@@ -1,4 +1,4 @@
-package com.groups.schicken.order.product;
+package com.groups.schicken.erp.product;
 
 import com.groups.schicken.common.vo.ResultVO;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ public class ProductApi {
 
     @GetMapping
     public ResponseEntity<?> getProductList(ProductVO productVO) throws Exception {
+        System.out.println("productVO = " + productVO);
         try {
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), productService.getProductList(productVO)));
         } catch (Exception e){
@@ -35,7 +36,7 @@ public class ProductApi {
         }
     }
     @PostMapping
-    public ResponseEntity<?> addProduct(@RequestBody ProductVO productVO) throws Exception {
+    public ResponseEntity<?> addProduct(ProductVO productVO) throws Exception {
         try {
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "제품 추가 완료", productService.addProduct(productVO)));
         } catch (Exception e){
@@ -46,7 +47,7 @@ public class ProductApi {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateProduct(@RequestBody ProductVO productVO) throws Exception {
+    public ResponseEntity<?> updateProduct(ProductVO productVO) throws Exception {
         try {
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "제품 수정 완료", productService.updateProduct(productVO)));
         } catch (Exception e){

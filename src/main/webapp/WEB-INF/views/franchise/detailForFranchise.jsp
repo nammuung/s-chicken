@@ -89,12 +89,42 @@
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">계약서</div>
-                                        <div class="col-lg-9 col-md-8"><a href="/fileDown?id=${vo.contract.id}">${vo.contract.originName}.${vo.contract.extension}</a></div>
+                                        <div class="col-lg-9 col-md-8">
+                                            <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="미리보기">
+                                                ${vo.contract.originName}
+                                            </a>
+                                            <a href="/fileDown?id=${vo.contract.id}" class="link-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="저장">
+                                                <c:if test='${vo.contract.extension eq "pdf"}'>
+                                                    <i class="bi bi-file-earmark-pdf"></i>
+                                                </c:if>
+                                                <c:if test="${vo.contract.extension eq 'png' or vo.contract.extension eq 'jpg' or vo.contract.extension eq 'jpeg'}">
+                                                    <i class="bi bi-file-earmark-image"></i>
+                                                </c:if>
+                                                <c:if test="${!(vo.contract.extension eq 'png' or vo.contract.extension eq 'jpg' or vo.contract.extension eq 'jpeg' or vo.contract.extension eq 'pdf')}">
+                                                    <i class="bi bi-file-earmark"></i>
+                                                </c:if>
+                                            </a>
+                                        </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3 col-md-4 label">사업자등록증</div>
-                                        <div class="col-lg-9 col-md-8"><a href="/fileDown?id=${vo.register.id}">${vo.register.originName}.${vo.register.extension}</a></div>
+                                        <div class="col-lg-9 col-md-8">
+                                            <a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="미리보기">
+                                                ${vo.register.originName}
+                                            </a>
+                                            <a href="/fileDown?id=${vo.register.id}" class="link-dark" data-bs-toggle="tooltip" data-bs-placement="bottom" title="저장">
+                                                <c:if test="${vo.register.extension eq 'pdf'}">
+                                                    <i class="bi bi-file-earmark-pdf"></i>
+                                                </c:if>
+                                                <c:if test="${vo.register.extension eq 'png' or vo.register.extension eq 'jpg' or vo.register.extension eq 'jpeg'}">
+                                                    <i class="bi bi-file-earmark-image"></i>
+                                                </c:if>
+                                                <c:if test="${!(vo.register.extension eq 'png' or vo.register.extension eq 'jpg' or vo.register.extension eq 'jpeg' or vo.register.extension eq 'pdf')}">
+                                                    <i class="bi bi-file-earmark"></i>
+                                                </c:if>
+                                            </a>
+                                        </div>
                                     </div>
 
                                 </div>

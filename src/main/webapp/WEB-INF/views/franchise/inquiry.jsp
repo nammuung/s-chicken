@@ -80,11 +80,12 @@
     var map = new kakao.maps.Map(container, options);
     var ps = new kakao.maps.services.Places();
     var geocoder = new kakao.maps.services.Geocoder();
-    var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+    var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
     Array.prototype.slice.call(document.getElementById("searchSelect"))
         .forEach(child => {
-            if(child.value == '${pager.kind}') child.selected = true
+            if (child.value == '${pager.kind}') child.selected = true
         })
+
     // 지도에 마커를 표시하는 함수입니다
     function displayMarker(place, description) {
         // 마커를 생성합니다
@@ -95,16 +96,16 @@
             position: new kakao.maps.LatLng(place.y, place.x)
         });
         // 마커에 클릭이벤트를 등록합니다
-        kakao.maps.event.addListener(marker, 'click', function() {
+        kakao.maps.event.addListener(marker, 'click', function () {
             map.setCenter(coords);
             map.setLevel(2);
         });
         // 마커에 클릭이벤트를 등록합니다
-        kakao.maps.event.addListener(marker, 'mouseover', function() {
+        kakao.maps.event.addListener(marker, 'mouseover', function () {
             infowindow.setContent('<div style="padding:5px;font-size:12px;"><b>' + description + '</b></div>');
             infowindow.open(map, marker);
         });
-        kakao.maps.event.addListener(marker, 'mouseout', function() {
+        kakao.maps.event.addListener(marker, 'mouseout', function () {
             infowindow.close(map, marker);
         });
     }
@@ -113,19 +114,19 @@
         const response = await fetch("/v1/api/franchise?kind=${pager.kind}&search=${pager.search}");
         const data = await response.json();
         var bounds = new kakao.maps.LatLngBounds();
-        if(data.length === 0) {
+        if (data.length === 0) {
             map.setLevel(8);
         }
-        data.forEach((franchise)=>{
+        data.forEach((franchise) => {
             // 주소로 좌표를 검색합니다
-            geocoder.addressSearch(franchise.address, function(result, status) {
+            geocoder.addressSearch(franchise.address, function (result, status) {
                 // 정상적으로 검색이 완료됐으면
                 if (status === kakao.maps.services.Status.OK) {
                     var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
                     bounds.extend(new kakao.maps.LatLng(result[0].y, result[0].x));
                     // 결과값으로 받은 위치를 마커로 표시합니다
-                    displayMarker(result[0],franchise.name);
+                    displayMarker(result[0], franchise.name);
                     // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
                     map.setBounds(bounds);
 
@@ -135,14 +136,14 @@
         })
     })()
 
-    function focusMarker(address,index){
-        const item = document.getElementById("item"+index);
+    function focusMarker(address, index) {
+        const item = document.getElementById("item" + index);
         Array.prototype.slice.call(document.querySelectorAll(".list-group-item"))
             .forEach(el => {
                 el.classList.remove("selected");
             })
         item.classList.add("selected");
-        geocoder.addressSearch(address, function(result, status) {
+        geocoder.addressSearch(address, function (result, status) {
             // 정상적으로 검색이 완료됐으면
             if (status === kakao.maps.services.Status.OK) {
                 var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
@@ -152,8 +153,6 @@
         })
 
     }
-
-
 
 </script>
 
