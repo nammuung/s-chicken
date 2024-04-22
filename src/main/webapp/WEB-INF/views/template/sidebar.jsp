@@ -138,7 +138,10 @@
 </aside>
 <div class="modal modal-lg w-60" tabindex="-1" id="annual-modal">
     <div class="modal-dialog modal-dialog-centered">
+   
+
         <div class="modal-content" style="width: 80%;">
+
             <!-- 모달 콘텐츠 영역 -->
         </div>
     </div>
