@@ -25,11 +25,11 @@
         <association property="supplier" javaType="SupplierVO" autoMapping="true" columnPrefix="supplier_"/>
         <association property="product" javaType="ProductVO" autoMapping="true" columnPrefix="product_">
             <association property="category" javaType="CodeVO" autoMapping="true" columnPrefix="category_" />
+            <association property="unit" javaType="CodeVO" autoMapping="true" columnPrefix="unit_"/>
         </association>
         <association property="writer" javaType="EmployeeVO" autoMapping="true" columnPrefix="employee_">
             <association property="position" javaType="CodeVO" columnPrefix="position_" autoMapping="true"/>
         </association>
-        <association property="unit" javaType="CodeVO" autoMapping="true" columnPrefix="unit_"/>
     </resultMap>
     <select id="getItemList" resultMap="getItemMap">
         SELECT
@@ -40,6 +40,7 @@
             prd.name product_name,
             prd.standard product_standard,
             cat.name product_category_name,
+            uni.name product_unit_name,
             emp.id employee_id,
             emp.name employee_name,
             pos.name employee_position_name,
@@ -57,14 +58,14 @@
             code cat
             ON prd.category_id = cat.id AND cat.type_id = '600'
         LEFT JOIN
+            code uni
+            ON prd.unit_id = uni.id AND uni.type_id = '500'
+        LEFT JOIN
             employee emp
             ON i.writer_id = emp.id
         LEFT JOIN
             code pos
             ON emp.pos_id = pos.id  AND  pos.type_id = '300'
-        LEFT JOIN
-            code uni
-            ON i.uni_id = uni.id AND uni.type_id = '500'
         <include refid="search"/>
         ORDER BY create_date
     </select>
@@ -78,11 +79,10 @@
             prd.name product_name,
             prd.standard product_standard,
             cat.name product_category_name,
+            uni.name product_unit_name,
             emp.id employee_id,
             emp.name employee_name,
-            pos.name employee_position_name,
-            uni.id unit_id,
-            uni.name unit_name
+            pos.name employee_position_name
         FROM
             item i
         LEFT JOIN
@@ -95,14 +95,14 @@
             code cat
             ON prd.category_id = cat.id AND cat.type_id = '600'
         LEFT JOIN
+            code uni
+            ON prd.unit_id = uni.id AND uni.type_id = '500'
+        LEFT JOIN
             employee emp
             ON i.writer_id = emp.id
         LEFT JOIN
             code pos
             ON emp.pos_id = pos.id  AND  pos.type_id = '300'
-        LEFT JOIN
-            code uni
-            ON i.uni_id = uni.id AND uni.type_id = '500'
         WHERE
             i.id = #{id}
         ORDER BY
@@ -115,9 +115,9 @@
         </selectKey>
         INSERT INTO
             item
-            (id, supplier_id, product_id, min_quantity, contract_price, create_date, modify_date, uni_id, writer_id, `use`)
+            (id, supplier_id, product_id, min_quantity, contract_price, create_date, modify_date, writer_id, `use`)
         VALUES
-            (#{id}, #{supplier.id}, #{product.id}, #{minQuantity}, #{contractPrice}, #{createDate}, #{modifyDate}, #{unit.id}, #{writer.id}, 1)
+            (#{id}, #{supplier.id}, #{product.id}, #{minQuantity}, #{contractPrice}, #{createDate}, #{modifyDate}, #{writer.id}, 1)
     </insert>
 
     <update id="updateItem">
@@ -133,9 +133,6 @@
             <if test="modifyDate != null">
                 ,modify_date = #{modifyDate}
             </if>
-            <if test="unit != null">
-                ,uni_id = #{unit.id}
-            </if>
             <if test="use != null">
                 ,use = #{use}
             </if>
@@ -143,12 +140,5 @@
         WHERE
             id = #{id}
     </update>
-    <select id="getUnit">
-        SELECT
-            *
-        FROM
-            code
-        WHERE
-            type_id = '500'
-    </select>
+
 </mapper>

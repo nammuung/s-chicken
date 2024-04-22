@@ -9,4 +9,5 @@ public class ProductVO {
     private String name;
     private String standard;
     private CodeVO category;
+    private CodeVO unit;
 }

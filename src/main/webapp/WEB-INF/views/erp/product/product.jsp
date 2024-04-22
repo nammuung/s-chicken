@@ -69,10 +69,21 @@
                                 </div>
                             </div>
                             <div class="mb-3 row">
+                                <label for="addUnit" class="col-4 col-form-label">단위</label>
+                                <div class="col-8">
+                                    <select type="text" class="form-control form-select" id="addUnit" name="unit.id">
+                                        <option value="">선택</option>
+                                        <c:forEach items="${unit}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
                                 <label for="addCategory" class="col-4 col-form-label">카테고리</label>
                                 <div class="col-8">
                                     <select type="text" class="form-control form-select" id="addCategory" name="category.id">
-                                        <option value="">전체</option>
+                                        <option value="">선택</option>
                                         <c:forEach items="${category}" var="item">
                                             <option value="${item.id}">${item.name}</option>
                                         </c:forEach>
@@ -124,7 +135,7 @@
                                         <div class="mb-3 row">
                                             <label for="editOwnerName" class="col-4 col-form-label">규격</label>
                                             <div class="col-8">
-                                                <input type="text" class="form-control" id="editOwnerName" name="ownerName" sw="value_standard">
+                                                <input type="text" class="form-control" id="editOwnerName" name="standard" sw="value_standard">
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
@@ -147,6 +158,17 @@
                                             <label for="editStock" class="col-4 col-form-label">재고</label>
                                             <div class="col-8">
                                                 <input type="text" disabled class="form-control" id="editStock" name="stock" sw="value_stock">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="unit" class="col-4 col-form-label">단위</label>
+                                            <div class="col-8">
+                                                <select type="text" class="form-control form-select" id="unit" name="unit.id">
+                                                    <option value=""></option>
+                                                    <c:forEach items="${unit}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>

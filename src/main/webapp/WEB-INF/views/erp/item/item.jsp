@@ -137,14 +137,26 @@
                                                     <label for="addName" class="col-4 col-form-label">품목명</label>
                                                     <div class="col-8">
                                                         <input type="hidden" class="form-control" id="addName" name="product.id" sw="value_productId">
-                                                        <input type="text" readonly class="form-control" id="addName" name="product.name" sw="value_productName">
+                                                        <input type="text" disabled class="form-control" id="addName" name="product.name" sw="value_productName">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="addName" class="col-4 col-form-label">규격</label>
+                                                    <div class="col-8">
+                                                        <input type="text" disabled class="form-control"  sw="value_productStandard">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="addName" class="col-4 col-form-label">단위</label>
+                                                    <div class="col-8">
+                                                        <input type="text" disabled class="form-control" sw="value_productUnitName">
                                                     </div>
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="addStandard" class="col-4 col-form-label">거래처</label>
                                                     <div class="col-8">
-                                                        <input type="hidden" readonly class="form-control" id="addStandard" name="supplier.id" sw="value_supplierId">
-                                                        <input type="text" readonly class="form-control" id="addStandard" name="supplier.name" sw="value_supplierName">
+                                                        <input type="hidden" class="form-control" id="addStandard" name="supplier.id" sw="value_supplierId">
+                                                        <input type="text" disabled class="form-control" id="addStandard" name="supplier.name" sw="value_supplierName">
                                                     </div>
                                                 </div>
                                             </div>
@@ -159,17 +171,6 @@
                                                     <label for="editOwnerName" class="col-4 col-form-label">최소구매수량</label>
                                                     <div class="col-8">
                                                         <input type="text" class="form-control" name="minQuantity" value="1">
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label for="category" class="col-4 col-form-label">단위</label>
-                                                    <div class="col-8">
-                                                        <select type="text" class="form-control form-select" name="unit.id">
-                                                            <option value="">선택</option>
-                                                            <c:forEach items="${unit}" var="item">
-                                                                <option value="${item.id}">${item.name}</option>
-                                                            </c:forEach>
-                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -214,13 +215,25 @@
                                         <div class="mb-3 row">
                                             <label for="addName" class="col-4 col-form-label">품목명</label>
                                             <div class="col-8">
-                                                <input type="text" disabled class="form-control" id="addName" name="product.name" sw="value_productName">
+                                                <input type="text" disabled class="form-control"  sw="value_productName">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="addName" class="col-4 col-form-label">규격</label>
+                                            <div class="col-8">
+                                                <input type="text" disabled class="form-control"  sw="value_productStandard">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="addName" class="col-4 col-form-label">단위</label>
+                                            <div class="col-8">
+                                                <input type="text" disabled class="form-control" sw="value_productUnitName">
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
                                             <label for="addStandard" class="col-4 col-form-label">거래처</label>
                                             <div class="col-8">
-                                                <input type="text" disabled class="form-control" id="addStandard" name="supplier.name" sw="value_supplierName">
+                                                <input type="text" disabled class="form-control" id="addStandard" sw="value_supplierName">
                                             </div>
                                         </div>
                                     </div>
@@ -235,17 +248,6 @@
                                             <label for="editOwnerName" class="col-4 col-form-label">최소구매수량</label>
                                             <div class="col-8">
                                                 <input type="text" class="form-control" name="minQuantity" sw="value_minQuantity">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label for="category" class="col-4 col-form-label">단위</label>
-                                            <div class="col-8">
-                                                <select type="text" class="form-control form-select" id="unit" name="unit.id">
-                                                    <option value="">선택</option>
-                                                    <c:forEach items="${unit}" var="item">
-                                                        <option value="${item.id}">${item.name}</option>
-                                                    </c:forEach>
-                                                </select>
                                             </div>
                                         </div>
                                     </div>

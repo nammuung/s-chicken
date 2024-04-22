@@ -42,6 +42,13 @@ async function setDetailDataToEditModal(id){
                 option.selected = true;
             }
         })
+    const unit = document.getElementById("unit");
+    Array.prototype.slice.call(unit)
+        .forEach(option=>{
+            if(option.value === data.unit.id){
+                option.selected = true;
+            }
+        })
 }
 //name 이벤트 리스너 추가
 function addNameEventListener(){
@@ -64,15 +71,16 @@ const myCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=
 })
 const tableOptions = {
     data:[],
-    colHeaders : ['','ID','카테고리', '품명', '규격'],
+    colHeaders : ['','ID','카테고리', '품명', '규격', '단위'],
     columns : [
         {renderer:myCheckboxRenderer},
         {data:"id"},
         {data:"category.name"},
         {data:"name", renderer:"html"},
         {data:"standard"},
+        {data:"unit.name"},
     ],
-    colWidths : scaleArrayToSum(Array(5)),
+    colWidths : scaleArrayToSum(Array(6)),
     height:"50vh",
 }
 const hot = handsontable(container, tableOptions);

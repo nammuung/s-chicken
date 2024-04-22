@@ -7,6 +7,7 @@
     <resultMap id="getProductMap" type="ProductVO" autoMapping="true">
         <id column="id" property="id"/>
         <association property="category" javaType="CodeVO" columnPrefix="category_" autoMapping="true"/>
+        <association property="unit" javaType="CodeVO" columnPrefix="unit_" autoMapping="true"/>
     </resultMap>
     <select id="getCategory">
         SELECT
@@ -16,15 +17,27 @@
         WHERE
             type_id = '600'
     </select>
+    <select id="getUnit">
+        SELECT
+            *
+        FROM
+            code
+        WHERE
+            type_id = '500'
+    </select>
     <select id="getProduct" resultMap="getProductMap">
         SELECT
             p.*,
-            c.name category_name
+            c.name category_name,
+            uni.name unit_name
         FROM
             product p
         LEFT JOIN
             code c
             ON p.category_id = c.id AND c.type_id = '600'
+        LEFT JOIN
+            code uni
+            ON p.unit_id = uni.id AND uni.type_id = '500'
         WHERE
             p.id = #{id}
         ORDER BY
@@ -33,12 +46,16 @@
     <select id="getProductList" resultMap="getProductMap">
         SELECT
             p.*,
-            c.name category_name
+            c.name category_name,
+            uni.name unit_name
         FROM
             product p
         LEFT JOIN
             code c
             ON p.category_id = c.id AND c.type_id = '600'
+        LEFT JOIN
+            code uni
+            ON p.unit_id = uni.id AND uni.type_id = '500'
         <include refid="search"/>
         ORDER BY p.id
     </select>
@@ -65,9 +82,9 @@
         </selectKey>
         INSERT INTO
             product
-            (id, name, category_id, standard)
+            (id, name, category_id, standard, unit_id)
         VALUES
-            (#{id}, #{name}, #{category.id}, #{standard})
+            (#{id}, #{name}, #{category.id}, #{standard}, #{unit.id})
     </insert>
     <update id="updateProduct">
         UPDATE
@@ -81,6 +98,9 @@
             </if>
             <if test="standard != null">
                 ,standard = #{standard}
+            </if>
+            <if test="unit != null">
+                ,unit_id = #{unit.id}
             </if>
         </set>
         WHERE

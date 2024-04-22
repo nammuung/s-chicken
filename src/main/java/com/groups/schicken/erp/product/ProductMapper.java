@@ -15,5 +15,6 @@ public interface ProductMapper {
     int addProduct(ProductVO productVO) throws Exception;
 
     int updateProduct(ProductVO productVO) throws Exception;
+    List<CodeVO> getUnit() throws Exception;
 
 }

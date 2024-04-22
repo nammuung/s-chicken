@@ -12,7 +12,6 @@ public class ItemController {
 
     @GetMapping("/items")
     public String getItemList(Model model) throws Exception {
-        model.addAttribute("unit", itemService.getUnit());
         return "erp/item/item";
     }
 }

@@ -29,7 +29,5 @@ public class ItemService {
         return itemMapper.updateItem(itemVO);
     }
 
-    public List<CodeVO> getUnit() throws Exception{
-        return itemMapper.getUnit();
-    }
+
 }

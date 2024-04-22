@@ -35,4 +35,8 @@ public class ProductService {
     public List<CodeVO> getCategory() throws Exception {
         return productMapper.getCategory();
     }
+
+    public List<CodeVO> getUnit() throws Exception{
+        return productMapper.getUnit();
+    }
 }

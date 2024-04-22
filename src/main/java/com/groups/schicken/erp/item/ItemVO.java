@@ -17,5 +17,4 @@ public class ItemVO {
     private String modifyDate;
     private EmployeeVO writer;
     private Boolean use;
-    private CodeVO unit;
 }

@@ -25,7 +25,7 @@ const tableOptions = {
         {data:"product.category.name"},
         {data:"product.name", renderer:"html"},
         {data:"product.standard"},
-        {data:"unit.name"},
+        {data:"product.unit.name"},
         {data:"contractPrice"},
         {data:"supplier.name"},
         {data:"createDate"},
@@ -45,7 +45,9 @@ const productCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, c
     if(checked){
         selectedProduct.id = instance.getDataAtCell(row,1);
         selectedProduct.name = instance.getDataAtCell(row,3);
-        sw.matchData({productName:selectedProduct.name, productId:selectedProduct.id})
+        selectedProduct.standard = instance.getDataAtCell(row,4);
+        selectedProduct.unitName = instance.getDataAtCell(row,5);
+        sw.matchData({productName:selectedProduct.name, productId:selectedProduct.id,productUnitName:selectedProduct.unitName, productStandard:selectedProduct.standard})
     } else {
         selectedProduct = {}
     }
@@ -61,7 +63,6 @@ const supllierCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, 
         selectedSupplier.id = instance.getDataAtCell(row,1);
         selectedSupplier.name = instance.getDataAtCell(row,2);
         sw.matchData({supplierName:selectedSupplier.name, supplierId: selectedSupplier.id})
-
     } else {
         selectedSupplier = {}
     }
@@ -101,17 +102,10 @@ editButton.addEventListener("click", async function(){
 async function setDetailDataToEditModal(id){
     const result = await getItem(id);
     const data = result.data;
-    const unit = document.getElementById("unit");
-    console.log(data)
-    Array.prototype.slice.call(unit)
-        .forEach(option=>{
-            console.log(option.value);
-            if(option.value === data.unit.id){
-                option.selected = true;
-            }
-        })
     sw.matchData({supplierName: data.supplier.name})
     sw.matchData({productName: data.product.name})
+    sw.matchData({productUnitName: data.product.unit.name})
+    sw.matchData({productStandard: data.product.standard})
     sw.matchData(data)
 }
 //name 이벤트 리스너 추가
@@ -234,15 +228,16 @@ addButton.addEventListener("click", function(){
     const tableHeight = document.querySelector(".modal-body .position-relative").getBoundingClientRect().height- document.getElementById("productSearchContainer").getBoundingClientRect().height-document.getElementById("next")-document.getElementById("nextButton1").getBoundingClientRect().height -20
     const productTableOptions = {
         data:[],
-        colHeaders : ['','ID','카테고리', '품명', '규격'],
+        colHeaders : ['','ID','카테고리', '품명', '규격','단위'],
         columns : [
             {renderer:productCheckboxRenderer},
             {data:"id"},
             {data:"category.name"},
             {data:"name", renderer:"html"},
             {data:"standard"},
+            {data:"unit.name"},
         ],
-        colWidths : scaleArrayToSum(Array(5)),
+        colWidths : scaleArrayToSum(Array(6)),
         height:tableHeight,
     }
     productHot = handsontable(productContainer, productTableOptions);

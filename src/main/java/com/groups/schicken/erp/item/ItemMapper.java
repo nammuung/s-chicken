@@ -16,5 +16,4 @@ public interface ItemMapper {
 
     int updateItem(ItemVO itemVO) throws Exception;
 
-    List<CodeVO> getUnit() throws Exception;
 }
