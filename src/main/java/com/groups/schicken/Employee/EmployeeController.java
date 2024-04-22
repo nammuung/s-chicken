@@ -62,7 +62,7 @@ public class EmployeeController {
 	}
 	
 
-	
+	//패스워드 변경
 	@PostMapping("updatePassword")
 	public String updatePassword(@RequestParam("password") String currentPassword, 
 	                             @RequestParam("newpassword") String newPassword, 
@@ -98,6 +98,7 @@ public class EmployeeController {
 	    return "employee/result";
 	}
 
+	//패스워드 초기화
 	@PostMapping("employeeResetPassword")
 	public String employeeResetPassword(Model model, EmployeeVO employeeVO, @RequestParam("hiddenId") String hiddenId)throws Exception{
 		  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -112,6 +113,7 @@ public class EmployeeController {
 	}
 
 	
+	// 직원 정보 수정
 	@PostMapping("updateEmployee")
 	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id)throws Exception{
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -132,9 +134,7 @@ public class EmployeeController {
 		    model.addAttribute("path", path);
 		    return "employee/result";
 	}
-	
-	
-	
+		
 	
 	//회원가입 페이지 이동
 	@GetMapping("join")
@@ -162,7 +162,7 @@ public class EmployeeController {
 	}
 
 
-	
+	// 직원 상세정보
 	@GetMapping("profile")
 	public String userDetail(@AuthenticationPrincipal Principal principal,  EmployeeVO employeeVO, Model model)throws Exception{
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -179,7 +179,7 @@ public class EmployeeController {
 		
 	}
 
-	
+	// 직원 목록
 	@GetMapping("list")
 	public String userList(Pager pager, Model model)throws Exception{
 		List<EmployeeVO> ar = employeeService.userList(pager);
@@ -200,6 +200,8 @@ public class EmployeeController {
 		
 		
 	}
+	
+	// 퇴사자 목록
 	@GetMapping("isuserList")
 	public String isuserList(Pager pager, Model model) throws Exception{
 		List<EmployeeVO> ar = employeeService.isuserList(pager);
@@ -220,6 +222,7 @@ public class EmployeeController {
 	}
 	
 	
+	// 권한 설정 화면
 	@GetMapping("role")
 	public String role(EmployeeVO employeeVO ,Model model) throws Exception {
 	    List<RoleVO> roles = employeeService.role(employeeVO);
@@ -227,6 +230,7 @@ public class EmployeeController {
 	    return "employee/role";
 	}
 
+	//권한데이터 json으로 뿌리는 용도
 	@GetMapping("/roles")
     public ResponseEntity<List<RoleVO>> rolelist1(RoleVO roleVO) throws Exception {
         List<RoleVO> roles = employeeService.rolelist(roleVO);
@@ -234,6 +238,7 @@ public class EmployeeController {
         return ResponseEntity.ok(roles);
     }
 	
+	// 권한 수정 
 	@PostMapping("role")
 	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("rolId") String[] rolId , Model model)throws Exception {
 		System.out.println(departmentId);
@@ -243,9 +248,6 @@ public class EmployeeController {
 	    return "redirect:/employee/role";
 	}
 
-
-
-	
 	
 	// 비밀번호 찾기 페이지로 이동
     @GetMapping("resetPassword")

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.annual.AnnualDAO">
+
+
+<select id="annualList" resultType="AnnualVO">
+<!--select * from annual where employee_id = #{employeeId} and is_annual = 0 order by annual_date DESC-->
+SELECT *,
+    #{annualTotal} AS annualTotal
+FROM annual
+WHERE employee_id = #{employeeId} AND is_annual = 0
+ORDER BY annual_date DESC, annualTotal ASC;
+</select>
+
+
+<select id="annuals" resultType="AnnualVO">
+select * from annual
+</select>
+
+<update id="deleteAnnual" parameterType="AnnualVO">
+UPDATE annual
+SET is_annual = 1
+WHERE is_annual = 0
+AND YEAR(STR_TO_DATE(annual_date, '%Y%m%d')) != YEAR(CURDATE());
+</update>
+
+ <select id="list" resultType="EmployeeVO">
+  SELECT employee.id, date_of_employment , name FROM employee
+</select> 
+
+    
+<insert id="annualInsert" parameterType="AnnualVO">
+    <selectKey resultType="Long" keyProperty="id" order="BEFORE">
+        SELECT nextval(seq5)
+    </selectKey>
+    insert into annual 
+    values 
+    (
+    #{id},
+    #{employeeId},
+    #{remainderAnnual},
+    0,
+    #{history},
+    null,
+    #{annualDate},
+    #{writerId},
+    #{isAnnual}
+    )
+    </insert>
+    
+    
+</mapper>
