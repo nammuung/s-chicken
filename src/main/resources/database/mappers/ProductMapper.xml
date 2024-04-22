@@ -61,16 +61,16 @@
     </select>
     <sql id="search">
         <where>
-            <if test='id != null and !id.equals("")'>
+            <if test='id != null'>
                 p.id LIKE concat('%',#{id},'%')
             </if>
-            <if test='name != null and !name.equals("")'>
+            <if test='name != null'>
                 AND p.name LIKE concat('%',#{name},'%')
             </if>
-            <if test='standard != null and !standard.equals("")'>
+            <if test='standard != null'>
                 AND p.standard LIKE concat('%',#{standard},'%')
             </if>
-            <if test='category != null and !category.id.equals("")'>
+            <if test='category != null and category.id != null'>
                 AND p.category_id = #{category.id}
             </if>
         </where>
@@ -82,9 +82,9 @@
         </selectKey>
         INSERT INTO
             product
-            (id, name, category_id, standard, unit_id)
+            (id, name, category_id, standard, unit_id, sell_price)
         VALUES
-            (#{id}, #{name}, #{category.id}, #{standard}, #{unit.id})
+            (#{id}, #{name}, #{category.id}, #{standard}, #{unit.id}, #{sellPrice})
     </insert>
     <update id="updateProduct">
         UPDATE
@@ -101,6 +101,9 @@
             </if>
             <if test="unit != null">
                 ,unit_id = #{unit.id}
+            </if>
+            <if test="sellPrice != null">
+                ,sell_price = #{sellPrice}
             </if>
         </set>
         WHERE

@@ -10,4 +10,5 @@ public class ProductVO {
     private String standard;
     private CodeVO category;
     private CodeVO unit;
+    private Long sellPrice;
 }

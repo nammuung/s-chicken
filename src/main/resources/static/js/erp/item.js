@@ -18,7 +18,7 @@ const myCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=
 })
 const tableOptions = {
     data:[],
-    colHeaders : ['','ID','카테고리', '품명', '규격','단위', '계약단가', '거래처', '등록일', '등록자'],
+    colHeaders : ['','ID','카테고리', '품명', '규격','단위', '계약단가','판매단가', '거래처', '등록일', '등록자'],
     columns : [
         {renderer:myCheckboxRenderer},
         {data:"id"},
@@ -27,11 +27,12 @@ const tableOptions = {
         {data:"product.standard"},
         {data:"product.unit.name"},
         {data:"contractPrice"},
+        {data:"product.sellPrice"},
         {data:"supplier.name"},
         {data:"createDate"},
         {data:"writer.name"},
     ],
-    colWidths : scaleArrayToSum(Array(10)),
+    colWidths : scaleArrayToSum(Array(11)),
     height:"50vh",
 }
 const hot = handsontable(container, tableOptions);
@@ -47,7 +48,14 @@ const productCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, c
         selectedProduct.name = instance.getDataAtCell(row,3);
         selectedProduct.standard = instance.getDataAtCell(row,4);
         selectedProduct.unitName = instance.getDataAtCell(row,5);
-        sw.matchData({productName:selectedProduct.name, productId:selectedProduct.id,productUnitName:selectedProduct.unitName, productStandard:selectedProduct.standard})
+        selectedProduct.sellPrice = instance.getDataAtCell(row,7);
+        sw.matchData({
+            productName:selectedProduct.name,
+            productId:selectedProduct.id,
+            productUnitName:selectedProduct.unitName,
+            productStandard:selectedProduct.standard,
+            productSellPrice:selectedProduct.sellPrice
+        })
     } else {
         selectedProduct = {}
     }

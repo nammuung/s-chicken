@@ -74,7 +74,12 @@
                                     <input type="text" class="form-control" id="addStandard" name="standard" value="">
                                 </div>
                             </div>
-
+                            <div class="mb-3 row">
+                                <label for="addSellPrice" class="col-4 col-form-label">판매단가</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="addStandard" name="sellPrice" value="">
+                                </div>
+                            </div>
 
                         </div>
                         <div class="col-6">
@@ -112,10 +117,10 @@
             <div class="modal-header pb-0">
                 <ul class="nav nav-tabs nav-tabs-bordered">
                     <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#supplier-overview">품목 정보</button>
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#product-overview">품목 정보</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">공급 거래처</button>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#supplier-overview">공급 거래처</button>
                     </li>
                 </ul>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -123,7 +128,7 @@
             <div class="modal-body">
                 <div class="position-relative" style="height: 50vh">
                     <div class="tab-content pt-2">
-                        <div class="tab-pane fade show active profile-overview" id="supplier-overview">
+                        <div class="tab-pane fade show active profile-overview" id="product-overview">
                             <form id="editForm" class="text-nowrap text-end">
                                 <div class="row">
                                     <div class="col-6">
@@ -148,7 +153,12 @@
                                             </div>
                                         </div>
 
-
+                                        <div class="mb-3 row">
+                                            <label for="editSellPrice" class="col-4 col-form-label">판매 단가</label>
+                                            <div class="col-8">
+                                                <input type="text" class="form-control" id="editSellPrice" name="sellPrice" sw="value_sellPrice">
+                                            </div>
+                                        </div>
 
 
                                     </div>
@@ -195,6 +205,22 @@
                             </form>
                             <div class="position-absolute end-0 bottom-0">
                                 <button type="button" class="btn btn-primary" id="editSubmitButton">수정</button>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade profile-overview" id="supplier-overview">
+                            <div class="row overflow-auto" style="max-height: 50vh">
+                                <table class="table" id="supplierTable">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">공급 거래처</th>
+                                            <th scope="col">공급 가격</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

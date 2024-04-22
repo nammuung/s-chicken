@@ -18,6 +18,7 @@ public class ItemAPI {
 
     @GetMapping
     public ResponseEntity<?> getItemList(ItemVO itemVO) throws Exception {
+        System.out.println("itemVO = " + itemVO);
         try {
             System.out.println(itemService.getItemList(itemVO));
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), itemService.getItemList(itemVO)));

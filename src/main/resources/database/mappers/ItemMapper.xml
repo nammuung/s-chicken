@@ -9,13 +9,16 @@
             <if test='id != null'>
                 i.id LIKE concat('%',#{id},'%')
             </if>
-            <if test='supplier != null and !supplier.name.isEmpty()'>
+            <if test='supplier != null and supplier.name != null'>
                 AND sup.name LIKE concat('%',#{supplier.name},'%')
             </if>
-            <if test='product != null and !product.name.isEmpty()'>
+            <if test='product != null and product.name != null'>
                 AND prd.name LIKE concat('%',#{product.name},'%')
             </if>
-            <if test='writer != null and !writer.name.isEmpty()'>
+            <if test='product != null and product.id != null'>
+                AND prd.id = #{product.id}
+            </if>
+            <if test='writer != null and writer.name != null'>
                 AND emp.name LIKE concat('%',#{writer.name},'%')
             </if>
         </where>
@@ -39,6 +42,7 @@
             prd.id product_id,
             prd.name product_name,
             prd.standard product_standard,
+            prd.sell_price product_sellPrice,
             cat.name product_category_name,
             uni.name product_unit_name,
             emp.id employee_id,
@@ -78,6 +82,7 @@
             prd.id product_id,
             prd.name product_name,
             prd.standard product_standard,
+            prd.sell_price product_sellPrice,
             cat.name product_category_name,
             uni.name product_unit_name,
             emp.id employee_id,

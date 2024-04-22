@@ -3,7 +3,8 @@ import {defaultInstance} from "../util/axios.js";
 export const getSupplierList = async (formData) => {
     const params = new URLSearchParams();
     for(const [key, value] of formData.entries()){
-        params.append(key, value);
+        if(value)
+            params.append(key, value);
     }
     try {
         const response = await defaultInstance.get('supplier', {params});

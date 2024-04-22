@@ -1,5 +1,6 @@
 import {checkboxRenderer, handsontable, scaleArrayToSum} from "../lib/handsontable.js";
 import {addProduct, getProduct, getProductList, updateProduct} from "../api/product.js";
+import {getItemList} from "../api/item.js";
 
 sw.init()
 searchProduct()
@@ -49,6 +50,22 @@ async function setDetailDataToEditModal(id){
                 option.selected = true;
             }
         })
+    const formData = new FormData();
+    formData.append("product.id", id);
+    const items = await getItemList(formData)
+    const supplierTable = document.querySelector("#supplierTable tbody")
+    console.log(items)
+    items.data.forEach((item,index) => {
+        supplierTable.innerHTML += `
+            <tr>
+                <td>
+                    ${index+1}
+                </td>
+                <td>${item.supplier.name}</td>
+                <td>${item.contractPrice}</td>
+            </tr>
+        `
+    })
 }
 //name 이벤트 리스너 추가
 function addNameEventListener(){
@@ -71,7 +88,7 @@ const myCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=
 })
 const tableOptions = {
     data:[],
-    colHeaders : ['','ID','카테고리', '품명', '규격', '단위'],
+    colHeaders : ['','ID','카테고리', '품명', '규격', '단위','판매단가'],
     columns : [
         {renderer:myCheckboxRenderer},
         {data:"id"},
@@ -79,8 +96,9 @@ const tableOptions = {
         {data:"name", renderer:"html"},
         {data:"standard"},
         {data:"unit.name"},
+        {data:"sellPrice"},
     ],
-    colWidths : scaleArrayToSum(Array(6)),
+    colWidths : scaleArrayToSum(Array(7)),
     height:"50vh",
 }
 const hot = handsontable(container, tableOptions);
