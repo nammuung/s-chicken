@@ -1,5 +1,6 @@
 import {getSupplierList, getSupplier, updateSupplier, addSupplier} from "../api/supplier.js";
 import {handsontable, checkboxRenderer, scaleArrayToSum} from "../lib/handsontable.js";
+import {getItemList, getItem} from "../api/item.js";
 
 const registerModalEl = document.getElementById("register-modal")
 const editModalEl = document.getElementById("edit-modal")
@@ -49,6 +50,24 @@ async function setDetailDataToEditModal(id) {
     const result = await getSupplier(id);
     const data = result.data;
     sw.matchData(data)
+    const formData = new FormData();
+    formData.append("supplier.id", id);
+    const items = await getItemList(formData);
+    const productTable = document.querySelector("#productTable tbody")
+    console.log(items)
+    items.data.forEach((item,index) => {
+        productTable.innerHTML += `
+            <tr>
+                <td>
+                    ${index+1}
+                </td>
+                <td>${item.product.name}</td>
+                <td>${item.product.standard}</td>
+                <td>${item.product.unit.name}</td>
+                <td>${item.contractPrice}</td>
+            </tr>
+        `
+    })
 }
 //name 이벤트 리스너 추가
 function addNameEventListener(){

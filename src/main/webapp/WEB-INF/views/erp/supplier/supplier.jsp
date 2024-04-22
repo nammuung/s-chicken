@@ -135,7 +135,7 @@
                         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#supplier-overview">거래처 정보</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">계약 품목</button>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-overview">계약 품목</button>
                     </li>
                 </ul>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -217,6 +217,24 @@
                             </form>
                             <div class="position-absolute end-0 bottom-0">
                                 <button type="button" class="btn btn-primary" id="editSubmitButton">수정</button>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade profile-overview" id="product-overview">
+                            <div class="row overflow-auto" style="max-height: 50vh">
+                                <table class="table" id="productTable">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">품명</th>
+                                        <th scope="col">규격</th>
+                                        <th scope="col">단위</th>
+                                        <th scope="col">계약단가</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

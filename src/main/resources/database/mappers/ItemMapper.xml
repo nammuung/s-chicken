@@ -12,6 +12,9 @@
             <if test='supplier != null and supplier.name != null'>
                 AND sup.name LIKE concat('%',#{supplier.name},'%')
             </if>
+            <if test='supplier != null and supplier.id != null'>
+                AND sup.id = #{supplier.id}
+            </if>
             <if test='product != null and product.name != null'>
                 AND prd.name LIKE concat('%',#{product.name},'%')
             </if>
