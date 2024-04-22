@@ -1,13 +1,14 @@
 package com.groups.schicken.notification;
 
 
+import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -25,12 +26,21 @@ public class Noticer {
         sendNotice(notification, receivers);
     }
 
+    public void sendNoticeByEmployeeVO(NotificationVO notification, EmployeeVO receiver) {
+        notification.setId(receiver.getId());
+        sendNotice(notification);
+    }
+
+    public void sendNoticeByEmployeeVO(NotificationVO notification, List<EmployeeVO> receivers) {
+        sendNotice(notification, receivers.stream().map(EmployeeVO::getId).toList());
+    }
+
     public void sendNotice(NotificationVO notification, List<String> receivers) {
         notification.setTime(DateManager.getTodayDateTime("yyyyMMddHHmmss"));
         int result = notificationDAO.insertNotification(notification, receivers);
         System.out.println("notification = " + notification);
 
-        notification.setTitle(NotificationService.getTitleByType(notification.getType()));
+        notification.setTitle(NotificationType.getTitleByType(notification.getType()));
         notification.setTime(DateManager.dateParsing(notification.getTime(),"yyyyMMddHHmmss", "yyyy-MM-dd HH:mm"));
 
         for (String receiver : receivers) {

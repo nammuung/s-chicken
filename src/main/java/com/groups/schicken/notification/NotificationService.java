@@ -15,27 +15,23 @@ public class NotificationService {
 
     private final NotificationDAO notificationDAO;
 
-    public List<NotificationVO> getNotifications(EmployeeVO employeeVO, Boolean read) {
+    public List<NotificationVO> getNotifications(EmployeeVO employeeVO){
+        return getNotifications(employeeVO,null);
+    }
+
+    public List<NotificationVO> getNotifications(EmployeeVO employeeVO, Boolean read){
         Pager pager = new Pager();
         pager.setPage(1L);
+
+        return getNotifications(employeeVO, pager, read);
+    }
+
+    public List<NotificationVO> getNotifications(EmployeeVO employeeVO, Pager pager, Boolean read) {
         pager.makeIndex();
 
         List<NotificationVO> list = notificationDAO.getNotifications(employeeVO, pager, read);
-
         for (NotificationVO notification : list) {
-            notification.setTitle(getTitleByType(notification.getType()));
-            notification.setTime(DateManager.dateParsing(notification.getTime(),"yyyyMMddHHmmss", "yyyy-MM-dd HH:mm"));
-        }
-
-        return list;
-    }
-
-    public List<NotificationVO> getNotifications(EmployeeVO employeeVO, Pager pager) {
-        pager.makeIndex();
-
-        List<NotificationVO> list = notificationDAO.getNotifications(employeeVO, pager, null);
-        for (NotificationVO notification : list) {
-            notification.setTitle(getTitleByType(notification.getType()));
+            notification.setTitle(NotificationType.getTitleByType(notification.getType()));
             notification.setTime(DateManager.dateParsing(notification.getTime(),"yyyyMMddHHmmss", "yyyy-MM-dd HH:mm"));
         }
 
@@ -50,13 +46,5 @@ public class NotificationService {
         }
     }
 
-    public static String getTitleByType(NotificationType type){
-        return switch (type){
-            case NoteMessage -> "쪽지가 왔습니다";
-            case Document -> "결재할 문서가 있습니다";
-            case Notice -> "새로운 공지사항이 있습니다";
-            case Chat -> null;
-        };
-    }
 
 }

@@ -33,16 +33,15 @@
                     </li>
                     </c:forEach>
                 </ul>
-                <c:if test="${vo.length >= 10}">
-                <div class="p-3 text-center">
-                    <h4>더보기</h4>
-                </div>
-                </c:if>
-                <c:if test="${vo.length < 10}">
-                <div class="p-3 text-center">
+
+                <button id="more-notification-btn" data-page="1" class="d-block border-0 h4 bg-white p-3 text-center<c:if test="${notificationList.size() < 10}"> d-none</c:if>">
+                    더보기
+                </button>
+
+
+                <div id="last-notification-btn" class="p-3 text-center<c:if test="${notificationList.size() >= 10}"> d-none</c:if>">
                     <h4>마지막 알림 입니다</h4>
                 </div>
-                </c:if>
             </div>
         </div>
     </div>

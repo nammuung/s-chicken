@@ -29,6 +29,7 @@
         <if test="read != null">
             AND is_readed=#{read}
         </if>
+        ORDER BY time DESC
         LIMIT ${pager.startIndex}, ${pager.perPage}
     </select>
 

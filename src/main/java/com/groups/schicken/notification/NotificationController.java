@@ -24,7 +24,7 @@ public class NotificationController {
 
     @GetMapping("/notificationPage")
     public String getNotificationPage(@AuthenticationPrincipal EmployeeVO employeeVO, Pager pager, Model model) {
-        List<NotificationVO> list = notificationService.getNotifications(employeeVO, pager);
+        List<NotificationVO> list = notificationService.getNotifications(employeeVO);
         model.addAttribute("notificationList", list);
         return "notification/notification";
     }
@@ -36,9 +36,16 @@ public class NotificationController {
     }
 
     @GetMapping("/notifications")
-    public ResponseEntity<List<NotificationVO>> getNotifications(@AuthenticationPrincipal EmployeeVO employeeVO, Boolean read){
+    public ResponseEntity<List<NotificationVO>> getNotifications(@AuthenticationPrincipal EmployeeVO employeeVO, Pager pager, Boolean read){
         System.out.println("read = " + read);
-        List<NotificationVO> list = notificationService.getNotifications(employeeVO, read);
+
+        List<NotificationVO> list;
+        if(pager == null){
+            list = notificationService.getNotifications(employeeVO, read);
+        } else {
+            list = notificationService.getNotifications(employeeVO, pager, read);
+        }
+
         return ResponseEntity.ok(list);
     }
 

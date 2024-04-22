@@ -5,6 +5,9 @@ const notificationPageList = document.querySelector(".notifications[data-notific
 const notificationBadge = document.getElementById("notification-badge");
 const notificationIcon = document.getElementById("notification-icon");
 
+const moreNotificationBtn = document.getElementById("more-notification-btn");
+const lastNotificationBtn = document.getElementById("last-notification-btn");
+
 /* 알림 클릭시 함수 매핑 */
 let notificationByType = {
     NoteMessage : openNoteMessageByLink
@@ -45,12 +48,15 @@ function openNoteMessageByLink(link){
 
 
 /* functions */
-function drawNotificationDropdownItem({id, title, content, time, type, link}){
+function drawNotificationDropdownItem({id, title, content, time, type, link, isReaded}){
     let li = document.createElement("li");
     li.setAttribute("data-noti-id", id);
     li.setAttribute("data-link", link);
     li.setAttribute("data-type", type);
-    li.classList.add("notification-item");
+    li.classList.add("notification-item", "border-bottom");
+    if(isReaded){
+        li.classList.add("readed");
+    }
 
     let div = document.createElement("div");
 
@@ -61,13 +67,8 @@ function drawNotificationDropdownItem({id, title, content, time, type, link}){
     );
     li.append(div);
 
-    let divider = document.createElement("li");
-    let hr = document.createElement("hr");
-    hr.classList.add("dropdown-divider");
-    divider.append(hr);
-
     let returnDiv = document.createElement("div");
-    returnDiv.append(li, divider);
+    returnDiv.append(li);
 
     return returnDiv;
 }
@@ -82,13 +83,33 @@ function onNotificationIconClick(){
     notificationBadge.classList.add("d-none");
 }
 
+function getMoreNotification(event){
+    const page = Number(event.target.dataset.page) + 1;
+    fetch('/notifications?page=' + page)
+        .then(res=>res.json())
+        .then(r => {
+            if(notificationPageList == null) return;
+
+            const listItem = r.map(r => drawNotificationDropdownItem(r));
+            notificationPageList.append(...listItem);
+            event.target.dataset.page = page;
+
+            if(r.length < 10){
+                moreNotificationBtn.classList.add("d-none");
+                lastNotificationBtn.classList.remove("d-none");
+            }
+        })
+}
+
 /* 이벤트 리스너등록 */
 schickenNotificationList.addEventListener("click", onNotificationClick);
 if(notificationPageList != null) notificationPageList.addEventListener("click", onNotificationClick);
 notificationIcon.addEventListener("click", onNotificationIconClick);
+if(moreNotificationBtn != null) moreNotificationBtn.addEventListener("click",getMoreNotification);
 
 /* onDomContextLoad */
 window.addEventListener("DOMContentLoaded", ()=>{
+    console.log(123456789)
     fetch('/notifications?read=false')
         .then(res=>res.json())
         .then(r => {
@@ -97,8 +118,10 @@ window.addEventListener("DOMContentLoaded", ()=>{
                 if(noNotification.length > 0) {
                     noNotification.forEach(e => e.remove());
                 }
-                r.forEach(e => appendNotificationList(e))
+                const listItem = r.map(r => drawNotificationDropdownItem(r));
+                schickenNotificationList.append(...listItem);
             }
+
         });
 })
 
@@ -108,8 +131,6 @@ export const appendNotificationList = (noti) => {
         schickenNotificationList.lastElementChild.remove();
         schickenNotificationList.lastElementChild.remove();
     }
-
-    console.log(noti);
 
     notificationBadge.classList.remove("d-none");
     const listItem = drawNotificationDropdownItem(noti);
