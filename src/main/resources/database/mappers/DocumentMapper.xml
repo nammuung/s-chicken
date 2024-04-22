@@ -5,10 +5,14 @@
 
 <mapper namespace="com.groups.schicken.document.DocumentDAO">
 
-	<select id="approvalDetail">
-		SELECT * from document d
-		LEFT JOIN approval a ON d.id=a.document_id
-		WHERE id=#{id}
+	<select id="approvalDetail" resultMap="allListResult">
+		SELECT doc.*,
+		a.*,
+		emp.*
+		FROM document doc
+		LEFT JOIN approval a ON a.document_id = doc.id
+		LEFT JOIN employee emp ON a.employee_id = emp.id
+		
 			
 	</select>
 	

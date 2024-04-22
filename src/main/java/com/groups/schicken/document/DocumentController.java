@@ -43,14 +43,10 @@ public class DocumentController {
 	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO ,DocumentVO documentVO,Model model)throws Exception{
 	
 		List<DocumentVO> ar = documentService.approval(employeeVO);
-		System.out.println(ar);
 		model.addAttribute("list", ar);		
 	}
+
 	
-	@GetMapping("approvalList/bonus")
-	public void approvalDetail()throws Exception{
-		
-	}
 	
 	@GetMapping("document")
 	public void documentList(Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
@@ -122,6 +118,15 @@ public class DocumentController {
 		model.addAttribute("list", ar);
 	}
 	
+	@GetMapping("approvalList/bonus")
+	public void approvalDetail(@AuthenticationPrincipal EmployeeVO employeeVO,Model model,DocumentVO documentVO)throws Exception{
+				
+		List<DocumentVO> ar = documentService.approvalDetail(employeeVO);
+		System.out.println(ar.get(0).getApprovalVOs());
+		System.out.println(ar.get(1));
+		model.addAttribute("list", ar);
+		
+	}
 
 	
 }

@@ -15,6 +15,12 @@ public class DocumentService {
 	@Autowired
 	private DocumentDAO documentDAO;
 	
+	public List<DocumentVO> approvalDetail(EmployeeVO employeeVO)throws Exception{
+		
+		return documentDAO.approvalDetail(employeeVO);
+	}
+	
+	
 	public List<DocumentVO> approval(EmployeeVO employeeVO)throws Exception{
 		
 		return documentDAO.approvalList(employeeVO);
