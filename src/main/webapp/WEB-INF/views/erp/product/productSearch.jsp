@@ -27,7 +27,7 @@
             <div class="row col">
                 <label for="searchCategory" class="col-3 col-form-label text-nowrap">카테고리</label>
                 <div class="col-9">
-                    <select type="text" class="form-control form-select" id="searchCategory" name="categoryId">
+                    <select type="text" class="form-control form-select" id="searchCategory" name="category.id">
                         <option value="">전체</option>
                         <c:forEach items="${category}" var="item">
                             <option value="${item.id}">${item.name}</option>
