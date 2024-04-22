@@ -136,7 +136,7 @@
 		<!-- End Blank Page Nav -->
 	</ul>
 </aside>
-<div class="modal modal-lg w-60" tabindex="-1" id="annual-modal">
+<div class="modal modal-lg w-60" tabindex="-1" id="annual-modal" style="margin-left: 5%">
     <div class="modal-dialog modal-dialog-centered">
    
 
