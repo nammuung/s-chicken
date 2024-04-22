@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.groups.schicken.Employee.EmployeeService;
 import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.common.vo.Pager;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -100,8 +101,10 @@ public class AnnualService {
 	}
 
 	
-	public List<AnnualVO> annualList(AnnualVO annualVO) throws Exception {
-	    List<AnnualVO> annualList = annualDAO.annualList(annualVO); // 배열
+	public List<AnnualVO> annualList(AnnualVO annualVO,Pager pager) throws Exception {
+		pager.makeIndex();
+		pager.makeNum(annualDAO.getTotalCount(pager));
+	    List<AnnualVO> annualList = annualDAO.annualList(pager); // 배열
 
 	    List<AnnualVO> resultList = new ArrayList<>(); // 새로운 배열
 	    int remainderAnnual = 0;
@@ -134,6 +137,11 @@ public class AnnualService {
 
 	    return resultList;
 	}
+
+
+
+
+
 
 
 	
