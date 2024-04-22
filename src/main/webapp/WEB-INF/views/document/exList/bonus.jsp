@@ -26,6 +26,7 @@
         <%
     Date date = new Date();
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
+    
     String strDate = simpleDate.format(date);
     %>
     <form class="form-control"  method="POST">    
@@ -95,7 +96,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" name="" style="text-align: center;">
+                                                <input type="text" class="form-control" value="<%=strDate %>" name="" style="text-align: center;">
                                             </div>
                                         </td>
                                     </tr>
@@ -260,7 +261,7 @@
                     <tr>
                         <td
                             style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
-                            제목1 </td>
+                            제목 </td>
                         <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
                             colspan="5">
 

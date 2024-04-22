@@ -4,15 +4,39 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.document.DocumentDAO">
-	
 
+	<select id="approvalDetail">
+		SELECT * from document d
+		LEFT JOIN approval a ON d.id=a.document_id
+		WHERE id=#{id}
+			
+	</select>
+	
+	
+	<select id="approvalList" resultMap="allListResult">
+		SELECT 
+			d.id,
+			d.title,
+			d.write_date,
+			a.*,
+			tem.*,
+			emp.name employee_name,
+			emp.id employee_id
+		FROM document d
+		LEFT JOIN approval a ON a.document_id = d.id
+		LEFT JOIN employee emp ON d.writer_id=emp.id
+		LEFT JOIN template tem ON tem.temp_id=d.template_id
+		WHERE a.employee_id=#{id}	
+		ORDER BY rank
+	</select>
+	
 	
 	<insert id="add" keyProperty="id">
 		<selectKey keyProperty="id" order="BEFORE" resultType="Long">
 			SELECT nextval(seq3)
 		</selectKey>
 		INSERT INTO document
-		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writer},#{des})		
+		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writer},#{des})
 	</insert>
 	
 	<insert id="appAdd">
@@ -20,10 +44,6 @@
 		VALUES(#{documentId},#{employeeId},#{rank},#{result},#{date},#{comment})
 	</insert>
 	
-	<insert id="tempAdd">
-		INSERT INTO template
-		VALUES(#{templateId},#{tempName},#{type})
-	</insert>
 	
 	<select id="allList" resultMap="allListResult">
 		SELECT doc.*,
@@ -36,11 +56,30 @@
 	
 	<resultMap id="allListResult" type="DocumentVO" autoMapping="true">
 		<association property="templateVO" javaType="TemplateVO" autoMapping="true"/>
+		<association property="employeeVO" javaType="EmployeeVO" autoMapping="true" columnPrefix="employee_"/>
+		<association property="dName" javaType="DepartmentVO" autoMapping="true" columnPrefix="department_"/>		
+		<collection property="approvalVOs" javaType="List" ofType="ApprovalVO" autoMapping="true"/>
 	</resultMap>
+	
+	<select id="getDetail" resultMap="allListResult">
+		SELECT doc.*,
+		tem.*,
+		app.rank,
+		e.name employee_name,		
+		d.name department_name,
+		c.name "level"
+		FROM document doc
+		LEFT JOIN template tem ON doc.template_id = tem.temp_id
+		LEFT JOIN approval app ON app.document_id = doc.id
+		INNER JOIN employee e ON e.id=app.employee_id 
+		INNER JOIN department d on d.id=e.department_id 
+		INNER join code c on c.id=e.pos_id and c.type_id =300
+		WHERE doc.id=#{id}
+		ORDER BY app.rank
+	</select>
 	
 	<select id="allTotalCount" parameterType="Map" resultType="Long">
 		SELECT COUNT(id) FROM document r
-
 	</select>	
 
 </mapper>

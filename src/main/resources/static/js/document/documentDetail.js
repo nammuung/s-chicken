@@ -27,6 +27,7 @@ import oc from "/js/orgChart/orgChart.js";
 			method:"post",
 			body:formData,
 		}).then(r=>console.log(r))
+		
 	})
 	
 //	window.close(relativePath)

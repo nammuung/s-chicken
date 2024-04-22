@@ -9,7 +9,7 @@
 				<when test='pager.kind != null and pager.kind.equals("kind1")'>AND r.title LIKE CONCAT('%',#{pager.search},'%')</when>
 				<when test='pager.kind != null and pager.kind.equals("kind2")'>AND r.writer_id LIKE CONCAT('%',#{pager.search},'%')</when>
 				<otherwise>AND (r.title LIKE CONCAT('%',#{search},'%') OR r.writer_id LIKE CONCAT('%',#{pager.search},'%')) </otherwise>					
-			</choose>				
+			</choose>
 	</sql>
 	
 	<select id="allTotalCount" parameterType="Map" resultType="Long">

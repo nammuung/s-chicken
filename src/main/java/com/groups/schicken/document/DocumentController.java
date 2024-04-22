@@ -1,10 +1,12 @@
 package com.groups.schicken.document;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.Pager;
 
 
@@ -37,7 +40,15 @@ public class DocumentController {
 	}
 	
 	@GetMapping("approvalList")
-	public void getReportList() {
+	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO ,DocumentVO documentVO,Model model)throws Exception{
+	
+		List<DocumentVO> ar = documentService.approval(employeeVO);
+		System.out.println(ar);
+		model.addAttribute("list", ar);		
+	}
+	
+	@GetMapping("approvalList/bonus")
+	public void approvalDetail()throws Exception{
 		
 	}
 	
@@ -57,11 +68,11 @@ public class DocumentController {
 	public void documentTemp() {
 		
 	}
-	@GetMapping("bonus/bonus")
+	@GetMapping("exList/bonus")
 	public void sang() {
 		
 	}
-	@GetMapping("pay/pay")
+	@GetMapping("exList/pay")
 	public void pay() {
 		
 	}
@@ -103,5 +114,14 @@ public class DocumentController {
 
 		return ResponseEntity.ok(documentVO);
 	}
+	
+	@GetMapping("writenList/bonus")
+	public void writenBonus(DocumentVO documentVO,Model model)throws Exception{
+		List<DocumentVO> ar=documentService.getDetail(documentVO);
+		System.out.println(ar.get(0));
+		model.addAttribute("list", ar);
+	}
+	
+
 	
 }

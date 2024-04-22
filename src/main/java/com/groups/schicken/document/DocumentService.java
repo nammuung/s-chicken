@@ -7,12 +7,19 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.Pager;
 
 @Service
 public class DocumentService {
 	@Autowired
 	private DocumentDAO documentDAO;
+	
+	public List<DocumentVO> approval(EmployeeVO employeeVO)throws Exception{
+		
+		return documentDAO.approvalList(employeeVO);
+		
+	}
 	
 	public int add(DocumentVO documentVO)throws Exception{
 		System.out.println("들어옴");
@@ -36,12 +43,17 @@ public class DocumentService {
 		
 		map.put("documentVO", documentVO);
 		map.put("pager", pager);
-		map.put("templateVO", templateVO);
+		
 		pager.makeIndex();
 		pager.makeNum(documentDAO.allTotalCount(map));
 		
 		
 		
 		return documentDAO.allList(map);
+	}
+	
+	public List<DocumentVO> getDetail(DocumentVO documentVO)throws Exception{
+		
+		return documentDAO.getDetail(documentVO);
 	}
 }

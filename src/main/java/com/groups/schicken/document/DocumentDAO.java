@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.groups.schicken.Employee.EmployeeVO;
+
 
 @Mapper
 public interface DocumentDAO {
@@ -15,4 +17,12 @@ public interface DocumentDAO {
 	List<DocumentVO> allList(Map<String,Object> map)throws Exception;
 	
 	Long allTotalCount(Map<String, Object> map)throws Exception;
+	
+	List<DocumentVO> getDetail(DocumentVO documentVO)throws Exception;
+	
+	List<DocumentVO> approvalList(EmployeeVO employeeVO)throws Exception;
+	
+	List<DocumentVO> approvalDetail(EmployeeVO employeeVO)throws Exception;
+	
+	
 }

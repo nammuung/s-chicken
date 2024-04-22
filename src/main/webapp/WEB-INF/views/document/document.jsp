@@ -19,16 +19,20 @@
         <h1>결재상신함</h1>
     </div>
     
-    	<div class="container mb-4" name="categorySelect">
+   	<div class="container mb-4" name="categorySelect">
 		<ul
 			class="nav nav-pills list-group-horizontal d-flex justify-content-center"
 			name="categorySelect">
+			
 			<li class="nav-item px-2"><a
 				class="nav-link active BOARDCATEGORY" href="#" data-category="all">전체</a></li>
+				
 			<li class="nav-item px-2" name="category0" id="category0"><a
 				class="nav-link BOARDCATEGORY" href="#" data-category="category0">진행</a></li>
+				
 			<li class="nav-item px-2" name="category1" id="category1"><a
 				class="nav-link BOARDCATEGORY" href="#" data-category="category1">반려</a></li>
+				
 			<li class="nav-item px-2" name="category2" id="category2"><a
 				class="nav-link BOARDCATEGORY" href="#" data-category="category2">완료</a></li>
 		</ul>
@@ -69,7 +73,11 @@
                                 <c:forEach items="${list}" var="vo">
                                     <tr>
                                         <td>${vo.id}</td>
-                                        <td class="text-start">${vo.content}</td>
+                                        
+                                        
+                                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> <td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.content}</a></td></c:if>
+                                        
+                                        
                                         <td>${vo.templateVO.tempName}</td>
                                         <td>${vo.writeDate}</td>
                                         <c:if test="${vo.status eq 0}"> <td>진행중</td> </c:if>
@@ -83,12 +91,14 @@
                 </div>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
+                    
+                    
                         <li class="page-item disabled">
                             <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
                         </li>
                         <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        
+                        
                         <li class="page-item">
                             <a class="page-link" href="#">다음</a>
                         </li>
@@ -102,6 +112,7 @@
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
+<script src="/js/document/writen/bonus.js"></script>
 </body>
 
 </html>
