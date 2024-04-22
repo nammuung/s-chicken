@@ -26,7 +26,7 @@ public class AnnualService {
 	private AnnualDAO annualDAO;
 
 	//작년 연차내역 안보이게 설정
-	@Scheduled(cron = "0 50 23 L 12 ?") //매년 12월 마지막날 23시 50분 동작
+	//@Scheduled(cron = "0 50 23 L 12 ?") //매년 12월 마지막날 23시 50분 동작
 	//@Scheduled(cron = "0 * * * * ?") // 1분
 	public Integer deleteAnnual() throws Exception {
 	    LocalDate today = LocalDate.now();
@@ -71,6 +71,7 @@ public class AnnualService {
 	            annualVO.setHistory(msg);
 	            String date = String.format("%04d%02d%02d", today.getYear(), today.getMonthValue(), 1);
 	            annualVO.setAnnualDate(date);
+	            annualVO.setIsAnnual(true);
 
 	            // 연차 정보 DB에 저장
 	            int result = annualDAO.annualInsert(annualVO);
@@ -87,6 +88,10 @@ public class AnnualService {
 		if (s <= 0) {
 			annualVO.setAnnual(s);
 		}
+		if(annualVO.getIsAnnual()== null) {
+			annualVO.setAnnual(0);
+			Integer	totla = annualVO.getRemainderAnnual() - annualVO.getAnnual();	
+		}
 		Integer totla = annualVO.getRemainderAnnual() - annualVO.getAnnual();
 		annualVO.setAnnualTotal(totla);
 		int result = annualDAO.annualInsert(annualVO);
@@ -94,27 +99,50 @@ public class AnnualService {
 		return result;
 	}
 
-	public List<AnnualVO> annualList(AnnualVO annualVO) throws Exception {
-		// 기존 메서드 구현을 그대로 유지하고, 새로운 기능을 추가
+	
+public List<AnnualVO> annualList(AnnualVO annualVO) throws Exception {
+		
+		
 		List<AnnualVO> annualList = annualDAO.annualList(annualVO);
+		
 		return calculateRemainingAnnual(annualList);
 	}
 
 	private List<AnnualVO> calculateRemainingAnnual(List<AnnualVO> annualList) {
-		List<AnnualVO> resultList = new ArrayList<>();
+	    List<AnnualVO> resultList = new ArrayList<>();
+	    int remainderAnnual = 0;
+	    String currentYear = ""; // 현재 년도
 
-		int remainderAnnual = 0;
-		for (AnnualVO annual : annualList) {
-			int receivedAnnual = annual.getRemainderAnnual(); // 받은 연차
-			int usedAnnual = annual.getAnnual(); // 사용한 연차
+	    for (AnnualVO annual : annualList) {
+	        String annualDate = annual.getAnnualDate(); // 작성날짜
+	        String yearOfAnnual = annualDate.substring(0, 4); // 날짜에서 연도 추출
 
-			remainderAnnual += (receivedAnnual - usedAnnual); // 남은 연차 계산
+	        // 새로운 연도인지 확인
+	        if (!yearOfAnnual.equals(currentYear)) {
+	            if (!currentYear.isEmpty()) {
+	                
+	                remainderAnnual = 0;
+	            }
+	            currentYear = yearOfAnnual; // currentYear를 새로운 연도로 업데이트
+	        }
 
-			annual.setAnnualTotal(remainderAnnual);
-			resultList.add(annual);
-		}
+	        int receivedAnnual = annual.getRemainderAnnual(); // 받은 연차
+	        int usedAnnual = annual.getAnnual(); // 사용한 연차
 
-		return resultList;
+	        remainderAnnual += (receivedAnnual - usedAnnual); // 남은 연차 계산
+
+	        annual.setAnnualTotal(remainderAnnual);
+	        resultList.add(annual);
+	    }
+	    		
+
+	    
+		 
+	    return resultList;
 	}
+	 
+
+
+
 
 }

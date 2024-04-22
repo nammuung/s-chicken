@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		<section class="section">
 
 			<div class="row justify-content-center">
-				<div class="col-10">
+				<div style="width: 1800px;">
 					<div class="card">
 						<div class="card-body">
 							<div id='calendar'></div>

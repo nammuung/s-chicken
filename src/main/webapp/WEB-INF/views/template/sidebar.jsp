@@ -136,20 +136,15 @@
 		<!-- End Blank Page Nav -->
 	</ul>
 </aside>
-<div class="modal" tabindex="-1" id="annual-modal" >
+<div class="modal modal-lg w-60" tabindex="-1" id="annual-modal">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background-color: transparent; border: none; margin-left: -20%">
+        <div class="modal-content" style="width: 80%;">
             <!-- 모달 콘텐츠 영역 -->
         </div>
     </div>
 </div>
-
-
-
-
 <script type="module" src="/js/annual/annual.js"> </script>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+

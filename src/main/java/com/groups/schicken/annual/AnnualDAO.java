@@ -28,4 +28,10 @@ public interface AnnualDAO {
 	public List<AnnualVO> annualList(AnnualVO annualVO)throws Exception;
 	
 	public List<AnnualVO> annuals(AnnualVO annualVO)throws Exception;
+
+
+
+
+
+
 }
