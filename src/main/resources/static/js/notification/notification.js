@@ -72,9 +72,13 @@ function createElement(name, text){
     return element;
 }
 
+function onNotificationIconClick(){
+    notificationBadge.classList.add("d-none");
+}
+
 /* 이벤트 리스너등록 */
 schickenNotificationList.addEventListener("click", onNotificationClick);
-notificationIcon.addEventListener("click", ()=>notificationBadge.classList.add("d-none"))
+notificationIcon.addEventListener("click", onNotificationIconClick);
 
 /* controller에서 사용할 함수 */
 export const appendNotificationList = (noti) => {

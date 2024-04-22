@@ -24,11 +24,12 @@ public class NoteMessageService {
     private final Noticer noticer;
 
     @Transactional
-    public Integer sendMessage(NoteMessageVO message, List<String> receivers, MultipartFile attach) throws RuntimeException {
+    public Integer sendMessage(EmployeeVO loginEmp, NoteMessageVO message, List<String> receivers, MultipartFile attach) throws RuntimeException {
         if(message.getContent().isEmpty()){
             throw new RuntimeException("쪽지의 내용에는 빈 값이 올 수 없습니다.");
         }
 
+        message.setSenderId(loginEmp.getId());
         message.setContent(message.getContent().replaceAll("<","&lt;").replaceAll("\n", "<br>"));
 
         Integer result = noteMessageDAO.addMessage(message);
@@ -55,7 +56,7 @@ public class NoteMessageService {
         }
 
         System.out.println("noticer = " + noticer);
-        noticer.sendNotice("쪽지가 왔습니다", "" + message.getId(), NotificationType.NoteMessage, receivers);
+        noticer.sendNotice(loginEmp.getName() + "님에게 쪽지가 왔습니다", "" + message.getId(), NotificationType.NoteMessage, receivers);
 
         return result;
     }
