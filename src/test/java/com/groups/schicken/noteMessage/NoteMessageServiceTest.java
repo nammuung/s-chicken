@@ -27,7 +27,10 @@ class NoteMessageServiceTest {
         message.setSenderId(id);
         message.setContent("test message 입니다.");
 
-        Integer result = noteMessageService.sendMessage(message, receivers, null);
+        EmployeeVO employeeVO = new EmployeeVO();
+        employeeVO.setId("19990806228");
+
+        Integer result = noteMessageService.sendMessage(employeeVO, message, receivers, null);
 
         assertNotEquals(0, result);
     }

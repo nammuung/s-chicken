@@ -7,6 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<sec:authorize access="isAuthenticated()">
+    <sec:authentication property="principal" var="principal"/>
+    <div data-logined-id="${principal.id}"></div>
+</sec:authorize>
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
@@ -45,7 +50,7 @@
                         <li data-no-notification class="notification-item">
                             <div>
                                 <h4></h4>
-                                <p>알림이 없습니다.</p>
+                                <p>모든 알림을 읽었습니다.</p>
                                 <p></p>
                             </div>
                         </li>

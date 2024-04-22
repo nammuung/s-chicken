@@ -27,10 +27,8 @@ public class NoteMessageController {
         //나중에 로그인 후 session에서 받아오기
         System.out.println("message = " + message);
         System.out.println("receivers = " + Arrays.toString(receivers));
-
-        message.setSenderId(loginEmp.getId());
         try{
-            noteMessageService.sendMessage(message, List.of(receivers), attach);
+            noteMessageService.sendMessage(loginEmp, message, List.of(receivers), attach);
         } catch (Exception e){
             log.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -43,6 +41,8 @@ public class NoteMessageController {
     public ResponseEntity<Map> getList(@AuthenticationPrincipal EmployeeVO loginEmp, Pager pager, @PathVariable("type") NoteMessageBoxType type){
         System.out.println("loginEmp = " + loginEmp);
         System.out.println("pager = " + pager);
+
+
 
         Map<String, Object> map = new HashMap<>();
         List<NoteMessageVO> list;
