@@ -1,6 +1,7 @@
 import {openNoteMessage} from "/js/header/header.js";
 
 const schickenNotificationList = document.getElementById("schicken-notification-list");
+const notificationPageList = document.querySelector(".notifications[data-notification-list]")
 const notificationBadge = document.getElementById("notification-badge");
 const notificationIcon = document.getElementById("notification-icon");
 
@@ -8,11 +9,29 @@ const notificationIcon = document.getElementById("notification-icon");
 let notificationByType = {
     NoteMessage : openNoteMessageByLink
 }
+
+function readNotification(id, type, link){
+    fetch('/notifications/read', {
+        method:'post',
+        headers:{"content-Type" : "application/json;charset-utf-8"},
+        body:JSON.stringify({id:id})
+    })
+        .then(res=>{
+            if(res.ok) notificationByType[type](link);
+        })
+}
+
 function onNotificationClick(event){
     const link = event.target.dataset.link;
     const type = event.target.dataset.type;
+    const notiId = event.target.dataset.notiId;
 
-    if(link != null && type != null) notificationByType[type](link);
+    if(link != null && type != null && notiId != null) {
+        readNotification(notiId, type, link)
+        return;
+    }
+
+    event.target.parentElement.click();
 }
 
 /* 매핑할 함수들 */
@@ -26,12 +45,9 @@ function openNoteMessageByLink(link){
 
 
 /* functions */
-function drawNotificationDropdownItem({content, time, type, link}){
-    let nmTitle = {
-        "NoteMessage" : "쪽지가 왔습니다",
-    }
-
+function drawNotificationDropdownItem({id, title, content, time, type, link}){
     let li = document.createElement("li");
+    li.setAttribute("data-noti-id", id);
     li.setAttribute("data-link", link);
     li.setAttribute("data-type", type);
     li.classList.add("notification-item");
@@ -39,9 +55,9 @@ function drawNotificationDropdownItem({content, time, type, link}){
     let div = document.createElement("div");
 
     div.append(
-        createElement("h4", nmTitle[type]),
+        createElement("h4", title),
         createElement("p", content),
-        createElement("p", dateFormatter(time))
+        createElement("p", time)
     );
     li.append(div);
 
@@ -56,16 +72,6 @@ function drawNotificationDropdownItem({content, time, type, link}){
     return returnDiv;
 }
 
-function dateFormatter(time){
-    let year = time.substring(0,4);
-    let month = time.substring(4,6);
-    let day = time.substring(6,8);
-    let hour = time.substring(8,10);
-    let minute = time.substring(10,12);
-
-    return `${year}-${month}-${day} ${hour}:${minute}`;
-}
-
 function createElement(name, text){
     let element = document.createElement(name);
     element.innerText = text;
@@ -78,7 +84,23 @@ function onNotificationIconClick(){
 
 /* 이벤트 리스너등록 */
 schickenNotificationList.addEventListener("click", onNotificationClick);
+if(notificationPageList != null) notificationPageList.addEventListener("click", onNotificationClick);
 notificationIcon.addEventListener("click", onNotificationIconClick);
+
+/* onDomContextLoad */
+window.addEventListener("DOMContentLoaded", ()=>{
+    fetch('/notifications?read=false')
+        .then(res=>res.json())
+        .then(r => {
+            if(r.length > 0) {
+                let noNotification = document.querySelectorAll("[data-no-notification]");
+                if(noNotification.length > 0) {
+                    noNotification.forEach(e => e.remove());
+                }
+                r.forEach(e => appendNotificationList(e))
+            }
+        });
+})
 
 /* controller에서 사용할 함수 */
 export const appendNotificationList = (noti) => {
@@ -86,7 +108,8 @@ export const appendNotificationList = (noti) => {
         schickenNotificationList.lastElementChild.remove();
         schickenNotificationList.lastElementChild.remove();
     }
-    document.querySelectorAll("[data-no-notification]").forEach(e => e.remove());
+
+    console.log(noti);
 
     notificationBadge.classList.remove("d-none");
     const listItem = drawNotificationDropdownItem(noti);

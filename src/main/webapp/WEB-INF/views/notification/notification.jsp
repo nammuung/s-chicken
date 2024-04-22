@@ -22,56 +22,27 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div class="card">
-                <ul class="notifications pt-4">
-                    <li class="notification-item border-bottom">
+                <ul class="notifications pt-4" data-notification-list>
+                    <c:forEach items="${notificationList}" var="vo">
+                    <li data-noti-id="${vo.id}" data-type="${vo.type}" data-link="${vo.link}" class="notification-item border-bottom<c:if test="${vo.isReaded}"> readed</c:if>">
                         <div>
-                            <h4>알림 제목</h4>
-                            <p>알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 </p>
-                            <span>알림 온 시간</span>
+                            <h4>${vo.title}</h4>
+                            <p>${vo.content}</p>
+                            <span>${vo.time}</span>
                         </div>
                     </li>
-                    <li class="notification-item border-bottom readed">
-                        <div>
-                            <h4>알림 제목</h4>
-                            <p>알림 알림 알림 <span class="linkable">알림</span> 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 </p>
-                            <span>알림 온 시간</span>
-                        </div>
-                    </li>
-                    <li class="notification-item border-bottom">
-                        <div>
-                            <h4>알림 제목</h4>
-                            <p>경영지원실 실장 <span class="linkable">조민우</span>님이 알림을 보냈습니다 </p>
-                            <span>알림 온 시간</span>
-                        </div>
-                    </li>
-                    <li class="notification-item border-bottom">
-                        <div>
-                            <h4>알림 제목</h4>
-                            <p>알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 </p>
-                            <span>알림 온 시간</span>
-                        </div>
-                    </li>
-                    <li class="notification-item border-bottom">
-                        <div>
-                            <h4>알림 제목</h4>
-                            <p>알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 </p>
-                            <span>알림 온 시간</span>
-                        </div>
-                    </li>
-                    <li class="notification-item border-bottom">
-                        <div>
-                            <h4>알림 제목</h4>
-                            <p>알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 알림 </p>
-                            <span>알림 온 시간</span>
-                        </div>
-                    </li>
+                    </c:forEach>
                 </ul>
+                <c:if test="${vo.length >= 10}">
                 <div class="p-3 text-center">
                     <h4>더보기</h4>
                 </div>
+                </c:if>
+                <c:if test="${vo.length < 10}">
                 <div class="p-3 text-center">
                     <h4>마지막 알림 입니다</h4>
                 </div>
+                </c:if>
             </div>
         </div>
     </div>

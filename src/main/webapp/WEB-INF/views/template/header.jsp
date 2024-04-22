@@ -47,16 +47,14 @@
 
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow w-22rem">
                     <ul id="schicken-notification-list" class="notifications">
-                        <sec:authorize access="isAuthenticated()">
                         <li data-no-notification class="notification-item">
                             <div>
                                 <h4></h4>
-                                <p>읽지 않은 알림이 없습니다.</p>
+                                <p>모든 알림을 읽었습니다.</p>
                                 <p></p>
                             </div>
                         </li>
                         <li data-no-notification><hr class="dropdown-divider"></li>
-                        </sec:authorize>
                     </ul>
                     <div id="notification-list-footer" class="dropdown-footer border-top border-1 p-0">
                         <a href="/notificationPage" class="d-block w-100 p-2">
