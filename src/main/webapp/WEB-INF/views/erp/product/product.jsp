@@ -57,15 +57,31 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="mb-3 row">
-                                <label for="addName" class="col-4 col-form-label">품목명</label>
+                                <label for="addCategory" class="col-4 col-form-label">카테고리</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control" id="addName" name="name" value="">
+                                    <select type="text" class="form-control form-select" id="addCategory" name="category.id">
+                                        <option value="">선택</option>
+                                        <c:forEach items="${category}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
+
                             <div class="mb-3 row">
                                 <label for="addStandard" class="col-4 col-form-label">규격</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control" id="addStandard" name="standard" value="">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3 row">
+                                <label for="addName" class="col-4 col-form-label">품목명</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="addName" name="name" value="">
                                 </div>
                             </div>
                             <div class="mb-3 row">
@@ -79,19 +95,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="mb-3 row">
-                                <label for="addCategory" class="col-4 col-form-label">카테고리</label>
-                                <div class="col-8">
-                                    <select type="text" class="form-control form-select" id="addCategory" name="category.id">
-                                        <option value="">선택</option>
-                                        <c:forEach items="${category}" var="item">
-                                            <option value="${item.id}">${item.name}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
                         </div>
                     </div>
                 </form>
@@ -127,18 +130,6 @@
                                         <input type="hidden" name="id" sw="value_id">
                                         <input type="hidden" name="managerId" sw="value_managerId">
                                         <div class="mb-3 row">
-                                            <label for="editName" class="col-4 col-form-label">품목명</label>
-                                            <div class="col-8">
-                                                <input type="text" class="form-control" id="editName" name="name" sw="value_name">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label for="editOwnerName" class="col-4 col-form-label">규격</label>
-                                            <div class="col-8">
-                                                <input type="text" class="form-control" id="editOwnerName" name="standard" sw="value_standard">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
                                             <label for="category" class="col-4 col-form-label">카테고리</label>
                                             <div class="col-8">
                                                 <select type="text" class="form-control form-select" id="category" name="category.id">
@@ -150,14 +141,22 @@
                                             </div>
                                         </div>
 
+                                        <div class="mb-3 row">
+                                            <label for="editOwnerName" class="col-4 col-form-label">규격</label>
+                                            <div class="col-8">
+                                                <input type="text" class="form-control" id="editOwnerName" name="standard" sw="value_standard">
+                                            </div>
+                                        </div>
+
+
 
 
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 row">
-                                            <label for="editStock" class="col-4 col-form-label">재고</label>
+                                            <label for="editName" class="col-4 col-form-label">품목명</label>
                                             <div class="col-8">
-                                                <input type="text" disabled class="form-control" id="editStock" name="stock" sw="value_stock">
+                                                <input type="text" class="form-control" id="editName" name="name" sw="value_name">
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
@@ -171,6 +170,13 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="mb-3 row">
+                                            <label for="editStock" class="col-4 col-form-label">재고</label>
+                                            <div class="col-8">
+                                                <input type="text" disabled class="form-control" id="editStock" name="stock" sw="value_stock">
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="row">
