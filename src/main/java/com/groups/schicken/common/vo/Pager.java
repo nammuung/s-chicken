@@ -88,7 +88,7 @@ public class Pager {
 	         this.setLastNum(totalPage);
 	         this.setLast(true);
 	      }
-
+		makeIndex();
 	   }
 	
 	//Getter		멤버번수명 첫글자 대문자

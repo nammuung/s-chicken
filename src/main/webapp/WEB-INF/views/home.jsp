@@ -8,11 +8,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>S치킨-그룹웨어</title>
 <c:import url="template/head.jsp" />
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-	rel="stylesheet">
+
 <style>
 .fc-header-toolbar {
 	padding-top: 1em;
