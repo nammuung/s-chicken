@@ -162,6 +162,12 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="mb-3 row">
+                                                    <label for="" class="col-4 col-form-label">판매단가</label>
+                                                    <div class="col-8">
+                                                        <input type="text" disabled class="form-control" sw="value_productSellPrice">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
                                                     <label for="editName" class="col-4 col-form-label">계약단가</label>
                                                     <div class="col-8">
                                                         <input type="text" class="form-control" name="contractPrice">
@@ -238,6 +244,12 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-4 col-form-label">판매단가</label>
+                                            <div class="col-8">
+                                                <input type="text" disabled class="form-control" sw="value_productSellPrice">
+                                            </div>
+                                        </div>
                                         <div class="mb-3 row">
                                             <label for="editName" class="col-4 col-form-label">계약단가</label>
                                             <div class="col-8">

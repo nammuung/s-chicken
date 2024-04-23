@@ -14,8 +14,5 @@ public class SupplierVO {
     private String registrationNumber;
     private String email;
     private String contractDate;
-    private Long contractId;
-    private String managerId;
-    private String managerName;
     private EmployeeVO manager;
 }

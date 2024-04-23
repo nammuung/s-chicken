@@ -41,8 +41,7 @@ public class SupplierAPI {
 
     @PostMapping("/supplier")
     public ResponseEntity<?> addSupplier(@AuthenticationPrincipal EmployeeVO employeeVO, SupplierVO supplierVO) throws Exception {
-        supplierVO.setManagerId(employeeVO.getId());
-        System.out.println("supplierVO = " + supplierVO);
+        supplierVO.setManager(employeeVO);
         try {
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "저장 완료",supplierService.addSupplier(supplierVO)));
         } catch (Exception e) {

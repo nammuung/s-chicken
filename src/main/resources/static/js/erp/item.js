@@ -42,19 +42,16 @@ const hot = handsontable(container, tableOptions);
 // 테이블 초기화
 const productContainer = document.getElementById('productContainer')
 let selectedProduct = {}
-const productCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
+const productCheckboxRenderer = checkboxRenderer(async ({checked, instance, td, row, col})=>{
     if(checked){
-        selectedProduct.id = instance.getDataAtCell(row,1);
-        selectedProduct.name = instance.getDataAtCell(row,3);
-        selectedProduct.standard = instance.getDataAtCell(row,4);
-        selectedProduct.unitName = instance.getDataAtCell(row,5);
-        selectedProduct.sellPrice = instance.getDataAtCell(row,7);
+        const result = await getProduct(instance.getDataAtCell(row,1));
+        const data = result.data;
         sw.matchData({
-            productName:selectedProduct.name,
-            productId:selectedProduct.id,
-            productUnitName:selectedProduct.unitName,
-            productStandard:selectedProduct.standard,
-            productSellPrice:selectedProduct.sellPrice
+            productId:data.id,
+            productName:data.name,
+            productUnitName:data.unit.name,
+            productStandard:data.standard,
+            productSellPrice:data.sellPrice
         })
     } else {
         selectedProduct = {}
@@ -114,6 +111,7 @@ async function setDetailDataToEditModal(id){
     sw.matchData({productName: data.product.name})
     sw.matchData({productUnitName: data.product.unit.name})
     sw.matchData({productStandard: data.product.standard})
+    sw.matchData({productSellPrice: data.product.sellPrice})
     sw.matchData(data)
 }
 //name 이벤트 리스너 추가
@@ -266,7 +264,7 @@ supplierTap.addEventListener("shown.bs.tab" , function(){
                 {data:"ownerName"},
                 {data:"contactNumber"},
                 {data:"contractDate"},
-                {data:"managerName"}
+                {data:"manager.name"}
             ],
             colWidths : scaleArrayToSum(Array(7)),
             height:tableHeight,

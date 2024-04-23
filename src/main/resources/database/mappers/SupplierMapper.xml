@@ -41,7 +41,7 @@
             supplier
             (id, name, owner_name, address, address_detail, contact_number, registration_number, email, contract_date, manager_id)
         VALUES
-            (#{id}, #{name}, #{ownerName}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{contractDate}, #{managerId})
+            (#{id}, #{name}, #{ownerName}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{contractDate}, #{manager.id})
     </insert>
     <update id="updateSupplier">
         UPDATE
@@ -68,19 +68,19 @@
             <if test="email != null">
                 , email = #{email}
             </if>
-            <if test="managerName != null">
-                , manager_id = #{managerId}
+            <if test="manager != null and manager.id != null">
+                , manager_id = #{manager.id}
             </if>
         </set>
         WHERE id = #{id}
     </update>
     <sql id="search">
         <where>
-            <if test='name != null and !name.equals("")'>
+            <if test='name != null'>
                 AND s.name LIKE concat('%',#{name},'%')
             </if>
-            <if test='managerName != null and !managerName.equals("")'>
-                AND s.manager_id IN (SELECT id FROM employee WHERE name LIKE CONCAT('%', #{managerName}, '%'))
+            <if test='manager != null and manager.name != null'>
+                AND s.manager_id IN (SELECT id FROM employee WHERE name LIKE CONCAT('%', #{manager.name}, '%'))
             </if>
         </where>
     </sql>

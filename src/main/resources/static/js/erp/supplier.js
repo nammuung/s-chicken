@@ -50,6 +50,7 @@ async function setDetailDataToEditModal(id) {
     const result = await getSupplier(id);
     const data = result.data;
     sw.matchData(data)
+    sw.matchData({managerName: data.manager.name})
     const formData = new FormData();
     formData.append("supplier.id", id);
     const items = await getItemList(formData);
@@ -97,7 +98,7 @@ const tableOptions = {
         {data:"ownerName"},
         {data:"contactNumber"},
         {data:"contractDate"},
-        {data:"managerName"}
+        {data:"manager.name"}
     ],
     colWidths : scaleArrayToSum(Array(7)),
     height:"50vh",

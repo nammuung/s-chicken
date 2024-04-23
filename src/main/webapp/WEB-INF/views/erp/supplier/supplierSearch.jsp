@@ -13,7 +13,7 @@
             <div class="row col">
                 <label for="searchManager" class="col-3 col-form-label text-nowrap">등록자</label>
                 <div class="col-9">
-                    <input type="text" class="form-control" id="searchManager" name="managerName" value="">
+                    <input type="text" class="form-control" id="searchManager" name="manager.name" value="">
                 </div>
             </div>
             <div class="row col">
