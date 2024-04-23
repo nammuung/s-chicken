@@ -2,7 +2,7 @@ import {checkboxRenderer, handsontable, scaleArrayToSum} from "../lib/handsontab
 import {addItem, getItemList, updateItem, getItem} from "../api/item.js";
 import {getProduct, getProductList} from "../api/product.js";
 import {getSupplierList} from "../api/supplier.js";
-import {addOrder} from "../api/order";
+import {addOrder} from "../api/order.js";
 
 sw.init()
 searchItem()
