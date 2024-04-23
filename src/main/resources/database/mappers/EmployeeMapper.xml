@@ -9,6 +9,9 @@
 			<when test="kind=='kind1'">
 				where employee.name LIKE CONCAT('%', #{search}, '%')
 			</when>
+			<when test="kind=='kind2'">
+				where employee.id LIKE CONCAT('%', #{search}, '%')
+			</when>
 		</choose>
 	</sql>
 

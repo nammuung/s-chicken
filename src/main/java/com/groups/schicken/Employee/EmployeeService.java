@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.franchise.FranchiseVO;
+import com.groups.schicken.annual.AnnualVO;
 import com.groups.schicken.common.util.FileManager;
 import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.common.vo.Pager;
@@ -52,7 +53,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	private JavaMailSender javaMailSender;
 	
 	@Autowired
-	FileManager fileManager;
+	private FileManager fileManager;
 	
 
 	@Override
@@ -315,6 +316,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
     }
 
 
+
+    
 
 
 
