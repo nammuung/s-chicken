@@ -1,20 +1,44 @@
-import oc from "/js/orgChart/orgChart.js"
 
-const getaprrove = document.getElementById("getaprrove");
-const notimprrove = document.getElementById("notimprrove");
-let list = document.getElementById("note-message-selected-list");
-		let arr = [];
+import oc from "/js/orgChart/orgChart.js";
+
+	const myModal = new bootstrap.Modal(document.getElementById("myModal"))
+	const add_btn = document.getElementById("addbtn")
+	const approval_List = document.getElementById("approval_List");
+	const del_btn = document.getElementById("delbtn");
+	const register = document.getElementById("register");
+	const modal_show = document.getElementById("modal_show");
+	const sangsin = document.getElementById("sangsin");
+	const frm= document.querySelector("form");
+	
+	
+	const employeeIdInputs = document.querySelectorAll('.sign_member_wrap input[class="employeeId"]');
+	let employeeArr =[];
+	let rankArr=[];
+	 let relativePath = '/document/pay/pay';
+	sangsin.addEventListener("click",(e)=>{
+		e.preventDefault();
 		
-let selectedData;
-
-
-
+		
+		const formData = new FormData(frm);
+		formData.append("content", editor.getData())
+		formData.append("employeeId",employeeArr)
+		formData.append("rank",rankArr)
+		fetch('/document/add',{
+			method:"post",
+			body:formData,
+		}).then(r=>console.log(r))
+		
+	})
+	
+//	window.close(relativePath)
+	
 function hyuga(){
     
     const vacation = document.getElementById("vacation");
     const yoen_sel = document.getElementById("yoen_sel");
     const ban_sel = document.getElementById("ban_sel");
-    
+
+	const submit_all= document.querySelector("form");
 
     if(vacation.value == "yoen"){        
         yoen_sel.style.display="table-row";
@@ -27,16 +51,6 @@ function hyuga(){
         ban_sel.style.display="none"
     }
 }
-    ClassicEditor
-        .create(document.querySelector('#editor'))
-        .then(editor => {
-            editor.editing.view.change(writer => {
-                writer.setStyle('height', '20vh', editor.editing.view.document.getRoot());
-            });
-        })
-        .catch(error => {
-            console.error(error);
-        });
 
   $(document).ready(function(){
     function adjustSize() {
@@ -56,120 +70,142 @@ function hyuga(){
     // 윈도우 크기가 변경될 때마다 크기 조정
     $(window).resize(function(){
       adjustSize();
+
     });
-    oc.init("org-chart", onSelectOrgChart, 'person', false);
-	// 'person' 사람만선택 , false : chart가 접혀있는상태
-	
-	
-	function onSelectOrgChart(data){
-		console.log(data)
-	
-		
-		selectedData=data;
-		
-					
-			//자료구조 사전구조 tuple,hashmap			
-			
-			//배열에 넣고싶은 사번 있는지 검사,있으면 패스,없으면 추가	
-	}
     
-
   });
-
-
-
   
-  getaprrove.addEventListener("click",()=>{
-            console.log(selectedData.name)
-			let temp = false;
-            if(arr.length == 3){
-                alert("서명은 3명까지입니다")
-                return;					
-            }
-            let cut = selectedData.name.split(' ');
-            let level = cut[0];
-            let name = cut[1];
-			for(let i = 0 ; i <arr.length ;i++){
-				
-				if(arr[i].id==selectedData.id){
-					temp = true;				
+  oc.init("note-message-org-chart", onSelectOrgChart, 'person', false);
+  
+  let arr =[];
+  let getData;
+  //내가 직접 선택한 콜백함수
+  function onSelectOrgChart(data){
+	getData=data;
+  }
+	  add_btn.addEventListener("click",(e)=>{
+		
+		let fullName = getData.name.split(" ");
+		let level = fullName[0];
+		let selName = fullName[1];
+
+		
+		if(arr.length ==3){
+			alert("결제자는 3명까지 입니다")
+			return;
+		}
+		let bool = false;
+		for(let i =0 ; i <arr.length ; i++){
+				if(arr[i] == getData.id){
+					bool = true;					
+				}					
+		}		
+		
+		if(!bool){
+			arr.push(getData.id)
+			console.log(arr)
+			console.log("들오오기")
+			let str = `<li class="list-group-item" data-id="${getData.id}" data-name="${selName}" data-level="${level}" >
+						<i class="bi bi-arrow-down-up handle"></i>
+							${getData.name}
+						</li>`
+				approval_List.innerHTML += str;
+		}			
+	})
+	let del_app;
+	approval_List.addEventListener("click",(e)=>{
+		del_app=e.target;
+		
+		console.log(e.target.getAttribute("data-id"))
+		
+	})
+		del_btn.addEventListener("click",()=>{
+			
+			let real_del = del_app.getAttribute("data-id")
+			let bool = false;
+			for(let i = 0; i<arr.length;i++){
+				if(arr[i]==real_del){
+					arr.splice(i,1);
+					bool =true;
 				}
 			}
 			
-			if(!temp){
-				arr.push({id:selectedData.id,직책:selectedData.name});
-                //li문을 i의 갯수만큼 넣기
-                console.log(arr)
-                let textin = `
-                    <li class="list-group-item" id="${selectedData.id}" data-level="${level}" data-name="${name}">
-                        <i class="bi bi-arrows-expand handle"></i>
-                    직책:${selectedData.name}
-                    </li>
-                    ` ;                
-                list.innerHTML +=textin;        
-            }
+			if(bool){
+				del_app.remove()
+			}
+		console.log(arr);			
+			
+	})
+		
+		register.addEventListener("click",()=>{
+			
+		
+		
+			let goList = approval_List.querySelectorAll("li")
 
-		})
-let approveSelectElement
+			
+			const approve = document.querySelectorAll(".sign_member_wrap");			
+			const element_level = approve[0].querySelector(".sign_rank");
+			
+			
 
-list.addEventListener("click",(e)=>{
-    // e.target의 아이디를 기억 
-   //(e) 넣기 => 이벤트로 대상 체크 하고 -> 배열에서 삭제 -> 요소삭제
-    console.log(e.target.id);
-    approveSelectElement = e.target;
-    
-})
-notimprrove.addEventListener("click", () => {
-    const id = approveSelectElement.id;
-    for(let i = 0 ; i < arr.length ; i++){
-        if(arr[i].id == id){
-            console.log(arr)
-            arr.splice(i,1);
-            console.log(arr)
-            break;
-            //list.removeAttribute(e.target);
-        }
-    }
-    approveSelectElement.remove();
-});
-new Sortable(list,{
-    handle:'.handle',
+			for(let i = 0 ; i<3;i++){
+			approve[i].querySelector("#name").innerHTML ="";
+			approve[i].querySelector(".sign_rank").innerHTML ="";
+			rankArr=[];
+			employeeArr=[];
+			}
+			
+			
+			let approve_arr = 4 - arr.length;			
+			
+			for(let i = approve_arr, j = 1 ; i <= 3;i++,j++){
+			approve[i].querySelector("#name").innerHTML = goList[i-approve_arr].getAttribute("data-name");
+			approve[i].querySelector(".sign_rank").innerHTML = goList[i-approve_arr].getAttribute("data-level");	
+			rankArr.push(j);
+			employeeArr.push(goList[i-approve_arr].getAttribute("data-id"));
+			
+			console.log(rankArr)
+			console.log(employeeArr)
+			}
+
+
+			if(goList.length==0){
+				alert("결재자는 최소 1명 이상입니다")
+			}else{
+				
+				console.log(myModal)
+				myModal.hide();
+				
+			}
+			
+	})
+	
+	new Sortable(approval_List, {
+    handle: '.handle', // handle's class
     animation: 150
 });
 
-const register = document.getElementById("resiter");
-
-register.addEventListener("click",()=>{
-    register.removeAttribute("data-dismiss");
-    
-
-    let signMemberWraps = [...document.querySelectorAll('.sign_member_wrap')].splice(1,3);
-	let liCount = list.querySelectorAll('li');
-    let first = 3-liCount.length;
-
-    for(let i = 0 ; i < 3; i++){
-        signMemberWraps[i].querySelector('.sign_member .sign_rank').innerHTML="";
-        signMemberWraps[i].querySelector('.sign_member #name').innerHTML="";
-    }
-
-
-	  for(let i = 0 ;i < liCount.length ; i++){
-        
-
-		signMemberWraps[i+first].querySelector('.sign_member .sign_rank').innerHTML=liCount[i].getAttribute('data-level')
-		signMemberWraps[i+first].querySelector('.sign_member #name').innerHTML=liCount[i].getAttribute('data-name')
-		}
-        
-        if(liCount.length ==0){
-            console.log(liCount.length)
-            alert("서명자는 최소 1명 이상입니다.")
-        }else{
-            
-            register.setAttribute("data-dismiss","modal")
-            register.dispatchEvent(new Event('click'));
-            
-        }
-    
-    
+	modal_show.addEventListener("click",()=>{
+		myModal.show();
+	})
+let editor
+ClassicEditor
+	    .create(document.querySelector('#editor'))
+		.then(newEditor => {
+			editor = newEditor
+		    newEditor.editing.view.change(writer => {
+		        writer.setStyle('height', '20vh', newEditor.editing.view.document.getRoot());
+    });
 })
+.catch(error => {
+    console.error(error);
+});
 
+		
+		
+		
+		
+		
+		
+		

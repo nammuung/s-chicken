@@ -7,9 +7,9 @@
 	<sql id="search">	
 			<choose>
 				<when test='pager.kind != null and pager.kind.equals("kind1")'>AND r.title LIKE CONCAT('%',#{pager.search},'%')</when>
-				<when test='pager.kind != null and pager.kind.equals("kind2")'>AND r.content LIKE CONCAT('%',#{pager.search},'%')</when>
-				<otherwise>AND (r.title LIKE CONCAT('%',#{search},'%') OR r.content LIKE CONCAT('%',#{pager.search},'%')) </otherwise>					
-			</choose>				
+				<when test='pager.kind != null and pager.kind.equals("kind2")'>AND r.writer_id LIKE CONCAT('%',#{pager.search},'%')</when>
+				<otherwise>AND (r.title LIKE CONCAT('%',#{search},'%') OR r.writer_id LIKE CONCAT('%',#{pager.search},'%')) </otherwise>					
+			</choose>
 	</sql>
 	
 	<select id="allTotalCount" parameterType="Map" resultType="Long">
@@ -18,22 +18,9 @@
 		<include refid="search"/>
 	</select>	
 	
-	<select id="allList" resultMap="getDetailResult">
-		SELECT r.*,
-					a.id attach_id,
-		a.origin_name attach_origin_name,
-		a.url attach_url,
-		a.extension attach_extension,
-		a.parent_id attach_parent_id,
-		a.tbl_id attach_tbl_id,
-		a.name attach_name,
-		emp.name employee_name
-			FROM represent r
-				LEFT JOIN attach a 
-				ON r.id = a.parent_id
-				LEFT JOIN employee emp
-				ON emp.id = r.writer_id
-					WHERE r.is_deleted !=1
+	<select id="allList" parameterType="Map" resultType="BoardVO">
+		SELECT * FROM represent r
+			WHERE r.is_deleted !=1
 			<include refid="search"/>
 			ORDER BY important DESC, id DESC
 			LIMIT #{pager.startIndex},#{pager.perPage}
@@ -45,22 +32,9 @@
 		<include refid="search"/>
 	</select>	
 	
-	<select id="getList" resultMap="getDetailResult">
-		SELECT r.*,
-					a.id attach_id,
-		a.origin_name attach_origin_name,
-		a.url attach_url,
-		a.extension attach_extension,
-		a.parent_id attach_parent_id,
-		a.tbl_id attach_tbl_id,
-		a.name attach_name,
-		emp.name employee_name
-			FROM represent r
-				LEFT JOIN attach a 
-				ON r.id = a.parent_id
-				LEFT JOIN employee emp
-				ON emp.id = r.writer_id
-					WHERE r.is_deleted !=1 AND r.sort = 1
+	<select id="getList" parameterType="Map" resultType="BoardVO">
+		SELECT * FROM represent r
+			WHERE r.is_deleted !=1 AND r.sort = 1
 			<include refid="search"/>
 			ORDER BY important DESC, id DESC
 			LIMIT #{pager.startIndex},#{pager.perPage}
@@ -72,22 +46,9 @@
 		<include refid="search"/>
 	</select>
 	
-	<select id="cacgetList" resultMap="getDetailResult">
-		SELECT r.*,
-					a.id attach_id,
-		a.origin_name attach_origin_name,
-		a.url attach_url,
-		a.extension attach_extension,
-		a.parent_id attach_parent_id,
-		a.tbl_id attach_tbl_id,
-		a.name attach_name,
-		emp.name employee_name
-			FROM represent r
-				LEFT JOIN attach a 
-				ON r.id = a.parent_id
-				LEFT JOIN employee emp
-				ON emp.id = r.writer_id
-					WHERE r.is_deleted !=1 AND r.sort = 0
+	<select id="cacgetList">
+		SELECT * FROM represent r
+			WHERE r.is_deleted !=1 AND r.sort = 0
 			<include refid="search"/>
 			ORDER BY important DESC, id DESC
 			LIMIT #{pager.startIndex},#{pager.perPage}
@@ -102,15 +63,10 @@
 		a.extension attach_extension,
 		a.parent_id attach_parent_id,
 		a.tbl_id attach_tbl_id,
-		a.name attach_name,
-		emp.name employee_name,
-		emp.id employee_id
-			FROM represent r
-				LEFT JOIN attach a 
-				ON r.id = a.parent_id
-				LEFT JOIN employee emp 
-				ON emp.id = r.writer_Id
-					WHERE r.id=#{id}
+		a.name attach_name
+		FROM represent r
+		LEFT JOIN attach a ON r.id = a.parent_id
+		WHERE r.id=#{id}
 	</select>
 		
 	<resultMap type="BoardVO" id="getDetailResult">
@@ -125,9 +81,7 @@
     	<result  column="important" property="important"/>
 		<collection property="fileVO" javaType="List" ofType="FileVO" autoMapping="true" columnPrefix="attach_">
 				<id column="id" property="id"/>
-		</collection>
-		<collection property="employeeVO" javaType="EmployeeVO" autoMapping="true" columnPrefix="employee_">			
-		</collection>	
+		</collection>	    	
 	</resultMap>
 
 <!-- FileVO를 매핑하는 resultMap -->

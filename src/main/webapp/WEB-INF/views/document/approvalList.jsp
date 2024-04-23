@@ -41,22 +41,43 @@
                     <div class="card-body">
                         <table class="table text-center ">
                             <thead>
+ 
                                 <tr>
                                     <th style="width: 15%">문서번호</th>
-                                    <th style="width: 50%">제목</th>
+                                    
+                                    <th style="width: 40%">제목</th>
+                                    <th style="width: 10%">기안자</th>
                                     <th style="width: 10%">문서종류</th>
                                     <th style="width: 10%">상신일</th>
                                     <th style="width: 5%">상태</th>
                                 </tr>
                             </thead>
                             <tbody>
+                            <c:forEach items="${list}" var="vo">
                                 <tr>
-                                    <td>20240401001</td>
-                                    <td class="text-start">3월 출장비 지출결의서입니다.</td>
-                                    <td>지출결의서</td>
-                                    <td>2024.03.12</td>
-                                    <td>진행중</td>
+                             		
+	                                    <td>${vo.id}</td>
+	                                    <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> 
+	                                    	<td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.title}</a></td>
+	                                    </c:if>
+	                                    
+	                                    <td>${vo.employeeVO.name}</td>
+	                                    
+	                                     <td>${vo.templateVO.tempName}</td>
+	                                    
+	                                    <td>${vo.writeDate}</td>
+	                                    
+	                                    <c:if test="${vo.approvalVOs[0].result eq 0}">
+	                                    	<td>진행중</td>
+	                                    </c:if>
+	                                    
+	                                    <c:if test="${vo.approvalVOs[0].result eq 1}">
+	                                    	<td>결재완료</td>
+	                                    </c:if>
+	                                    
+	                                    
                                 </tr>
+                                    </c:forEach>
                             </tbody>
                         </table>
                     </div>
@@ -82,6 +103,11 @@
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
+
+<script src="/js/document/approval/approval.js"></script>
+
 </body>
+
+
 
 </html>
