@@ -30,7 +30,7 @@ public class AllController {
 	
 	@GetMapping("list")
 	public String list(@AuthenticationPrincipal EmployeeVO employeeVO,BoardVO boardVO,Pager pager,Model model)throws Exception{
-		boardVO.setWriterId(employeeVO.getId());
+		//boardVO.setWriterId(employeeVO.getId());
 		List<BoardVO> ar = representService.allgetList(pager, boardVO);
 		
 		model.addAttribute("list", ar);

@@ -31,7 +31,7 @@ public class CacController {
 	
 	@GetMapping("cacList")
 	public String cacList(@AuthenticationPrincipal EmployeeVO employeeVO,BoardVO boardVO,Pager pager,Model model) throws Exception{
-		boardVO.setWriterId(employeeVO.getId());
+		//boardVO.setWriterId(employeeVO.getId());
 		System.out.println(boardVO.getWriterId());
 		System.out.println(boardVO.getEmployeeVO()); 
 		List<BoardVO> ar = representService.cacList(pager, boardVO);

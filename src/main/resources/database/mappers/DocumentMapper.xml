@@ -44,7 +44,7 @@
 		LEFT JOIN approval a ON a.document_id = d.id
 		LEFT JOIN employee emp ON d.writer_id=emp.id
 		LEFT JOIN template tem ON tem.temp_id=d.template_id
-		WHERE a.employee_id=#{id}	
+		WHERE a.employee_id=#{id}
 		ORDER BY rank
 	</select>
 	

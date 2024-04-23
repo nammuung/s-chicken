@@ -44,8 +44,7 @@
                             <thead>
  
                                 <tr>
-                                    <th style="width: 15%">문서번호</th>
-                                    
+                                    <th style="width: 15%">문서번호</th>                                    
                                     <th style="width: 40%">제목</th>
                                     <th style="width: 10%">기안자</th>
                                     <th style="width: 10%">문서종류</th>
@@ -55,30 +54,31 @@
                             </thead>
                             <tbody>
                             <c:forEach items="${list}" var="vo">
-                                <tr>
-                             		
-	                                    <td>${vo.id}</td>
-	                                    <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> 
-	                                    	<td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.title}</a></td>
-	                                    </c:if>
-	                                    
-	                                    <td>${vo.employeeVO.name}</td>
-	                                    
-	                                     <td>${vo.templateVO.tempName}</td>
-	                                    
-	                                    <td>${vo.writeDate}</td>
-	                                    
-	                                    <c:if test="${vo.approvalVOs[0].result eq 0}">
-	                                    	<td>진행중</td>
-	                                    </c:if>
-	                                    
-	                                    <c:if test="${vo.approvalVOs[0].result eq 1}">
-	                                    	<td>결재완료</td>
-	                                    </c:if>
-	                                    
-	                                    
-                                </tr>
-                                    </c:forEach>
+  								<c:if test="${vo.approvalVOs[0].rank ne 0}">                       		
+                                	<tr>
+		                                    <td>${vo.id}</td>
+		                                    <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> 
+		                                    	<td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.title}</a></td>
+		                                    </c:if>
+		                                    
+		                                    <td>${vo.employeeVO.name}</td>
+		                                    
+		                                     <td>${vo.templateVO.tempName}</td>
+		                                    
+		                                    <td>${vo.writeDate}</td>
+		                                    
+		                                    <c:if test="${vo.approvalVOs[0].result eq 0}">
+		                                    	<td>진행중</td>
+		                                    </c:if>
+		                                    
+		                                    <c:if test="${vo.approvalVOs[0].result eq 1}">
+		                                    	<td>결재완료</td>
+		                                    </c:if>
+		                                    
+		                                    
+	                                </tr>
+                                	</c:if>
+                            	</c:forEach>
                             </tbody>
                         </table>
                     </div>
