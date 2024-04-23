@@ -32,7 +32,7 @@ const tableOptions = {
         {data:"createDate"},
         {data:"writer.name"},
     ],
-    colWidths : scaleArrayToSum(Array(11)),
+    colWidths : scaleArrayToSum(Array(11),1130),
     height:"50vh",
 }
 const hot = handsontable(container, tableOptions);
@@ -243,7 +243,7 @@ addButton.addEventListener("click", function(){
             {data:"standard"},
             {data:"unit.name"},
         ],
-        colWidths : scaleArrayToSum(Array(6)),
+        colWidths : scaleArrayToSum(Array(6),1130),
         height:tableHeight,
     }
     productHot = handsontable(productContainer, productTableOptions);
@@ -266,7 +266,7 @@ supplierTap.addEventListener("shown.bs.tab" , function(){
                 {data:"contractDate"},
                 {data:"manager.name"}
             ],
-            colWidths : scaleArrayToSum(Array(7)),
+            colWidths : scaleArrayToSum(Array(7),1130),
             height:tableHeight,
         }
         supplierHot = handsontable(supplierContainer, supplierTableOptions);

@@ -100,7 +100,7 @@ const tableOptions = {
         {data:"contractDate"},
         {data:"manager.name"}
     ],
-    colWidths : scaleArrayToSum(Array(7)),
+    colWidths : scaleArrayToSum(Array(7),1130),
     height:"50vh",
 }
 const hot = handsontable(container, tableOptions);
