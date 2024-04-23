@@ -30,6 +30,11 @@ function onNotificationClick(event){
     const notiId = event.target.dataset.notiId;
 
     if(link != null && type != null && notiId != null) {
+        event.target.remove();
+        let noNotification = document.querySelectorAll("[data-no-notification]");
+        if(noNotification.length > 0) {
+            noNotification.forEach(e => e.classList.remove("d-none"));
+        }
         readNotification(notiId, type, link)
         return;
     }
@@ -109,14 +114,14 @@ if(moreNotificationBtn != null) moreNotificationBtn.addEventListener("click",get
 
 /* onDomContextLoad */
 window.addEventListener("DOMContentLoaded", ()=>{
-    console.log(123456789)
     fetch('/notifications?read=false')
         .then(res=>res.json())
         .then(r => {
             if(r.length > 0) {
                 let noNotification = document.querySelectorAll("[data-no-notification]");
                 if(noNotification.length > 0) {
-                    noNotification.forEach(e => e.remove());
+                    notificationBadge.classList.remove("d-none");
+                    noNotification.forEach(e => e.classList.add("d-none"));
                 }
                 const listItem = r.map(r => drawNotificationDropdownItem(r));
                 schickenNotificationList.append(...listItem);
@@ -127,9 +132,14 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 /* controller에서 사용할 함수 */
 export const appendNotificationList = (noti) => {
-    if(schickenNotificationList.children.length >= 10) {
+    if(schickenNotificationList.children.length >= 11) {
         schickenNotificationList.lastElementChild.remove();
         schickenNotificationList.lastElementChild.remove();
+    }
+
+    let noNotification = document.querySelectorAll("[data-no-notification]");
+    if(noNotification.length > 0) {
+        noNotification.forEach(e => e.classList.add("d-none"));
     }
 
     notificationBadge.classList.remove("d-none");
