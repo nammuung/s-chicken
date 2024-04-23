@@ -153,6 +153,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/order/list">
+                        <i class="bi bi-circle"></i><span>발주리스트</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/products">
                         <i class="bi bi-circle"></i><span>품목 관리</span>
                     </a>

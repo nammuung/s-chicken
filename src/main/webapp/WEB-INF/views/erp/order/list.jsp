@@ -48,14 +48,14 @@
                                         <button class="btn btn-outline-primary" id="addRowButton">행추가</button>
                                         <button class="btn btn-outline-danger" id="deleteRowButton">삭제</button>
                                     </div>
-                                    <button class="btn btn-primary" id="orderPreviewButton">저장</button>
+                                    <button class="btn btn-outline-primary" id="orderPreviewButton">발주서 미리보기</button>
                                 </div>
                             </div>
-<%--                            <div class="d-flex justify-content-start">--%>
-<%--                                <button id="" class="btn btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#register-modal"><i class="bi bi-database-add"></i>신규</button>--%>
-<%--                                <button id="editButton" class="btn btn-outline-primary me-1"><i class="bi bi-pencil"></i>수정</button>--%>
-<%--                                <button id="exportButton" class="btn btn-primary"><i class="bi bi-file-earmark-spreadsheet-fill"></i> 저장</button>--%>
-<%--                            </div>--%>
+                            <%--                            <div class="d-flex justify-content-start">--%>
+                            <%--                                <button id="" class="btn btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#register-modal"><i class="bi bi-database-add"></i>신규</button>--%>
+                            <%--                                <button id="editButton" class="btn btn-outline-primary me-1"><i class="bi bi-pencil"></i>수정</button>--%>
+                            <%--                                <button id="exportButton" class="btn btn-primary"><i class="bi bi-file-earmark-spreadsheet-fill"></i> 저장</button>--%>
+                            <%--                            </div>--%>
                         </div>
                     </div>
                 </div>

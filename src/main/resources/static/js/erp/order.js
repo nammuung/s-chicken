@@ -2,6 +2,7 @@ import {checkboxRenderer, handsontable, scaleArrayToSum} from "../lib/handsontab
 import {addItem, getItemList, updateItem, getItem} from "../api/item.js";
 import {getProduct, getProductList} from "../api/product.js";
 import {getSupplierList} from "../api/supplier.js";
+import {addOrder} from "../api/order";
 
 sw.init()
 searchItem()
@@ -147,6 +148,24 @@ deleteRowButton.addEventListener("click", function(){
         orderHot.alter("remove_row", row-index);
     })
     selectedOrders = [];
+})
+
+//발주서 미리보기
+const orderPreviewButton = document.getElementById("orderPreviewButton")
+orderPreviewButton.addEventListener("click",  async function(){
+    const tableData = orderHot.getData();
+    let datas = [];
+    console.log(tableData)
+    for (let i = 0; i < tableData.length; i++) {
+        const row = tableData[i]
+        const result = await getItem(row[1]);
+        console.log(row[1], result)
+        datas.push(result.data);
+    }
+    await addOrder({
+        orderItems: datas,
+    })
+    console.log(datas);
 })
 
 // function addIdChangeEventListener(){
