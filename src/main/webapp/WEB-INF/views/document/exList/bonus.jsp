@@ -152,9 +152,9 @@
                                     <span class="sign_tit_wrap">
                                         <span class="sign_tit"><strong>결재선</strong></span>
                                     </span>
-                                    <input type="hidden" value="${list.id}" name="employeeId">
-                                    <input type="hidden" value="<%=strDate %>" name="date">
-                                    <input type="hidden" value="0" name="rank">
+                                    <input type="hidden" id="zeroId" value="${list.id}">
+                                    <input type="hidden" id="zeroRank" value="0">
+                                   
                                     
 
                                     <span class="sign_member_wrap" id="">                                        

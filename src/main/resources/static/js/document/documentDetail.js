@@ -137,7 +137,8 @@ function hyuga(){
 		
 		register.addEventListener("click",()=>{
 			
-		
+			const zeroRank = document.getElementById("zeroRank").value;
+			const zeroId = document.getElementById("zeroId").value;
 		
 			let goList = approval_List.querySelectorAll("li")
 
@@ -152,8 +153,8 @@ function hyuga(){
 			
 			approve[i].querySelector(".sign_rank").innerHTML ="";
 			approve[i].querySelector("#name").innerHTML ="";
-			rankArr=[];
-			employeeArr=[];
+			rankArr=[zeroRank];
+			employeeArr=[zeroId];
 			}
 			
 			

@@ -169,7 +169,7 @@
                                         </span>
                                     </span>
                                   
-                                    <c:if test="${list[1].id eq null}">
+                                    <c:if test="${list[2].id eq null}">
                                     	<span class="sign_member_wrap" id="">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
@@ -188,7 +188,7 @@
                                         </span>
                                     </span>
                                     </c:if>
-                                    	<c:if test="${list[2].id eq null}">
+                                    	<c:if test="${list[3].id eq null}">
                                     		<span class="sign_member_wrap" id="">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
@@ -205,8 +205,7 @@
                                                 <span class="sign_date"></span>
                                             </span>
                                         </span>
-                                    </span>
-                                    	
+                                    </span>                                    	
                                     	</c:if> 
                                     
 

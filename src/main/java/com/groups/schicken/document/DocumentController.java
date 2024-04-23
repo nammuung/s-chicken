@@ -84,8 +84,8 @@ public class DocumentController {
 	
 	@PostMapping("add")
 
-	public ResponseEntity<?> add(ApprovalVO approvalVO,DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach,TemplateVO templateVO)throws Exception{
-		
+	public ResponseEntity<?> add(DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach,TemplateVO templateVO)throws Exception{
+		ApprovalVO approvalVO = new ApprovalVO();
 		
 		int result = documentService.add(documentVO);
 		approvalVO.setDocumentId(documentVO.getId());
