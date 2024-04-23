@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.groups.schicken.Employee.EmployeeService;
 import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.common.vo.Pager;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -100,21 +101,25 @@ public class AnnualService {
 	}
 
 	
-	public List<AnnualVO> annualList(AnnualVO annualVO) throws Exception {
-	    List<AnnualVO> annualList = annualDAO.annualList(annualVO); // 배열
+	public List<AnnualVO> annualList(AnnualVO annualVO,Pager pager) throws Exception {
+		pager.makeIndex();
+		pager.makeNum(annualDAO.getTotalCount(pager));
+	    List<AnnualVO> annualList = annualDAO.annualList(pager); // 배열
 
 	    List<AnnualVO> resultList = new ArrayList<>(); // 새로운 배열
 	    int remainderAnnual = 0;
 	    String currentYear = ""; // 현재 년도
 	    
-	    for (AnnualVO annual : annualList) {
+	    // 리스트를 거꾸로 순회하여 연도별로 남은 연차를 계산
+	    for (int i = annualList.size() - 1; i >= 0; i--) {
+	        AnnualVO annual = annualList.get(i);
 	        String annualDate = annual.getAnnualDate(); // 작성날짜
 	        String yearOfAnnual = annualDate.substring(0, 4); // 날짜에서 연도 추출
 
 	        // 새로운 연도인지 확인
 	        if (!yearOfAnnual.equals(currentYear)) {
 	            if (!currentYear.isEmpty()) {
-	                remainderAnnual = 0;
+	                remainderAnnual = 0; // 이전 연도로 넘어갈 때 남은 연차 초기화
 	            }
 	            currentYear = yearOfAnnual; // currentYear를 새로운 연도로 업데이트
 	        }
@@ -122,17 +127,21 @@ public class AnnualService {
 	        int receivedAnnual = annual.getRemainderAnnual(); // 받은 연차
 	        int usedAnnual = annual.getAnnual(); // 사용한 연차
 
-	        
 	        remainderAnnual += (receivedAnnual - usedAnnual); // 남은 연차 계산
-	        
 	        annual.setAnnualTotal(remainderAnnual);
-	        resultList.add(annual);
+	        resultList.add(0, annual); // 결과를 리스트의 앞쪽에 추가하여 거꾸로 출력
 	    }
+	    
 	    System.out.println(resultList);
 	    // resultList를 annualVO에 담아서 다시 선택
 
 	    return resultList;
 	}
+
+
+
+
+
 
 
 	

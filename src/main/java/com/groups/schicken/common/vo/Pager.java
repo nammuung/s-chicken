@@ -14,13 +14,13 @@ public class Pager {
 	
 	private Long page=1L;	//페이지 번호
 	private Long perPage=10L;	//한페이지당 출력 갯수
-	
+	private String employeeId;
 	private Long startIndex;
 	
 	private Long totalPage;
 	private Long startNum;
 	private Long lastNum;
-   
+
 	//이전 블럭이 없으면 true;
 	private boolean start; //이전값있냐없냐 true,false
 	//다음 블럭이 없으면 true;
@@ -114,6 +114,8 @@ public class Pager {
 		
 		return this.search;		
 	}
+
+	
 	
 	
 }

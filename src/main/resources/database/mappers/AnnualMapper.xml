@@ -7,12 +7,7 @@
 
 
 <select id="annualList" resultType="AnnualVO">
-<!--select * from annual where employee_id = #{employeeId} and is_annual = 0 order by annual_date DESC-->
-SELECT *,
-    #{annualTotal} AS annualTotal
-FROM annual
-WHERE employee_id = #{employeeId} AND is_annual = 0
-ORDER BY annual_date DESC, annualTotal ASC;
+select * from annual where employee_id = #{employeeId} and is_annual = 0 order by annual_date DESC 
 </select>
 
 
@@ -31,6 +26,9 @@ AND YEAR(STR_TO_DATE(annual_date, '%Y%m%d')) != YEAR(CURDATE());
   SELECT employee.id, date_of_employment , name FROM employee
 </select> 
 
+<select id="getTotalCount">
+select count(id) from annual where employee_id = #{employeeId}
+</select>
     
 <insert id="annualInsert" parameterType="AnnualVO">
     <selectKey resultType="Long" keyProperty="id" order="BEFORE">

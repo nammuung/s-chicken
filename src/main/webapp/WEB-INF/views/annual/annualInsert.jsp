@@ -3,8 +3,8 @@
 
 			<div class="row justify-content-center">
 				<div class="col-auto">
-					<div class="p-5"  >
-
+						<button type="button" class="btn-close mt-2" data-bs-dismiss="modal" aria-label="Close" style="margin-left: 107%"></button>
+					<div class="p-5"  style="margin-top: -20px">
 						<div class="card-body mt-3 ">
 							<form id="joinForm" method="POST" action="/annual/annualInsert" onsubmit="return validateForm()">
 								<div class="form-group mb-3 ">

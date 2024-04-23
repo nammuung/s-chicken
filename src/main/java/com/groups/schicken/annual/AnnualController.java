@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.groups.schicken.Employee.EmployeeController;
 import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.common.vo.Pager;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,17 +34,15 @@ public class AnnualController {
 
 	
 	@GetMapping("list")
-	public String annualList(AnnualVO annualVO, Model model,  @RequestParam("id") String id)throws Exception{
-		
-		
-		/*
-		 * EmployeeVO employeeVO = new EmployeeVO(); employeeVO.setId(id);
-		 * System.out.println(employeeVO.getId());
-		 */
+	public String annualList( AnnualVO annualVO,Model model,Pager pager,  @RequestParam("id") String id)throws Exception{
+	
 
 		annualVO.setEmployeeId(id);
-		List<AnnualVO> ar = annualService.annualList(annualVO);
+		pager.setEmployeeId(id);
+		
+		List<AnnualVO> ar = annualService.annualList(annualVO,pager);
 		model.addAttribute("list", ar);
+		model.addAttribute("pager", pager);
 		return "annual/list";
 	}
 	

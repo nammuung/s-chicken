@@ -73,7 +73,7 @@
                 </c:if>
             </ul>
         </nav>
-                <button class="btn btn-primary float-end">엑셀 변환</button>
+                
             </div>
         </div>
     </section>

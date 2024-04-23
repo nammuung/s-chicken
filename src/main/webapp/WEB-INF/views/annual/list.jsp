@@ -50,7 +50,23 @@
 							</table>
 						</div>
 					</div>
-
+<nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <c:if test="${!pager.start}">
+                    <li class="page-item">
+                        <a class="page-link" href="list?id=${pager.employeeId}&page=$pager.startNum-1}">이전</a>
+                    </li>
+                </c:if>
+                <c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="page">
+                    <li class="page-item <c:if test="${pager.page == page}">active</c:if>"><a class="page-link" href="list?id=${pager.employeeId}&page=${page}">${page}</a></li>
+                </c:forEach>
+                <c:if test="${!pager.last}">
+                    <li class="page-item">
+                        <a class="page-link" href="list?id=${pager.employeeId}&page=${pager.lastNum+1}">다음</a>
+                    </li>
+                </c:if>
+            </ul>
+        </nav>
 					<!--                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <li class="page-item disabled">
