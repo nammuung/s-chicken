@@ -18,8 +18,11 @@
 		<include refid="search"/>
 	</select>	
 	
-	<select id="allList" parameterType="Map" resultType="BoardVO">
-		SELECT * FROM represent r
+	<select id="allList" parameterType="Map" resultMap="getDetailResult">
+		SELECT r.*,
+			emp.name
+			FROM represent r
+			LEFT JOIN employee emp ON emp.id =r.writer_id
 			WHERE r.is_deleted !=1
 			<include refid="search"/>
 			ORDER BY important DESC, id DESC
@@ -32,8 +35,11 @@
 		<include refid="search"/>
 	</select>	
 	
-	<select id="getList" parameterType="Map" resultType="BoardVO">
-		SELECT * FROM represent r
+	<select id="getList" parameterType="Map" resultMap="getDetailResult">
+		SELECT r.*,
+			emp.name
+			 FROM represent r
+			LEFT JOIN employee emp ON emp.id =r.writer_id
 			WHERE r.is_deleted !=1 AND r.sort = 1
 			<include refid="search"/>
 			ORDER BY important DESC, id DESC
@@ -46,8 +52,11 @@
 		<include refid="search"/>
 	</select>
 	
-	<select id="cacgetList">
-		SELECT * FROM represent r
+	<select id="cacgetList" resultMap="getDetailResult">
+		SELECT r.*,
+			emp.name
+			FROM represent r
+			LEFT JOIN employee emp ON emp.id =r.writer_id
 			WHERE r.is_deleted !=1 AND r.sort = 0
 			<include refid="search"/>
 			ORDER BY important DESC, id DESC
@@ -79,9 +88,11 @@
     	<result  column="sort" property="sort"/>
     	<result  column="title" property="title"/>
     	<result  column="important" property="important"/>
+    	<association property="employeeVO" javaType="EmployeeVO" autoMapping="true"/>	
 		<collection property="fileVO" javaType="List" ofType="FileVO" autoMapping="true" columnPrefix="attach_">
 				<id column="id" property="id"/>
-		</collection>	    	
+		</collection>
+		
 	</resultMap>
 
 <!-- FileVO를 매핑하는 resultMap -->

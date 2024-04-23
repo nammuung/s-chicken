@@ -36,7 +36,7 @@
                 <input type="hidden" name="status" value="0">
                 
                 <input type="hidden" name="templateId" value="1">
-                <input type="hidden" name="writer" value="123">
+                <input type="hidden" name="writerId" value="${list.id}">
             <table
                 style="border: 0px solid rgb(0, 0, 0); border-image: none; width: 800px; font-family: malgun gothic,dotum,arial,tahoma; margin-top: 1px; border-collapse: collapse;">
                 <!-- Header -->
@@ -126,7 +126,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" id="" name="" style="text-align: center;">
+                                                <input type="text" class="form-control" value="${list.name}" style="text-align: center;">
                                             </div>
                                         </td>
                                     </tr>
@@ -136,7 +136,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" id="" name="" style="text-align: center;">
+                                                <input type="text" class="form-control" value="${list.department.name}" style="text-align: center;">
                                             </div>
                                         </td>
                                     </tr>
@@ -152,25 +152,29 @@
                                     <span class="sign_tit_wrap">
                                         <span class="sign_tit"><strong>결재선</strong></span>
                                     </span>
+                                    <input type="hidden" value="${list.id}" name="employeeId">
+                                    <input type="hidden" value="<%=strDate %>" name="date">
+                                    <input type="hidden" value="0" name="rank">
+                                    
 
                                     <span class="sign_member_wrap" id="">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank">직급</span>
+                                                <span class="sign_rank">${list.position.name}</span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="name">이름</span>
+                                                <span class="sign_date" id="name">${list.name}</span>
                                             </span>
 
                                             <span class="sign_wrap">
-                                                <span class="sign_name"><strong>서명</strong></span>
+                                                <span class="sign_name"><strong>ok</strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="">날짜</span>
+                                                <span class="sign_date " id=""><%=strDate %></span>
                                             </span>
                                         </span>
                                     </span>
-                                    <span class="sign_member_wrap">
+                                    <span class="sign_member_wrap nextdo">
                                         <span class="sign_member">                                            
                                             <span class="sign_rank_wrap">
                                                 <span class="sign_rank">직급</span>
@@ -183,7 +187,7 @@
                                                 <span class="sign_name"><strong>서명</strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="">날짜</span>
+                                                <span class="sign_date ">날짜</span>
                                             </span>
                                         </span>
                                     </span>

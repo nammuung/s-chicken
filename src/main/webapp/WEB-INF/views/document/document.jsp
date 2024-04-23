@@ -112,7 +112,7 @@
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
-<script src="/js/document/writen/bonus.js"></script>
+<script src="/js/document/writen/list.js"></script>
 </body>
 
 </html>

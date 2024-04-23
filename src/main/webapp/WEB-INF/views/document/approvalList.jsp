@@ -10,6 +10,7 @@
 </head>
 
 <body>
+<div data-login-id="${user.id}"></div>
 <!-- ======= Header ======= -->
 <c:import url="../template/header.jsp"/>
 <!-- ======= Sidebar ======= -->
@@ -104,7 +105,7 @@
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
 
-<script src="/js/document/approval/approval.js"></script>
+<script src="/js/document/writen/list.js"></script>
 
 </body>
 

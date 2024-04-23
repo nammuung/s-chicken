@@ -15,9 +15,14 @@ public class DocumentService {
 	@Autowired
 	private DocumentDAO documentDAO;
 	
-	public List<DocumentVO> approvalDetail(EmployeeVO employeeVO)throws Exception{
+	public EmployeeVO getEx(EmployeeVO employeeVO)throws Exception{
 		
-		return documentDAO.approvalDetail(employeeVO);
+		return documentDAO.getEx(employeeVO);
+	}
+	
+	public List<DocumentVO> approvalDetail(DocumentVO documentVO)throws Exception{
+		
+		return documentDAO.approvalDetail(documentVO);
 	}
 	
 	
@@ -61,5 +66,10 @@ public class DocumentService {
 	public List<DocumentVO> getDetail(DocumentVO documentVO)throws Exception{
 		
 		return documentDAO.getDetail(documentVO);
+	}
+	
+	public int resultUpdate(ApprovalVO approvalVO)throws Exception{
+		
+		return documentDAO.resultUpdate(approvalVO);
 	}
 }

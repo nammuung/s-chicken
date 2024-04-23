@@ -10,6 +10,9 @@ import com.groups.schicken.Employee.EmployeeVO;
 
 @Mapper
 public interface DocumentDAO {
+	
+	EmployeeVO getEx(EmployeeVO employeeVO)throws Exception;
+	
 	int add(DocumentVO documentVO)throws Exception;
 	
 	int appAdd(ApprovalVO approvalVO)throws Exception;
@@ -22,7 +25,8 @@ public interface DocumentDAO {
 	
 	List<DocumentVO> approvalList(EmployeeVO employeeVO)throws Exception;
 	
-	List<DocumentVO> approvalDetail(EmployeeVO employeeVO)throws Exception;
+	List<DocumentVO> approvalDetail(DocumentVO documentVO)throws Exception;
 	
+	int resultUpdate(ApprovalVO approvalVO)throws Exception;
 	
 }

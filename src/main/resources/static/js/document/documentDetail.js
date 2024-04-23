@@ -10,14 +10,12 @@ import oc from "/js/orgChart/orgChart.js";
 	const sangsin = document.getElementById("sangsin");
 	const frm= document.querySelector("form");
 	
-	
-	const employeeIdInputs = document.querySelectorAll('.sign_member_wrap input[class="employeeId"]');
+		
 	let employeeArr =[];
 	let rankArr=[];
 	 let relativePath = '/document/pay/pay';
 	sangsin.addEventListener("click",(e)=>{
-		e.preventDefault();
-		
+		e.preventDefault();		
 		
 		const formData = new FormData(frm);
 		formData.append("content", editor.getData())
@@ -145,13 +143,15 @@ function hyuga(){
 
 			
 			const approve = document.querySelectorAll(".sign_member_wrap");			
-			const element_level = approve[0].querySelector(".sign_rank");
-			
+			const element_level = approve[0].querySelector("#name");
+			console.log(element_level)
 			
 
-			for(let i = 0 ; i<3;i++){
-			approve[i].querySelector("#name").innerHTML ="";
+			for(let i = 1 ; i<3;i++){
+			
+			
 			approve[i].querySelector(".sign_rank").innerHTML ="";
+			approve[i].querySelector("#name").innerHTML ="";
 			rankArr=[];
 			employeeArr=[];
 			}

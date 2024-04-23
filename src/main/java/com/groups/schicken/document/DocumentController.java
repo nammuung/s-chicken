@@ -39,6 +39,13 @@ public class DocumentController {
 		
 	}
 	
+	@PostMapping("document/approvalUpdate")
+	public ResponseEntity<Integer> approvalUpdate(ApprovalVO approvalVO)throws Exception{
+		int result = documentService.resultUpdate(approvalVO);
+		
+		return ResponseEntity.ok(result);
+	}
+	
 	@GetMapping("approvalList")
 	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO ,DocumentVO documentVO,Model model)throws Exception{
 	
@@ -65,8 +72,10 @@ public class DocumentController {
 		
 	}
 	@GetMapping("exList/bonus")
-	public void sang() {
+	public void sang(@AuthenticationPrincipal EmployeeVO employeeVO,Model model) throws Exception {
+		employeeVO = documentService.getEx(employeeVO);
 		
+		model.addAttribute("list", employeeVO);
 	}
 	@GetMapping("exList/pay")
 	public void pay() {
@@ -75,8 +84,8 @@ public class DocumentController {
 	
 	@PostMapping("add")
 
-	public ResponseEntity<?> add(DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach,TemplateVO templateVO)throws Exception{
-		ApprovalVO approvalVO = new ApprovalVO();
+	public ResponseEntity<?> add(ApprovalVO approvalVO,DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach,TemplateVO templateVO)throws Exception{
+		
 		
 		int result = documentService.add(documentVO);
 		approvalVO.setDocumentId(documentVO.getId());
@@ -111,22 +120,14 @@ public class DocumentController {
 		return ResponseEntity.ok(documentVO);
 	}
 	
-	@GetMapping("writenList/bonus")
+	@GetMapping("writenList/writenBonus")
 	public void writenBonus(DocumentVO documentVO,Model model)throws Exception{
 		List<DocumentVO> ar=documentService.getDetail(documentVO);
 		System.out.println(ar.get(0));
 		model.addAttribute("list", ar);
-	}
-	
-	@GetMapping("approvalList/bonus")
-	public void approvalDetail(@AuthenticationPrincipal EmployeeVO employeeVO,Model model,DocumentVO documentVO)throws Exception{
-				
-		List<DocumentVO> ar = documentService.approvalDetail(employeeVO);
-		System.out.println(ar.get(0).getApprovalVOs());
-		System.out.println(ar.get(1));
-		model.addAttribute("list", ar);
+	}	
 		
-	}
+	
 
 	
 }

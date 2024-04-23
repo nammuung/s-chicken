@@ -79,6 +79,7 @@ public class RepresentController {
 	public String getImpList(@AuthenticationPrincipal EmployeeVO employeeVO ,Pager pager,Model model,BoardVO boardVO) throws Exception {
 		
 		List<BoardVO> ar = representService.getList(pager,boardVO);
+		
 		System.out.println(boardVO.getEmployeeVO());
 		model.addAttribute("list",ar);
 		model.addAttribute("pager", pager);

@@ -21,7 +21,7 @@ function screen(){
 
 function openbonus(id) {
 	let options = screen();
-    let relativePath = '/document/writenList/bonus?id='+id; // 문서의 상대 경로를 설정합니다.
+    let relativePath = '/document/writenList/writenBonus?id='+id; // 문서의 상대 경로를 설정합니다.
 
     window.open(relativePath, '_blank', options);
 }

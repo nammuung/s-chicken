@@ -1,7 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.Date" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="java.util.Date" %>
 <%@page import="java.text.SimpleDateFormat"%>
+
 <!DOCTYPE html>
 <html>
 
@@ -23,7 +25,17 @@
 </head>
 
 <body>
-    <form class=""  method="POST">    
+	<sec:authentication property="principal" var="user"/>
+    <div data-login-id="${user.id}"></div>
+            <%
+    Date date = new Date();
+    SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
+    
+    String strDate = simpleDate.format(date);
+    %>
+    <div id="date" data-strDate="<%= strDate %>"></div>
+    
+    <form action="post">
         <span>
             <p style="line-height: 150%; font-family: 맑은 고딕; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;"><span
                     style="font-family: 맑은 고딕; font-size: 10pt;"></span>&nbsp;</p>
@@ -40,6 +52,8 @@
                         <td style="padding: 0px !important; border: 0px currentColor; border-image: none;text-align: right;font-weight: bold; vertical-align: middle;"
                         colspan="2" class="">
                       
+                        
+                                                        
                         </td>
                     </tr>
 
@@ -49,7 +63,9 @@
                             colspan="2" class=""> 상여금신청서
                             <div style="text-align: right;">
 
-                                <!-- Button to Open the Modal -->
+                               
+                                <button id="approval_btn" type="button" class="btn btn-primary">결재하기</button>
+                        		
 
                             </div>
                         </td>
@@ -57,7 +73,8 @@
                         <!-- <td><button>결제미리보기</button></td> -->
 
                     </tr>
-
+					<input type="hidden" value="${list[0].id}" name="documentId">
+					<input type="hidden" value="<%=strDate %>" name="date">
                     <tr>
                         <td
                             style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 506px; text-align: left; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
@@ -107,7 +124,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                ${list[0].writer}
+                                                ${list[0].employeeVO.name}
                                             </div>
                                         </td>
                                     </tr>
@@ -117,7 +134,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                
+                                               	${list[0].department.name}
                                             </div>
                                         </td>
                                     </tr>
@@ -134,20 +151,20 @@
                                         <span class="sign_tit"><strong>결재선</strong></span>
                                     </span>
 
-                                    <span class="sign_member_wrap" id="">                                        
+                                    <span class="sign_member_wrap">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank" value="">직급</span>
+                                                <span class="sign_rank">${list[0].level}</span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " value="">이름</span>
+                                                <span class="sign_date ">${list[0].employeeVO.name}</span>
                                             </span>
 
                                             <span class="sign_wrap">
-                                                <span class="sign_name"><strong>서명</strong></span>
+                                                <span class="sign_name"><strong>ok</strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="">날짜</span>
+                                                <span class="sign_date ">${list[0].writeDate}</span>
                                             </span>
                                         </span>
                                     </span>
@@ -156,10 +173,10 @@
                                     	<span class="sign_member_wrap" id="">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank" value=""></span>
+                                                <span class="sign_rank"></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " value=""></span>
+                                                <span class="sign_date "></span>
                                             </span>
 
                                             <span class="sign_wrap">
@@ -175,17 +192,17 @@
                                     		<span class="sign_member_wrap" id="">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank" value=""></span>
+                                                <span class="sign_rank"></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " value=""></span>
+                                                <span class="sign_date"></span>
                                             </span>
 
                                             <span class="sign_wrap">
                                                 <span class="sign_name"><strong></strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id=""></span>
+                                                <span class="sign_date"></span>
                                             </span>
                                         </span>
                                     </span>
@@ -193,21 +210,23 @@
                                     	</c:if> 
                                     
 
-                                    <c:forEach items="${list}" var="vo">
-	                                    <span class="sign_member_wrap" id="">
+                                    <c:forEach items="${list}" begin="1" var="vo">
+	                                    <span class="sign_member_wrap haveId" id="">
 	                                        <span class="sign_member">                                           
 	                                            <span class="sign_rank_wrap">
 	                                                <span class="sign_rank">${vo.level}</span>
 	                                            </span>
 	                                            <span class="sign_date_wrap">
-	                                                <span class="sign_date ">${vo.employeeVO.name}</span>
+	                                                <span class="sign_date" data-id="${vo.employeeVO.id}">${vo.employeeVO.name}</span>
 	                                            </span>
 	
 	                                            <span class="sign_wrap">
-	                                                <span class="sign_name"><strong>서명</strong></span>
+	                                                <span class="sign_name"><strong class="sign"></strong></span>
 	                                            </span>
 	                                            <span class="sign_date_wrap">
-	                                                <span class="sign_date " id="">날짜</span>
+	                                            	<c:forEach items="${vo.approvalVOs}" var="get">
+	                                                	<span class="sign_date date">${get.date}</span>
+	                                                </c:forEach>
 	                                            </span>
 	                                        </span>
 	                                    </span>
@@ -279,11 +298,12 @@
 
                 </tbody>
             </table>
+   	</form>
             <div>
                 <label for="file">파일첨부하기</label><br>
             <input type="file" name="attach">
             </div>
-    </form>
+    
         <p
             style="line-height: 150%; font-family: &quot;맑은 고딕&quot;; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;">
             &nbsp;</p>
@@ -293,7 +313,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-<script src="/js/document/approval/approval.js"></script>
+<script src="/js/document/writen/approval.js"></script>
 </body>
 
 </html>

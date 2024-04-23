@@ -5,18 +5,32 @@
 
 <mapper namespace="com.groups.schicken.document.DocumentDAO">
 
-	<select id="approvalDetail" resultMap="allListResult">
-		SELECT doc.*,
-		a.*,
-		emp.*
-		FROM document doc
-		LEFT JOIN approval a ON a.document_id = doc.id
-		LEFT JOIN employee emp ON a.employee_id = emp.id
-		
+	<select id="getEx" resultMap="employeeResult">
+		SELECT emp.id,
+			emp.name,
+			d.name departmant_name,
+			c.name code_name
 			
+			FROM employee emp
+			LEFT JOIN department d ON emp.department_id=d.id
+			INNER join code c on c.id=emp.pos_id and c.type_id =300
+			WHERE emp.id=#{id}
 	</select>
 	
+	<resultMap type="employeeVO" id="employeeResult" autoMapping="true">
+		<association property="department" autoMapping="true" javaType="DepartmentVO" columnPrefix="departmant_"/>
+		<association property="position" javaType="CodeVO" autoMapping="true" columnPrefix="code_"/>
+	</resultMap>
 	
+	<!-- DepartmentVO department;
+		CodeVO position; -->
+
+	<update id="resultUpdate">
+		UPDATE approval
+		SET result=1 , date=#{date}
+		WHERE document_id=#{documentId} AND employee_id=#{employeeId}
+	</update>
+
 	<select id="approvalList" resultMap="allListResult">
 		SELECT 
 			d.id,
@@ -40,7 +54,7 @@
 			SELECT nextval(seq3)
 		</selectKey>
 		INSERT INTO document
-		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writer},#{des})
+		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writerId},#{des})
 	</insert>
 	
 	<insert id="appAdd">
@@ -61,15 +75,18 @@
 	<resultMap id="allListResult" type="DocumentVO" autoMapping="true">
 		<association property="templateVO" javaType="TemplateVO" autoMapping="true"/>
 		<association property="employeeVO" javaType="EmployeeVO" autoMapping="true" columnPrefix="employee_"/>
-		<association property="dName" javaType="DepartmentVO" autoMapping="true" columnPrefix="department_"/>		
+		<association property="department" javaType="DepartmentVO" autoMapping="true" columnPrefix="department_"/>		
 		<collection property="approvalVOs" javaType="List" ofType="ApprovalVO" autoMapping="true"/>
 	</resultMap>
 	
 	<select id="getDetail" resultMap="allListResult">
 		SELECT doc.*,
-		tem.*,
+		tem.*,		
 		app.rank,
-		e.name employee_name,		
+		app.result,
+		app.date,
+		e.name employee_name,
+		e.id employee_id,	
 		d.name department_name,
 		c.name "level"
 		FROM document doc

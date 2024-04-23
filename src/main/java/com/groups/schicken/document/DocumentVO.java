@@ -27,7 +27,7 @@ public class DocumentVO {
 	private List<ApprovalVO> approvalVOs;
 	private String level;
 	private EmployeeVO employeeVO;
-	private DepartmentVO dName;
+	private DepartmentVO department;
 	
 	
 	private FileVO fileVO;
