@@ -120,9 +120,9 @@
 
 	<select id="userList" resultType="employeeVO"
 		parameterType="Pager" resultMap="employeeDetails">
-		SELECT 
+		SELECT
 		employee.id,
-		employee.name, 
+		employee.name,
 		department.name AS dept_name ,
 		code.name AS code_name
 		FROM employee
@@ -138,17 +138,17 @@
 	<!-- 퇴사자 -->
 	<select id="isuserList" resultType="employeeVO"
 		parameterType="Pager" resultMap="employeeDetails">
-		SELECT 
-		employee.id, 
-		employee.name, 
-		employee.is_leaved, 
+		SELECT
+		employee.id,
+		employee.name,
+		employee.is_leaved,
 		department.name
-		AS dept_name, 
+		AS dept_name,
 		code.name AS code_name
 		FROM employee
-		INNER JOIN 
+		INNER JOIN
 		department ON employee.department_id = department.id
-		INNER JOIN 
+		INNER JOIN
 		code ON employee.pos_id = code.id AND code.type_id = 300
 		<include refid="search" />
 		AND employee.is_leaved = 0
@@ -182,7 +182,7 @@
 	</select>
 		<select id="getTotalCount2">
 		SELECT COUNT(id) FROM (select * from employee where  employee.is_leaved =0) AS employee
-		<include refid="search" /> 
+		<include refid="search" />
 	</select>
 
 
@@ -225,7 +225,17 @@
 		</foreach>
 	</insert>
 
-
+	<!-- employee의 아이디의 리스트로 employee의 이름을 EmployeeVO의 리스트로 가져옴 -->
+	<select id="getNamesByIds">
+		SELECT
+			  id
+			, name
+		FROM employee
+		WHERE id
+		<foreach collection="ids" item="id" open="IN (" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
 
 
 
@@ -268,8 +278,8 @@
 		<association property="file" javaType="FileVO">
 			<result column="file_Id" property="id" />
 		</association>
-		<!-- <association property="social" javaType="SocialVO"> <result column="social_id" 
-			property="social_id" /> <result column="kind" property="kind" /> <result 
+		<!-- <association property="social" javaType="SocialVO"> <result column="social_id"
+			property="social_id" /> <result column="kind" property="kind" /> <result
 			column="employee_id" property="employeeId" /> </association> -->
 
 	</resultMap>

@@ -1,4 +1,4 @@
-import {mapping, loginedId} from "/js/websocket/websocketController.js";
+import {mapping, loginedId} from "/js/websocket/websocket.js";
 import {openNoteMessage} from "/js/header/header.js";
 
 const schickenNotificationList = document.getElementById("schicken-notification-list");
@@ -9,7 +9,7 @@ const notificationIcon = document.getElementById("notification-icon");
 const moreNotificationBtn = document.getElementById("more-notification-btn");
 const lastNotificationBtn = document.getElementById("last-notification-btn");
 
-/* controller */
+/* mapping handler */
 mapping("noti/" + loginedId, appendNotificationList);
 mapping("noti/whole", appendNotificationList);
 function appendNotificationList(noti) {
@@ -34,17 +34,6 @@ let notificationByType = {
     NoteMessage : openNoteMessageByLink
 }
 
-function readNotification(id, type, link){
-    fetch('/notifications/read', {
-        method:'post',
-        headers:{"content-Type" : "application/json;charset-utf-8"},
-        body:JSON.stringify({id:id})
-    })
-        .then(res=>{
-            if(res.ok) notificationByType[type](link);
-        })
-}
-
 function onNotificationClick(event){
     const link = event.target.dataset.link;
     const type = event.target.dataset.type;
@@ -61,6 +50,17 @@ function onNotificationClick(event){
     }
 
     event.target.parentElement.click();
+}
+
+function readNotification(id, type, link){
+    fetch('/notifications/read', {
+        method:'post',
+        headers:{"content-Type" : "application/json;charset-utf-8"},
+        body:JSON.stringify({id:id})
+    })
+        .then(res=>{
+            if(res.ok) notificationByType[type](link);
+        })
 }
 
 /* 매핑할 함수들 */

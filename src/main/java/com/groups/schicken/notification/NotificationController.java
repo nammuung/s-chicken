@@ -29,12 +29,6 @@ public class NotificationController {
         return "notification/notification";
     }
 
-    @MessageMapping("/noti")
-    public void sendNotification(NotificationVO notificationVO){
-        System.out.println("notificationVO = " + notificationVO);
-        messagingTemplate.convertAndSend("/sub/noti", notificationVO);
-    }
-
     @GetMapping("/notifications")
     public ResponseEntity<List<NotificationVO>> getNotifications(@AuthenticationPrincipal EmployeeVO employeeVO, Pager pager, Boolean read){
         System.out.println("read = " + read);
