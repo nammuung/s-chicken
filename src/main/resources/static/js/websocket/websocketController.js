@@ -1,14 +1,12 @@
 import ws from "/js/websocket/websocket.js"
-import {appendNotificationList} from "/js/notification/notification.js"
 
 const added = {};
-function mapping(path, callback){
-    let id = ws.add(path , callback);
-    added[id] = path;
+export function mapping(path, callback){
+    added[path] = ws.add(path, callback);
 }
 
-const loginedId = document.querySelector("[data-logined-id]")?.dataset.loginedId;
+export function cutMapping(path){
+    ws.del(added[path]);
+}
 
-/* controller */
-mapping("noti/" + loginedId, appendNotificationList);
-mapping("noti/whole", appendNotificationList);
+export const loginedId = document.querySelector("[data-logined-id]")?.dataset.loginedId;

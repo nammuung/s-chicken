@@ -1,3 +1,4 @@
+import {mapping, loginedId} from "/js/websocket/websocketController.js";
 import {openNoteMessage} from "/js/header/header.js";
 
 const schickenNotificationList = document.getElementById("schicken-notification-list");
@@ -7,6 +8,26 @@ const notificationIcon = document.getElementById("notification-icon");
 
 const moreNotificationBtn = document.getElementById("more-notification-btn");
 const lastNotificationBtn = document.getElementById("last-notification-btn");
+
+/* controller */
+mapping("noti/" + loginedId, appendNotificationList);
+mapping("noti/whole", appendNotificationList);
+function appendNotificationList(noti) {
+    if(schickenNotificationList.children.length >= 11) {
+        schickenNotificationList.lastElementChild.remove();
+        schickenNotificationList.lastElementChild.remove();
+    }
+
+    let noNotification = document.querySelectorAll("[data-no-notification]");
+    if(noNotification.length > 0) {
+        noNotification.forEach(e => e.classList.add("d-none"));
+    }
+
+    notificationBadge.classList.remove("d-none");
+    const listItem = drawNotificationDropdownItem(noti);
+    schickenNotificationList.prepend(listItem);
+};
+
 
 /* 알림 클릭시 함수 매핑 */
 let notificationByType = {
@@ -129,20 +150,3 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
         });
 })
-
-/* controller에서 사용할 함수 */
-export const appendNotificationList = (noti) => {
-    if(schickenNotificationList.children.length >= 11) {
-        schickenNotificationList.lastElementChild.remove();
-        schickenNotificationList.lastElementChild.remove();
-    }
-
-    let noNotification = document.querySelectorAll("[data-no-notification]");
-    if(noNotification.length > 0) {
-        noNotification.forEach(e => e.classList.add("d-none"));
-    }
-
-    notificationBadge.classList.remove("d-none");
-    const listItem = drawNotificationDropdownItem(noti);
-    schickenNotificationList.prepend(listItem);
-};
