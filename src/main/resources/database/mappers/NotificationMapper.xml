@@ -5,12 +5,12 @@
 
 <mapper namespace="com.groups.schicken.notification.NotificationDAO">
     <insert id="insertNotification">
-        <selectKey resultType="String" order="BEFORE" keyProperty="id" >
+        <selectKey resultType="String" order="BEFORE" keyProperty="notification.id" >
             SELECT nextval(seq2)
         </selectKey>
         INSERT INTO notification (id, receiver_id, content, time, type, link)
         <foreach collection="receivers" item="receiver" open="VALUES " separator=",">
-            (#{id}, #{receiver}, #{notification.content}, #{notification.time}, #{notification.type}, #{notification.link})
+            (#{notification.id}, #{receiver}, #{notification.content}, #{notification.time}, #{notification.type}, #{notification.link})
         </foreach>
     </insert>
 
