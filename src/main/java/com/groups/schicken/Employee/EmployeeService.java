@@ -257,7 +257,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
     }
 
 
-    public int updateEmployee(EmployeeVO employeeVO, MultipartFile attach) throws Exception{
+    public int updateEmployee(EmployeeVO employeeVO, MultipartFile attach) throws Exception {
         int result = 0; // 기본적으로 반환할 결과 값을 0으로 설정
 
         // 파일이 첨부되었는지 확인
@@ -268,6 +268,11 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
             Long lid = Long.parseLong(id);
             file.setParentId(lid);
             file.setTblId("1077");
+
+            // 기존 파일 삭제
+            fileManager.deleteFile(file);
+
+            // 새 파일 업로드
             fileManager.uploadFile(attach, file);
         }
 
@@ -276,6 +281,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
         return result;
     }
+
+
 
 
 

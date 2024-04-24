@@ -176,7 +176,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6><sec:authentication property="Principal.name"/></h6>
-                        <span><sec:authentication property="Principal.department.name"/>/<sec:authentication property="Principal.posName"/></span>
+                        <span>${profile.name}</span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
