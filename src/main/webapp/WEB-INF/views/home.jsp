@@ -17,7 +17,7 @@
 }
 
 #calendar {
-	height: 500px; /* 원하는 높이로 조정 */
+	height: 380px; /* 원하는 높이로 조정 */
 }
 </style>
   
@@ -30,22 +30,61 @@
 	<!-- ======= Sidebar ======= -->
 	<c:import url="template/sidebar.jsp" />
 	<main id="main" class="main">
-		<div class="pagetitle">
-			<h1>메인 화면</h1>
-		</div>
-		<section class="section">
+		
+		<section class="section ms-auto me-auto" style="width: 1200px;">
+			<div class="pagetitle">
+				<h1>메인 화면</h1>
+			</div>
 			<div class="row justify-content-center">
-				<div class="card" style="width: 1300px;">
-					<div class="card-body">
-						<div id='calendar-container'>
-							<div id='calendar'></div>
+				<div class="col">
+					<div class="card" style="width: 800px;">
+						<div class="card-body">
+							<div id='calendar-container'>
+								<div id='calendar'></div>
+							</div>
 						</div>
 					</div>
 				</div>
+				<div class="col"></div>
 			</div>
+			<div class="row justify-content-start d-flex">
+				<div class="col-3 pagetitle" style="margin-left: 18.5%; margin-bottom: 15px"><h1>공지사항</h1></div>
+				<div class="col-3 pagetitle" style="margin-left: 25.5%; margin-bottom: 15px"><h1>결재목록</h1></div>
+				</div>
 				<!-- border -->
-				<div class="row">
-				<div class="col-5 justify-content-start" style="margin-left: 80px;">
+			<div class="row justify-content-center d-flex">
+				
+				<div class=" col">
+					<table class="table text-center text-nowrap">
+                            <thead>
+	                            <tr>
+	                                <th style="width: 5%">no</th>
+	                                <th style="width: 65%">제목</th>
+	                                <th style="width: 10%">작성일</th>
+	                                <th style="width: 10%">등록자</th>
+	                                <th style="width: 10%">조회수</th>
+	                            </tr>
+                            </thead>
+                            <tbody>
+		                            <c:forEach items="${list}" var="vo" end="5">
+	                            		<c:if test="${vo.sort eq 0}">
+				                            <tr id="important">
+                                                <input type="hidden" id="important_val" value="${vo.important}">
+				                                <td>${vo.id}</td>
+				                                <td class="text-start"><a href="./all/detail?id=${vo.id}">${vo.title}</a></td>
+				                                <td>${vo.writeDate}</td>
+				                                	<td>${vo.employeeVO.name}</td>
+				                                <td>${vo.hit}</td>
+				                            </tr>
+			                            </c:if>
+		                            </c:forEach>
+	                           
+                            </tbody>
+                        </table>
+                        </div>
+				<!-- 전자결재 -->
+				
+				<div class=" col">
 				<table class="table text-center text-nowrap">
                             <thead>
 	                            <tr>
@@ -57,22 +96,7 @@
 	                            </tr>
                             </thead>
                             <tbody>
-                            	
-	                            	<c:forEach items="${list}" var="vo">
-	                            		<c:if test="${vo.sort eq 1}">
-				                            <tr id="important">
-                                                <input type="hidden" id="important_val" value="${vo.important}">
-                                                
-				                                <td>${vo.id}</td>
-				                                <td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a></td>
-				                                <td>${vo.writeDate}</td>
-				                                <td>${vo.employeeVO.name}</td>
-				                                <td>${vo.hit}</td>
-				                            </tr>
-			                            </c:if>
-		                            </c:forEach>
-		                            
-		                            <c:forEach items="${list}" var="vo">
+		                            <c:forEach items="${list}" var="vo" end="5">
 	                            		<c:if test="${vo.sort eq 0}">
 				                            <tr id="important">
                                                 <input type="hidden" id="important_val" value="${vo.important}">
@@ -89,8 +113,11 @@
 	                           
                             </tbody>
                         </table>
-				</div>
-				</div>
+                        </div>
+                        
+                        </div>
+	
+
 		</section>
 	</main>
 	<!-- End #main -->

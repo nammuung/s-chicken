@@ -36,8 +36,7 @@ public class EmployeeController {
 
 	// Login
 	@GetMapping("login")
-	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session, Model model) throws Exception {
-
+	public String login( @ModelAttribute EmployeeVO employeeVO, HttpSession session, Model model) throws Exception {
 		//강제로 주소를 입력하거나 뒤로 로그인할때를 방지하는 용도
 		Object obj=(session.getAttribute("SPRING_SECURITY_CONTEXT"));
 		log.info("{}",obj);
@@ -52,10 +51,9 @@ public class EmployeeController {
 		if(user.equals("anonymousUser")) {
 			return "employee/login";
 		}
-		
-		
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		    String id = auth.getName();
+		    
 		    model.addAttribute("id",id);
 		    return "redirect:/";
 

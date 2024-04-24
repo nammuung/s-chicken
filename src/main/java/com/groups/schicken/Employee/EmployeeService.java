@@ -87,7 +87,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	        }
 	    }
 	    
-	    
+	    System.out.println(employeeVO);
 	    log.info("{}",id);
 	    return employeeVO;
 	}

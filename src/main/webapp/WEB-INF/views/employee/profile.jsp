@@ -511,26 +511,31 @@
 	/////////////////////////////
 	// Set the selected department
 </script>
-<script>
-function validateForm() {
-    var historyInput = document.getElementById('history').value.trim();
-    var remainderAnnualInput = document.getElementById('remainderAnnual').value.trim(); 
+ <script>
+function validateForm(e) {
+    // 모달이 열렸을 때만 validateForm 함수 실행
+    var annualInsertModal = document.getElementById('annualInsertModal');
+    if (annualInsertModal && annualInsertModal.classList.contains('show')) {
+        var historyInput = document.getElementById('history').value.trim();
+        var remainderAnnualInput = document.getElementById('remainderAnnual').value.trim(); 
 
-    if (historyInput === "") {
-        alert("제목을 입력하세요.");
-        return false;
-    }
-    if (remainderAnnualInput == 0){
-    	alert("연차 갯수를 지정해주세요.")
-    	return false;
+        if (historyInput === "") {
+            alert("제목을 입력하세요.");
+            return false;
+        }
+        if (remainderAnnualInput == 0){
+            alert("연차 갯수를 지정해주세요.")
+            return false;
+        }
     }
     return true; 
 }
+
 document.getElementById("plusBtn").addEventListener("click",plus);
-document.getElementById("minusBtn").addEventListener("click",minus);	
+document.getElementById("minusBtn").addEventListener("click",minus); 
 function plus() {
     var input = document.getElementById('remainderAnnual');
-	console.log("click");
+    console.log("click");
     var currentValue = parseInt(input.value, 10);
     input.value = currentValue + 1;
 }
@@ -541,4 +546,5 @@ function minus() {
     input.value = currentValue - 1;
 }
 </script>
+
 </html>
