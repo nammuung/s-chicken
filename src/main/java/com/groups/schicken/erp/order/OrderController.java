@@ -21,7 +21,8 @@ public class OrderController {
     }
 
     @GetMapping("/getOrderSheet")
-    public String getOrderSheet(Model model) {
+    public String getOrderSheet(Model model, OrderVO orderVO) throws Exception {
+        model.addAttribute("order", orderService.getOrderSheet(orderVO));
         return "template/orderSheet";
     }
 

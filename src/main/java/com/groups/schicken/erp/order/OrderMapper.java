@@ -13,4 +13,6 @@ public interface OrderMapper {
     Long getId() throws Exception;
 
     List<OrderVO> getOrderDetail(OrderVO orderVO) throws Exception;
+
+    OrderVO getOrderSheet(OrderVO orderVO) throws Exception;
 }

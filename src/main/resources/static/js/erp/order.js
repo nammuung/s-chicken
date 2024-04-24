@@ -7,14 +7,14 @@ import {addOrder, getOrder, getOrderList} from "../api/order.js";
 sw.init()
 searchOrder()
 //공급처별 발주 테이블 초기화
-const selectedSupplier = [];
+let selectedSupplier= null;
 const supplierContainer = document.getElementById('supplierListContainer')
 const supplierCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
     if(checked){
-        selectedSupplier.push(instance.getDataAtCell(row,1))
-        searchDetailItem(instance.getDataAtCell(row,1))
+        selectedSupplier = instance.getDataAtCell(row,1)
+        searchDetailItem(selectedSupplier)
     } else {
-        selectedSupplier.splice(selectedSupplier.indexOf(instance.getDataAtCell(row,1)),1)
+        selectedSupplier = null;
     }
 })
 const supplierTableOptions = {
@@ -62,14 +62,14 @@ const itemHot = handsontable(itemContainer, itemTableOptions);
 
 
 //발주 테이블 초기화
-let selectedOrders = [];
+let selectedOrder = null;
 const orderListContainer = document.getElementById('orderListContainer')
 const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
     if(checked){
-        selectedOrders.push(row)
-        searchDetail(instance.getDataAtCell(row, 1));
+        selectedOrder = instance.getDataAtCell(row, 1)
+        searchDetail(selectedOrder);
     } else {
-        selectedOrders.splice(selectedItems.indexOf(row),1)
+        selectedOrder = null;
     }
 })
 const orderTableOptions = {
@@ -166,7 +166,11 @@ async function searchDetailItem(supplierId){
 //발주서 미리보기
 const orderPreviewButton = document.getElementById("orderPreviewButton")
 orderPreviewButton.addEventListener("click",  async function(){
-    
+    if(selectedSupplier == null){
+        alert("발주서를 선택해 주세요.")
+        return;
+    }
+    window.open("/getOrderSheet?id="+selectedOrder+"&supplier.id="+selectedSupplier, "new", "toolbar=no, menubar=no, scrollbars=yes, resizable=no, width=800, height=1000, left=0, top=0" )
 })
 
 // function addIdChangeEventListener(){

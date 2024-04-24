@@ -61,4 +61,8 @@ public class OrderService {
     public List<OrderVO> getOrderDetail(OrderVO orderVO) throws Exception {
         return orderMapper.getOrderDetail(orderVO);
     }
+
+    public OrderVO getOrderSheet(OrderVO orderVO) throws Exception {
+        return orderMapper.getOrderSheet(orderVO);
+    }
 }

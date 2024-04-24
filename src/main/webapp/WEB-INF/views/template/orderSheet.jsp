@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -70,19 +72,15 @@
                 <tbody>
                 <tr>
                     <th>일련번호</th>
-                    <td>202303241</td>
+                    <td>${order.id}-${order.supplier.id}</td>
                 </tr>
                 <tr>
                     <th>수신</th>
-                    <td>S치킨/김경모</td>
+                    <td>${order.supplier.name}/${order.supplier.ownerName}</td>
                 </tr>
                 <tr>
                     <th>TEL</th>
-                    <td>031-123-1234</td>
-                </tr>
-                <tr>
-                    <th>FAX</th>
-                    <td>02-1234-1234</td>
+                    <td>${order.supplier.contactNumber}</td>
                 </tr>
                 <tr>
                     <th>납기일자</th>
@@ -100,23 +98,31 @@
                 </tr>
                 <tr>
                     <th>회사명/대표</th>
-                    <td>S치킨 한라점/김경모</td>
+                    <td>S치킨/김경모</td>
                 </tr>
                 <tr>
                     <th>주소</th>
-                    <td>서울시 구로구</td>
+                    <td>서울시 구로구 312 1201호</td>
                 </tr>
                 <tr>
                     <th>담당/연락처</th>
-                    <td>홍길동/010-1234-1234</td>
+                    <td>${order.employee.name}/${order.employee.phoneNumber}</td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    <c:set var="total" value="0" />
+    <c:forEach items="${order.orderItems}" var="item">
+        <c:set var="total" value="${total + item.quantity*item.price}" />
+    </c:forEach>
+    <jsp:useBean id="util" class="com.groups.schicken.common.util.NumberToKorean"/>
+    <c:set var="koreanNumber" value="${util.convert(total)}"/>
+
+
     <div class="border border-black border-4 p-2 mt-3 w-100 d-flex justify-content-between">
-        <span><b>금액 : 사십만이천오백원 정</b></span>
-        <span><b>( 402,500원 ) / VAT포함</b></span>
+        <span><b>금액 : ${koreanNumber} 정</b></span>
+        <span><b>( <fmt:formatNumber value="${total}" pattern="#,###"/>원 ) / VAT포함</b></span>
     </div>
     <div class="w-100 mt-3">
         <table class="w-100 text-center">
@@ -133,16 +139,19 @@
                 </tr>
             </thead>
             <tbody class="">
-            <tr>
-                <td>1</td>
-                <td>C-101</td>
-                <td>날개[9호]</td>
-                <td>10</td>
-                <td>KG</td>
-                <td>36,000</td>
-                <td>36,00</td>
-                <td>36,00</td>
-            </tr>
+            <c:forEach items="${order.orderItems}" var="item" varStatus="status">
+                <tr>
+                    <td>${status.index+1}</td>
+                    <td>${item.id}</td>
+                    <td>${item.item.product.name}[${item.item.product.standard}]</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.item.product.unit.name}</td>
+                    <td><fmt:formatNumber value="${item.price}" pattern="#,###"/>원</td>
+                    <td><fmt:formatNumber value="${item.price * item.quantity}" pattern="#,###"/>원</td>
+                    <td><fmt:formatNumber value="${item.price / 10}" pattern="#,###"/>원</td>
+                </tr>
+            </c:forEach>
+
         </table>
     </div>
 </div>
