@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<div data-login-id="${user.id}"></div>
+
 <!-- ======= Header ======= -->
 <c:import url="../template/header.jsp"/>
 <!-- ======= Sidebar ======= -->

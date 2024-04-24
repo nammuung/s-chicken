@@ -10,6 +10,8 @@
 </head>
 
 <body>
+<sec:authentication property="principal" var="user"/>
+<div data-login-id="${user.id}"></div>
 <!-- ======= Header ======= -->
 <c:import url="../template/header.jsp"/>
 <!-- ======= Sidebar ======= -->
@@ -71,19 +73,21 @@
                             </thead>
                             <tbody>
                                 <c:forEach items="${list}" var="vo">
-                                    <tr>
-                                        <td>${vo.id}</td>
-                                        
-                                        
-                                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> <td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.content}</a></td></c:if>
-                                        
-                                        
-                                        <td>${vo.templateVO.tempName}</td>
-                                        <td>${vo.writeDate}</td>
-                                        <c:if test="${vo.status eq 0}"> <td>진행중</td> </c:if>
-                                        <c:if test="${vo.status eq 1}"> <td>반려</td> </c:if>
-                                        <c:if test="${vo.status eq 2}"> <td>완료</td> </c:if>
-                                    </tr>
+
+	                                    <tr>
+	                                        <td>${vo.id}</td>
+	                                        
+	                                        
+	                                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> <td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.content}</a></td></c:if>
+	                                        
+	                                        
+	                                        <td>${vo.templateVO.tempName}</td>
+	                                        <td>${vo.writeDate}</td>
+	                                        <c:if test="${vo.status eq 0}"> <td>진행중</td> </c:if>
+	                                        <c:if test="${vo.status eq 1}"> <td>반려</td> </c:if>
+	                                        <c:if test="${vo.status eq 2}"> <td>완료</td> </c:if>
+	                                    </tr>
+                                    
                                 </c:forEach>
                             </tbody>
                         </table>
