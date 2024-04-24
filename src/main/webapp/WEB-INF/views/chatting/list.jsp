@@ -1,55 +1,120 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html lang="kr">
+<!doctype html>
+<html lang="ko">
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>S치킨-그룹웨어</title>
-    <c:import url="../template/head.jsp"/>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>채팅</title>
+    <c:import url="../template/head.jsp" />
 </head>
+<style>
+    body, html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        text-align: center;
+        height: 100%;
+        overflow: hidden;
+        margin: inherit;
+    }
 
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1;
+        background: #370926;
+    }
+    nav ul li {
+        display: inline-block;
+    }
+    nav ul li a {
+        color: rgba(255, 255, 255, 0.45);
+        font-size: 0.875rem;
+        display: block;
+        text-decoration: none;
+        padding: 6px 15px;
+    }
+    nav ul li a:hover {
+        color: #fff;
+    }
+
+    section {
+        height: 100%;
+        width: 100%;
+        display: table;
+        pointer-events: none;
+        z-index: 0;
+        -webkit-transition: transform 0.45s cubic-bezier(0, 0, 0.21, 1);
+        transition: transform 0.45s cubic-bezier(0, 0, 0.21, 1);
+    }
+    section h1 {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        color: #fff;
+        font-weight: lighter;
+    }
+
+    #one {
+        background: #42113C;
+    }
+
+    #two {
+        background: #618B25;
+    }
+
+    #three {
+        background: #6BD425;
+    }
+
+    a[id="one"]:target ~ #one {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    a[id="two"]:target ~ #two {
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+
+    a[id="three"]:target ~ #three {
+        -webkit-transform: translate3d(0, -200%, 0);
+        transform: translate3d(0, -200%, 0);
+    }
+</style>
 <body>
-<!-- ======= Header ======= -->
-<c:import url="../template/header.jsp"/>
-<!-- ======= Sidebar ======= -->
-<c:import url="../template/sidebar.jsp"/>
-<main id="main" class="main">
-    <div class="pagetitle">
-        <h1>채팅방 목록</h1>
-    </div>
 
-    <div class="row justify-content-center">
-        <div class="col-9">
-            <div class="card p-3">
-                <div class="row justify-content-between">
-                    <div class="col-6">
-                        <div class="input-group mb-3">
-                            <input class="form-control" type="text" placeholder="검색할 내용을 입력하세요 (부서, 직책명, 이름)">
-                            <button class="btn btn-primary">검색</button>
-                        </div>
-                    </div>
-                    <div class="col-4 text-end">
-                        <button class="btn btn-primary">팝업으로 보기</button>
-                        <button class="btn btn-primary">채팅방 만들기</button>
-                    </div>
-                    <c:forEach begin="1" end="10">
-                    <div class="col-12 chatroom-item p-3 mb-2">
-                        <h4>채팅방 이름</h4>
-                        <span class="text-secondary">부서 직책 이름 : 채팅방의 최근 대화</span>
-                    </div>
-                    </c:forEach>
-                </div>
-            </div>
-        </div>
-    </div>
+<a id="one">Section 1</a>
+<a id="two">Section 2</a>
+<a id="three">Section 3</a>
 
-    <!-- ======= 내용을 넣어주세요. ======= -->
-</main><!-- End #main -->
-<!-- ======= Footer ======= -->
-<c:import url="../template/footer.jsp"/>
-<!-- ======= Script ======= -->
-<c:import url="../template/script.jsp"/>
+<nav>
+    <div class="container">
+        <ul>
+            <li><a href="#one">Section 1</a></li>
+            <li><a href="#two">Section 2</a></li>
+            <li><a href="#three">Section 3</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section id="one">
+    <h1>Section 1</h1>
+</section>
+
+<section id="two">
+    <h1>Section 2</h1>
+</section>
+
+<section id="three">
+    <h1>Section 3</h1>
+</section>
+
 </body>
-
+<c:import url="../template/script.jsp"/>
 </html>

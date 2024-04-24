@@ -19,6 +19,17 @@
         WHERE cm.employee_id=#{reqId} AND cr.id=#{chatroomId}
     </select>
 
+    <select id="getChatroomList">
+        SELECT
+              cr.id
+            , cr.notice
+            , cr.type
+            , NVL(cm.room_name, cr.default_name)
+        FROM chatroom cr
+            INNER JOIN chat_member cm ON cr.id = cm.chatroom_id
+        WHERE cm.employee_id=#{id}
+    </select>
+
     <insert id="createOneChatroom">
         INSERT INTO chatroom (id, type)
         VALUES (#{id}, #{type})
@@ -28,4 +39,15 @@
         INSERT INTO chat_member(chatroom_id, employee_id, room_name)
         VALUES (#{chatroom.id}, #{id}, #{chatroom.name})
     </insert>
+
+    <insert id="insertChat">
+        INSERT INTO chat_message(id, chatroom_id, employee_id, type, send_date, content)
+        VALUES (#{id}, #{chatroomId}, #{senderId}, #{type}, #{sendDate}, #{content})
+    </insert>
+
+    <select id="getChatroomName">
+        SELECT default_name AS "name"
+        FROM chatroom
+        WHERE id=#{chatroomId}
+    </select>
 </mapper>

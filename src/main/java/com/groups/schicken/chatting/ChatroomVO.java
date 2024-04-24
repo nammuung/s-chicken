@@ -15,4 +15,5 @@ public class ChatroomVO {
     private String lastChatting;
     private String lastConnect;
     private String joinDate;
+    private ChatMessage lastMessage;
 }

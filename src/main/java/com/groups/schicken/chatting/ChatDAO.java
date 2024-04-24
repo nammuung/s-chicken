@@ -15,4 +15,8 @@ public interface ChatDAO {
     int createOneChatroom(ChatroomVO chatroom);
 
     List<ChatroomVO> getChatroomList(String id);
+
+    int insertChat(ChatMessage message);
+
+    String getChatroomName(String chatroomId);
 }

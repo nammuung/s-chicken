@@ -70,7 +70,7 @@
 
             <!-- 채팅 드롭다운 -->
             <li class="nav-item dropdown">
-                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                <a id="chatting-popup-btn" class="nav-link nav-icon" href="#">
                     <i class="bi bi-chat-left-text"></i>
                 </a><!-- End Messages Icon -->
             </li><!-- End Messages Nav -->
