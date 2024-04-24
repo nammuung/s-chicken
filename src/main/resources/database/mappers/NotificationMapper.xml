@@ -40,4 +40,10 @@
         WHERE
             receiver_id=#{employee.id} AND id=#{notification.id}
     </update>
+
+    <update id="readAll">
+        UPDATE notification
+        SET is_readed=1
+        WHERE receiver_id=#{employeeId}
+    </update>
 </mapper>
