@@ -180,7 +180,9 @@ orderPreviewButton.addEventListener("click",  async function(){
         orderItems
     )
     alert(result.message)
-    orderHot.loadData([]);
+    if(result.status == 'OK'){
+        orderHot.loadData([]);
+    }
 })
 
 // function addIdChangeEventListener(){
