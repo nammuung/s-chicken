@@ -112,24 +112,27 @@ itemToOrderButton.addEventListener("click", async function(){
     }
 })
 let clickedOrderId;
-orderHot.addHook("afterChange", async ([row, prop, oldValue, newValue])=>{
-    if(row[1] == 'id'  && row[3] && row[2] != row[3]){
-        const result = await getItem(row[3]);
-        const data = result.data;
-        console.log(data)
-        if(data) {
-            orderHot.setDataAtRowProp(row[0],"product.category.name",data.product.category.name)
-            orderHot.setDataAtRowProp(row[0],"product.name",data.product.name)
-            orderHot.setDataAtRowProp(row[0],"product.standard",data.product.standard)
-            orderHot.setDataAtRowProp(row[0],"product.unit.name",data.product.unit.name)
-            orderHot.setDataAtRowProp(row[0],"contractPrice",data.contractPrice)
-            orderHot.setDataAtRowProp(row[0],"product.sellPrice",data.product.sellPrice)
-            orderHot.setDataAtRowProp(row[0],"supplier.name",data.supplier.name)
-        } else {
-            alert("잘못된 품번입니다.")
-            orderHot.setDataAtRowProp(row[0],"id",row[2]);
+
+orderHot.addHook("afterChange", changes => {
+    changes?.forEach(async ([row, prop, before, after]) => {
+        if(prop == 'id'  && after && before != after){
+            const result = await getItem(after);
+            const data = result.data;
+            console.log(data)
+            if(data) {
+                orderHot.setDataAtRowProp(row,"product.category.name",data.product.category.name)
+                orderHot.setDataAtRowProp(row,"product.name",data.product.name)
+                orderHot.setDataAtRowProp(row,"product.standard",data.product.standard)
+                orderHot.setDataAtRowProp(row,"product.unit.name",data.product.unit.name)
+                orderHot.setDataAtRowProp(row,"contractPrice",data.contractPrice)
+                orderHot.setDataAtRowProp(row,"product.sellPrice",data.product.sellPrice)
+                orderHot.setDataAtRowProp(row,"supplier.name",data.supplier.name)
+            } else {
+                alert("잘못된 품번입니다.")
+                orderHot.setDataAtRowProp(row,"id",before);
+            }
         }
-    }
+    })
 })
 //발주 행 추가
 const addRowButton = document.getElementById("addRowButton")
@@ -162,8 +165,14 @@ orderPreviewButton.addEventListener("click",  async function(){
         console.log(row[1], result)
         datas.push(result.data);
     }
+    console.log(datas)
+    // const formData = new FormData();
+    // formData.append("orderItems", datas);
     await addOrder({
-        orderItems: datas,
+        item: {
+            product: data.product,
+        },
+
     })
     console.log(datas);
 })
