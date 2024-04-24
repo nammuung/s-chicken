@@ -161,6 +161,7 @@ orderPreviewButton.addEventListener("click",  async function(){
     let quantity=[];
     console.log(tableData)
     for (let i = 0; i < tableData.length; i++) {
+        if(!tableData[i][1]) continue;
         const row = tableData[i]
         const result = await getItem(row[1]);
         quantity.push(row[9]);
@@ -175,9 +176,11 @@ orderPreviewButton.addEventListener("click",  async function(){
             quantity: quantity[index],
         })
     })
-    await addOrder(
+    const result = await addOrder(
         orderItems
     )
+    alert(result.message)
+    orderHot.loadData([]);
 })
 
 // function addIdChangeEventListener(){

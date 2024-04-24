@@ -38,7 +38,7 @@ public class OrderAPI {
 
     public ResponseEntity<?> addOrder(@AuthenticationPrincipal EmployeeVO employeeVO, @RequestBody List<OrderItemVO> orderItemList) throws Exception {
         try {
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "주문 추가 완료", orderService.addOrder(orderItemList, employeeVO)));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주서 작성 완료", orderService.addOrder(orderItemList, employeeVO)));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
