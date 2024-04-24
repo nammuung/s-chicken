@@ -13,4 +13,6 @@ public interface NotificationDAO {
     List<NotificationVO> getNotifications(EmployeeVO employee, Pager pager ,Boolean read);
 
     int readNotification(EmployeeVO employee, NotificationVO notification);
+
+    void readAll(String employeeId);
 }

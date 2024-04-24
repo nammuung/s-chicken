@@ -24,13 +24,13 @@ function readNotification(id, type, link){
         })
 }
 
-function onNotificationClick(event){
+function onNotificationClick(event, isNoti){
     const link = event.target.dataset.link;
     const type = event.target.dataset.type;
     const notiId = event.target.dataset.notiId;
 
     if(link != null && type != null && notiId != null) {
-        event.target.remove();
+        if(isNoti) event.target.remove();
         let noNotification = document.querySelectorAll("[data-no-notification]");
         if(noNotification.length > 0) {
             noNotification.forEach(e => e.classList.remove("d-none"));
@@ -107,7 +107,7 @@ function getMoreNotification(event){
 }
 
 /* 이벤트 리스너등록 */
-schickenNotificationList.addEventListener("click", onNotificationClick);
+schickenNotificationList.addEventListener("click", (event)=>onNotificationClick(event, true));
 if(notificationPageList != null) notificationPageList.addEventListener("click", onNotificationClick);
 notificationIcon.addEventListener("click", onNotificationIconClick);
 if(moreNotificationBtn != null) moreNotificationBtn.addEventListener("click",getMoreNotification);
@@ -143,6 +143,7 @@ export const appendNotificationList = (noti) => {
     }
 
     notificationBadge.classList.remove("d-none");
+    console.log("알림이 왔습니다!" , noti)
     const listItem = drawNotificationDropdownItem(noti);
     schickenNotificationList.prepend(listItem);
 };

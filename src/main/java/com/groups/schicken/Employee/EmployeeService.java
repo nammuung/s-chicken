@@ -51,16 +51,16 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
+
 	@Autowired
 	private FileManager fileManager;
-	
+
 
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 	    System.out.println("입력 아이디: "+id);
 	    EmployeeVO employeeVO = new EmployeeVO();
-	    
+
 	    // emp로 시작하는 경우 그룹웨어 사용자
 	    if (id.startsWith("emp")) {
 	        // "emp"를 제거한 실제 id 파싱
@@ -86,16 +86,16 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	            e.printStackTrace();
 	        }
 	    }
-	    
-	    System.out.println(employeeVO);
+
+
 	    log.info("{}",id);
 	    return employeeVO;
 	}
 
 
 	/**
-	 * 
-	 * @param employeeVO 
+	 *
+	 * @param employeeVO
 	 * @return
 	 * @throws Exception
 	 */
@@ -111,7 +111,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	    employeeVO.setDateOfEmployment(dateOfEmploymens);
 
 	    employeeVO.setPassword(passwordEncoder.encode(employeeVO.getPassword()));
-	    int result = employeeDAO.join(employeeVO);	
+	    int result = employeeDAO.join(employeeVO);
 
 
 	    return result;
@@ -134,71 +134,71 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		pager.makeNum(employeeDAO.getTotalCount2(pager));
 		return employeeDAO.isuserList(pager);
 	}
-	
-	
+
+
 	public List<RoleVO> rolelist (RoleVO roleVO)throws Exception{
 		return employeeDAO.rolelist(roleVO);
 	}
-	
+
 	public List<RoleVO> role (EmployeeVO employeeVO)throws Exception{
 		return employeeDAO.role(employeeVO);
 	}
-	
-	
-	
-	
+
+
+
+
 	// 소셜 로그인
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
 		ClientRegistration clientRegistration = userRequest.getClientRegistration();  // 인가 서버에서 클라이언트의 정보를 가져와 매핑시킴
-		
+
 		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
 		String email = user.getAttribute("email");
 		log.info("Client ID == > {}", clientRegistration.getClientId());
 		log.info("Client Name == > {}", clientRegistration.getClientName());
 		log.info("Client email == > {}", clientRegistration.getScopes());
 		log.info("Client email == > {}", clientRegistration.getScopes());
-		
-		
-		
+
+
+
 		SocialVO socialVO = new SocialVO();
 		EmployeeVO employeeVO = new EmployeeVO();
 		socialVO.setId(clientRegistration.getClientId());
 		socialVO.setKind(clientRegistration.getClientName());
 		if(clientRegistration.getClientName().equals("Kakao")) {
-			
+
 			try {
 				user = this.kakao(user);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return user;
 	}
-	
-	
-	
+
+
+
 	// Kakao
 	private OAuth2User kakao(OAuth2User oAuth2User)throws Exception{
 		Map<String, Object> map = oAuth2User.getAttribute("properties");
 		EmployeeVO employeeVO = new EmployeeVO();
 		// 사용자 이름을 꺼내옴
-		
+
 		employeeVO.setId(oAuth2User.getName());
 		employeeVO.setAttributes(oAuth2User.getAttributes());
-		
-		
+
+
 		return employeeVO;
-		
-		
-		
-		
+
+
+
+
 	}
-	
-	
-	
-	
+
+
+
+
 	 // 임시 비밀번호 생성 메서드
     private String generateTempPassword() {
         // 임시 비밀번호를 랜덤하게 생성하는 로직 추가 (예: UUID 사용)
@@ -209,7 +209,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
     public boolean resetPassword(EmployeeVO employeeVO)throws Exception {
         // 임시 비밀번호 생성
         String tempPassword = generateTempPassword();
-        
+
         employeeVO.setPassword(passwordEncoder.encode(tempPassword));
         employeeDAO.password(employeeVO);
 
@@ -218,33 +218,33 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
         sendTempPasswordEmail(employeeVO.getEmail(), tempPassword);
 		return true;
     }
-    
-    
+
+
     public int employeeResetPassword(EmployeeVO employeeVO, String hiddenId)throws Exception{
-    		
+
     		EmployeeVO a = employeeDAO.passwordinfo(employeeVO);
     		String infoPassword=a.getDateOfEmployment();
-    	
+
     	System.out.println(infoPassword);
     	employeeVO.setPassword(passwordEncoder.encode(infoPassword));
-    	
+
     	return employeeDAO.passupdate(employeeVO);
     }
-    
-    
+
+
     public int passupdate(EmployeeVO employeeVO, String currentPassword, String newPassword, String hiddenId) throws Exception {
         // 비밀번호 DB에서 꺼내옴
         EmployeeVO emp = employeeDAO.passwordinfo(employeeVO);
         String infoPassword =  emp.getPassword();
-        
+
         System.out.println("DB에 저장된 패스워드: " + infoPassword);
         System.out.println("사용자가 입력한 현재 패스워드: " + currentPassword);
-        
+
         // true면 비밀번호가 동일하다 false는 비밀번호가 다르다.
         boolean isCurrentPasswordCorrect = passwordEncoder.matches(currentPassword, infoPassword);
-        
+
         System.out.println(isCurrentPasswordCorrect);
-        
+
         if(isCurrentPasswordCorrect) {
             // 현재 비밀번호가 일치하면 새 비밀번호로 업데이트
             String encodedNewPassword = passwordEncoder.encode(newPassword);
@@ -256,7 +256,7 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
         }
     }
 
-    
+
     public int updateEmployee(EmployeeVO employeeVO, MultipartFile attach) throws Exception{
         int result = 0; // 기본적으로 반환할 결과 값을 0으로 설정
 
@@ -277,8 +277,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
         return result;
     }
 
-    
-    
+
+
  // 임시 비밀번호를 이메일로 전송하는 메서드
     private void sendTempPasswordEmail(String to, String tempPassword) {
         MimeMessage message = javaMailSender.createMimeMessage();
@@ -307,23 +307,16 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
     			list.add(RoleVO.ofs(departmentId, rolId));
     			log.info("{} =      :",rolId);
     		}
-    	
+
             employeeDAO.roledelete(departmentId);
           System.out.println(list);
             employeeDAO.roleinsert(list);
-          
+
             return 1;
     }
 
 
-
-    
-
-
-
-    
-    
-    
-    
-
+    public EmployeeProfileVO getProfile(String id) {
+		return employeeDAO.getProfile(id);
+    }
 }
