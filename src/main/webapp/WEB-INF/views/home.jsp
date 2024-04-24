@@ -10,10 +10,26 @@
 <c:import url="template/head.jsp" />
 
 <style>
-.fc-header-toolbar {
-	padding-top: 1em;
-	padding-left: 1em;
-	padding-right: 1em;
+/* 일요일 날짜 빨간색 */
+.fc-day-sun a {
+  color: red;
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none; /* 밑줄 제거 */
+}
+
+/* 월요일부터 금요일까지의 날짜 검정색 */
+.fc-day-mon a,
+.fc-day-tue a,
+.fc-day-wed a,
+.fc-day-thu a,
+.fc-day-fri a {
+  color: black;
+  text-decoration: none; /* 밑줄 제거 */
 }
 
 #calendar {
@@ -148,7 +164,7 @@
 							<input id="end" name="end" type="datetime-local"
 								class="form-control mb-3 col-2">
 						</div>
-						<input type="checkbox" value="" class="mt-3 me-1"><span style="margin-top: 40px;">종일</span>
+						<input type="checkbox" value="" class="mt-3 me-1" id="alltime"><span style="margin-top: 40px;">종일</span>
 					</div>
 					<label for="title" class="form-label"><b>제목</b></label>
 					<input type="text" id="title" class="form-control mb-3" placeholder="제목을 입력해주세요.">
@@ -293,35 +309,85 @@
 					console.log(obj);
 				},
 				select: function (arg) {
-					// 부트스트랩 모달 열기
-					$('#eventModal').modal('show');
-	
-					// 모달에서 이벤트 제목 입력 후 저장 버튼 클릭 시
-					$('#saveEventBtn').click(function () {
-						var title = $('#title').val(); // 모달의 이벤트 제목 입력란에서 제목 가져오기
-						if (title) {
-							calendar.addEvent({
-								title: title,
-								start: arg.start,
-								end: arg.end,
-								allDay: arg.allDay
-							});
-						}
-						calendar.unselect();
-						$('#eventModal').modal('hide'); // 모달 닫기
-					});
-	
-					// 모달이 닫힐 때 이벤트 처리
-					$('#eventModal').on('hidden.bs.modal', function () {
-						// 모달이 닫힐 때마다 이벤트 처리를 위해 클릭 이벤트 해제
-						$('#saveEventBtn').off('click');
-					});
+				    // 부트스트랩 모달 열기
+				    $('#eventModal').modal('show');
+
+				    var startDate = arg.start.toISOString().slice(0, 10); // 선택된 날짜의 날짜 부분만 추출
+				    var endDate = arg.end ? arg.end.toISOString().slice(0, 10) : startDate; // 종료 날짜가 있으면 그 날짜를 선택, 없으면 시작 날짜와 같은 날짜 선택
+
+				    // 시작 날짜에 하루를 더하여 설정
+				    var nextDay = new Date(arg.start);
+				    nextDay.setDate(nextDay.getDate() + 1);
+				    var nextDayISO = nextDay.toISOString().slice(0, 10);
+
+				    $('#start').val(nextDayISO + 'T' + getCurrentTime()); // 시작 날짜 입력란에 선택된 날짜와 현재 시간 값 설정
+				    $('#end').val(endDate + 'T18:00'); // 종료 날짜 입력란에 선택된 날짜 값 설정
+
+				    // 현재 시간을 HH:mm 형식으로 반환하는 함수
+				    function getCurrentTime() {
+				        var now = new Date();
+				        var hour = now.getHours().toString().padStart(2, '0'); // 시간을 두 자리로 변환하고 앞에 0을 채움
+				        var minute = now.getMinutes().toString().padStart(2, '0'); // 분을 두 자리로 변환하고 앞에 0을 채움
+				        return hour + ':' + minute; // 시간과 분을 합쳐서 반환
+				    }
+
+				    // 모달에서 이벤트 제목 입력 후 저장 버튼 클릭 시
+				    $('#saveEventBtn').click(function () {
+				        var title = $('#title').val(); // 모달의 이벤트 제목 입력란에서 제목 가져오기
+				        if (title) {
+				            calendar.addEvent({
+				                title: title,
+				                start: arg.start,
+				                end: arg.end,
+				                allDay: arg.allDay
+				            });
+				        }
+				        calendar.unselect();
+				        $('#eventModal').modal('hide'); // 모달 닫기
+				    });
+
+				    // 모달이 닫힐 때 이벤트 처리
+				    $('#eventModal').on('hidden.bs.modal', function () {
+				        // 모달이 닫힐 때마다 이벤트 처리를 위해 클릭 이벤트 해제
+				        $('#saveEventBtn').off('click');
+				    });
 				},
+
+
+
+
+
+
 			});
 			// 캘린더 랜더링
 			calendar.render();
 		});
 	})();
+	$(document).ready(function() {
+	    // 종일 체크박스 클릭 이벤트 처리
+	    $('#alltime').change(function() {
+	        if(this.checked) {
+	            // 종일 옵션이 체크되었을 때
+	            $('#end').val(getEndDateAllDay()); // 종료 시간을 23:59:59로 설정
+	        } else {
+	            // 종일 옵션이 해제되었을 때
+	            $('#end').val(getEndDateNormal()); // 종료 시간을 기존의 18:00으로 설정
+	        }
+	    });
+
+	    // 종일 옵션 체크 시 종료 시간을 23:59:59로 반환하는 함수
+	    function getEndDateAllDay() {
+	        var endDate = $('#start').val().slice(0, 10); // 시작 날짜를 가져와서 ISO 형식으로 변환
+	        return endDate + 'T23:59:59'; // 종료 시간을 23:59:59로 설정하여 반환
+	    }
+
+	    // 종일 옵션 해제 시 종료 시간을 18:00으로 반환하는 함수
+	    function getEndDateNormal() {
+	        var endDate = $('#start').val().slice(0, 10); // 시작 날짜를 가져와서 ISO 형식으로 변환
+	        return endDate + 'T18:00'; // 기존의 종료 시간(18:00)으로 설정하여 반환
+	    }
+	});
+
 	</script>
 	
 
