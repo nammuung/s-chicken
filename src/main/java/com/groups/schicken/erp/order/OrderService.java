@@ -57,4 +57,8 @@ public class OrderService {
         }
         return 1;
     }
+
+    public List<OrderVO> getOrderDetail(OrderVO orderVO) throws Exception {
+        return orderMapper.getOrderDetail(orderVO);
+    }
 }

@@ -18,7 +18,7 @@
 <main id="main" class="main">
     <section class="section erp ms-auto me-auto">
         <div class="pagetitle">
-            <h1>발주</h1>
+            <h1>발주서 작성</h1>
         </div>
         <div class="row">
             <div class="col">
@@ -269,7 +269,7 @@
 <c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../../template/script.jsp"/>
-<script type="module" src="/js/erp/order.js"> </script>
+<script type="module" src="/js/erp/write.js"> </script>
 
 </body>
 

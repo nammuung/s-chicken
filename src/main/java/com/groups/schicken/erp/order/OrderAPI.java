@@ -32,6 +32,19 @@ public class OrderAPI {
                     .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
         }
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrderList(@PathVariable Long id) throws Exception {
+        OrderVO orderVO = new OrderVO();
+        orderVO.setId(id);
+        try {
+            System.out.println(orderService.getOrderList(orderVO));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), orderService.getOrderDetail(orderVO)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
 
     @PostMapping
     @Transactional

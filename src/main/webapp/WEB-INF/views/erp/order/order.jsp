@@ -23,39 +23,38 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <c:import url="../item/itemSearch.jsp"/>
+                    <c:import url="../order/orderSearch.jsp"/>
                     <div class="card-body mt-3 row">
-                        <div class="p-3 d-flex flex-column" style="width: 1200px;">
-                            <div >
+                        <div class="p-3 d-flex" style="width: 1200px;">
+                            <div class="me-2" style="width: 400px;">
                                 <div style="line-height: 40px; padding-bottom: 3px;">
                                     <b>목록</b>
                                 </div>
                                 <div class="mb-3" style="box-shadow: 0 0 0 1px #ccc inset;" >
-                                    <div id="itemListContainer" ></div>
-                                </div>
-                                <div>
-                                    <button class="btn btn-outline-primary" id="itemToOrderButton">추가</button>
-                                </div>
-                                <div class="" style="line-height: 40px; padding-bottom: 3px;">
-                                    <b>발주</b>
-
-                                </div>
-                                <div class="mb-3" style="box-shadow: 0 0 0 1px #ccc inset;" >
-                                    <div id="orderListContainer"></div>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <button class="btn btn-outline-primary" id="addRowButton">행추가</button>
-                                        <button class="btn btn-outline-danger" id="deleteRowButton">삭제</button>
-                                    </div>
-                                    <button class="btn btn-primary" id="orderPreviewButton">저장</button>
+                                    <div id="orderListContainer" ></div>
                                 </div>
                             </div>
-<%--                            <div class="d-flex justify-content-start">--%>
-<%--                                <button id="" class="btn btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#register-modal"><i class="bi bi-database-add"></i>신규</button>--%>
-<%--                                <button id="editButton" class="btn btn-outline-primary me-1"><i class="bi bi-pencil"></i>수정</button>--%>
-<%--                                <button id="exportButton" class="btn btn-primary"><i class="bi bi-file-earmark-spreadsheet-fill"></i> 저장</button>--%>
-<%--                            </div>--%>
+                            <div style="width: 800px;">
+                                <div class="d-flex justify-content-between" style="line-height: 40px; padding-bottom: 3px;">
+                                    <b>발주서</b>
+                                    <button class="btn btn-outline-primary" id="orderPreviewButton">발주서</button>
+                                </div>
+                                <div class="" style="box-shadow: 0 0 0 1px #ccc inset;" >
+                                    <div id="supplierListContainer"></div>
+                                </div>
+                                <div class="" style="line-height: 40px; padding-bottom: 3px;">
+                                    <b>상세</b>
+                                </div>
+                                <div class="mb-3" style="box-shadow: 0 0 0 1px #ccc inset;" >
+                                    <div id="itemListContainer"></div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <div>
+                                        <button class="btn btn-outline-primary" id="addRowButton">발주</button>
+                                        <button class="btn btn-outline-danger" id="deleteRowButton">삭제</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

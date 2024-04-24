@@ -6,10 +6,13 @@ export const handsontable = (container, options) => {
         readOnly: true,
         autoWrapRow: true,
         autoWrapCol: true,
+        rowHeights: 20,
+        wordWrap:false,
         width: "100%",
         stretchH: "all",
         licenseKey: 'non-commercial-and-evaluation', // for non-commercial use only
-        manualColumnResize: true,
+        manualColumnResize: false,
+        manualRowResize: false
     });
 }
 export const checkboxRenderer = (callBack, reset=true) => {

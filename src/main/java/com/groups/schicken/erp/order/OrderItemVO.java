@@ -6,7 +6,7 @@ import com.groups.schicken.erp.supplier.SupplierVO;
 import lombok.Data;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderItemVO {
     private Long id;
     private ItemVO item;

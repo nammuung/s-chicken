@@ -10,4 +10,7 @@ public interface OrderMapper {
 
     int addOrder(OrderVO orderVO) throws Exception;
     int addOrderItem(OrderItemVO orderItem) throws Exception;
-    Long getId() throws Exception;}
+    Long getId() throws Exception;
+
+    List<OrderVO> getOrderDetail(OrderVO orderVO) throws Exception;
+}

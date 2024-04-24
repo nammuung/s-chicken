@@ -2,36 +2,10 @@ import {checkboxRenderer, handsontable, scaleArrayToSum} from "../lib/handsontab
 import {addItem, getItemList, updateItem, getItem} from "../api/item.js";
 import {getProduct, getProductList} from "../api/product.js";
 import {getSupplierList} from "../api/supplier.js";
-import {addOrder, getOrder, getOrderList} from "../api/order.js";
+import {addOrder} from "../api/order.js";
 
 sw.init()
-searchOrder()
-//공급처별 발주 테이블 초기화
-const selectedSupplier = [];
-const supplierContainer = document.getElementById('supplierListContainer')
-const supplierCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
-    if(checked){
-        selectedSupplier.push(instance.getDataAtCell(row,1))
-        searchDetailItem(instance.getDataAtCell(row,1))
-    } else {
-        selectedSupplier.splice(selectedSupplier.indexOf(instance.getDataAtCell(row,1)),1)
-    }
-})
-const supplierTableOptions = {
-    data:[],
-    colHeaders : ['','ID','거래처', '내용','총 공급가액', '총 부가세'],
-    columns : [
-        {renderer:supplierCheckboxRenderer},
-        {data:"id"},
-        {data:"supplier.name"},
-        {data:"content"},
-        {data:"price"},
-        {data:"vat"},
-    ],
-    colWidths : scaleArrayToSum(Array(6),763),
-    height:"144",
-}
-const supplierHot = handsontable(supplierContainer, supplierTableOptions);
+searchItem()
 //아이템 테이블 초기화
 const selectedItems = [];
 const itemContainer = document.getElementById('itemListContainer')
@@ -44,19 +18,22 @@ const itemCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col}
 },false)
 const itemTableOptions = {
     data:[],
-    colHeaders : ['','ID','카테고리', '품명', '규격','단위', '계약단가','판매단가'],
+    colHeaders : ['','ID','카테고리', '품명', '규격','단위', '계약단가','판매단가', '거래처', '등록일', '등록자'],
     columns : [
         {renderer:itemCheckboxRenderer},
-        {data:"item.id"},
-        {data:"item.product.category.name"},
-        {data:"item.product.name", renderer:"html"},
-        {data:"item.product.standard"},
-        {data:"item.product.unit.name"},
-        {data:"price"},
-        {data:"item.product.sellPrice"},
+        {data:"id"},
+        {data:"product.category.name"},
+        {data:"product.name", renderer:"html"},
+        {data:"product.standard"},
+        {data:"product.unit.name"},
+        {data:"contractPrice"},
+        {data:"product.sellPrice"},
+        {data:"supplier.name"},
+        {data:"createDate"},
+        {data:"writer.name"},
     ],
-    colWidths : scaleArrayToSum(Array(8),763),
-    height:"280",
+    colWidths : scaleArrayToSum(Array(11)),
+    height:"20vh",
 }
 const itemHot = handsontable(itemContainer, itemTableOptions);
 
@@ -67,106 +44,145 @@ const orderListContainer = document.getElementById('orderListContainer')
 const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
     if(checked){
         selectedOrders.push(row)
-        searchDetail(instance.getDataAtCell(row, 1));
     } else {
         selectedOrders.splice(selectedItems.indexOf(row),1)
     }
-})
+},false)
 const orderTableOptions = {
     data:[],
-    colHeaders : ['','ID','내용', '작성일', '작성자'],
+    colHeaders : ['','ID','카테고리', '품명', '규격','단위', '계약단가','판매단가', '거래처', '발주수량', ''],
     columns : [
         {renderer:orderCheckboxRenderer},
-        {data:"id"},
-        {data:"content"},
-        {data:"orderDate"},
-        {data:"employee.name"},
+        {data:"id", readOnly: false},
+        {data:"product.category.name"},
+        {data:"product.name", renderer:"html"},
+        {data:"product.standard"},
+        {data:"product.unit.name"},
+        {data:"contractPrice"},
+        {data:"product.sellPrice"},
+        {data:"supplier.name"},
+        {data:"orderQuantity", readOnly:false}
     ],
-    colWidths : scaleArrayToSum(Array(4),360),
-    height:"466",
+    colWidths : scaleArrayToSum(Array(10)),
+    height:"30vh",
 }
 const orderHot = handsontable(orderListContainer, orderTableOptions);
 
-//발주서 검색
+//품목 검색
 const searchButton = document.getElementById("searchButton");
 searchButton.addEventListener("click", async function () {
-    searchOrder();
+    searchItem();
 })
-async function searchOrder(){
+async function searchItem(){
     const searchForm = document.getElementById("searchForm");
     const formData = new FormData(searchForm);
-    const result = await getOrderList(formData);
-    const datas = result.data;
-    datas.forEach((data,index) => {
-        if(data.orderItems.length == 1){
-            data.content = `${data.orderItems[0].item.product.name}`
-        } else {
-            data.content = `${data.orderItems[0].item.product.name} 외 ${data.orderItems.length-1}개`
+    const result = await getItemList(formData);
+    const data = result.data;
+    data.forEach((object,index) => {
+        data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
+    })
+    console.log(data)
+    itemHot.loadData(data);
+}
+
+
+//발주 아이템 추가
+const itemToOrderButton = document.getElementById("itemToOrderButton");
+itemToOrderButton.addEventListener("click", async function(){
+    if(selectedItems.length == 0){
+        alert("품목을 선택해 주세요.")
+        return;
+    }
+    selectedItems.sort((a,b)=>b-a);
+    const datas = [];
+    for(let item of selectedItems){
+        const result = await getItem(item);
+        datas.push(result.data);
+    }
+    for(let data of datas){
+        orderHot.alter("insert_row_above",0);
+        orderHot.setDataAtRowProp(0,"id",data.id)
+        orderHot.setDataAtRowProp(0,"product.category.name",data.product.category.name)
+        orderHot.setDataAtRowProp(0,"product.name",data.product.name)
+        orderHot.setDataAtRowProp(0,"product.standard",data.product.standard)
+        orderHot.setDataAtRowProp(0,"product.unit.name",data.product.unit.name)
+        orderHot.setDataAtRowProp(0,"contractPrice",data.contractPrice)
+        orderHot.setDataAtRowProp(0,"product.sellPrice",data.product.sellPrice)
+        orderHot.setDataAtRowProp(0,"supplier.name",data.supplier.name)
+    }
+})
+let clickedOrderId;
+
+orderHot.addHook("afterChange", changes => {
+    changes?.forEach(async ([row, prop, before, after]) => {
+        if(prop == 'id'  && after && before != after){
+            const result = await getItem(after);
+            const data = result.data;
+            console.log(data)
+            if(data) {
+                orderHot.setDataAtRowProp(row,"product.category.name",data.product.category.name)
+                orderHot.setDataAtRowProp(row,"product.name",data.product.name)
+                orderHot.setDataAtRowProp(row,"product.standard",data.product.standard)
+                orderHot.setDataAtRowProp(row,"product.unit.name",data.product.unit.name)
+                orderHot.setDataAtRowProp(row,"contractPrice",data.contractPrice)
+                orderHot.setDataAtRowProp(row,"product.sellPrice",data.product.sellPrice)
+                orderHot.setDataAtRowProp(row,"supplier.name",data.supplier.name)
+            } else {
+                alert("잘못된 품번입니다.")
+                orderHot.setDataAtRowProp(row,"id",before);
+            }
         }
     })
-    orderHot.loadData(datas);
-}
+})
+//발주 행 추가
+const addRowButton = document.getElementById("addRowButton")
+addRowButton.addEventListener("click", function(){
+    orderHot.alter("insert_row_below");
+})
 
-
-//상세 검색
-let detailItems = [];
-async function searchDetail(id){
-    const result = await getOrder(id);
-    const datas = result.data;
-    detailItems = [];
-    datas.forEach((data,index) => {
-        data.id = data.supplier.id;
-        if(data.orderItems.length == 1){
-            data.content = `${data.orderItems[0].item.product.name}`
-        } else {
-            data.content = `${data.orderItems[0].item.product.name} 외 ${data.orderItems.length-1}개`
-        }
-        data.vat = Math.floor(data.price / 10);
-        detailItems.push({id:data.supplier.id,orderItems:data.orderItems})
+//발주 행 삭제
+const deleteRowButton = document.getElementById("deleteRowButton")
+deleteRowButton.addEventListener("click", function(){
+    if(selectedOrders.length == 0){
+        alert("발주를 선택해 주세요.")
+        return;
+    }
+    selectedOrders.forEach((row, index) => {
+        orderHot.alter("remove_row", row-index);
     })
-    supplierHot.loadData(datas);
-    [...supplierContainer.querySelectorAll("tr:nth-child(1) td:nth-child(1) input")].forEach(
-        el=> el.click()
-    )
-}
-
-//디테일 아이템
-async function searchDetailItem(supplierId){
-    itemHot.loadData(detailItems.filter(obj => obj.id === supplierId)[0].orderItems);
-}
-
-// //발주 아이템 추가
-// const itemToOrderButton = document.getElementById("itemToOrderButton");
-// itemToOrderButton.addEventListener("click", async function(){
-//     if(selectedItems.length == 0){
-//         alert("품목을 선택해 주세요.")
-//         return;
-//     }
-//     selectedItems.sort((a,b)=>b-a);
-//     const datas = [];
-//     for(let item of selectedItems){
-//         const result = await getItem(item);
-//         datas.push(result.data);
-//     }
-//     for(let data of datas){
-//         orderHot.alter("insert_row_above",0);
-//         orderHot.setDataAtRowProp(0,"id",data.id)
-//         orderHot.setDataAtRowProp(0,"product.category.name",data.product.category.name)
-//         orderHot.setDataAtRowProp(0,"product.name",data.product.name)
-//         orderHot.setDataAtRowProp(0,"product.standard",data.product.standard)
-//         orderHot.setDataAtRowProp(0,"product.unit.name",data.product.unit.name)
-//         orderHot.setDataAtRowProp(0,"contractPrice",data.contractPrice)
-//         orderHot.setDataAtRowProp(0,"product.sellPrice",data.product.sellPrice)
-//         orderHot.setDataAtRowProp(0,"supplier.name",data.supplier.name)
-//     }
-// })
-
-
+    selectedOrders = [];
+})
 
 //발주서 미리보기
 const orderPreviewButton = document.getElementById("orderPreviewButton")
 orderPreviewButton.addEventListener("click",  async function(){
-    
+    const tableData = orderHot.getData();
+    let datas = [];
+    let quantity=[];
+    console.log(tableData)
+    for (let i = 0; i < tableData.length; i++) {
+        if(!tableData[i][1]) continue;
+        const row = tableData[i]
+        const result = await getItem(row[1]);
+        quantity.push(row[9]);
+        datas.push(result.data);
+    }
+    const orderItems = []
+    datas.forEach((data,index) => {
+        orderItems.push({
+            item:{
+                ...data,
+            },
+            quantity: quantity[index],
+        })
+    })
+    const result = await addOrder(
+        orderItems
+    )
+    alert(result.message)
+    if(result.status == 'OK'){
+        orderHot.loadData([]);
+    }
 })
 
 // function addIdChangeEventListener(){
