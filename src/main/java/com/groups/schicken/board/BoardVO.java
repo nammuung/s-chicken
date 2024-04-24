@@ -1,5 +1,6 @@
 package com.groups.schicken.board;
 
+import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.FileVO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,8 +17,11 @@ public class BoardVO {
 	private Boolean isDeleted;
 	private Long hit;
 	private int sort;
-	private Long writerId;
+	private String writerId;
 	private Boolean important;
+	
 
 	private List<FileVO> fileVO;
+	private EmployeeVO employeeVO;
+	
 }

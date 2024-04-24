@@ -3,6 +3,7 @@ package com.groups.schicken.board.represent;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.board.BoardVO;
 import com.groups.schicken.common.vo.Pager;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/all/*")
@@ -27,7 +31,8 @@ public class AllController {
 	}
 	
 	@GetMapping("list")
-	public String list(BoardVO boardVO,Pager pager,Model model)throws Exception{
+	public String list(@AuthenticationPrincipal EmployeeVO employeeVO,BoardVO boardVO,Pager pager,Model model)throws Exception{
+		boardVO.setWriterId(employeeVO.getId());
 		List<BoardVO> ar = representService.allgetList(pager, boardVO);
 		
 		model.addAttribute("list", ar);
@@ -36,6 +41,7 @@ public class AllController {
 		
 		return "board/list";
 	}
+		
 	
 	@GetMapping("write")
 	public String write()throws Exception{
@@ -44,7 +50,8 @@ public class AllController {
 	}
 	
 	@PostMapping("write")
-	public String write(BoardVO boardVO,@RequestParam(value="attach") MultipartFile attach)throws Exception{
+	public String write(@AuthenticationPrincipal EmployeeVO employeeVO,BoardVO boardVO,@RequestParam(value="attach") MultipartFile attach)throws Exception{
+		boardVO.setWriterId(employeeVO.getId());
 		int result = representService.add(boardVO, attach);
 		
 		return "redirect:./list";

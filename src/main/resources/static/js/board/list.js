@@ -1,5 +1,6 @@
 
 
+
 Array.prototype.slice.call(document.querySelector("select"))
     .forEach(options => {
         if(options.value == '${pager.kind}') options.selected = true;
@@ -15,7 +16,8 @@ const prev_val = document.getElementById("prev_val");
 const next = document.getElementById("next");
 const next_val = document.getElementById("next_val");
 
-    if(next_val.value == 1){
+console.log(next_val.value);
+    if(next_val.value){
         next.classList.add("disabled");
     }
     
@@ -27,3 +29,4 @@ const imp_val = document.getElementById("important_val");
 		important.style.backgroundColor = 'red';
 	}
 
+  

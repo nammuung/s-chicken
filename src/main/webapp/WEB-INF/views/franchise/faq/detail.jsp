@@ -48,7 +48,7 @@
             <div class="card">
                 <div class="card-body mt-3">
                     <div class="mb-3">
-                        <a href="/notice/list" class="link-body-emphasis">
+                        <a href="/franchise/faq/list" class="link-body-emphasis">
                             <i class="bi bi-list toggle-sidebar-btn button"></i>
                             <span>목록</span>
                         </a>

@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -15,6 +18,8 @@
 <!-- ======= Sidebar ======= -->
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
+<sec:authentication property="principal" var="user"/>
+<div data-login-id="${user.id}"></div>
     <div class="pagetitle">
         <h1>${board} 공지</h1>
     </div>
@@ -24,7 +29,7 @@
                 <div class="card">
                     <div class="d-flex justify-content-between p-3 border-bottom">
                         <div>
-                            <span class="me-3">관리자</span>
+                            <span class="me-3">${vo.employeeVO.name}</span>
                             <b>${vo.title}</b>
                         </div>
                         <span class="text-muted">${vo.writeDate}</span>
@@ -55,9 +60,11 @@
                     </div>
                 </div>
                  <div class="row justify-content-end p-3">
-		            <div class="col-auto">            	               	
-		               	<a href="./update" id="update" class="btn btn-primary">수정하기</a>
-		               	<a href="./delete" id="del" class="btn btn-primary">삭제하기</a>
+		            <div class="col-auto">     
+		               <c:if test="${user.id eq vo.writerId}"> 	               	
+			               	<a href="./update" id="update" class="btn btn-primary">수정하기</a>
+			               	<a href="./delete" id="del" class="btn btn-primary">삭제하기</a>
+		               	</c:if>
 		            </div>
 		        </div>
 		        <form id="frm" action="./update" method="get">
@@ -126,7 +133,7 @@
 								
 								<div class="row justify-content-end p-3">
 									<div class="button" id="add_btn">
-										<button type="button" id="replyAdd" class="btn btn-primary" data-id="${vo.id}" data-writerId="${vo.writerId}">댓글달기</button>
+										<button type="button" id="replyAdd" class="btn btn-primary" data-id="${vo.id}">댓글달기</button>
 									</div>
 								</div>
 								
@@ -138,10 +145,11 @@
     </section>
 </main><!-- End #main -->
 <!-- ======= Footer ======= -->
-<script src="../js/board/detail.js"></script>
+
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
+<script src="../js/board/detail.js"></script>
 </body>
 
 </html>

@@ -92,21 +92,19 @@
 
                 </div>
                 <div class="card-body mt-3" id="commentBox">
-                    <c:if test="${vo.comment != null}">
-                        <div class="d-flex mb-2">
-                            <div class="d-flex justify-content-between w-100">
-                                <div class="d-flex">
-                                    <div class="me-3 text-nowrap">
-                                        <b></b>
-                                    </div>
-                                    <div class="me-3">
-                                        <c:out value="${vo.comment.content}" />
-                                    </div>
+                    <div class="d-flex mb-2">
+                        <div class="d-flex justify-content-between w-100">
+                            <div class="d-flex">
+                                <div class="me-3 text-nowrap">
+                                    <b></b>
                                 </div>
-
+                                <div class="me-3">
+                                    <c:out value="${vo.comment.content}" />
+                                </div>
                             </div>
+
                         </div>
-                    </c:if>
+                    </div>
                 </div>
             </div>
         </div>

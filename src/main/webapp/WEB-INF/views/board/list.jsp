@@ -26,8 +26,8 @@
                     <label for="search">
                         <select class="form-select w-auto me-1" name="kind">
                             <option value="kind1">제목</option>
-                            <option value="kind2">작성자</option>
-                            <option value="kind3">제목+작성자</option>
+                            <option value="kind2">내용</option>
+                            <option value="kind3">제목+내용</option>
                         </select>
                     </label>
                     <input type="text" id="search" name="search" placeholder="검색">
@@ -60,7 +60,7 @@
 				                                <td>${vo.id}</td>
 				                                <td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a></td>
 				                                <td>${vo.writeDate}</td>
-				                                <td>등록자</td>
+				                                <td>${vo.employeeVO.name}</td>
 				                                <td>${vo.hit}</td>
 				                            </tr>
 			                            </c:if>
@@ -73,7 +73,9 @@
 				                                <td>${vo.id}</td>
 				                                <td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a></td>
 				                                <td>${vo.writeDate}</td>
-				                                <td>등록자</td>
+				                                
+				                                	<td>${vo.employeeVO.name}</td>
+				                                
 				                                <td>${vo.hit}</td>
 				                            </tr>
 			                            </c:if>
@@ -98,7 +100,7 @@
 			                        </li>
 		                        </c:forEach>
 		                        <li class="page-item" id="next">
-		                            <input type="hidden" id="next_val" value="${pager.lastNum}">
+		                            <input type="hidden" id="next_val" value="${pager.last}">
 		                            <a class="page-link" href="./list?page=${pager.lastNum+1}&kind=${pager.kind}&search=${pager.search}&board=${board}">다음</a>                            
 		                        </li>                     
 		                    </ul>

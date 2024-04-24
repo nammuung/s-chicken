@@ -27,4 +27,6 @@ public class FileController {
 
 		return ResponseEntity.ok(fileManager.deleteFile(fileVO));
 	}
+
+
 }

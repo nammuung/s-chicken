@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <div class="modal" tabindex="-1" id="note-message-modal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -34,6 +35,31 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="namecard-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img data-profile-type="img" class="rounded-circle shadow w-50 mb-3">
+                    <h4 data-profile-type="departmentName" class="card-subtitle mb-2 text-muted"></h4>
+                    <h2 data-profile-type="name" class="card-title"></h2>
+                    <h4 data-profile-type="phoneNumber" class="card-text"></h4>
+                    <a data-profile-type="noteMessage" href="#" class="btn btn-primary">쪽지보내기</a>
+                    <a data-profile-type="chatting" href="#" class="btn btn-primary">채팅하기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="filePreView-modal">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <img src="" id="filePreView-img">
         </div>
     </div>
 </div>

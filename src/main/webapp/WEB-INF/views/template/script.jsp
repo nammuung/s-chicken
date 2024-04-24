@@ -37,3 +37,13 @@
 
 <!-- WebSocket -->
 <script src="/js/websocket/websocketController.js" type="module"></script>
+<script src="/js/lib/switch.js"></script>
+
+<%--axios--%>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<%--filepreview--%>
+<script src="/js/lib/filePreView.js"></script>
+
+

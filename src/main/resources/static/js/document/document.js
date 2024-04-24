@@ -19,14 +19,14 @@ function screen(){
 
 function openPay() {
     let options = screen();
-    let relativePath = '/document/pay/pay'; // 문서의 상대 경로를 설정합니다.
+    // 문서의 상대 경로를 설정합니다.
     console.log("??")
     window.open(relativePath, '_blank', options);
 }
 
 function openbonus() {
 	let options = screen();
-    let relativePath = '/document/bonus/bonus'; // 문서의 상대 경로를 설정합니다.
+    let relativePath = '/document/exList/bonus'; // 문서의 상대 경로를 설정합니다.
 
     window.open(relativePath, '_blank', options);
 }

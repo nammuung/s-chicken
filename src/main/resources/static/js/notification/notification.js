@@ -24,12 +24,17 @@ function readNotification(id, type, link){
         })
 }
 
-function onNotificationClick(event){
+function onNotificationClick(event, isNoti){
     const link = event.target.dataset.link;
     const type = event.target.dataset.type;
     const notiId = event.target.dataset.notiId;
 
     if(link != null && type != null && notiId != null) {
+        if(isNoti) event.target.remove();
+        let noNotification = document.querySelectorAll("[data-no-notification]");
+        if(noNotification.length > 0) {
+            noNotification.forEach(e => e.classList.remove("d-none"));
+        }
         readNotification(notiId, type, link)
         return;
     }
@@ -102,21 +107,21 @@ function getMoreNotification(event){
 }
 
 /* 이벤트 리스너등록 */
-schickenNotificationList.addEventListener("click", onNotificationClick);
+schickenNotificationList.addEventListener("click", (event)=>onNotificationClick(event, true));
 if(notificationPageList != null) notificationPageList.addEventListener("click", onNotificationClick);
 notificationIcon.addEventListener("click", onNotificationIconClick);
 if(moreNotificationBtn != null) moreNotificationBtn.addEventListener("click",getMoreNotification);
 
 /* onDomContextLoad */
 window.addEventListener("DOMContentLoaded", ()=>{
-    console.log(123456789)
     fetch('/notifications?read=false')
         .then(res=>res.json())
         .then(r => {
             if(r.length > 0) {
                 let noNotification = document.querySelectorAll("[data-no-notification]");
                 if(noNotification.length > 0) {
-                    noNotification.forEach(e => e.remove());
+                    notificationBadge.classList.remove("d-none");
+                    noNotification.forEach(e => e.classList.add("d-none"));
                 }
                 const listItem = r.map(r => drawNotificationDropdownItem(r));
                 schickenNotificationList.append(...listItem);
@@ -127,12 +132,18 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
 /* controller에서 사용할 함수 */
 export const appendNotificationList = (noti) => {
-    if(schickenNotificationList.children.length >= 10) {
+    if(schickenNotificationList.children.length >= 11) {
         schickenNotificationList.lastElementChild.remove();
         schickenNotificationList.lastElementChild.remove();
     }
 
+    let noNotification = document.querySelectorAll("[data-no-notification]");
+    if(noNotification.length > 0) {
+        noNotification.forEach(e => e.classList.add("d-none"));
+    }
+
     notificationBadge.classList.remove("d-none");
+    console.log("알림이 왔습니다!" , noti)
     const listItem = drawNotificationDropdownItem(noti);
     schickenNotificationList.prepend(listItem);
 };

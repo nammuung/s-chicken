@@ -155,9 +155,16 @@
 										</sec:authorize>
 
 										<div class="row">
-											<div class="col-lg-3 col-md-4 label">연차</div>
+											<div class="col-lg-3 col-md-4 label">연차내역</div>
 											<div class="col-lg-9 col-md-8">
-												<a href="../annual/list?id=${detail.id}">연차내역확인</a>
+												<a href="../annual/list?id=${detail.id}">연차확인</a>
+												<input type="hidden" value="${detail.id}" name="employeeId">
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-lg-3 col-md-4 label">연차관리</div>
+											<div class="col-lg-9 col-md-8">
+												<a href="#" data-bs-toggle="modal" data-bs-target="#annualInsertModal">연차 부여</a>
 												<input type="hidden" value="${detail.id}" name="employeeId">
 											</div>
 										</div>
@@ -431,6 +438,50 @@
 	<c:import url="../template/footer.jsp" />
 	<!-- ======= Script ======= -->
 	<c:import url="../template/script.jsp" />
+	
+	
+<div class="modal fade justify-content-center" id="annualInsertModal" tabindex="-1"
+		aria-labelledby="annualInsertLabel" aria-hidden="true" style="margin-top: 10%">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="annualInsertLabel">연차 부여</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form id="joinForm" method="POST" action="/annual/annualInsert" onsubmit="return validateForm()">
+								<div class="form-group mb-3 ">
+									<label for="history" class="form-label"><b>제목</b></label> <input
+										id="history" name="history" type="text" class="form-control"
+										placeholder="사유를 적어주세요.">
+								</div>
+								
+								<label for="remainderAnnual" class="form-label"><b>연차 개수</b></label>
+								<div class="input-group mb-3">
+									<button class="btn btn-primary" type="button" id="minusBtn">-</button>
+									<div class="">
+									<input type="text" class=" form-control text-center"
+										id="remainderAnnual" name="remainderAnnual" value="0" readonly>
+										</div>
+									<button class="btn btn-primary" type="button" id="plusBtn">+</button>
+								</div>
+								<div class="form-group mb-3 ">
+									<label for="name class="form-label"><b>이름</b></label> <input  readonly 
+										id="name"  type="text" class="form-control" value="${detail.name}">
+								</div>
+								
+								<input type="hidden" value="0" name="isAnnual"/>
+								<input type="hidden" value="0" name="annual"/>
+								<input type="hidden" value="${detail.id}" name="employeeId"/>
+								<input type="hidden" value="${detail.id}" name="hiddenId">
+								<button type="submit" id="submitButton"
+									class="btn btn-primary mt-3">등록</button>
+							</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -441,6 +492,7 @@
 </script>
 <script src="/js/employee/password.js"></script>
 <script src="/js/employee/employeeupdate.js"></script>
+<!-- <script src="/js/annual/annual.js"></script> -->
 <!--  	<script type="text/javascript">
 		history.replaceState({}, null, location.pathname);
 		
@@ -459,4 +511,40 @@
 	/////////////////////////////
 	// Set the selected department
 </script>
+ <script>
+function validateForm(e) {
+    // 모달이 열렸을 때만 validateForm 함수 실행
+    var annualInsertModal = document.getElementById('annualInsertModal');
+    if (annualInsertModal && annualInsertModal.classList.contains('show')) {
+        var historyInput = document.getElementById('history').value.trim();
+        var remainderAnnualInput = document.getElementById('remainderAnnual').value.trim(); 
+
+        if (historyInput === "") {
+            alert("제목을 입력하세요.");
+            return false;
+        }
+        if (remainderAnnualInput == 0){
+            alert("연차 갯수를 지정해주세요.")
+            return false;
+        }
+    }
+    return true; 
+}
+
+document.getElementById("plusBtn").addEventListener("click",plus);
+document.getElementById("minusBtn").addEventListener("click",minus); 
+function plus() {
+    var input = document.getElementById('remainderAnnual');
+    console.log("click");
+    var currentValue = parseInt(input.value, 10);
+    input.value = currentValue + 1;
+}
+
+function minus() {
+    var input = document.getElementById('remainderAnnual');
+    var currentValue = parseInt(input.value, 10);
+    input.value = currentValue - 1;
+}
+</script>
+
 </html>
