@@ -373,6 +373,7 @@
 
 
 											<div class="text-center">
+											<input type="hidden" value="${detail.file.id}" name="fid"/>
 												<button type="submit" class="btn btn-primary"
 													onclick="enableFields()">Save Changes</button>
 											</div>
@@ -474,6 +475,7 @@
 								<input type="hidden" value="0" name="isAnnual"/>
 								<input type="hidden" value="0" name="annual"/>
 								<input type="hidden" value="${detail.id}" name="employeeId"/>
+								
 								<input type="hidden" value="${detail.id}" name="hiddenId">
 								<button type="submit" id="submitButton"
 									class="btn btn-primary mt-3">등록</button>

@@ -2,14 +2,14 @@ package com.groups.schicken.Employee;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.auth.policy.Principal;
-import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.common.vo.Pager;
 
 import jakarta.servlet.http.HttpSession;
@@ -115,12 +114,11 @@ public class EmployeeController {
 
 	// 직원 정보 수정
 	@PostMapping("updateEmployee")
-	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id)throws Exception{
+	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id, @RequestParam("fid")Long fid)throws Exception{
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			/* employeeVO.setId(id); */
 
-		    int result = employeeService.updateEmployee(employeeVO, attach);
-
+		    int result = employeeService.updateEmployee(employeeVO, attach, fid);
+		    
 
 		    String msg = "수정을 실패 하였습니다.";
 		    String path = "./profile?id=" + id;

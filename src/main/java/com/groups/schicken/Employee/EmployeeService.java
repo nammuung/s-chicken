@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.franchise.FranchiseVO;
@@ -257,18 +258,22 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
     }
 
 
-    public int updateEmployee(EmployeeVO employeeVO, MultipartFile attach) throws Exception {
+    public int updateEmployee(EmployeeVO employeeVO, MultipartFile attach, Long fid) throws Exception {
         int result = 0; // 기본적으로 반환할 결과 값을 0으로 설정
 
-        // 파일이 첨부되었는지 확인
+        // 파일이 첨부되었는지 확인ss
         if (attach != null && !attach.isEmpty()) {
             FileVO file = new FileVO();
 
             String id = employeeVO.getId();
+            System.out.println();
             Long lid = Long.parseLong(id);
             file.setParentId(lid);
             file.setTblId("1077");
 
+            file.setId(fid);
+            System.out.println(lid);
+            
             // 기존 파일 삭제
             fileManager.deleteFile(file);
 
