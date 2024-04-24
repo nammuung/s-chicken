@@ -81,23 +81,24 @@
         ORDER BY ord.order_date desc
     </select>
     <insert id="addOrder">
-        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
-            SELECT nextval(seq1)
-        </selectKey>
         INSERT INTO
             head_order
             (id, supplier_id, status, address, order_date, employee_id, price)
         VALUES
             (#{id}, #{supplier.id}, 0, #{address}, #{orderDate}, #{employee.id}, #{price})
     </insert>
+
     <insert id="addOrderItem">
         <selectKey keyProperty="id" order="BEFORE" resultType="Long">
             SELECT nextval(seq1)
         </selectKey>
         INSERT INTO
             head_order_item
-            (id, item_id, order_id, quantity, deliver_quantity, status, comment, price)
+            (id, supplier_id, item_id, order_id, quantity, deliver_quantity, status, comment, price)
         VALUES
-            (#{id}, #{item.id}, #{order.id}, #{quantity}, 0, #{status}, #{comment}, #{price})
+            (#{id}, #{supplier.id}, #{item.id}, #{order.id}, #{quantity}, 0, #{status}, #{comment}, #{price})
     </insert>
+    <select id="getId">
+        SELECT nextval(seq1)
+    </select>
 </mapper>

@@ -9,6 +9,5 @@ public interface OrderMapper {
     List<OrderVO> getOrderList(OrderVO orderVO) throws Exception;
 
     int addOrder(OrderVO orderVO) throws Exception;
-
     int addOrderItem(OrderItemVO orderItem) throws Exception;
-}
+    Long getId() throws Exception;}

@@ -24,6 +24,7 @@ public class OrderService {
         for(OrderItemVO orderItemVO : orderItemVOList){
             String supplierName = orderItemVO.getItem().getSupplier().getName();
             Long itemPrice = orderItemVO.getItem().getContractPrice();
+            orderItemVO.setSupplier(orderItemVO.getItem().getSupplier());
             if(orderListMap.containsKey(supplierName)){
                 OrderVO order = (OrderVO) orderListMap.get(supplierName);
                 order.getOrderItems().add(orderItemVO);
@@ -42,8 +43,10 @@ public class OrderService {
                 orderListMap.put(supplierName, order);
             }
         }
+        Long orderId = orderMapper.getId();
         for (String key : orderListMap.keySet()) {
             OrderVO orderVO = (OrderVO) orderListMap.get(key);
+            orderVO.setId(orderId);
             orderMapper.addOrder(orderVO);
             for(OrderItemVO orderItem : orderVO.getOrderItems()){
                 System.out.println("orderItem = " + orderItem);
