@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.groups.schicken.annual.AnnualController;
+import com.groups.schicken.board.BoardVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,9 +21,9 @@ import java.util.List;
 public class CalendarController {
 
 	
-	/*
-	 * @Autowired private CalendarService calendarService;
-	 */
+	
+	  @Autowired private CalendarService calendarService;
+	 
 	
 	
 	/*
@@ -36,11 +37,16 @@ public class CalendarController {
         return "home";
     }
     
+
+    
+    
 	/*
 	 * @PostMapping("add") public String addCalendar() {
 	 * 
 	 * }
 	 */
+    
+    
     
     
 

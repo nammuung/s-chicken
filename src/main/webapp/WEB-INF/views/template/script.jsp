@@ -47,5 +47,3 @@
 <script src="/js/lib/filePreView.js"></script>
 
 
-<%--연차--%>
-<script type="module" src="/js/annual/annual.js"> </script>
