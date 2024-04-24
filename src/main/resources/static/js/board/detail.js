@@ -14,6 +14,11 @@ const replyText = document.getElementById("replyText");
 
 let hhard;
 
+const login_id = document.querySelector("div[data-login-id]").dataset.loginId
+
+
+
+
 fetch("/reply/list?parentId="+id,{
 	method:"GET",
 	headers:{
@@ -24,33 +29,52 @@ fetch("/reply/list?parentId="+id,{
 	let replies = "";
 	console.log(r);
 	r.forEach(reply => {
-		replies += 
-		`
-			<div class="d-flex mb-2">
-				<img width="50" height="50" src="avatar.png" alt="프로필" class="me-3">
-				<div class="d-flex justify-content-between w-100">
-					<div class="d-flex">
-						<div class="me-3">
-							<div>${reply.writerId}</div>
-							<div>영업3팀</div>                                        
+		if(login_id == reply.writerId){
+			replies += 
+			`
+				<div class="d-flex mb-2">
+					<img width="50" height="50" src="avatar.png" alt="프로필" class="me-3">
+					<div class="d-flex justify-content-between w-100">
+						<div class="d-flex">
+							<div class="me-3">
+								<div>${reply.employeeVO.name}</div>
+								<div>영업3팀</div>                                        
+							</div>
+							<div>							
+								<div data-text="area" data-id="${reply.id}" >${reply.content}</div>
+							</div>
 						</div>
-						<div>							
-							<div data-text="area" data-id="${reply.id}" >${reply.content}</div>
-							
+						<div class="d-flex align-items-center">
+							<div>
+								<button data-btn-type="delete" type="button" class="btn btn-primary" data-delete="${reply.id}">삭제하기</button>
+								<button data-btn-type="modify" type="button" class="btn btn-primary" data-modify="${reply.id}">수정하기</button>
+								<button data-btn-type="realmodify" type="button" class="btn btn-primary" data-realmodify="${reply.id}" hidden>수정</button>
+							</div>
+							${reply.date}
 						</div>
-						
 					</div>
-					<div>
-					<button data-btn-type="delete" type="button" class="btn btn-primary" data-delete="${reply.id}">삭제하기</button>
-					<button data-btn-type="modify" type="button" class="btn btn-primary" data-modify="${reply.id}">수정하기</button>
-					<button data-btn-type="realmodify" type="button" class="btn btn-primary" data-realmodify="${reply.id}" hidden>수정</button>
-						${reply.date}
-					</div>
-				</div>
-			</div>	  
-		`
-
-		
+				</div>	  
+			`
+		} else {
+			replies += 
+					`
+						<div class="d-flex mb-2">
+							<img width="50" height="50" src="avatar.png" alt="프로필" class="me-3">
+							<div class="d-flex justify-content-between w-100">
+								<div class="d-flex">
+									<div class="me-3">
+										<div>${reply.employeeVO.name}</div>
+										<div>영업3팀</div>                                        
+									</div>
+									<div>							
+										<div data-text="area" data-id="${reply.id}" >${reply.content}</div>
+									</div>
+								</div>
+								<div>${reply.date}</div>
+							</div>
+						</div>	  
+					`
+		}		
 	});
 	
 
@@ -138,7 +162,6 @@ add_btn.addEventListener("click",(e)=>{
 	let dataid = e.target.getAttribute("data-id")
 	let writerId = e.target.getAttribute("data-writerId")
 	
-	console.log(replyText.value);
 
 	let data = {
 		'parentId' : dataid,
@@ -159,7 +182,6 @@ add_btn.addEventListener("click",(e)=>{
 
 
 del_title.innerHTML +=" 삭제 된게시";
-console.log(del_title)
 
 
 

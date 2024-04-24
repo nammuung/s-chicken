@@ -149,7 +149,7 @@
             )
     </select>
     <insert id="setImportantFaq">
-        INSERT INTO
+        INSERT IGNORE
             important_faq
             (faq_id, sort)
         VALUES

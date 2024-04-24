@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <div class="modal" tabindex="-1" id="note-message-modal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -34,6 +35,25 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="filePreView-modal">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <img src="" id="filePreView-img">
+        </div>
+    </div>
+</div>
+
+<div class="modal modal-lg w-60" tabindex="-1" id="annual-modal" style="margin-left: 5%">
+    <div class="modal-dialog modal-dialog-centered">
+
+
+        <div class="modal-content" style="width: 80%;">
+
+            <!-- 모달 콘텐츠 영역 -->
         </div>
     </div>
 </div>

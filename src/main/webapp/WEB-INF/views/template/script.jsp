@@ -36,4 +36,16 @@
 <script src="/js/main.js"></script>
 
 <!-- WebSocket -->
-<script src="/js/websocket/notification.js" type="module"></script>
+<script src="/js/websocket/websocketController.js" type="module"></script>
+<script src="/js/lib/switch.js"></script>
+
+<%--axios--%>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<%--filepreview--%>
+<script src="/js/lib/filePreView.js"></script>
+
+
+<%--연차--%>
+<script type="module" src="/js/annual/annual.js"> </script>

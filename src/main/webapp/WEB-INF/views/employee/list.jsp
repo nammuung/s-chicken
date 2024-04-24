@@ -24,6 +24,7 @@
                     <label for="search">
                         <select class="form-select w-auto me-1" name="kind">
                             <option value="kind1">이름</option>
+                            <option value="kind2">아이디</option>
                         </select>
                     </label>
                     <input type="text" id="search" name="search" placeholder="검색" >
@@ -72,7 +73,7 @@
                 </c:if>
             </ul>
         </nav>
-                <button class="btn btn-primary float-end">엑셀 변환</button>
+                
             </div>
         </div>
     </section>

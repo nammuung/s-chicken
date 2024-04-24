@@ -16,6 +16,8 @@
     </style>
 </head>
 
+
+
 <body>
 <!-- ======= Header ======= -->
 <c:import url="../template/header.jsp"/>
@@ -47,8 +49,9 @@ String strDate = simpleDate.format(date);
                                     <option value="1">대표 게시</option>
                                 </select>
                             </div>
-
-                            <input type="hidden" name="writerId" value="123">
+							<c:forEach items="${list.employeeVO}" var="ar">
+                            	<input type="hidden" name="writerId" value="${ar.name}">
+                            </c:forEach>
                             <input type="hidden" name="isDelete" value="0">
                             <input type="hidden" name="writeDate" value="<%=strDate %>">
 

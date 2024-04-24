@@ -19,73 +19,74 @@
         <h1>가맹점 등록</h1>
     </div>
     <section class="section">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body mt-3">
-                        <form id="joinForm" method="POST" enctype="multipart/form-data" action="/franchise/join" class="d-flex flex-column align-items-center needs-validation" novalidate>
-                            <div class="row justify-content-center mb-3 w-50">
-                                <div class="form-group mb-3 mt-3">
-                                    <label for="franchiseName" class="form-label"><b>가맹점명</b></label>
-                                    <input id="franchiseName" name="name" type="text" class="form-control" placeholder="가맹점명" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="ownerName" class="form-label"><b>점장명</b></label>
-                                    <input id="ownerName" name="ownerName" type="text" class="form-control" placeholder="전화번호" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="email" class="form-label"><b>이메일</b></label>
-                                    <input id="email" name="email" type="email" class="form-control" placeholder="이메일" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="contactNumber" class="form-label"><b>전화번호</b></label>
-                                    <input id="contactNumber" name="contactNumber" type="text" class="form-control" placeholder="전화번호" required>
-                                </div>
-
-                                <label for="postCode" class="form-label"><b>주소</b></label>
-                                <div class="form-group mb-3 d-flex">
-                                    <input type="text" id="postCode" name="postCode" placeholder="우편번호" class="form-control me-1" readonly required>
-                                    <input type="button" id="postCodeButton" value="우편번호 조회" class="btn btn-primary">
-                                </div>
-
-                                <div class="form-group mb-3 d-flex">
-                                    <input type="text" id="address" name="address" class="form-control me-1" placeholder="주소" readonly required>
-                                    <input type="text" id="addressDetail" name="addressDetail" class="form-control" placeholder="상세주소" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="registerNumber" class="form-label"><b>사업자번호</b></label>
-                                    <input id="registerNumber" name="registrationNumber" type="text" class="form-control" required>
-                                </div>
-                                <label for="managerId" class="form-label"><b>담당자</b></label>
-                                <div class="form-group mb-3 d-flex">
-                                    <input id="managerId" name="managerId" type="hidden" class="form-control me-1">
-                                    <input id="managerName"  type="text" class="form-control me-1" readonly required>
-                                    <input type="button" id="searchButton" value="담당자 조회" class="btn btn-primary">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="contractDate" class="form-label"><b>계약일</b></label>
-                                    <input id="contractDate" name="contractDate" type="date" class="form-control" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="register" class="form-label"><b>사업자등록증</b></label>
-                                    <input id="register" type="file" class="form-control" name="attach" required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="contract" class="form-label"><b>계약서</b></label>
-                                    <input id="contract" type="file" class="form-control" name="attach" required>
-                                </div>
+        <div class="card">
+            <div class="card-body mt-3">
+                <form id="joinForm" method="POST" enctype="multipart/form-data" action="/franchise/join" class="d-flex flex-column  needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group mb-3">
+                                <label for="franchiseName" class="form-label"><b>가맹점명</b></label>
+                                <input id="franchiseName" name="name" type="text" class="form-control" placeholder="가맹점명" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="ownerName" class="form-label"><b>점장명</b></label>
+                                <input id="ownerName" name="ownerName" type="text" class="form-control" placeholder="전화번호" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="email" class="form-label"><b>이메일</b></label>
+                                <input id="email" name="email" type="email" class="form-control" placeholder="이메일" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="contactNumber" class="form-label"><b>전화번호</b></label>
+                                <input id="contactNumber" name="contactNumber" type="text" class="form-control" placeholder="전화번호" required>
                             </div>
 
+                            <label for="postCode" class="form-label"><b>주소</b></label>
+                            <div class="form-group mb-3 d-flex">
+                                <input type="text" id="postCode" name="postCode" placeholder="우편번호" class="form-control me-1" readonly required>
+                                <input type="button" id="postCodeButton" value="우편번호 조회" class="btn btn-primary">
+                            </div>
+
+                            <div class="form-group mb-3 d-flex">
+                                <input type="text" id="address" name="address" class="form-control me-1" placeholder="주소" readonly required>
+                                <input type="text" id="addressDetail" name="addressDetail" class="form-control" placeholder="상세주소" required>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group mb-3">
+                                <label for="registerNumber" class="form-label"><b>사업자번호</b></label>
+                                <input id="registerNumber" name="registrationNumber" type="text" class="form-control" required>
+                            </div>
+                            <label for="managerId" class="form-label"><b>담당자</b></label>
+                            <div class="form-group mb-3 d-flex">
+                                <input id="managerId" name="managerId" type="hidden" class="form-control me-1">
+                                <input id="managerName"  type="text" class="form-control me-1" readonly required>
+                                <input type="button" id="searchButton" value="담당자 조회" class="btn btn-primary">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="contractDate" class="form-label"><b>계약일</b></label>
+                                <input id="contractDate" name="contractDate" type="date" class="form-control" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="register" class="form-label"><b>사업자등록증</b></label>
+                                <input id="register" type="file" class="form-control" name="attach" required>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="contract" class="form-label"><b>계약서</b></label>
+                                <input id="contract" type="file" class="form-control" name="attach" required>
+                            </div>
+                        </div>
+                        <div class="col-auto m-auto">
                             <button type="submit" id="submitButton" class="btn btn-primary mt-3">등록</button>
-                        </form>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </section>
 </main><!-- End #main -->
 <div class="modal" tabindex="-1" id="dept-modal">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">부서 등록</h5>
