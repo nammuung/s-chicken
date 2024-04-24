@@ -52,7 +52,7 @@ public class AnnualService {
 	
 	
 	
-	//연차 추가 로직
+	//1년차 미만
 	//@Scheduled(cron = "0 * * * * ?") // 1분
 	@Scheduled(cron = "0 0 0 1 * *") // 매월 1일 0시 0분 0초에 실행
 	public void updateAnnualLeaves() throws Exception {
@@ -60,25 +60,70 @@ public class AnnualService {
 	    List<EmployeeVO> employeeList = annualDAO.list(); // 모든 직원 목록 가져오기
 	    String msg = "연차 제공";
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
 	    for (EmployeeVO employeeVO : employeeList) {
 	        LocalDate dateOfEmployment = LocalDate.parse(employeeVO.getDateOfEmployment(), formatter);
-	        long yearsOfService = dateOfEmployment.until(today).getYears(); // 근속 연수 계산
-	        int annualLeavesToGrant = (yearsOfService >= 3) ? 2 : 1; // 3년 이상이면 2개, 그렇지 않으면 1개
+	        long yearsOfService = dateOfEmployment.until(today, ChronoUnit.YEARS); // 근속 연수 계산
 
-	        if (dateOfEmployment.plusMonths(1).isBefore(today)) { // 입사 후 최소 1달이 지난 경우에만 지급
-	            AnnualVO annualVO = new AnnualVO();
-	            annualVO.setEmployeeId(employeeVO.getId());
-	            annualVO.setRemainderAnnual(annualLeavesToGrant);
-	            annualVO.setHistory(msg);
-	            String date = String.format("%04d%02d%02d", today.getYear(), today.getMonthValue(), 1);
-	            annualVO.setAnnualDate(date);
-	            annualVO.setIsAnnual(true);
+	        // 근속 기간이 1년 미만인 직원에게만 연차 부여
+	        if (yearsOfService < 1) {
+	            // 입사 후 최소 1달이 지난 경우에만 연차 지급
+	            if (dateOfEmployment.plusMonths(1).isBefore(today)) {
+	                AnnualVO annualVO = new AnnualVO();
+	                annualVO.setEmployeeId(employeeVO.getId());
+	                annualVO.setRemainderAnnual(1); // 매달 1개의 연차 부여
+	                annualVO.setHistory(msg);
+	                String date = String.format("%04d%02d%02d", today.getYear(), today.getMonthValue(), 1);
+	                annualVO.setAnnualDate(date);
+	                annualVO.setIsAnnual(true);
 
-	            // 연차 정보 DB에 저장
-	            int result = annualDAO.annualInsert(annualVO);
+	                // 연차 정보 DB에 저장
+	                int result = annualDAO.annualInsert(annualVO);
+	            }
 	        }
 	    }
 	}
+	//1년차 이상 연차 지급 스케줄러
+	@Scheduled(cron = "0 0 0 1 1 *") // 매년 1월 1일 0시 0분 0초
+	//@Scheduled(cron = "0 * * * * ?") // 1분
+	public void updateAnnualLieaves2() throws Exception{
+		 LocalDate today = LocalDate.now(); // 오늘 날짜
+		    List<EmployeeVO> employeeList = annualDAO.list(); // 모든 직원 목록 가져오기
+		    String msg = "연차 제공";
+		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+		    
+		    int a= 0;		
+		    for (EmployeeVO employeeVO : employeeList) {
+		        LocalDate dateOfEmployment = LocalDate.parse(employeeVO.getDateOfEmployment(), formatter);
+		        long yearsOfService = dateOfEmployment.until(today, ChronoUnit.YEARS); // 근속 연수 계산
+
+		        // 근속 기간이 1년 이상인 직원에게만 연차 부여
+		        if (yearsOfService > 1) {
+		        if(yearsOfService < 3) {
+		          a = 15;					
+		        }else {
+		        	int additionalLeaves = (int)((yearsOfService - 2) / 2);
+		        	int totalLeaves = 15 + additionalLeaves;
+		            a = Math.min(totalLeaves, 25); 
+
+		        }
+		            if (dateOfEmployment.plusMonths(1).isBefore(today)) {
+		                AnnualVO annualVO = new AnnualVO();
+		                annualVO.setEmployeeId(employeeVO.getId());
+		                annualVO.setRemainderAnnual(a); // 매달 1개의 연차 부여
+		                annualVO.setHistory(msg);
+		                String date = String.format("%04d%02d%02d", today.getYear(), today.getMonthValue(), 1);
+		                annualVO.setAnnualDate(date);
+		                annualVO.setIsAnnual(true);
+
+		                // 연차 정보 DB에 저장
+		                int result = annualDAO.annualInsert(annualVO);
+		            }
+		        }
+		    }
+	}
+	
+	
 
 
 	public int annualInsert(AnnualVO annualVO) throws Exception {

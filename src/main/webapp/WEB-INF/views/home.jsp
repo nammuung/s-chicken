@@ -43,6 +43,54 @@
 					</div>
 				</div>
 			</div>
+				<!-- border -->
+				<div class="row">
+				<div class="col-5 justify-content-start" style="margin-left: 80px;">
+				<table class="table text-center text-nowrap">
+                            <thead>
+	                            <tr>
+	                                <th style="width: 5%">no</th>
+	                                <th style="width: 65%">제목</th>
+	                                <th style="width: 10%">작성일</th>
+	                                <th style="width: 10%">등록자</th>
+	                                <th style="width: 10%">조회수</th>
+	                            </tr>
+                            </thead>
+                            <tbody>
+                            	
+	                            	<c:forEach items="${list}" var="vo">
+	                            		<c:if test="${vo.sort eq 1}">
+				                            <tr id="important">
+                                                <input type="hidden" id="important_val" value="${vo.important}">
+                                                
+				                                <td>${vo.id}</td>
+				                                <td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a></td>
+				                                <td>${vo.writeDate}</td>
+				                                <td>${vo.employeeVO.name}</td>
+				                                <td>${vo.hit}</td>
+				                            </tr>
+			                            </c:if>
+		                            </c:forEach>
+		                            
+		                            <c:forEach items="${list}" var="vo">
+	                            		<c:if test="${vo.sort eq 0}">
+				                            <tr id="important">
+                                                <input type="hidden" id="important_val" value="${vo.important}">
+				                                <td>${vo.id}</td>
+				                                <td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a></td>
+				                                <td>${vo.writeDate}</td>
+				                                
+				                                	<td>${vo.employeeVO.name}</td>
+				                                
+				                                <td>${vo.hit}</td>
+				                            </tr>
+			                            </c:if>
+		                            </c:forEach>
+	                           
+                            </tbody>
+                        </table>
+				</div>
+				</div>
 		</section>
 	</main>
 	<!-- End #main -->
