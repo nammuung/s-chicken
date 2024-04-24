@@ -26,7 +26,27 @@ window.onload=()=>{
 }
 
 document.getElementById("chatting-popup-btn").addEventListener("click",()=>{
+    let url = "/chatrooms/popup";
+    let attr = "_blank"
+    let opt = {
+        width : 500,
+        height : 800,
+        top : 50,
+        left : 100,
+        scrollbars : "no",
+        location : "no",
+        toolbar : "no",
+        status : "no"
+    }
 
+    let optStr = "";
+
+    for (const key in opt) {
+        optStr += key + " = " + opt[key] + ", "
+    }
+
+    let popup = window.open(url, attr, optStr);
+    console.log(popup);
 })
 //========================================== 이벤트 리스너 등록 ==========================================================
 noteMessageSendFormBtn.addEventListener("click", sendForm.open);
