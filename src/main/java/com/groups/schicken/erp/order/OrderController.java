@@ -15,7 +15,10 @@ public class OrderController {
     public String order(Model model) {
         return "erp/order/order";
     }
-
+    @GetMapping("/order/write")
+    public String write(Model model) {
+        return "erp/order/write";
+    }
 
     @GetMapping("/getOrderSheet")
     public String getOrderSheet(Model model) {
@@ -23,7 +26,7 @@ public class OrderController {
     }
 
     @GetMapping("/order/list")
-    public String getOrderList(Model model) {
+    public String orderList(Model model) {
         return "erp/order/list";
     }
 }

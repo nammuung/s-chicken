@@ -158,23 +158,26 @@ const orderPreviewButton = document.getElementById("orderPreviewButton")
 orderPreviewButton.addEventListener("click",  async function(){
     const tableData = orderHot.getData();
     let datas = [];
+    let quantity=[];
     console.log(tableData)
     for (let i = 0; i < tableData.length; i++) {
         const row = tableData[i]
         const result = await getItem(row[1]);
-        console.log(row[1], result)
+        quantity.push(row[9]);
         datas.push(result.data);
     }
-    console.log(datas)
-    // const formData = new FormData();
-    // formData.append("orderItems", datas);
-    await addOrder({
-        item: {
-            product: data.product,
-        },
-
+    const orderItems = []
+    datas.forEach((data,index) => {
+        orderItems.push({
+            item:{
+                ...data,
+            },
+            quantity: quantity[index],
+        })
     })
-    console.log(datas);
+    await addOrder(
+        orderItems
+    )
 })
 
 // function addIdChangeEventListener(){

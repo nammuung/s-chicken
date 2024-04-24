@@ -86,9 +86,9 @@
         </selectKey>
         INSERT INTO
             head_order
-            (id, supplier_id, status, address, order_date, employee_id)
+            (id, supplier_id, status, address, order_date, employee_id, price)
         VALUES
-            (#{id}, #{supplier.id}, #{status}, #{address}, #{order_date}, #{employee.id})
+            (#{id}, #{supplier.id}, 0, #{address}, #{orderDate}, #{employee.id}, #{price})
     </insert>
     <insert id="addOrderItem">
         <selectKey keyProperty="id" order="BEFORE" resultType="Long">
@@ -98,6 +98,6 @@
             head_order_item
             (id, item_id, order_id, quantity, deliver_quantity, status, comment, price)
         VALUES
-            (#{id}, #{item.id}, #{order.id}, #{quantity}, #{deliverQuantity}, #{status}, #{comment}, #{price})
+            (#{id}, #{item.id}, #{order.id}, #{quantity}, 0, #{status}, #{comment}, #{price})
     </insert>
 </mapper>

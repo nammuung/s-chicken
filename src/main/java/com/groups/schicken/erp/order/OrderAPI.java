@@ -2,16 +2,17 @@ package com.groups.schicken.erp.order;
 
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.ResultVO;
+import com.groups.schicken.erp.item.ItemVO;
 import lombok.RequiredArgsConstructor;
+import org.eclipse.tags.shaded.org.apache.xpath.operations.Or;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,14 +35,15 @@ public class OrderAPI {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> addOrder(@AuthenticationPrincipal EmployeeVO employeeVO, OrderVO orderVO) throws Exception {
+
+    public ResponseEntity<?> addOrder(@AuthenticationPrincipal EmployeeVO employeeVO, @RequestBody List<OrderItemVO> orderItemList) throws Exception {
         try {
-            orderVO.setEmployee(employeeVO);
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "주문 추가 완료", orderService.addOrder(orderVO)));
-        } catch (Exception e){
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "주문 추가 완료", orderService.addOrder(orderItemList, employeeVO)));
+        } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
         }
     }
+
 }

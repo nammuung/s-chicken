@@ -1,14 +1,13 @@
 package com.groups.schicken.erp.order;
 
+import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.erp.item.ItemMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -20,14 +19,38 @@ public class OrderService {
         return orderMapper.getOrderList(orderVO);
     }
 
-    public int addOrder(OrderVO orderVO) throws Exception {
-        orderVO.setOrderDate(DateManager.getTodayDate());
-        orderMapper.addOrder(orderVO);
-//        Map<String, List<OrderVO>> orderList = new HashMap<>();
-        for(OrderItemVO orderItem : orderVO.getOrderItems()){
-            orderItem.setOrder(orderVO);
-            orderItem.setStatus(0);
-            if(orderMapper.addOrderItem(orderItem)!=1) throw new Exception();
+    public int addOrder(List<OrderItemVO> orderItemVOList, EmployeeVO employeeVO) throws Exception {
+        HashMap<String, OrderVO> orderListMap = new HashMap<>();
+        for(OrderItemVO orderItemVO : orderItemVOList){
+            String supplierName = orderItemVO.getItem().getSupplier().getName();
+            Long itemPrice = orderItemVO.getItem().getContractPrice();
+            if(orderListMap.containsKey(supplierName)){
+                OrderVO order = (OrderVO) orderListMap.get(supplierName);
+                order.getOrderItems().add(orderItemVO);
+                order.setPrice(order.getPrice() + itemPrice);
+                orderItemVO.setPrice(itemPrice);
+            } else {
+                OrderVO order = new OrderVO();
+                order.setEmployee(employeeVO);
+                List<OrderItemVO> list = new ArrayList<>();
+                list.add(orderItemVO);
+                order.setSupplier(orderItemVO.getItem().getSupplier());
+                order.setPrice(itemPrice);
+                orderItemVO.setPrice(itemPrice);
+                order.setOrderItems(list);
+                order.setOrderDate(DateManager.getTodayDate());
+                orderListMap.put(supplierName, order);
+            }
+        }
+        for (String key : orderListMap.keySet()) {
+            OrderVO orderVO = (OrderVO) orderListMap.get(key);
+            orderMapper.addOrder(orderVO);
+            for(OrderItemVO orderItem : orderVO.getOrderItems()){
+                System.out.println("orderItem = " + orderItem);
+                orderItem.setOrder(orderVO);
+                orderItem.setStatus(0);
+                if(orderMapper.addOrderItem(orderItem)!=1) throw new Exception();
+            }
         }
         return 1;
     }
