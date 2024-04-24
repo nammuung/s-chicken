@@ -148,6 +148,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/order/write">
+                        <i class="bi bi-circle"></i><span>발주서작성</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/order">
                         <i class="bi bi-circle"></i><span>발주</span>
                     </a>
