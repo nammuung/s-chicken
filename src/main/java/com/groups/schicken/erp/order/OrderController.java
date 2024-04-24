@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class OrderController {
     private final OrderService orderService;
 
-    @GetMapping("/orders")
+    @GetMapping("/order")
     public String order(Model model) {
         return "erp/order/order";
     }

@@ -148,7 +148,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/order/head">
+                    <a href="/order">
                         <i class="bi bi-circle"></i><span>발주</span>
                     </a>
                 </li>
