@@ -43,11 +43,34 @@
         height: calc(100vh);
         overflow: hidden;
     }
+
+    .aaa:hover{
+        background-color: #7749F830;
+    }
+
+    .accordion-item{
+        border: 0 !important;
+        border-top: 1px solid rgba(0,0,0,0.1) !important;
+        background-color: rgba(0,0,0,0);
+    }
+
+    .accordion-button{
+        background-color: rgba(0,0,0,0) !important;
+    }
+
+
+
+    @font-face {
+        font-family: 'Pretendard-Regular';
+        src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+        font-weight: 400;
+        font-style: normal;
+    }
 </style>
 </head>
 <body class="container-fluid" style="padding: 0 0 0 0 !important;">
 
-    <nav class="text-center bg-warning">
+    <nav class="text-center">
         <div>
             <ul class="list-group">
                 <li class="list-group-item">
@@ -65,28 +88,47 @@
     </nav>
     <main id="main" class="carousel slide">
         <div class="carousel-inner">
-            <section class="carousel-item active" style="background-color: red">
+            <section class="carousel-item active">
                 <div class="row justify-content-end">
                     <button class="btn btn-primary btn-sm">
                         채팅방 생성
                     </button>
                 </div>
                 <div>
-                    <input type="text" class="form-control" placeholder="부서명, 직책, 이름으로 검색">
+                    <input type="text" class="form-control" placeholder="직책, 이름으로 검색">
                 </div>
-                <div id="chat-employee-list">
-                    <div class="fs-6 bg-secondary-light border-top border-bottom border-black">
-                        S-Chicken
-                    </div>
-                    <div class="d-flex gap-3 bg-white p-2">
-                        <div>
-                            <img class="rounded-circle" src="/img/logo.png" alt="" width="50px" height="50px">
+                <div id="chat-employee-list" class="p-3 pt-0 accordion" style="height : 91%;overflow: auto">
+                    <c:forEach items="${orgList}" var="dept">
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <button
+                                        class="accordion-button p-2"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapse-${dept.id}"
+                                        aria-expanded="true"
+                                        aria-controls="collapse-id"
+                                        style="font-family: 'Pretendard-Regular'"
+                                >
+                                    ${dept.name}
+                                </button>
+                            </div>
+                            <div id="collapse-${dept.id}" class="accordion-collapse collapse show">
+                                <div class="accordion-body" style="padding: 0;">
+                                    <c:forEach items="${dept.employees}" var="emp">
+                                        <div class="d-flex gap-3 p-2 aaa" data-search-name="${emp.name}">
+                                            <div>
+                                                <img class="rounded-circle" src="${emp.profileImg}" alt="" width="50px" height="50px">
+                                            </div>
+                                            <div class="p-2">
+                                                <h4 style="font-family: 'Pretendard-Regular'">${emp.name}</h4>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <h4>S-Chicken</h4>
-                            <div>사장 김범서</div>
-                        </div>
-                    </div>
+                    </c:forEach>
                 </div>
             </section>
             <section class="carousel-item" style="background-color: #00ff80">2</section>

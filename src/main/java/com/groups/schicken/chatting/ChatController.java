@@ -1,6 +1,11 @@
 package com.groups.schicken.chatting;
 
+import com.groups.schicken.Employee.EmployeeProfileVO;
+import com.groups.schicken.Employee.EmployeeService;
 import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.organization.ChattingEmployeeListVO;
+import com.groups.schicken.organization.OrganizationService;
+import com.groups.schicken.organization.OrganizationVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,17 +17,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 @Controller
 @RequestMapping("/chatrooms/*")
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
+    private final OrganizationService organizationService;
+    private final EmployeeService employeeService;
 
     @GetMapping("popup")
     public String getListPage(@AuthenticationPrincipal EmployeeVO employee, Model model){
         List<ChatroomVO> chatroomList = chatService.getChatroomList(employee.getId());
-        model.addAttribute("list", chatroomList);
+        model.addAttribute("chatroomList", chatroomList);
+
+        List<ChattingEmployeeListVO> orgList = organizationService.getChattingEmployeeList(employee.getId());
+        model.addAttribute("orgList", orgList);
+
+        EmployeeProfileVO myProfile = employeeService.getProfile(employee.getId());
+        model.addAttribute("myProfile", myProfile);
+
         return "chatting/list";
     }
 

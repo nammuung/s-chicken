@@ -14,16 +14,16 @@ import com.groups.schicken.board.BoardVO;
 public class RepresentServiceTest {
 	@Autowired
 	private RepresentDAO representDAO;
-	
+
 	@Test
 	void add() throws Exception {
 		for(int i = 0 ; i < 10 ; i++) {
 			BoardVO boardVO = new BoardVO();
-			
+
 //			boardVO.setId(123L+i);
 			boardVO.setWriteDate("1-1");
 			boardVO.setContent("test"+i);
-			boardVO.setWriterId(123L+i);
+			boardVO.setWriterId("" + 123L+i);
 			boardVO.setHit(12L);
 			int result = representDAO.add(boardVO);
 			assertEquals(1, result);

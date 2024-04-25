@@ -61,8 +61,8 @@
                                 <div class="col-8">
                                     <select type="text" class="form-control form-select" id="addCategory" name="category.id">
                                         <option value="">선택</option>
-                                        <c:forEach items="${category}" var="item">
-                                            <option value="${item.id}">${item.name}</option>
+                                        <c:forEach items="${category}" var="dept">
+                                            <option value="${dept.id}">${dept.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -94,8 +94,8 @@
                                 <div class="col-8">
                                     <select type="text" class="form-control form-select" id="addUnit" name="unit.id">
                                         <option value="">선택</option>
-                                        <c:forEach items="${unit}" var="item">
-                                            <option value="${item.id}">${item.name}</option>
+                                        <c:forEach items="${unit}" var="dept">
+                                            <option value="${dept.id}">${dept.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -139,8 +139,8 @@
                                             <div class="col-8">
                                                 <select type="text" class="form-control form-select" id="category" name="category.id">
                                                     <option value=""></option>
-                                                    <c:forEach items="${category}" var="item">
-                                                        <option value="${item.id}">${item.name}</option>
+                                                    <c:forEach items="${category}" var="dept">
+                                                        <option value="${dept.id}">${dept.name}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -174,8 +174,8 @@
                                             <div class="col-8">
                                                 <select type="text" class="form-control form-select" id="unit" name="unit.id">
                                                     <option value=""></option>
-                                                    <c:forEach items="${unit}" var="item">
-                                                        <option value="${item.id}">${item.name}</option>
+                                                    <c:forEach items="${unit}" var="dept">
+                                                        <option value="${dept.id}">${dept.name}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
