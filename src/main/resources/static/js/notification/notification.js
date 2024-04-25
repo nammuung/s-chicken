@@ -34,17 +34,6 @@ let notificationByType = {
     NoteMessage : openNoteMessageByLink
 }
 
-function readNotification(id, type, link){
-    fetch('/notifications/read', {
-        method:'post',
-        headers:{"content-Type" : "application/json;charset-utf-8"},
-        body:JSON.stringify({id:id})
-    })
-        .then(res=>{
-            if(res.ok) notificationByType[type](link);
-        })
-}
-
 function onNotificationClick(event, isNoti){
     const link = event.target.dataset.link;
     const type = event.target.dataset.type;
@@ -161,21 +150,3 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
         });
 })
-
-/* controller에서 사용할 함수 */
-export const appendNotificationList = (noti) => {
-    if(schickenNotificationList.children.length >= 11) {
-        schickenNotificationList.lastElementChild.remove();
-        schickenNotificationList.lastElementChild.remove();
-    }
-
-    let noNotification = document.querySelectorAll("[data-no-notification]");
-    if(noNotification.length > 0) {
-        noNotification.forEach(e => e.classList.add("d-none"));
-    }
-
-    notificationBadge.classList.remove("d-none");
-    console.log("알림이 왔습니다!" , noti)
-    const listItem = drawNotificationDropdownItem(noti);
-    schickenNotificationList.prepend(listItem);
-};
