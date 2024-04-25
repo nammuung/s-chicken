@@ -241,7 +241,17 @@
 		</foreach>
 	</insert>
 
-
+	<!-- employee의 아이디의 리스트로 employee의 이름을 EmployeeVO의 리스트로 가져옴 -->
+	<select id="getNamesByIds">
+		SELECT
+			  id
+			, name
+		FROM employee
+		WHERE id
+		<foreach collection="ids" item="id" open="IN (" close=")" separator=",">
+			#{id}
+		</foreach>
+	</select>
 
 
 

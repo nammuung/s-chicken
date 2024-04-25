@@ -36,7 +36,6 @@
 <script src="/js/main.js"></script>
 
 <!-- WebSocket -->
-<script src="/js/websocket/websocketController.js" type="module"></script>
 <script src="/js/lib/switch.js"></script>
 
 <%--axios--%>
@@ -45,3 +44,4 @@
 
 <%--filepreview--%>
 <script src="/js/lib/filePreView.js"></script>
+<script src="/js/notification/notification.js" type="module"></script>
