@@ -125,7 +125,11 @@ async function searchDetail(id){
         data.vat = Math.floor(data.price / 10).toLocaleString()+"원";
         data.price = Math.floor(data.price).toLocaleString()+"원";
         console.log(data)
-        detailItems.push({id:data.supplier.id,orderItems:data.orderItems})
+        detailItems.push({id:data.supplier.id,orderItems:data.orderItems.map(orderItem=> {
+                orderItem.totalPrice = (orderItem.price * orderItem.quantity).toLocaleString()+"원";
+                orderItem.price = orderItem.price.toLocaleString()+"원"
+                return orderItem;
+            })})
     })
     supplierHot.loadData(datas);
     [...supplierContainer.querySelectorAll("tr:nth-child(1) td:nth-child(1) input")].forEach(
@@ -136,11 +140,7 @@ async function searchDetail(id){
 //디테일 아이템
 async function searchDetailItem(supplierId){
     const orderItems = detailItems.filter(obj => obj.id === supplierId)[0].orderItems
-    itemHot.loadData(orderItems.map(orderItem=> {
-        orderItem.totalPrice = (orderItem.price * orderItem.quantity).toLocaleString()+"원";
-        orderItem.price = orderItem.price.toLocaleString()+"원"
-        return orderItem;
-    }));
+    itemHot.loadData(orderItems);
 }
 
 // //발주 아이템 추가
