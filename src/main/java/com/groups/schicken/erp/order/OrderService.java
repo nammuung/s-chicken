@@ -24,11 +24,12 @@ public class OrderService {
         for(OrderItemVO orderItemVO : orderItemVOList){
             String supplierName = orderItemVO.getItem().getSupplier().getName();
             Long itemPrice = orderItemVO.getItem().getContractPrice();
+            Integer itemQuantity = orderItemVO.getQuantity();
             orderItemVO.setSupplier(orderItemVO.getItem().getSupplier());
             if(orderListMap.containsKey(supplierName)){
                 OrderVO order = (OrderVO) orderListMap.get(supplierName);
                 order.getOrderItems().add(orderItemVO);
-                order.setPrice(order.getPrice() + itemPrice);
+                order.setPrice(order.getPrice() + itemPrice * itemQuantity);
                 orderItemVO.setPrice(itemPrice);
             } else {
                 OrderVO order = new OrderVO();
@@ -36,7 +37,7 @@ public class OrderService {
                 List<OrderItemVO> list = new ArrayList<>();
                 list.add(orderItemVO);
                 order.setSupplier(orderItemVO.getItem().getSupplier());
-                order.setPrice(itemPrice);
+                order.setPrice(itemPrice * itemQuantity);
                 orderItemVO.setPrice(itemPrice);
                 order.setOrderItems(list);
                 order.setOrderDate(DateManager.getTodayDate());

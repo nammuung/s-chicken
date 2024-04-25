@@ -44,7 +44,7 @@ const itemCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col}
 },false)
 const itemTableOptions = {
     data:[],
-    colHeaders : ['','ID','카테고리', '품명', '규격','단위', '계약단가','판매단가'],
+    colHeaders : ['','ID','카테고리', '품명', '규격','단위', '계약단가', '수량', '공급가액'],
     columns : [
         {renderer:itemCheckboxRenderer},
         {data:"item.id"},
@@ -53,9 +53,10 @@ const itemTableOptions = {
         {data:"item.product.standard"},
         {data:"item.product.unit.name"},
         {data:"price"},
-        {data:"item.product.sellPrice"},
+        {data:"quantity"},
+        {data:"totalPrice"},
     ],
-    colWidths : scaleArrayToSum(Array(8),763),
+    colWidths : scaleArrayToSum(Array(9),763),
     height:"280",
 }
 const itemHot = handsontable(itemContainer, itemTableOptions);
@@ -121,7 +122,9 @@ async function searchDetail(id){
         } else {
             data.content = `${data.orderItems[0].item.product.name} 외 ${data.orderItems.length-1}개`
         }
-        data.vat = Math.floor(data.price / 10);
+        data.vat = Math.floor(data.price / 10).toLocaleString()+"원";
+        data.price = Math.floor(data.price).toLocaleString()+"원";
+        console.log(data)
         detailItems.push({id:data.supplier.id,orderItems:data.orderItems})
     })
     supplierHot.loadData(datas);
@@ -132,7 +135,12 @@ async function searchDetail(id){
 
 //디테일 아이템
 async function searchDetailItem(supplierId){
-    itemHot.loadData(detailItems.filter(obj => obj.id === supplierId)[0].orderItems);
+    const orderItems = detailItems.filter(obj => obj.id === supplierId)[0].orderItems
+    itemHot.loadData(orderItems.map(orderItem=> {
+        orderItem.totalPrice = (orderItem.price * orderItem.quantity).toLocaleString()+"원";
+        orderItem.price = orderItem.price.toLocaleString()+"원"
+        return orderItem;
+    }));
 }
 
 // //발주 아이템 추가
