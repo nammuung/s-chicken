@@ -21,8 +21,8 @@ public class ChatController {
 
     @GetMapping("popup")
     public String getListPage(@AuthenticationPrincipal EmployeeVO employee, Model model){
-        List<ChatroomVO> list = chatService.getChatroomList(employee.getId());
-        model.addAttribute("list", list);
+        List<ChatroomVO> chatroomList = chatService.getChatroomList(employee.getId());
+        model.addAttribute("list", chatroomList);
         return "chatting/list";
     }
 
