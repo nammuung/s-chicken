@@ -50,8 +50,8 @@
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <div>
-                                        <button class="btn btn-outline-primary" id="addRowButton">발주</button>
-                                        <button class="btn btn-outline-danger" id="deleteRowButton">삭제</button>
+                                        <button class="btn btn-outline-primary" id="approveOrderButton">발주</button>
+                                        <button class="btn btn-outline-danger" id="deleteOrderButton">삭제</button>
                                     </div>
                                 </div>
                             </div>

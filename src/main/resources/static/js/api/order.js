@@ -23,9 +23,41 @@ export const getOrder = async (id) => {
     }
 }
 
+export const getOrderSheetList = async (formData) => {
+    const params = new URLSearchParams();
+    for(const [key, value] of formData.entries()){
+        if(value)
+            params.append(key, value);
+    }
+    try {
+        const response = await defaultInstance.get('orderSheets');
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+export const getOrderSheet = async (id) => {
+    try {
+        const response = await defaultInstance.get('orderSheets/'+id);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
 export const updateOrder = async (params) => {
     try {
         const response = await defaultInstance.put('orders', params);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const updateOrderItem = async (params) => {
+    try {
+        const response = await defaultInstance.put('orderItems', params);
         return response.data;
     } catch (err) {
         console.log(err);

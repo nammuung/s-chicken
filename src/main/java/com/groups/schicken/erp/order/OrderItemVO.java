@@ -13,7 +13,7 @@ public class OrderItemVO {
     private SupplierVO supplier;
     private OrderVO order;
     private Integer quantity;
-    private Integer deliver_quantity;
+    private Integer deliverQuantity;
     private Integer status;
     private Long price;
     private String comment;

@@ -63,7 +63,36 @@ public class OrderService {
         return orderMapper.getOrderDetail(orderVO);
     }
 
+    public int updateOrder(OrderVO orderVO) throws Exception {
+        return orderMapper.updateOrder(orderVO);
+    }
+
+    public List<OrderVO> getOrderSheetList(OrderVO orderVO) throws Exception {
+        return orderMapper.getOrderSheetList(orderVO);
+    }
+
     public OrderVO getOrderSheet(OrderVO orderVO) throws Exception {
         return orderMapper.getOrderSheet(orderVO);
+    }
+
+    public int updateOrderItem(List<OrderItemVO> orderItemVOList) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("list", orderItemVOList);
+        Boolean statusTemp = null;
+        for (OrderItemVO orderItem : orderItemVOList) {
+            if(orderItem.getStatus() == 0){
+                statusTemp = true;
+                break;
+            }
+        }
+        if(statusTemp == null){
+            OrderVO order = new OrderVO();
+            order.setId(orderItemVOList.get(0).getOrder().getId());
+            order.setSupplier(orderItemVOList.get(0).getSupplier());
+            order.setStatus(2);
+            int result = orderMapper.updateOrder(order);
+            if(result == 0) throw new Exception();
+        }
+        return orderMapper.updateOrderItem(map);
     }
 }
