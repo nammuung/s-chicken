@@ -170,6 +170,10 @@
 					<input type="text" id="title" class="form-control mb-3" placeholder="제목을 입력해주세요.">
 					<label for="content" class="form-label"><b>내용</b></label>
 					 <input type="text" id="content" class="form-control mb-3" placeholder="내용을 입력해주세요.">
+					 <label for="share" class="form-label"><b>공유자</b></label>
+					 <input type="text" id="share" class="form-control mb-3" disabled value="${profile.name}">
+					 <input type="hidden" name="share" value="${profile.id}" id="emid"/>
+					 
 
 					<!--  -->
 <div class="row justify-content-center mb-3 w-30">
@@ -200,6 +204,8 @@
             </div>
             <div class="modal-body">
                 <div id="orgChart"></div>
+
+				<div>ㅁ</div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">저장</button>
@@ -216,16 +222,23 @@
     const removeButton = document.getElementById("removeButton");
     const managerIdInput = document.getElementById("managerId");
     const managerNameInput = document.getElementById("managerName");
+	const employeeid = document.getElementById("emid").value;
     let selectedEmployees = []; // 배열에 선택된 직원을 저장
 
 	orgChart.init("orgChart", (data) => {
 		console.log(data);
-
-		// 선택된 직원을 배열에 추가
-		selectedEmployees.push(data);
-
-		// 선택된 직원들의 이름을 쉼표로 구분하여 입력란에 표시
-		updateSelectedEmployees();
+		
+		if (!selectedEmployees.some(emp => emp.id === data.id || data.id === employeeid)) {
+        // 선택된 직원을 배열에 추가
+		console.log()
+        selectedEmployees.push(data);
+        
+        // 선택된 직원들의 이름을 쉼표로 구분하여 입력란에 표시
+        updateSelectedEmployees();
+    } else {
+        // 이미 선택된 직원인 경우 메시지 출력 또는 다른 처리 가능
+        alert('이미 선택 되었습니다.');
+    }
 	});
     searchButton.addEventListener("click", () => {
 		const modals = new bootstrap.Modal(document.getElementById("dept-modal"));
@@ -250,17 +263,20 @@
         managerIdInput.value = selectedEmployees.map(employee => employee.id).join(", ");
     }
 
-    // 선택된 직원 삭제 기능 추가
-    managerNameInput.addEventListener("click", (event) => {
-        if (event.target.tagName === "INPUT") {
-            const clickedName = event.target.value;
-            const indexToRemove = selectedEmployees.findIndex(employee => employee.name === clickedName);
-            if (indexToRemove !== -1) {
-                selectedEmployees = [];
-                updateSelectedEmployees(); // 입력란 업데이트
-            }
-        }
-    });
+
+// 선택된 직원 삭제 기능 추가
+managerNameInput.addEventListener("click", (event) => {
+    if (event.target.tagName === "INPUT") {
+        console.log("click")
+        const clickedName = event.target.value;
+        console.log(clickedName);
+        // 선택된 직원이 여러 명일 수 있으므로 클릭된 이름과 일치하는 모든 직원을 배열에서 제거합니다.
+        selectedEmployees = selectedEmployees.filter(employee => employee.name !== clickedName);
+        updateSelectedEmployees(); // 입력란 업데이트
+    }
+});
+
+
 
 
 

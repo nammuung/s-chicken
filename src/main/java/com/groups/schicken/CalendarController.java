@@ -54,6 +54,7 @@ public class CalendarController {
 		System.out.println(id);
     	
     	EmployeeProfileVO profile = employeeService.getProfile(id);
+    	System.out.println("==========================================================="+profile);
     	BoardVO boardVO =new BoardVO();
     	Pager pager = new Pager();
     	boardVO.setWriterId(employeeVO.getId());
