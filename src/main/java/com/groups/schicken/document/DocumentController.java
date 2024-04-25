@@ -47,10 +47,10 @@ public class DocumentController {
 	}
 	
 	@GetMapping("approvalList")
-	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO ,DocumentVO documentVO,Model model)throws Exception{
+	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO,Model model)throws Exception{
 	
 		List<DocumentVO> ar = documentService.approval(employeeVO);
-		model.addAttribute("list", ar);		
+		model.addAttribute("list", ar);
 	}
 
 	
@@ -87,31 +87,36 @@ public class DocumentController {
 	public ResponseEntity<?> add(DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach,TemplateVO templateVO)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
 		
-		int result = documentService.add(documentVO);
-		approvalVO.setDocumentId(documentVO.getId());
-		approvalVO.setResult(0);
-		
-				
 		String ranks = (String) map.get("rank");
 		String ids = (String)map.get("employeeId");
+		String results = (String)map.get("result");
 		String[] rankArray = ranks.split(",");
 		String[] idsArray = ids.split(",");
+		String[] resultArray= results.split(",");
 		String[] date = documentVO.getWriteDate().split(" ");
 		
-
-		
 		documentVO.setWriteDate(date[0]);
+		documentVO.setCount(rankArray.length);
 		
+		int result = documentService.add(documentVO);
+		approvalVO.setDocumentId(documentVO.getId());
+				
 		
-		Long[] longRankArray = new Long[rankArray.length]; 
+		Long[] longRankArray = new Long[rankArray.length];
 		Long[] longIdsArray = new Long[idsArray.length]; 
+		int[] longResultArray = new int[resultArray.length];
 
 		// 문자열 배열의 각 요소를 롱타입으로 변환하여 새롭게 생성한 롱타입 배열에 저장합니다.
 		for (int i = 0; i < rankArray.length; i++) {
 		    longRankArray[i] = Long.parseLong(rankArray[i]);
 		    longIdsArray[i] = Long.parseLong(idsArray[i]);
+		    longResultArray[i] = Integer.parseInt(resultArray[i]);
+		    
 		    approvalVO.setRank(longRankArray[i]);
 		    approvalVO.setEmployeeId(longIdsArray[i]);
+		    approvalVO.setResult(longResultArray[i]);
+		    
+		    
 		    
 		    result = documentService.appAdd(approvalVO);
 		}
@@ -126,8 +131,4 @@ public class DocumentController {
 		System.out.println(ar.get(0));
 		model.addAttribute("list", ar);
 	}	
-		
-	
-
-	
 }

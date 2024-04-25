@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.Pager;
+import com.groups.schicken.department.DepartmentVO;
 
 @Controller
 @RequestMapping("/reply/*")
@@ -25,7 +26,7 @@ public class ReplyController {
 		replyVO.setWriterId(employeVo.getId());
 		List<ReplyVO> ar = replyService.list(replyVO, pager);
 		System.out.println("들어오니?");
-		System.out.println(replyVO);
+		System.out.println(ar);
 		
 		return ResponseEntity.ok(ar);
 	}

@@ -17,16 +17,20 @@ public interface DocumentDAO {
 	
 	int appAdd(ApprovalVO approvalVO)throws Exception;
 
-	List<DocumentVO> allList(Map<String,Object> map)throws Exception;
 	
 	Long allTotalCount(Map<String, Object> map)throws Exception;
 	
 	List<DocumentVO> getDetail(DocumentVO documentVO)throws Exception;
 	
-	List<DocumentVO> approvalList(EmployeeVO employeeVO)throws Exception;
+	List<DocumentVO> approvalList(Map<String,Object> map)throws Exception;
+	
+	
+	
+	List<DocumentVO> allList(Map<String,Object> map)throws Exception;
 	
 	List<DocumentVO> approvalDetail(DocumentVO documentVO)throws Exception;
 	
 	int resultUpdate(ApprovalVO approvalVO)throws Exception;
+	int statusUpdate(ApprovalVO approvalVO)throws Exception;
 	
 }

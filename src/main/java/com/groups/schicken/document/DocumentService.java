@@ -28,8 +28,30 @@ public class DocumentService {
 	
 	public List<DocumentVO> approval(EmployeeVO employeeVO)throws Exception{
 		
-		return documentDAO.approvalList(employeeVO);
+		Map<String, Object> map = new HashMap<String,Object>();		
+				
+		map.put("employeeVO", employeeVO);
+				
+		List<DocumentVO> ar = documentDAO.approvalList(map);	
 		
+		System.out.println(ar);
+		
+		return ar;
+		
+	}
+	public List<DocumentVO> list(DocumentVO documentVO,TemplateVO templateVO,Pager pager)throws Exception{
+		Map<String, Object> map = new HashMap<String,Object>();
+		
+		
+		map.put("documentVO", documentVO);
+		map.put("pager", pager);
+		
+		pager.makeIndex();
+		pager.makeNum(documentDAO.allTotalCount(map));
+		
+		
+		
+		return documentDAO.allList(map);
 	}
 	
 	public int add(DocumentVO documentVO)throws Exception{
@@ -48,20 +70,6 @@ public class DocumentService {
 	}
 	
 	
-	public List<DocumentVO> list(DocumentVO documentVO,TemplateVO templateVO,Pager pager)throws Exception{
-		Map<String, Object> map = new HashMap<String,Object>();
-		
-		
-		map.put("documentVO", documentVO);
-		map.put("pager", pager);
-		
-		pager.makeIndex();
-		pager.makeNum(documentDAO.allTotalCount(map));
-		
-		
-		
-		return documentDAO.allList(map);
-	}
 	
 	public List<DocumentVO> getDetail(DocumentVO documentVO)throws Exception{
 		
@@ -69,6 +77,8 @@ public class DocumentService {
 	}
 	
 	public int resultUpdate(ApprovalVO approvalVO)throws Exception{
+		
+		documentDAO.statusUpdate(approvalVO);
 		
 		return documentDAO.resultUpdate(approvalVO);
 	}

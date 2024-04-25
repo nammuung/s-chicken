@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -113,8 +115,11 @@
             
         </div>
         <div class="row justify-content-end p-3">
-            <div class="col-auto">            	               	
-               	<a href="./write" class="btn btn-primary">글쓰기</a>
+            <div class="col-auto">
+                <sec:authorize
+											access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">        	               	
+               		<a href="./write" class="btn btn-primary">글쓰기</a>
+               	</sec:authorize>
             </div>
         </div>
         

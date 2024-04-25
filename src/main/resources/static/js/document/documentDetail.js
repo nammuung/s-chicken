@@ -13,6 +13,7 @@ import oc from "/js/orgChart/orgChart.js";
 		
 	let employeeArr =[];
 	let rankArr=[];
+	let resultArr=[];
 	 let relativePath = '/document/pay/pay';
 	sangsin.addEventListener("click",(e)=>{
 		e.preventDefault();		
@@ -21,6 +22,7 @@ import oc from "/js/orgChart/orgChart.js";
 		formData.append("content", editor.getData())
 		formData.append("employeeId",employeeArr)
 		formData.append("rank",rankArr)
+		formData.append("result",resultArr)
 		fetch('/document/add',{
 			method:"post",
 			body:formData,
@@ -139,12 +141,14 @@ function hyuga(){
 			
 			const zeroRank = document.getElementById("zeroRank").value;
 			const zeroId = document.getElementById("zeroId").value;
-		
+			const zeroResult = document.getElementById("zeroResult").value;
+			
 			let goList = approval_List.querySelectorAll("li")
 
 			
 			const approve = document.querySelectorAll(".sign_member_wrap");			
 			const element_level = approve[0].querySelector("#name");
+			
 			console.log(element_level)
 			
 
@@ -155,6 +159,7 @@ function hyuga(){
 			approve[i].querySelector("#name").innerHTML ="";
 			rankArr=[zeroRank];
 			employeeArr=[zeroId];
+			resultArr=[zeroResult];
 			}
 			
 			
@@ -162,10 +167,14 @@ function hyuga(){
 			
 			for(let i = approve_arr, j = 1 ; i <= 3;i++,j++){
 			approve[i].querySelector("#name").innerHTML = goList[i-approve_arr].getAttribute("data-name");
-			approve[i].querySelector(".sign_rank").innerHTML = goList[i-approve_arr].getAttribute("data-level");	
+			approve[i].querySelector(".sign_rank").innerHTML = goList[i-approve_arr].getAttribute("data-level");
+			
+				
 			rankArr.push(j);
 			employeeArr.push(goList[i-approve_arr].getAttribute("data-id"));
+			resultArr.push(0);
 			
+			console.log(resultArr)
 			console.log(rankArr)
 			console.log(employeeArr)
 			}

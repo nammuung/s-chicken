@@ -40,6 +40,7 @@ public class AllController {
 		return "board/list";
 	}
 	
+	
 	@GetMapping("write")
 	public String write()throws Exception{
 		

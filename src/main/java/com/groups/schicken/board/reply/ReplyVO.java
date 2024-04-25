@@ -1,6 +1,8 @@
 package com.groups.schicken.board.reply;
 
 import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.common.vo.FileVO;
+import com.groups.schicken.department.DepartmentVO;
 
 import lombok.Data;
 
@@ -16,5 +18,7 @@ public class ReplyVO {
 	private String writerId;
 	
 	private EmployeeVO employeeVO;
+	private DepartmentVO departmentVO;
+	private FileVO fileVO;
 	
 }

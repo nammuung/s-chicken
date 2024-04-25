@@ -30,6 +30,20 @@
 		SET result=1 , date=#{date}
 		WHERE document_id=#{documentId} AND employee_id=#{employeeId}
 	</update>
+	
+	<update id="statusUpdate">
+		UPDATE document d
+		INNER JOIN <include refid="totalResult"/> ON sub.document_id=d.id
+		SET status=1
+		WHERE sub.count = d.count		
+	</update>
+	
+	<sql id="totalResult">
+		(SELECT count(*) AS "count",document_id FROM approval a 
+			where document_id =#{documentId} and result=1
+			group by document_id
+			) sub
+	</sql>
 
 	<select id="approvalList" resultMap="allListResult">
 		SELECT 
@@ -37,6 +51,7 @@
 			d.title,
 			d.write_date,
 			a.*,
+			sub.count,
 			tem.*,
 			emp.name employee_name,
 			emp.id employee_id
@@ -44,24 +59,18 @@
 		LEFT JOIN approval a ON a.document_id = d.id
 		LEFT JOIN employee emp ON d.writer_id=emp.id
 		LEFT JOIN template tem ON tem.temp_id=d.template_id
-		WHERE a.employee_id=#{id}
-		ORDER BY rank
+		INNER JOIN <include refid="countCheck"/> ON sub.document_id=d.id
+		WHERE a.employee_id=#{employeeVO.id} AND rank BETWEEN 0 and sub.count		
+		ORDER BY d.id DESC		
 	</select>
 	
-	
-	<insert id="add" keyProperty="id">
-		<selectKey keyProperty="id" order="BEFORE" resultType="Long">
-			SELECT nextval(seq3)
-		</selectKey>
-		INSERT INTO document
-		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writerId},#{des})
-	</insert>
-	
-	<insert id="appAdd">
-		INSERT INTO approval
-		VALUES(#{documentId},#{employeeId},#{rank},#{result},#{date},#{comment})
-	</insert>
-	
+	<sql id="countCheck">
+		(SELECT 
+			COUNT(*) AS "count",document_id
+			FROM approval
+			WHERE result =1
+			GROUP BY document_id) sub
+	</sql>
 	
 	<select id="allList" resultMap="allListResult">
 		SELECT doc.*,
@@ -71,6 +80,20 @@
 		ORDER BY id DESC
 		LIMIT #{pager.startIndex},#{pager.perPage}
 	</select>
+	
+	<insert id="add" keyProperty="id">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Long">
+			SELECT nextval(seq3)
+		</selectKey>
+		INSERT INTO document
+		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writerId},#{des},#{count})
+	</insert>
+	
+	<insert id="appAdd">
+		INSERT INTO approval
+		VALUES(#{documentId},#{employeeId},#{rank},#{result},#{date},#{comment})
+	</insert>
+	
 	
 	<resultMap id="allListResult" type="DocumentVO" autoMapping="true">
 		<association property="templateVO" javaType="TemplateVO" autoMapping="true"/>
@@ -95,8 +118,9 @@
 		INNER JOIN employee e ON e.id=app.employee_id 
 		INNER JOIN department d on d.id=e.department_id 
 		INNER join code c on c.id=e.pos_id and c.type_id =300
-		WHERE doc.id=#{id}
+		WHERE doc.id=#{id} 
 		ORDER BY app.rank
+		
 	</select>
 	
 	<select id="allTotalCount" parameterType="Map" resultType="Long">

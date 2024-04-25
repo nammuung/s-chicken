@@ -22,6 +22,7 @@ public class DocumentVO {
 	private Long templateId;
 	private String writerId;
 	private String des;
+	private int count;
 	
 	private TemplateVO templateVO;
 	private List<ApprovalVO> approvalVOs;

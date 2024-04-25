@@ -153,8 +153,8 @@
                                         <span class="sign_tit"><strong>결재선</strong></span>
                                     </span>
                                     <input type="hidden" id="zeroId" value="${list.id}">
-                                    <input type="hidden" id="zeroRank" value="0">
-                                   
+                                    <input type="hidden" id="zeroRank" value="0">                                   
+                                    <input type="hidden" id="zeroResult" value="1">                                   
                                     
 
                                     <span class="sign_member_wrap" id="">                                        

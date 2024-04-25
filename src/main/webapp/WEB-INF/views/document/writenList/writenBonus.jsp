@@ -51,8 +51,6 @@
                     <tr>
                         <td style="padding: 0px !important; border: 0px currentColor; border-image: none;text-align: right;font-weight: bold; vertical-align: middle;"
                         colspan="2" class="">
-                      
-                        
                                                         
                         </td>
                     </tr>
@@ -63,9 +61,11 @@
                             colspan="2" class=""> 상여금신청서
                             <div style="text-align: right;">
 
-                               
-                                <button id="approval_btn" type="button" class="btn btn-primary">결재하기</button>
-                        		
+							
+								<c:if test="${list[0].writerId ne user.id}">                               
+                                	<button id="approval_btn" type="button" class="btn btn-primary">결재하기</button>
+                                </c:if>
+                        	
 
                             </div>
                         </td>
