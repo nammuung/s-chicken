@@ -100,15 +100,8 @@ itemToOrderButton.addEventListener("click", async function(){
         datas.push(result.data);
     }
     for(let data of datas){
-        orderHot.alter("insert_row_above",0);
-        orderHot.setDataAtRowProp(0,"id",data.id)
-        orderHot.setDataAtRowProp(0,"product.category.name",data.product.category.name)
-        orderHot.setDataAtRowProp(0,"product.name",data.product.name)
-        orderHot.setDataAtRowProp(0,"product.standard",data.product.standard)
-        orderHot.setDataAtRowProp(0,"product.unit.name",data.product.unit.name)
-        orderHot.setDataAtRowProp(0,"contractPrice",data.contractPrice)
-        orderHot.setDataAtRowProp(0,"product.sellPrice",data.product.sellPrice)
-        orderHot.setDataAtRowProp(0,"supplier.name",data.supplier.name)
+        const lastRow = orderHot.getData().length
+        orderHot.setDataAtRowProp(lastRow,"id",data.id)
     }
 })
 let clickedOrderId;
@@ -118,7 +111,6 @@ orderHot.addHook("afterChange", changes => {
         if(prop == 'id'  && after && before != after){
             const result = await getItem(after);
             const data = result.data;
-            console.log(data)
             if(data) {
                 orderHot.setDataAtRowProp(row,"product.category.name",data.product.category.name)
                 orderHot.setDataAtRowProp(row,"product.name",data.product.name)
