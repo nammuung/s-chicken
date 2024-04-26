@@ -157,7 +157,7 @@
 }
 
 .bg-schicken-light{
-    background-color: #C7A9FF !important;
+    background-color: #C7A9FF55 !important;
 }
 
 .h-500px{
@@ -176,6 +176,10 @@
 
 .bg-schicken-light-hover:hover{
   background-color: #C7A9FF !important;
+}
+
+.hovercursor:hover{
+  cursor: pointer !important;
 }
 
 /* 쪽지관련 */

@@ -32,7 +32,7 @@ function drawReceiverItem(datas){
 
     datas.forEach(data => {
         divs += `
-            <li class="list-group-item linkable text-black text-center">
+            <li class="list-group-item linkable text-black text-center hovercursor" onclick="onProfileClick(${data.id})">
                 ${data.name}
         </li>
     `
@@ -90,7 +90,7 @@ function openRead(messageId, page, type){
             if(type === 'send'){
                 noteMessageFrom.innerHTML = drawReceiverList(r.receiversVO);
             } else {
-                noteMessageFrom.innerHTML = `<h5 class="linkable text-black">${r.senderName}</h5>`;
+                noteMessageFrom.innerHTML = `<h5 class="linkable text-black hovercursor" onclick="onProfileClick(${r.senderId})">${r.senderName}</h5>`;
             }
             noteMessageDate.innerHTML = `<p>${readFormDateFormat(r.date)}</p>`;
             noteMessageEditor.value = r.content;
