@@ -19,7 +19,6 @@ async function searchProduct(){
         data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
     })
     hot.loadData(data);
-    addNameEventListener();
 }
 
 let selectedRowId = null; //체크된 열 아이디
@@ -84,13 +83,12 @@ const myCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=
     } else {
         selectedRowId = null
     }
-    addNameEventListener();
 })
 const tableOptions = {
     data:[],
     colHeaders : ['','ID','카테고리', '품명', '규격', '단위','판매단가'],
     columns : [
-        {renderer:myCheckboxRenderer},
+        {renderer: myCheckboxRenderer},
         {data:"id"},
         {data:"category.name"},
         {data:"name", renderer:"html"},
@@ -102,7 +100,9 @@ const tableOptions = {
     height:"50vh",
 }
 const hot = handsontable(container, tableOptions);
-
+hot.addHook("afterRender", function () {
+    addNameEventListener();
+})
 
 //모달
 const registerModalEl = document.getElementById("register-modal")
