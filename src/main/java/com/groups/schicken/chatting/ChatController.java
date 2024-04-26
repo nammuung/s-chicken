@@ -39,7 +39,7 @@ public class ChatController {
         EmployeeProfileVO myProfile = employeeService.getProfile(employee.getId());
         model.addAttribute("myProfile", myProfile);
 
-        return "chatting/list";
+        return "chatting/popup";
     }
 
     @GetMapping("one/{targetId}")
