@@ -14,8 +14,17 @@ const supplierCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, 
     if(checked){
         selectedSupplier = instance.getDataAtCell(row,1)
         searchDetailItem(selectedSupplier)
+        if(instance.getDataAtCell(row,2) == "대기" ) {
+            approveOrderButton.classList.toggle("d-none")
+            refuseOrderButton.classList.toggle("d-none")
+        } else {
+            approveOrderButton.classList.add("d-none")
+            refuseOrderButton.classList.add("d-none")
+        }
     } else {
         selectedSupplier = null;
+        approveOrderButton.classList.add("d-none")
+        refuseOrderButton.classList.add("d-none")
     }
 })
 const supplierTableOptions = {
@@ -73,6 +82,8 @@ const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col
         searchDetail(selectedOrder);
     } else {
         selectedOrder = null;
+        supplierHot.loadData([]);
+        itemHot.loadData([]);
     }
 })
 const orderTableOptions = {
@@ -108,6 +119,8 @@ async function searchOrder(){
         }
     })
     orderHot.loadData(datas);
+    supplierHot.loadData([]);
+    itemHot.loadData([]);
 }
 
 
@@ -160,7 +173,7 @@ approveOrderButton.addEventListener("click", async function () {
     const result = await updateOrder(formData);
     alert(result.message);
     if(result.status == "OK"){
-        searchOrder();
+        searchDetail(selectedOrder);
     }
 })
 
@@ -178,7 +191,7 @@ refuseOrderButton.addEventListener("click", async function () {
     const result = await updateOrder(formData);
     alert(result.message);
     if(result.status == "OK"){
-        searchOrder();
+        searchDetail(selectedOrder);
     }
 })
 

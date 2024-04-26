@@ -50,8 +50,8 @@
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <div>
-                                        <button class="btn btn-outline-primary" id="approveOrderButton">발주</button>
-                                        <button class="btn btn-outline-danger" id="refuseOrderButton">반려</button>
+                                        <button class="btn btn-outline-primary d-none" id="approveOrderButton">발주</button>
+                                        <button class="btn btn-outline-danger d-none" id="refuseOrderButton">반려</button>
                                     </div>
                                 </div>
                             </div>
