@@ -29,7 +29,7 @@
                 <div class="col-9">
                     <select id="searchStatus" class="form-select" name="status">
                         <option value="4">전체</option>
-                        <option value="1">진행</option>
+                        <option value="1" selected>진행</option>
                         <option value="2">완료</option>
                     </select>
                 </div>

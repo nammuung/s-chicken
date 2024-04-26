@@ -29,7 +29,10 @@
                             <div class="">
                                 <div class="d-flex justify-content-between" style="line-height: 40px; padding-bottom: 3px;">
                                     <b>목록</b>
-                                    <button class="btn btn-outline-primary" id="orderPreviewButton">발주서</button>
+                                    <div>
+                                        <button class="btn btn-outline-primary d-none" id="allCompleteButton">전체입고</button>
+                                        <button class="btn btn-outline-primary" id="orderPreviewButton">발주서</button>
+                                    </div>
                                 </div>
                                 <div class="" style="box-shadow: 0 0 0 1px #ccc inset;" >
                                     <div id="orderListContainer"></div>
@@ -41,10 +44,10 @@
                                     <div id="itemListContainer"></div>
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <div>
+                                    <div class="d-none" id="modifyButtons">
                                         <button class="btn btn-outline-primary" id="saveChangeButton">저장</button>
-                                        <button class="btn btn-outline-danger" id="deleteOrderButton">삭제</button>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

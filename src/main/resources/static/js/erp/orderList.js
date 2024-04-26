@@ -11,7 +11,22 @@ import {
     updateOrderItem
 } from "../api/order.js";
 import {orderStatus, itemStatus, itemStatusToKR, orderStatusToKR} from "../util/orderStatus.js";
-let isChanged = false;
+let isChanged = {};
+const modifyButtons = document.getElementById('modifyButtons');
+const allCompleteButton = document.getElementById("allCompleteButton");
+
+
+Object.defineProperty(isChanged, "change", {
+    get: function (){return this._change || false},
+    set: function (value){
+        this._change = value
+        if(this._change){
+            modifyButtons.classList.remove("d-none")
+        } else {
+            modifyButtons.classList.add("d-none")
+        }
+    }
+})
 
 sw.init()
 //공급처별 발주 테이블 초기화
@@ -21,8 +36,14 @@ const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col
     if(checked){
         selectedOrder = instance.getDataAtCell(row,1)
         searchDetail(selectedOrder)
+        if(instance.getDataAtCell(row,2) == '진행'){
+            allCompleteButton.classList.remove("d-none")
+        } else {
+            allCompleteButton.classList.add("d-none")
+        }
     } else {
         selectedOrder = null;
+        allCompleteButton.classList.add("d-none")
     }
 })
 const orderTableOptions = {
@@ -52,7 +73,7 @@ const itemCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col}
     } else {
         selectedItems.splice(selectedItems.indexOf(instance.getDataAtCell(row,1)),1)
     }
-},false)
+})
 const itemTableOptions = {
     data:[],
     colHeaders : ['','ID','카테고리', '품명', '규격','단위', '계약단가', '공급가액','발주수량', '입고수량','상태'],
@@ -66,10 +87,9 @@ const itemTableOptions = {
         {data:"price"},
         {data:"totalPrice"},
         {data:"quantity"},
-        {data:"deliverQuantity", readOnly: false},
+        {data:"deliverQuantity"},
         {
             data:"status",
-            readOnly: false,
             type:"dropdown",
             strict:true,
             source: itemStatus
@@ -87,6 +107,9 @@ searchButton.addEventListener("click", async function () {
 })
 searchOrder();
 async function searchOrder(){
+    isChanged.change = false;
+    allCompleteButton.classList.add("d-none")
+
     const searchForm = document.getElementById("searchForm");
     const formData = new FormData(searchForm);
     if(formData.get("totalId")){
@@ -118,6 +141,7 @@ async function searchOrder(){
 //상세 검색
 let detailItems = [];
 async function searchDetail(id){
+    isChanged.change = false;
     const result = await getOrderSheet(id);
     const data = result.data;
     console.log(data)
@@ -152,6 +176,22 @@ async function searchDetail(id){
         orderItem.status = itemStatusToKR(orderItem.status)
         return orderItem;
     }));
+    //상태 진행인 로우만 입력가능하게 풀어줌
+    itemHot.updateSettings({
+        cells(row, col) {
+            const cellProperties = {};
+            try{
+                console.log(itemHot.getData()[row][col+1])
+                if (itemHot.getData()[row][col+1] === '진행') {
+                    cellProperties.readOnly = false;
+                }
+            } catch (e){
+                console.log(e)
+            }
+            return cellProperties;
+        }
+    });
+
 }
 
 // //디테일 아이템
@@ -193,6 +233,38 @@ saveChangeButton.addEventListener("click", async function () {
     }
 })
 
+allCompleteButton.addEventListener("click", async function () {
+    if(selectedOrder == null){
+        alert("발주를 선택해 주세요.")
+        return;
+    }
+    const orderItems = [];
+    const formData = new FormData();
+    formData.append("id", selectedOrder);
+    formData.append("status", 1);
+    itemHot.getData().forEach(item => {
+        orderItems.push({
+            id:item[1],
+            deliverQuantity:item[8],
+            status:itemStatus.indexOf("완료"),
+            order:{
+                id:selectedOrder.split("-")[0]
+            },
+            supplier:{
+                id:selectedOrder.split("-")[1]
+            },
+        })
+    })
+    const result = await updateOrderItem(orderItems);
+    if(result.status == "OK"){
+        searchDetail(selectedOrder)
+        searchOrder();
+        alert("입고 완료");
+    } else {
+        alert(result.message);
+    }
+})
+
 
 
 //발주서 미리보기
@@ -230,7 +302,7 @@ itemHot.addHook("afterChange", changes => {
                 alert("숫자만 입력가능합니다.")
                 itemHot.setDataAtRowProp(row,"deliverQuantity",0);
             }
-            isChanged = true;
+            isChanged.change = true;
         }
 
     })
