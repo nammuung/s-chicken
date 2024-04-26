@@ -3,6 +3,7 @@ import {addItem, getItemList, updateItem, getItem} from "../api/item.js";
 import {getProduct, getProductList} from "../api/product.js";
 import {getSupplierList} from "../api/supplier.js";
 import {addOrder, getOrder, getOrderList, updateOrder} from "../api/order.js";
+import {orderStatusToKR} from "../util/orderStatus.js";
 
 sw.init()
 searchOrder()
@@ -19,16 +20,17 @@ const supplierCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, 
 })
 const supplierTableOptions = {
     data:[],
-    colHeaders : ['','ID','거래처', '내용','총 공급가액', '총 부가세'],
+    colHeaders : ['','ID','구분','거래처', '내용','총 공급가액', '총 부가세'],
     columns : [
         {renderer:supplierCheckboxRenderer},
         {data:"id"},
+        {data:"status"},
         {data:"supplier.name"},
         {data:"content"},
         {data:"price"},
         {data:"vat"},
     ],
-    colWidths : scaleArrayToSum(Array(6),763),
+    colWidths : scaleArrayToSum(Array(7),763),
     height:"144",
 }
 const supplierHot = handsontable(supplierContainer, supplierTableOptions);
@@ -47,7 +49,7 @@ const itemTableOptions = {
     colHeaders : ['','ID','카테고리', '품명', '규격','단위', '계약단가', '수량', '공급가액'],
     columns : [
         {renderer:itemCheckboxRenderer},
-        {data:"item.id"},
+        {data:"id"},
         {data:"item.product.category.name"},
         {data:"item.product.name", renderer:"html"},
         {data:"item.product.standard"},
@@ -80,7 +82,7 @@ const orderTableOptions = {
         {renderer:orderCheckboxRenderer},
         {data:"id"},
         {data:"content"},
-        {data:"orderDate"},
+        {data:"writeDate"},
         {data:"employee.name"},
     ],
     colWidths : scaleArrayToSum(Array(4),360),
@@ -96,7 +98,6 @@ searchButton.addEventListener("click", async function () {
 async function searchOrder(){
     const searchForm = document.getElementById("searchForm");
     const formData = new FormData(searchForm);
-    formData.append("status", 0);
     const result = await getOrderList(formData);
     const datas = result.data;
     datas.forEach((data,index) => {
@@ -125,6 +126,7 @@ async function searchDetail(id){
         }
         data.vat = Math.floor(data.price / 10).toLocaleString()+"원";
         data.price = Math.floor(data.price).toLocaleString()+"원";
+        data.status = orderStatusToKR(data.status);
         console.log(data)
         detailItems.push({id:data.supplier.id,orderItems:data.orderItems.map(orderItem=> {
                 orderItem.totalPrice = (orderItem.price * orderItem.quantity).toLocaleString()+"원";
@@ -153,7 +155,26 @@ approveOrderButton.addEventListener("click", async function () {
     }
     const formData = new FormData();
     formData.append("id", selectedOrder);
+    formData.append("supplier.id", selectedSupplier);
     formData.append("status", 1);
+    const result = await updateOrder(formData);
+    alert(result.message);
+    if(result.status == "OK"){
+        searchOrder();
+    }
+})
+
+//발주 반려 버튼
+const refuseOrderButton = document.getElementById("refuseOrderButton");
+refuseOrderButton.addEventListener("click", async function () {
+    if(selectedOrder == null){
+        alert("발주를 선택해 주세요.")
+        return;
+    }
+    const formData = new FormData();
+    formData.append("id", selectedOrder);
+    formData.append("supplier.id", selectedSupplier);
+    formData.append("status", 3);
     const result = await updateOrder(formData);
     alert(result.message);
     if(result.status == "OK"){

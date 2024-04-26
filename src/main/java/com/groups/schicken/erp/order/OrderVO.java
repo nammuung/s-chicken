@@ -12,6 +12,7 @@ import java.util.List;
 public class OrderVO {
     private Long id;
     private SupplierVO supplier;
+    private String writeDate;
     private String orderDate;
     private Integer status;
     private Long price;

@@ -40,7 +40,7 @@ public class OrderService {
                 order.setPrice(itemPrice * itemQuantity);
                 orderItemVO.setPrice(itemPrice);
                 order.setOrderItems(list);
-                order.setOrderDate(DateManager.getTodayDate());
+                order.setWriteDate(DateManager.getTodayDate());
                 orderListMap.put(supplierName, order);
             }
         }
@@ -64,6 +64,7 @@ public class OrderService {
     }
 
     public int updateOrder(OrderVO orderVO) throws Exception {
+        orderVO.setOrderDate(DateManager.getTodayDate());
         return orderMapper.updateOrder(orderVO);
     }
 

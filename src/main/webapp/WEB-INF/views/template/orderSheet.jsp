@@ -129,7 +129,7 @@
             <thead>
                 <tr>
                     <th>번호</th>
-                    <th>상품코드</th>
+                    <th>코드</th>
                     <th>상품명[규격]</th>
                     <th>수량</th>
                     <th>단위</th>

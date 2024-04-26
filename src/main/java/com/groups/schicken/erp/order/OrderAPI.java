@@ -66,7 +66,11 @@ public class OrderAPI {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(ResultVO.res(HttpStatus.OK, "발주 실패", null));
             } else {
-                return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주 완료", null));
+                if (orderVO.getStatus() == 1){
+                    return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주 완료", null));
+                } else  {
+                    return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "반려 완료", null));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -82,7 +86,7 @@ public class OrderAPI {
         try {
             List<OrderVO> list = orderService.getOrderSheetList(orderVO);
             if(startDate!=null && endDate != null){
-                list.removeIf(order -> order.getOrderDate().compareTo(startDate) < 0 || order.getOrderDate().compareTo(endDate) > 0);
+                list.removeIf(order -> order.getWriteDate().compareTo(startDate) < 0 || order.getWriteDate().compareTo(endDate) > 0);
             }
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), list));
         } catch (Exception e){

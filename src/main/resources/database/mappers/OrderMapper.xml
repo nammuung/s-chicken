@@ -7,10 +7,10 @@
 <mapper namespace="com.groups.schicken.erp.order.OrderMapper">
     <sql id="search">
         <where>
-            <if test="status != null and status != 3">
+            <if test="status != null and status != 4">
                 ord.status = #{status}
             </if>
-            <if test="status != null and status == 3">
+            <if test="status != null and status == 4">
                 AND ord.status IN (1,2)
             </if>
             <if test="id != null">
@@ -105,7 +105,7 @@
             code unit
             ON prd.unit_id = unit.id and unit.type_id = '500'
         <include refid="search"/>
-        ORDER BY ord.order_date desc
+        ORDER BY ord.write_date desc
     </select>
     <resultMap id="getOrderDetailMap" type="OrderVO" autoMapping="true">
         <id column="id" property="id"/>
@@ -177,7 +177,7 @@
         code cat
         ON prd.category_id = cat.id and cat.type_id = '600'
         <include refid="search"/>
-        ORDER BY ord.order_date desc
+        ORDER BY ord.write_date desc
     </select>
     <resultMap id="getOrderSheetMap" type="OrderVO" autoMapping="true">
         <id column="id" property="id"/>
@@ -251,7 +251,7 @@
             code cat
             ON prd.category_id = cat.id and cat.type_id = '600'
         <include refid="search"/>
-        ORDER BY ord.order_date desc
+        ORDER BY ord.write_date desc
     </select>
     <select id="getOrderSheet" resultMap="getOrderSheetMap">
         SELECT
@@ -310,14 +310,14 @@
             ON prd.category_id = cat.id and cat.type_id = '600'
         WHERE
             ord.id = #{id} AND ord.supplier_id = #{supplier.id}
-        ORDER BY ord.order_date desc
+        ORDER BY ord.write_date desc
     </select>
     <insert id="addOrder">
         INSERT INTO
             head_order
-            (id, supplier_id, status, address, order_date, employee_id, price)
+            (id, supplier_id, status, address, write_date, employee_id, price)
         VALUES
-            (#{id}, #{supplier.id}, 0, #{address}, #{orderDate}, #{employee.id}, #{price})
+            (#{id}, #{supplier.id}, 0, #{address}, #{writeDate}, #{employee.id}, #{price})
     </insert>
 
     <insert id="addOrderItem">
