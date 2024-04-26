@@ -29,7 +29,7 @@
     
     String strDate = simpleDate.format(date);
     %>
-    <form class="form-control"  method="POST">    
+    <form method="POST">
         <span>
             <p style="line-height: 150%; font-family: 맑은 고딕; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;"><span
                     style="font-family: 맑은 고딕; font-size: 10pt;"></span>&nbsp;</p>
@@ -52,17 +52,17 @@
                             <div class="mb-2">
                                 <button class="btn btn-primary">인쇄미리보기</button>
                                 <button class="btn btn-primary" id="sangsin">상신</button>
-                                <button class="btn btn-primary">취소</button>
+                                <button class="btn btn-primary" type="button" id = "cancel">취소</button>
                             </div>
                             <button class="btn btn-primary">불러오기</button>
-                            <button class="btn btn-primary">임시저장</button>
+                            <button class="btn btn-primary" id="tempSave">임시저장</button>
                         </td>
                     </tr>
 
                     <tr>
 
                         <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
-                            colspan="2" class=""> 상여금신청서
+                            colspan="2" class=""> 급여신청서
                             <div style="text-align: right;">
 
                                 <!-- Button to Open the Modal -->
@@ -106,7 +106,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" id="" name="tempName" style="text-align: center;" value="상여신청서" readonly>
+                                                <input type="text" class="form-control" id="" name="tempName" style="text-align: center;" value="급여신청서" readonly>
                                             </div>
                                         </td>
                                     </tr>
@@ -240,28 +240,7 @@
 
                 </colgroup>
                 <tbody>
-                    <tr>
-                        <td
-                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
-                            대상자 </td>
-                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
-                            colspan="5">
-
-                            <input type="text" class="form-control" id="" name="des" style="width: 100%;">
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td
-                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
-                            참조 </td>
-                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
-                            colspan="5">
-
-                            <input type="text" class="form-control" id="" name="" style="width: 100%; text-align: center;">
-                        </td>
-                    </tr>
-
+                    
                     <tr>
                         <td
                             style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
@@ -282,7 +261,7 @@
                     <tr>
                         <td style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;"
                             colspan="2">
-                            상여사유
+                            사유
                         </td>
                     </tr>
                     <tr>
@@ -310,7 +289,7 @@
 	      <!-- Modal Header -->
 	      <div class="modal-header" >
 	        <h4 class="modal-title">결재선지정</h4>
-	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
 	      </div>
 	      <!-- Modal body -->
 	      <div class="modal-body">
@@ -361,7 +340,7 @@
 	      </div>
 	      <!-- Modal footer -->
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 	      </div>
 	    </div>
 	  </div>

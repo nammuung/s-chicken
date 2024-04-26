@@ -84,8 +84,8 @@
 	                                        <td>${vo.templateVO.tempName}</td>
 	                                        <td>${vo.writeDate}</td>
 	                                        <c:if test="${vo.status eq 0}"> <td>진행중</td> </c:if>
-	                                        <c:if test="${vo.status eq 1}"> <td>반려</td> </c:if>
-	                                        <c:if test="${vo.status eq 2}"> <td>완료</td> </c:if>
+	                                        <c:if test="${vo.status eq 1}"> <td>완료</td> </c:if>
+	                                        <c:if test="${vo.status eq 2}"> <td>반려</td> </c:if>
 	                                    </tr>
                                     
                                 </c:forEach>

@@ -88,28 +88,22 @@
                     </div>
                 </div>
                 
-                <nav aria-label="Page navigation example">
-						
-		                    <ul class="pagination justify-content-center">
-		                        <li class="page-item" id="prev">
-		                            <input type="hidden" id="prev_val" value="${pager.startNum}">
-		                            <a class="page-link" href="./list?page=${pager.startNum-1}&kind=${pager.kind}&search=${pager.search}&board=${board}">이전</a>
-		                        </li>
-		                        
-		                        <c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="i">
-			                        <li class="page-item">
-			                        <a class="page-link" href="./list?page=${i}&kind=${pager.kind}&search=${pager.search}&board=${board}">${i}</a>
-			                        </li>
-		                        </c:forEach>
-		                        <li class="page-item" id="next">
-		                            <input type="hidden" id="next_val" value="${pager.last}">
-		                            <a class="page-link" href="./list?page=${pager.lastNum+1}&kind=${pager.kind}&search=${pager.search}&board=${board}">다음</a>                            
-		                        </li>                     
-		                    </ul>
-	                  
-  
-
-                    
+                <nav aria-label="Page navigation example">						
+		           <ul class="pagination justify-content-center">
+		                <c:if test="${!pager.start}">
+		                    <li class="page-item">
+		                        <a class="page-link" href="list?kind=${pager.kind}&search=${pager.search}&page=${pager.startNum-1}">이전</a>
+		                    </li>
+		                </c:if>
+		                <c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="page">
+		                    <li class="page-item <c:if test="${pager.page == page}">active</c:if>"><a class="page-link" href="list?kind=${pager.kind}&search=${pager.search}&page=${page}">${page}</a></li>
+		                </c:forEach>
+		                <c:if test="${!pager.last}">
+		                    <li class="page-item">
+		                        <a class="page-link" href="list?kind=${pager.kind}&search=${pager.search}&page=${pager.lastNum+1}">다음</a>
+		                    </li>
+		                </c:if>
+		            </ul>                   
                 </nav>
             </div>
             

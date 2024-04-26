@@ -46,6 +46,13 @@ public class DocumentController {
 		return ResponseEntity.ok(result);
 	}
 	
+	@PostMapping("document/refuseUpdate")
+	public ResponseEntity<Integer> refuseUpdate(ApprovalVO approvalVO)throws Exception{
+		int result = documentService.refuseUpdate(approvalVO);
+		
+		return ResponseEntity.ok(result);
+	}
+	
 	@GetMapping("approvalList")
 	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO,Model model)throws Exception{
 	
@@ -60,8 +67,7 @@ public class DocumentController {
 		List<DocumentVO> ar = documentService.list(documentVO, templateVO, pager);
 		
 		model.addAttribute("list", ar);
-		model.addAttribute("pager", pager);		
-
+		model.addAttribute("pager", pager);	
 	}
 	@GetMapping("ref")
 	public void documentRef() {
@@ -125,10 +131,29 @@ public class DocumentController {
 		return ResponseEntity.ok(documentVO);
 	}
 	
+	
+	
 	@GetMapping("writenList/writenBonus")
 	public void writenBonus(DocumentVO documentVO,Model model)throws Exception{
 		List<DocumentVO> ar=documentService.getDetail(documentVO);
+		
+		int result = 0;
+		for(int i =0 ; i<ar.size(); i++) {
+			
+			for(int j = 0 ; j < ar.get(i).getApprovalVOs().size() ; j++) {
+				if(ar.get(i).getApprovalVOs().get(j).getResult() !=2) {
+					
+			result +=ar.get(i).getApprovalVOs().get(j).getResult();
+				}else {
+				result +=ar.get(i).getApprovalVOs().get(j).getResult()-1;
+				}
+			}
+		}
+		System.out.println(result);
 		System.out.println(ar.get(0));
+		System.out.println(ar.get(1));
+		model.addAttribute("nowCount", result);
 		model.addAttribute("list", ar);
-	}	
+	}
+	
 }

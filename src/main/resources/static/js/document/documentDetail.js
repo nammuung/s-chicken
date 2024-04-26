@@ -8,18 +8,56 @@ import oc from "/js/orgChart/orgChart.js";
 	const register = document.getElementById("register");
 	const modal_show = document.getElementById("modal_show");
 	const sangsin = document.getElementById("sangsin");
+	const tempSave = document.getElementById("tempSave");
 	const frm= document.querySelector("form");
+	
+	const cancel = document.getElementById("cancel");
 	
 		
 	let employeeArr =[];
 	let rankArr=[];
 	let resultArr=[];
 	 let relativePath = '/document/pay/pay';
+	 
+	cancel.addEventListener("click",()=>{
+		const isConfirmed = confirm("정말로 취소하시겠습니까?");
+		
+		if(isConfirmed){
+			window.close(relativePath);
+		}
+	})
+	
+/*	tempSave.addEventListener("click",(e)=>{
+		e.preventDefault();
+		
+		const formData= new Formdata(frm);
+		
+		
+		
+	})*/
+	 
 	sangsin.addEventListener("click",(e)=>{
-		e.preventDefault();		
+		e.preventDefault();
+		
+		
 		
 		const formData = new FormData(frm);
 		formData.append("content", editor.getData())
+		
+		
+		if(editor.getData()==""){
+			alert("사유를 입력하세요")
+			return
+		}
+		
+		
+		
+		if(employeeArr[1]===undefined){
+			alert("결재자는 1명이상 입니다")
+			return
+		}
+		
+		
 		formData.append("employeeId",employeeArr)
 		formData.append("rank",rankArr)
 		formData.append("result",resultArr)
@@ -27,7 +65,10 @@ import oc from "/js/orgChart/orgChart.js";
 			method:"post",
 			body:formData,
 		}).then(r=>console.log(r))
-		
+		.then(r=>{
+			alert("상신 되었습니다")
+			window.close(relativePath);
+		})
 	})
 	
 //	window.close(relativePath)
@@ -137,11 +178,14 @@ function hyuga(){
 			
 	})
 		
-		register.addEventListener("click",()=>{
-			
 			const zeroRank = document.getElementById("zeroRank").value;
 			const zeroId = document.getElementById("zeroId").value;
 			const zeroResult = document.getElementById("zeroResult").value;
+			rankArr=[zeroRank];
+			employeeArr=[zeroId];
+			resultArr=[zeroResult];
+		register.addEventListener("click",()=>{
+			
 			
 			let goList = approval_List.querySelectorAll("li")
 
@@ -160,6 +204,7 @@ function hyuga(){
 			rankArr=[zeroRank];
 			employeeArr=[zeroId];
 			resultArr=[zeroResult];
+			
 			}
 			
 			

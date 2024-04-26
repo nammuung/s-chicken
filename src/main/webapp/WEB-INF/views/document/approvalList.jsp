@@ -67,12 +67,16 @@
 		                                    
 		                                    <td>${vo.writeDate}</td>
 		                                    
-		                                    <c:if test="${vo.approvalVOs[0].result eq 0}">
+		                                    <c:if test="${vo.status eq 0}">
 		                                    	<td>진행중</td>
 		                                    </c:if>
 		                                    
-		                                    <c:if test="${vo.approvalVOs[0].result eq 1}">
+		                                    <c:if test="${vo.status eq 1}">
 		                                    	<td>결재완료</td>
+		                                    </c:if>
+		                                    
+		                                    <c:if test="${vo.status eq 2}">
+		                                    	<td>반려</td>
 		                                    </c:if>
 		                                    
 		                                    

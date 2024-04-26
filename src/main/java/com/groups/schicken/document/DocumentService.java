@@ -77,9 +77,16 @@ public class DocumentService {
 	}
 	
 	public int resultUpdate(ApprovalVO approvalVO)throws Exception{
+		int result = documentDAO.resultUpdate(approvalVO);
 		
-		documentDAO.statusUpdate(approvalVO);
+		result = documentDAO.statusUpdate(approvalVO);
 		
-		return documentDAO.resultUpdate(approvalVO);
+		return result;
+	}
+	
+	public int refuseUpdate(ApprovalVO approvalVO)throws Exception{
+		int result = documentDAO.refuseUpdate(approvalVO);
+			result = documentDAO.statusRefuse(approvalVO);
+		return result;
 	}
 }

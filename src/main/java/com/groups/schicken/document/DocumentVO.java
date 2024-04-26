@@ -21,7 +21,7 @@ public class DocumentVO {
 	private String status;
 	private Long templateId;
 	private String writerId;
-	private String des;
+	private int temp;
 	private int count;
 	
 	private TemplateVO templateVO;

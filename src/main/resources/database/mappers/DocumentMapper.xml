@@ -35,21 +35,43 @@
 		UPDATE document d
 		INNER JOIN <include refid="totalResult"/> ON sub.document_id=d.id
 		SET status=1
-		WHERE sub.count = d.count		
+		WHERE sub.total = d.count		
+	</update>
+	
+	<update id="refuseUpdate">
+		UPDATE approval
+		SET result=2 , date=#{date} ,comment=#{comment}
+		WHERE document_id=#{documentId}	AND employee_id=#{employeeId}		
+	</update>
+	<update id="statusRefuse">
+		UPDATE document d
+		INNER JOIN approval a ON a.document_id=d.id
+		SET status=2
+		WHERE a.result=2 
 	</update>
 	
 	<sql id="totalResult">
-		(SELECT count(*) AS "count",document_id FROM approval a 
+		(SELECT count(*) AS "total",document_id FROM approval a 
 			where document_id =#{documentId} and result=1
 			group by document_id
 			) sub
 	</sql>
+	
+		<sql id="countCheck">
+		(SELECT 
+			COUNT(*) AS "count",document_id
+			FROM approval
+			WHERE result =1
+			GROUP BY document_id) sub
+	</sql>
+	
 
 	<select id="approvalList" resultMap="allListResult">
 		SELECT 
 			d.id,
 			d.title,
 			d.write_date,
+			d.status,
 			a.*,
 			sub.count,
 			tem.*,
@@ -64,13 +86,7 @@
 		ORDER BY d.id DESC		
 	</select>
 	
-	<sql id="countCheck">
-		(SELECT 
-			COUNT(*) AS "count",document_id
-			FROM approval
-			WHERE result =1
-			GROUP BY document_id) sub
-	</sql>
+
 	
 	<select id="allList" resultMap="allListResult">
 		SELECT doc.*,
@@ -86,7 +102,7 @@
 			SELECT nextval(seq3)
 		</selectKey>
 		INSERT INTO document
-		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writerId},#{des},#{count})
+		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writerId},#{temp},#{count})
 	</insert>
 	
 	<insert id="appAdd">
@@ -105,9 +121,7 @@
 	<select id="getDetail" resultMap="allListResult">
 		SELECT doc.*,
 		tem.*,		
-		app.rank,
-		app.result,
-		app.date,
+		app.*,	
 		e.name employee_name,
 		e.id employee_id,	
 		d.name department_name,
@@ -119,9 +133,10 @@
 		INNER JOIN department d on d.id=e.department_id 
 		INNER join code c on c.id=e.pos_id and c.type_id =300
 		WHERE doc.id=#{id} 
-		ORDER BY app.rank
-		
+		ORDER BY app.rank		
 	</select>
+	
+
 	
 	<select id="allTotalCount" parameterType="Map" resultType="Long">
 		SELECT COUNT(id) FROM document r

@@ -60,10 +60,20 @@
                         <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
                             colspan="2" class=""> 상여금신청서
                             <div style="text-align: right;">
-
-							
-								<c:if test="${list[0].writerId ne user.id}">                               
+                            
+                            	<c:if test="${list[0].temp eq 1}">
+	                            	<div class="mb-2">
+		                                <button class="btn btn-primary">인쇄미리보기</button>
+		                                <button class="btn btn-primary" id="sangsin">상신</button>
+		                                <button class="btn btn-primary" type="button" id = "cancel">취소</button>
+	                            	</div>
+			                            <button class="btn btn-primary">불러오기</button>
+			                            <button class="btn btn-primary" id="updateSave">임시저장</button>
+								</c:if>
+								
+								<c:if test="${list[nowCount].approvalVOs[0].employeeId eq user.id}">      
                                 	<button id="approval_btn" type="button" class="btn btn-primary">결재하기</button>
+                                	<button id="refuse_btn" type="button" class="btn btn-primary">반려하기</button>
                                 </c:if>
                         	
 
@@ -254,18 +264,7 @@
                             값넣기
                         </td>
                     </tr>
-
-                    <tr>
-                        <td
-                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
-                            참조 </td>
-                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
-                            colspan="5">
-
-                            값넣기
-                        </td>
-                    </tr>
-
+                   
                     <tr>
                         <td
                             style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
@@ -290,19 +289,57 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                            <div>${list[0].content }</div>
+                        <td style="background: rgb(255, 255, 255); text-align:center; padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+                            ${list[0].content}
                         </td>
                     </tr>
-
+                    <c:if test="${list[nowCount-1].approvalVOs[0].comment ne null}">
+	                     <tr>
+	                        <td style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;"
+	                            colspan="2">
+	                            반려사유
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+	                            <div>${list[nowCount-1].approvalVOs[0].comment}</div>
+	                        </td>
+	                    </tr>
+					</c:if>
                 </tbody>
             </table>
-   	</form>
-            <div>
+<!--             <div>
                 <label for="file">파일첨부하기</label><br>
             <input type="file" name="attach">
-            </div>
-    
+            </div> -->            
+   	</form>
+<%--    	<c:forEach items="${list}" var="com">
+   		<c:forEach items="${com.approvalVOs}" var="get">
+    	<div>${get.comment}</div>
+    	</c:forEach>
+    </c:forEach>
+ --%>    
+<%--  		<c:if test="${list[nowCount-1].approvalVOs[0].comment ne null}">
+   			<div class="d-flex mb-2">					
+					<img width="50" height="50" src="/fileDown?id=${reply.fileVO.id}" alt="프로필" class="me-3">
+			
+				<div class="d-flex justify-content-between w-100">
+					<div class="d-flex">
+						<div class="me-3">
+							<div>${list[nowCount-1].employeeVO.name}</div>
+							<div>${list[nowCount-1].level}</div>                                        
+						</div>
+						<div>							
+							<div data-text="area" data-id="" ></div>
+						</div>
+					</div>
+					<div class="d-flex align-items-center">
+						
+					</div>
+				</div>
+			</div>	 
+    	</c:if> --%>
+    	
         <p
             style="line-height: 150%; font-family: &quot;맑은 고딕&quot;; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;">
             &nbsp;</p>

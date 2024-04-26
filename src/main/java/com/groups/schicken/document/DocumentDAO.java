@@ -32,5 +32,7 @@ public interface DocumentDAO {
 	
 	int resultUpdate(ApprovalVO approvalVO)throws Exception;
 	int statusUpdate(ApprovalVO approvalVO)throws Exception;
+	int refuseUpdate(ApprovalVO approvalVO)throws Exception;
+	int statusRefuse(ApprovalVO approvalVO)throws Exception;
 	
 }
