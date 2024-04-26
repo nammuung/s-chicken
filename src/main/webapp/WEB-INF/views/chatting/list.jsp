@@ -102,7 +102,7 @@
                         <div class="accordion-item">
                             <div class="accordion-header">
                                 <button
-                                        class="accordion-button p-2"
+                                        class="accordion-button p-2 small"
                                         type="button"
                                         data-bs-toggle="collapse"
                                         data-bs-target="#collapse-${dept.id}"
@@ -116,7 +116,7 @@
                             <div id="collapse-${dept.id}" class="accordion-collapse collapse show">
                                 <div class="accordion-body" style="padding: 0;">
                                     <c:forEach items="${dept.employees}" var="emp">
-                                        <div class="d-flex gap-3 p-2 aaa" data-search-name="${emp.name}">
+                                        <div class="d-flex gap-3 p-2 aaa" onclick="onProfileClick(${emp.id})" data-search-name="${emp.name}">
                                             <div>
                                                 <img class="rounded-circle" src="${emp.profileImg}" alt="" width="50px" height="50px">
                                             </div>
@@ -137,10 +137,56 @@
     </main>
 
 
+    <div class="modal fade" tabindex="-1" id="namecard-modal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <img data-profile-type="img" class="rounded-circle shadow w-50 mb-3">
+                        <h4 data-profile-type="departmentName" class="card-subtitle mb-2 text-muted"></h4>
+                        <h2 data-profile-type="name" class="card-title"></h2>
+                        <h4 data-profile-type="phoneNumber" class="card-text"></h4>
+                        <a data-profile-type="noteMessage" href="#" class="btn btn-primary">쪽지보내기</a>
+                        <a data-profile-type="chatting" href="#" class="btn btn-primary">채팅하기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/js/main.js"></script>
+<script>
+    const namecardModal = new bootstrap.Modal(document.getElementById("namecard-modal"));
+    function onProfileClick(empId){
+        fetch('/employee/getProfile?id=' + empId)
+            .then(res=>res.json())
+            .then(info=>{
+                console.log("info = ", info)
+                document.querySelectorAll("[data-profile-type]")
+                    .forEach(e => {
+                        let profileType = e.dataset.profileType;
+                        console.log(e.dataset, profileType)
+                        switch (profileType){
+                            case 'img':
+                                e.setAttribute("src", info.profileImg == null ? '/img/기본.jpg' : info.profileImg);
+                                break;
+                            case 'noteMessage':
+                                break;
+                            case 'chatting':
+                                break;
+                            default:
+                                e.innerText = info[profileType];
+                        }
+                    })
+                namecardModal.show();
+            })
+
+
+    }
+
+</script>
 </body>
 
 </html>
