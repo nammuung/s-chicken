@@ -55,7 +55,7 @@ public class AnnualController {
 
 	
 	@PostMapping("annualInsert")
-	public String annualInsert (AnnualVO annualVO, Model model)throws Exception{
+	public String annualInsert (AnnualVO annualVO, Model model, @RequestParam("hiddenId") String hiddenId)throws Exception{
 		System.out.println("test");
 		System.out.println(annualVO);
 	     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -63,7 +63,7 @@ public class AnnualController {
 	     annualVO.setWriterId(id);
 	    int result = annualService.annualInsert(annualVO);
 	     String msg = "연차가 등록 되었습니다.";
-	        String path = "/";
+	        String path = "/employee/profile?id="+hiddenId;
 	        model.addAttribute("msg", msg);
 	        model.addAttribute("path", path);
 	    return "annual/result"; // 연차 등록 후에 리다이렉트되는 페이지로의 경로를 설정합니다.

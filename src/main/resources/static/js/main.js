@@ -6,6 +6,33 @@
 * License: https://bootstrapmade.com/license/
 */
 
+const namecardModal = new bootstrap.Modal(document.getElementById("namecard-modal"));
+function onProfileClick(empId){
+  fetch('/employee/getProfile?id=' + empId)
+      .then(res=>res.json())
+      .then(info=>{
+        console.log("info = ", info)
+        document.querySelectorAll("[data-profile-type]")
+            .forEach(e => {
+              let profileType = e.dataset.profileType;
+              console.log(e.dataset, profileType)
+              switch (profileType){
+                case 'img':
+                  e.setAttribute("src", info.profileImg == null ? '/img/기본.jpg' : info.profileImg);
+                  break;
+                case 'noteMessage':
+                  break;
+                case 'chatting':
+                  break;
+                default:
+                  e.innerText = info[profileType];
+              }
+            })
+        namecardModal.show();
+      })
+
+
+}
 
 //김경모
 var deleteCookie = function(name) {
@@ -91,7 +118,7 @@ function dataGetterWithId(){
   }
 
   /**
-   * Easy on scroll event listener 
+   * Easy on scroll event listener
    */
   const onscroll = (el, listener) => {
     el.addEventListener('scroll', listener)

@@ -23,16 +23,14 @@ public class NotificationController {
     private final SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/notificationPage")
-    public String getNotificationPage(@AuthenticationPrincipal EmployeeVO employeeVO, Pager pager, Model model) {
+    public String getNotificationPage(@AuthenticationPrincipal EmployeeVO employeeVO, Model model, boolean readAll) {
+        if(readAll){
+            notificationService.readAll(employeeVO.getId());
+        }
+
         List<NotificationVO> list = notificationService.getNotifications(employeeVO);
         model.addAttribute("notificationList", list);
         return "notification/notification";
-    }
-
-    @MessageMapping("/noti")
-    public void sendNotification(NotificationVO notificationVO){
-        System.out.println("notificationVO = " + notificationVO);
-        messagingTemplate.convertAndSend("/sub/noti", notificationVO);
     }
 
     @GetMapping("/notifications")

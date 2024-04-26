@@ -47,4 +47,7 @@ public class NotificationService {
     }
 
 
+    public void readAll(String employeeId) {
+        notificationDAO.readAll(employeeId);
+    }
 }

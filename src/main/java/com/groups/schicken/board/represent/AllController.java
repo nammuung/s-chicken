@@ -17,6 +17,8 @@ import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.board.BoardVO;
 import com.groups.schicken.common.vo.Pager;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/all/*")
 public class AllController {
@@ -39,6 +41,7 @@ public class AllController {
 		
 		return "board/list";
 	}
+		
 	
 	@GetMapping("write")
 	public String write()throws Exception{

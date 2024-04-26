@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.chatting.ChatDAO">
+    <select id="getChatroomByChatroomId">
+        SELECT
+              cr.id
+            , notice
+            , cr.type
+            , room_name AS "name"
+            , max(cms.send_date) AS "last_chatting"
+            , last_connect
+            , join_date
+        FROM chatroom cr
+            INNER JOIN chat_member cm ON cr.id = cm.chatroom_id
+            LEFT JOIN chat_message cms ON cms.chatroom_id = cr.id
+        WHERE cm.employee_id=#{reqId} AND cr.id=#{chatroomId}
+    </select>
+
+    <select id="getChatroomList">
+        SELECT
+              cr.id
+            , cr.notice
+            , cr.type
+            , NVL(cm.room_name, cr.default_name)
+        FROM chatroom cr
+            INNER JOIN chat_member cm ON cr.id = cm.chatroom_id
+        WHERE cm.employee_id=#{id}
+    </select>
+
+    <insert id="createOneChatroom">
+        INSERT INTO chatroom (id, type)
+        VALUES (#{id}, #{type})
+    </insert>
+
+    <insert id="joinChatroom">
+        INSERT INTO chat_member(chatroom_id, employee_id, room_name)
+        VALUES (#{chatroom.id}, #{id}, #{chatroom.name})
+    </insert>
+
+    <insert id="insertChat">
+        INSERT INTO chat_message(id, chatroom_id, employee_id, type, send_date, content)
+        VALUES (#{id}, #{chatroomId}, #{senderId}, #{type}, #{sendDate}, #{content})
+    </insert>
+
+    <select id="getChatroomName">
+        SELECT default_name AS "name"
+        FROM chatroom
+        WHERE id=#{chatroomId}
+    </select>
+</mapper>

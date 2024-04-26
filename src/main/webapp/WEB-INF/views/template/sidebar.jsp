@@ -98,9 +98,6 @@
                 <li><a href="/employee/isuserList"> <i class="bi bi-circle"></i><span>퇴사자
 							목록</span>
                 </a></li>
-                <li><a href="#" id="annual-link"> <!-- id 추가 --> <i
-                        class="bi bi-circle"></i><span>연차</span>
-                </a></li>
 
             </ul></li>
         <!-- End Charts Nav -->

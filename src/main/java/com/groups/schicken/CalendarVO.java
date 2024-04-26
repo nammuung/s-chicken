@@ -13,4 +13,5 @@ public class CalendarVO {
 	public String title;
 	public Boolean userYn;
 	public String content;
+	public String share;
 }

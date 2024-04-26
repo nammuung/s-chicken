@@ -29,8 +29,8 @@
                 <div class="col-9">
                     <select type="text" class="form-control form-select" id="searchCategory" name="category.id">
                         <option value="">전체</option>
-                        <c:forEach items="${category}" var="item">
-                            <option value="${item.id}">${item.name}</option>
+                        <c:forEach items="${category}" var="dept">
+                            <option value="${dept.id}">${dept.name}</option>
                         </c:forEach>
                     </select>
                 </div>

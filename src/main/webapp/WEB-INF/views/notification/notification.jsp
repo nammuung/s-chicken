@@ -22,7 +22,12 @@
     <div class="row justify-content-center">
         <div class="col-8">
             <div class="card">
-                <ul class="notifications pt-4" data-notification-list>
+                <div class="row justify-content-end">
+                    <div class="col-2">
+                        <a href="/notificationPage?readAll=true" class="btn btn-outline-secondary btn-sm">모두 읽기</a>
+                    </div>
+                </div>
+                <ul class="notifications" data-notification-list>
                     <c:forEach items="${notificationList}" var="vo">
                     <li data-noti-id="${vo.id}" data-type="${vo.type}" data-link="${vo.link}" class="notification-item border-bottom<c:if test="${vo.isReaded}"> readed</c:if>">
                         <div>

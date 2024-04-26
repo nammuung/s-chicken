@@ -7,7 +7,7 @@
 
 
 <select id="annualList" resultType="AnnualVO">
-select * from annual where employee_id = #{employeeId} and is_annual = 0 order by annual_date DESC 
+select * from annual where employee_id = #{employeeId} and is_annual = 1 order by id DESC 
 </select>
 
 
@@ -40,7 +40,7 @@ select count(id) from annual where employee_id = #{employeeId}
     #{id},
     #{employeeId},
     #{remainderAnnual},
-    0,
+    1,
     #{history},
     null,
     #{annualDate},

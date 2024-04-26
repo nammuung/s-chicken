@@ -58,8 +58,17 @@ function sendMessage(pub, message){
     })
 }
 
-export default {
-    add : addHandler,
-    send : sendMessage,
-    del : deleteHandler
+const added = {};
+export function mapping(path, callback){
+    added[path] = addHandler(path, callback);
 }
+
+export function cutMapping(path){
+    deleteHandler(added[path]);
+}
+
+export function send(path, message){
+    sendMessage(path, message);
+}
+
+export const loginedId = document.querySelector("[data-logined-id]")?.dataset.loginedId;

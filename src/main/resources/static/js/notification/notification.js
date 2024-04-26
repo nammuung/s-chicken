@@ -1,3 +1,4 @@
+import {mapping, loginedId} from "/js/websocket/websocket.js";
 import {openNoteMessage} from "/js/header/header.js";
 
 const schickenNotificationList = document.getElementById("schicken-notification-list");
@@ -8,9 +9,47 @@ const notificationIcon = document.getElementById("notification-icon");
 const moreNotificationBtn = document.getElementById("more-notification-btn");
 const lastNotificationBtn = document.getElementById("last-notification-btn");
 
+/* mapping handler */
+mapping("noti/" + loginedId, appendNotificationList);
+mapping("noti/whole", appendNotificationList);
+function appendNotificationList(noti) {
+    if(schickenNotificationList.children.length >= 11) {
+        schickenNotificationList.lastElementChild.remove();
+        schickenNotificationList.lastElementChild.remove();
+    }
+
+    let noNotification = document.querySelectorAll("[data-no-notification]");
+    if(noNotification.length > 0) {
+        noNotification.forEach(e => e.classList.add("d-none"));
+    }
+
+    notificationBadge.classList.remove("d-none");
+    const listItem = drawNotificationDropdownItem(noti);
+    schickenNotificationList.prepend(listItem);
+};
+
+
 /* 알림 클릭시 함수 매핑 */
 let notificationByType = {
     NoteMessage : openNoteMessageByLink
+}
+
+function onNotificationClick(event, isNoti){
+    const link = event.target.dataset.link;
+    const type = event.target.dataset.type;
+    const notiId = event.target.dataset.notiId;
+
+    if(link != null && type != null && notiId != null) {
+        if(isNoti) event.target.remove();
+        let noNotification = document.querySelectorAll("[data-no-notification]");
+        if(noNotification.length > 0) {
+            noNotification.forEach(e => e.classList.remove("d-none"));
+        }
+        readNotification(notiId, type, link)
+        return;
+    }
+
+    event.target.parentElement.click();
 }
 
 function readNotification(id, type, link){
@@ -22,24 +61,6 @@ function readNotification(id, type, link){
         .then(res=>{
             if(res.ok) notificationByType[type](link);
         })
-}
-
-function onNotificationClick(event){
-    const link = event.target.dataset.link;
-    const type = event.target.dataset.type;
-    const notiId = event.target.dataset.notiId;
-
-    if(link != null && type != null && notiId != null) {
-        event.target.remove();
-        let noNotification = document.querySelectorAll("[data-no-notification]");
-        if(noNotification.length > 0) {
-            noNotification.forEach(e => e.classList.remove("d-none"));
-        }
-        readNotification(notiId, type, link)
-        return;
-    }
-
-    event.target.parentElement.click();
 }
 
 /* 매핑할 함수들 */
@@ -107,7 +128,7 @@ function getMoreNotification(event){
 }
 
 /* 이벤트 리스너등록 */
-schickenNotificationList.addEventListener("click", onNotificationClick);
+schickenNotificationList.addEventListener("click", (event)=>onNotificationClick(event, true));
 if(notificationPageList != null) notificationPageList.addEventListener("click", onNotificationClick);
 notificationIcon.addEventListener("click", onNotificationIconClick);
 if(moreNotificationBtn != null) moreNotificationBtn.addEventListener("click",getMoreNotification);
@@ -129,20 +150,3 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
         });
 })
-
-/* controller에서 사용할 함수 */
-export const appendNotificationList = (noti) => {
-    if(schickenNotificationList.children.length >= 11) {
-        schickenNotificationList.lastElementChild.remove();
-        schickenNotificationList.lastElementChild.remove();
-    }
-
-    let noNotification = document.querySelectorAll("[data-no-notification]");
-    if(noNotification.length > 0) {
-        noNotification.forEach(e => e.classList.add("d-none"));
-    }
-
-    notificationBadge.classList.remove("d-none");
-    const listItem = drawNotificationDropdownItem(noti);
-    schickenNotificationList.prepend(listItem);
-};

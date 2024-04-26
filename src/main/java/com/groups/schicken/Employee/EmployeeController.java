@@ -2,14 +2,14 @@ package com.groups.schicken.Employee;
 
 import java.util.Arrays;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.auth.policy.Principal;
-import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.common.vo.Pager;
 
 import jakarta.servlet.http.HttpSession;
@@ -36,8 +35,7 @@ public class EmployeeController {
 
 	// Login
 	@GetMapping("login")
-	public String login(@ModelAttribute EmployeeVO employeeVO, HttpSession session, Model model) throws Exception {
-
+	public String login( @ModelAttribute EmployeeVO employeeVO, HttpSession session, Model model) throws Exception {
 		//강제로 주소를 입력하거나 뒤로 로그인할때를 방지하는 용도
 		Object obj=(session.getAttribute("SPRING_SECURITY_CONTEXT"));
 		log.info("{}",obj);
@@ -48,33 +46,34 @@ public class EmployeeController {
 		}
 		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
 		String user = contextImpl.getAuthentication().getPrincipal().toString();
-		
+
 		if(user.equals("anonymousUser")) {
 			return "employee/login";
 		}
-		
-		
+
+
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		    String id = auth.getName();
+		    
 		    model.addAttribute("id",id);
 		    return "redirect:/";
 
 	}
-	
+
 
 	//패스워드 변경
 	@PostMapping("updatePassword")
-	public String updatePassword(@RequestParam("password") String currentPassword, 
-	                             @RequestParam("newpassword") String newPassword, 
-	                             @RequestParam("renewpassword") String confirmNewPassword, 
+	public String updatePassword(@RequestParam("password") String currentPassword,
+	                             @RequestParam("newpassword") String newPassword,
+	                             @RequestParam("renewpassword") String confirmNewPassword,
 	                             @RequestParam("hiddenId") String hiddenId,
 	                             Model model, EmployeeVO employeeVO) throws Exception {
 	    // 인증 정보에서 ID 가져오기
-		
+
 		  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		  String id = auth.getName(); 
+		  String id = auth.getName();
 		  employeeVO.setId(id);
-		 
+
 
 	    // 새 비밀번호와 확인 비밀번호 일치 여부 확인
 	    if (!newPassword.equals(confirmNewPassword)) {
@@ -83,7 +82,7 @@ public class EmployeeController {
 	        return "employee/result";
 	    }
 
-	    // 비밀번호 업데이트 시도						// ▽ 요기에 아이디가 필요함	
+	    // 비밀번호 업데이트 시도						// ▽ 요기에 아이디가 필요함
 	    int result = employeeService.passupdate(employeeVO, currentPassword, newPassword, hiddenId);
 
 	    String msg = "비밀번호 변경 실패";
@@ -102,7 +101,7 @@ public class EmployeeController {
 	@PostMapping("employeeResetPassword")
 	public String employeeResetPassword(Model model, EmployeeVO employeeVO, @RequestParam("hiddenId") String hiddenId)throws Exception{
 		  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		  String id = auth.getName(); 
+		  String id = auth.getName();
 		  employeeVO.setId(hiddenId);
 	    int result = employeeService.employeeResetPassword(employeeVO, hiddenId);
 		String msg = "비밀번호가 초기화 되었습니다.";
@@ -112,16 +111,15 @@ public class EmployeeController {
 		return "employee/result";
 	}
 
-	
+
 	// 직원 정보 수정
 	@PostMapping("updateEmployee")
-	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id)throws Exception{
+	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id, @RequestParam("fid")Long fid)throws Exception{
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			/* employeeVO.setId(id); */
+
+		    int result = employeeService.updateEmployee(employeeVO, attach, fid);
 		    
-		    int result = employeeService.updateEmployee(employeeVO, attach);
-		    
-		    
+
 		    String msg = "수정을 실패 하였습니다.";
 		    String path = "./profile?id=" + id;
 
@@ -134,19 +132,19 @@ public class EmployeeController {
 		    model.addAttribute("path", path);
 		    return "employee/result";
 	}
-		
-	
+
+
 	//회원가입 페이지 이동
 	@GetMapping("join")
 	public void join(@ModelAttribute EmployeeVO employeeVO) throws Exception{
 	}
-	
+
 	// 회원가입 요청
 	@PostMapping("join")
 	public String join(EmployeeVO employeeVO, Model model /*@RequestParam("attach") MultipartFile attach*/) throws Exception {
-	    
+
 		int result = employeeService.join(employeeVO/* , attach */);
-	    
+
 	    String msg = "가입 실패";
 	    String path = "./join";
 
@@ -157,7 +155,7 @@ public class EmployeeController {
 
 	    model.addAttribute("msg", msg);
 	    model.addAttribute("path", path);
-	    
+
 	    return "employee/result";
 	}
 
@@ -172,11 +170,11 @@ public class EmployeeController {
 		    	employeeVO = new EmployeeVO();
 		    	employeeVO.setId(id);
 		    }
-		    
+
 		employeeVO = employeeService.userDetail(employeeVO);
 		model.addAttribute("detail", employeeVO);
 		return "employee/profile";
-		
+
 	}
 
 	// 직원 목록
@@ -197,10 +195,10 @@ public class EmployeeController {
 			}
 		}
 		return "employee/list";
-		
-		
+
+
 	}
-	
+
 	// 퇴사자 목록
 	@GetMapping("isuserList")
 	public String isuserList(Pager pager, Model model) throws Exception{
@@ -220,13 +218,13 @@ public class EmployeeController {
 		}
 		return "employee/isuserList";
 	}
-	
-	
+
+
 	// 권한 설정 화면
 	@GetMapping("role")
 	public String role(EmployeeVO employeeVO ,Model model) throws Exception {
 	    List<RoleVO> roles = employeeService.role(employeeVO);
-	    model.addAttribute("list", roles);  
+	    model.addAttribute("list", roles);
 	    return "employee/role";
 	}
 
@@ -234,21 +232,21 @@ public class EmployeeController {
 	@GetMapping("/roles")
     public ResponseEntity<List<RoleVO>> rolelist1(RoleVO roleVO) throws Exception {
         List<RoleVO> roles = employeeService.rolelist(roleVO);
-        
+
         return ResponseEntity.ok(roles);
     }
-	
-	// 권한 수정 
+
+	// 권한 수정
 	@PostMapping("role")
 	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("rolId") String[] rolId , Model model)throws Exception {
 		System.out.println(departmentId);
 		System.out.println("rolId = " + Arrays.toString(rolId));
-		
+
 		employeeService.rolecontrolle(departmentId, rolId);
 	    return "redirect:/employee/role";
 	}
 
-	
+
 	// 비밀번호 찾기 페이지로 이동
     @GetMapping("resetPassword")
     public String resetPasswordPage() {
@@ -262,17 +260,28 @@ public class EmployeeController {
     	   System.out.println("ID: " + id);
     	    System.out.println("Name: " + name);
     	    System.out.println("Email: " + email);
-    	    
+
     	    EmployeeVO employeeVO = new EmployeeVO();
     	    employeeVO.setName(name);
     	    employeeVO.setEmail(email);
     	    employeeVO.setId(id);
-    	    
+
         boolean result = employeeService.resetPassword(employeeVO);
-        
-       
+
+
         return "employee/login"; // 결과를 보여줄 페이지로 이동
     }
-    
 
+	@GetMapping("getProfile")
+	public ResponseEntity<EmployeeProfileVO> getProfile(String id){
+		EmployeeProfileVO profile = employeeService.getProfile(id);
+
+		if(profile == null){
+			return ResponseEntity.notFound().build();
+		}
+
+		return ResponseEntity.ok(profile);
+	}
+	
+	
 }
