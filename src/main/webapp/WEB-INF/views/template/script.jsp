@@ -49,3 +49,6 @@
 
 <%--연차--%>
 <script type="module" src="/js/annual/annual.js"> </script>
+
+<%--DayJs--%>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>

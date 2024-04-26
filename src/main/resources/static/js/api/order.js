@@ -30,7 +30,7 @@ export const getOrderSheetList = async (formData) => {
             params.append(key, value);
     }
     try {
-        const response = await defaultInstance.get('orderSheets');
+        const response = await defaultInstance.get('orderSheets', {params});
         return response.data;
     } catch (err) {
         console.log(err);

@@ -89,7 +89,14 @@ searchOrder();
 async function searchOrder(){
     const searchForm = document.getElementById("searchForm");
     const formData = new FormData(searchForm);
-    formData.append("status", 1);
+    if(formData.get("totalId")){
+        const ids = formData.get("totalId").split("-")
+        if(ids.length === 2){
+            formData.append("supplier.id", formData.get("totalId").split("-")[1])
+        }
+        formData.append("id", ids[0])
+        formData.delete("totalId")
+    }
     const result = await getOrderSheetList(formData);
     const datas = result.data;
     console.log(datas)
@@ -227,6 +234,31 @@ itemHot.addHook("afterChange", changes => {
         }
 
     })
+})
+
+
+//발주일 설정
+const searchStartDate = document.getElementById("searchStartDate")
+const searchEndDate = document.getElementById("searchEndDate")
+const todayDate = dayjs();
+const threeMonthBefore = dayjs(dayjs().set('month',dayjs().get('month')-3)).format("YYYY-MM-DD")
+searchStartDate.value = threeMonthBefore
+searchEndDate.value = todayDate.format("YYYY-MM-DD")
+searchStartDate.addEventListener("change", function (e) {
+    if(dayjs(e.target.value).isAfter(dayjs(searchEndDate.value))){
+        alert("종료일 보다 뒤의 날짜는 설정할 수 없습니다.")
+        e.target.value=dayjs(searchEndDate.value).format("YYYY-MM-DD")
+    }
+})
+searchEndDate.addEventListener("change", function (e) {
+    if(dayjs(e.target.value).isAfter(todayDate)){
+        alert("금일보다 뒤의 날짜는 설정할 수 없습니다.")
+        e.target.value=todayDate.format("YYYY-MM-DD")
+    }
+    if(dayjs(e.target.value).isBefore(dayjs(searchStartDate.value))){
+        alert("시작일 앞의 날짜는 설정할 수 없습니다.")
+        e.target.value=dayjs(searchStartDate.value).format("YYYY-MM-DD")
+    }
 })
 
 // function addIdChangeEventListener(){

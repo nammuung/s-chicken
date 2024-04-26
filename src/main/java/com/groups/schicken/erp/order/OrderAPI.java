@@ -76,9 +76,15 @@ public class OrderAPI {
     }
 
     @GetMapping("orderSheets")
-    public ResponseEntity<?> getOrderSheetList(OrderVO orderVO) throws Exception {
+    public ResponseEntity<?> getOrderSheetList(OrderVO orderVO, @RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate) throws Exception {
+        System.out.println("startDate = " + startDate);
+        System.out.println("endDate = " + endDate);
         try {
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), orderService.getOrderSheetList(orderVO)));
+            List<OrderVO> list = orderService.getOrderSheetList(orderVO);
+            if(startDate!=null && endDate != null){
+                list.removeIf(order -> order.getOrderDate().compareTo(startDate) < 0 || order.getOrderDate().compareTo(endDate) > 0);
+            }
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), list));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

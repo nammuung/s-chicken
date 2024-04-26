@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <c:import url="../order/orderSearch.jsp"/>
+                    <c:import url="../order/listSearch.jsp"/>
                     <div class="card-body mt-3 row">
                         <div class="p-3 d-flex flex-column" style="width: 1200px;">
                             <div class="">
