@@ -96,7 +96,7 @@
             , e.phone_number
             , a.url AS "profile_img"
         FROM OC o
-            LEFT JOIN employee e ON o.id = e.department_id AND e.id != '#{id}'
+            LEFT JOIN employee e ON o.id = e.department_id AND e.id != #{id}
             LEFT JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
             LEFT JOIN attach a ON a.tbl_id = 1077 AND a.parent_id = e.id
         ORDER BY o.sort

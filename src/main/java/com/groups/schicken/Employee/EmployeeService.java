@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.groups.schicken.common.util.PhoneNumberHyphenInserter;
 import com.groups.schicken.franchise.FranchiseMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -317,6 +318,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
 
     public EmployeeProfileVO getProfile(String id) {
-		return employeeDAO.getProfile(id);
+		EmployeeProfileVO profile = employeeDAO.getProfile(id);
+		profile.setPhoneNumber(PhoneNumberHyphenInserter.hyphenInsert(profile.getPhoneNumber()));
+		return profile;
     }
 }
