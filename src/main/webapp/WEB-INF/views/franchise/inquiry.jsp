@@ -42,17 +42,17 @@
                 </form>
                 <div class="overflow-auto" style="height: 50vh;">
                     <ul class="list-group">
-                        <c:forEach items="${list}" var="item" varStatus="status">
-                            <li id="item${status.index}" class="list-group-item cursor d-flex justify-content-between align-items-center" onclick="focusMarker('${item.address}',${status.index})">
+                        <c:forEach items="${list}" var="dept" varStatus="status">
+                            <li id="item${status.index}" class="list-group-item cursor d-flex justify-content-between align-items-center" onclick="focusMarker('${dept.address}',${status.index})">
                                 <a href="#" class="d-flex flex-column link-dark">
-                                    <b>${item.name}</b>
-                                    <span>${item.contactNumber}</span>
+                                    <b>${dept.name}</b>
+                                    <span>${dept.contactNumber}</span>
                                 </a>
                                 <div>
-                                    <a href="/franchise/detail?id=${item.id}" class="link-dark me-1">
+                                    <a href="/franchise/detail?id=${dept.id}" class="link-dark me-1">
                                         <i class="bi bi-bar-chart-fill"></i>
                                     </a>
-                                    <a href="/franchise/detail?id=${item.id}" class="link-dark">
+                                    <a href="/franchise/detail?id=${dept.id}" class="link-dark">
                                         <i class="bi bi-info-circle-fill"></i>
                                     </a>
                                 </div>

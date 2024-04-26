@@ -87,7 +87,9 @@ public class NoteMessageService {
 
     public NoteMessageVO getMessage(NoteMessageVO noteMessage, NoteMessageBoxType type) {
         if(type.equals(NoteMessageBoxType.send)){
-            return noteMessageDAO.getMessageWithReceivers(noteMessage);
+            NoteMessageVO message = noteMessageDAO.getMessageWithReceivers(noteMessage);
+            message.getReceiversVO().forEach(e->e.setIsLeaved(false));
+            return message;
         }
         return noteMessageDAO.getMessage(noteMessage);
     }

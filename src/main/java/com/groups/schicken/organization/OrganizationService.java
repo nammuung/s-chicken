@@ -24,4 +24,8 @@ public class OrganizationService {
     public OrganizationVO getEmployeeByEmployeeId(String empId) {
         return organizationDAO.getEmployeeByEmployeeId(empId);
     }
+
+    public List<ChattingEmployeeListVO> getChattingEmployeeList(String id) {
+        return organizationDAO.getChattingEmployeeList(id);
+    }
 }

@@ -1,3 +1,4 @@
+import {mapping, loginedId} from "/js/websocket/websocket.js";
 import {openNoteMessage} from "/js/header/header.js";
 
 const schickenNotificationList = document.getElementById("schicken-notification-list");
@@ -8,20 +9,29 @@ const notificationIcon = document.getElementById("notification-icon");
 const moreNotificationBtn = document.getElementById("more-notification-btn");
 const lastNotificationBtn = document.getElementById("last-notification-btn");
 
+/* mapping handler */
+mapping("noti/" + loginedId, appendNotificationList);
+mapping("noti/whole", appendNotificationList);
+function appendNotificationList(noti) {
+    if(schickenNotificationList.children.length >= 11) {
+        schickenNotificationList.lastElementChild.remove();
+        schickenNotificationList.lastElementChild.remove();
+    }
+
+    let noNotification = document.querySelectorAll("[data-no-notification]");
+    if(noNotification.length > 0) {
+        noNotification.forEach(e => e.classList.add("d-none"));
+    }
+
+    notificationBadge.classList.remove("d-none");
+    const listItem = drawNotificationDropdownItem(noti);
+    schickenNotificationList.prepend(listItem);
+};
+
+
 /* 알림 클릭시 함수 매핑 */
 let notificationByType = {
     NoteMessage : openNoteMessageByLink
-}
-
-function readNotification(id, type, link){
-    fetch('/notifications/read', {
-        method:'post',
-        headers:{"content-Type" : "application/json;charset-utf-8"},
-        body:JSON.stringify({id:id})
-    })
-        .then(res=>{
-            if(res.ok) notificationByType[type](link);
-        })
 }
 
 function onNotificationClick(event, isNoti){
@@ -40,6 +50,17 @@ function onNotificationClick(event, isNoti){
     }
 
     event.target.parentElement.click();
+}
+
+function readNotification(id, type, link){
+    fetch('/notifications/read', {
+        method:'post',
+        headers:{"content-Type" : "application/json;charset-utf-8"},
+        body:JSON.stringify({id:id})
+    })
+        .then(res=>{
+            if(res.ok) notificationByType[type](link);
+        })
 }
 
 /* 매핑할 함수들 */
@@ -129,21 +150,3 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
         });
 })
-
-/* controller에서 사용할 함수 */
-export const appendNotificationList = (noti) => {
-    if(schickenNotificationList.children.length >= 11) {
-        schickenNotificationList.lastElementChild.remove();
-        schickenNotificationList.lastElementChild.remove();
-    }
-
-    let noNotification = document.querySelectorAll("[data-no-notification]");
-    if(noNotification.length > 0) {
-        noNotification.forEach(e => e.classList.add("d-none"));
-    }
-
-    notificationBadge.classList.remove("d-none");
-    console.log("알림이 왔습니다!" , noti)
-    const listItem = drawNotificationDropdownItem(noti);
-    schickenNotificationList.prepend(listItem);
-};

@@ -16,4 +16,11 @@ class OrganizationServiceTest {
 
         System.out.println("list = " + list);
     }
+
+    @Test
+    void getChattingEmployeeList() {
+        var list = organizationService.getChattingEmployeeList("22");
+
+        System.out.println("list = " + list);
+    }
 }

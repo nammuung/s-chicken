@@ -38,18 +38,18 @@
                                 <h1><b>자주 묻는 질문</b></h1>
                             </div>
                             <div class="accordion accordion-flush" id="accordionFlushExample">
-                                <c:forEach items="${importantList}" var="item" varStatus="status">
-                                    <div class="accordion-item ms-3 me-3 p-3" data-id="${item.id}">
+                                <c:forEach items="${importantList}" var="dept" varStatus="status">
+                                    <div class="accordion-item ms-3 me-3 p-3" data-id="${dept.id}">
                                         <h2 class="accordion-header">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${status.index}" aria-expanded="false" aria-controls="flush-collapse${status.index}">
                                                 <b><i class="bi bi-arrows-vertical handle d-none me-3"></i></b>
-                                                <b># ${item.title}</b>
+                                                <b># ${dept.title}</b>
                                             </button>
                                         </h2>
                                         <div id="flush-collapse${status.index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">${item.content}</div>
+                                            <div class="accordion-body">${dept.content}</div>
                                             <div class="d-flex justify-content-end mb-3">
-                                                <a href="/franchise/faq/detail?id=${item.id}">
+                                                <a href="/franchise/faq/detail?id=${dept.id}">
                                                     <span class="text-muted">자세히 보기</span>
                                                 </a>
                                             </div>
@@ -89,11 +89,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${commonList}" var="item" varStatus="status">
-                                    <tr onclick="location.href = '/franchise/faq/detail?id=${item.id}'">
+                                <c:forEach items="${commonList}" var="dept" varStatus="status">
+                                    <tr onclick="location.href = '/franchise/faq/detail?id=${dept.id}'">
                                         <td>${status.index+1+pager.startIndex}</td>
                                         <td class="text-start">
-                                            <a href="#" class="link-dark">${item.title}</a>
+                                            <a href="#" class="link-dark">${dept.title}</a>
                                         </td>
                                     </tr>
                                 </c:forEach>

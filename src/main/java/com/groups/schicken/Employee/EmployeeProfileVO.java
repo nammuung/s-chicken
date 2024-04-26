@@ -9,4 +9,8 @@ public class EmployeeProfileVO {
     private String profileImg;
     private String departmentName;
     private String phoneNumber;
+
+    public String getProfileImg() {
+        return profileImg == null ? "/img/기본.jpg" : profileImg;
+    }
 }
