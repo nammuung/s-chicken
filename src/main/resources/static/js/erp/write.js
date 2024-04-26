@@ -145,17 +145,20 @@ deleteRowButton.addEventListener("click", function(){
     selectedOrders = [];
 })
 
-//발주서 미리보기
+//발주서 저장
 const orderPreviewButton = document.getElementById("orderPreviewButton")
 orderPreviewButton.addEventListener("click",  async function(){
     const tableData = orderHot.getData();
     let datas = [];
     let quantity=[];
-    console.log(tableData)
     for (let i = 0; i < tableData.length; i++) {
         if(!tableData[i][1]) continue;
         const row = tableData[i]
         const result = await getItem(row[1]);
+        if(!row[9]) {
+            alert("발주수량을 입력해 주세요.")
+            return;
+        }
         quantity.push(row[9]);
         datas.push(result.data);
     }
