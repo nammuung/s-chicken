@@ -7,10 +7,13 @@
 <mapper namespace="com.groups.schicken.erp.order.OrderMapper">
     <sql id="search">
         <where>
-            <if test="status != null and status != 4">
+            <if test="status != null and status != 4 and status != 5">
                 ord.status = #{status}
             </if>
             <if test="status != null and status == 4">
+                AND ord.status IN (0,1,2)
+            </if>
+            <if test="status != null and status == 5">
                 AND ord.status IN (1,2)
             </if>
             <if test="id != null">

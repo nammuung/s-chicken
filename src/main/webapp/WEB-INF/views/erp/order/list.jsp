@@ -31,7 +31,7 @@
                                     <b>목록</b>
                                     <div>
                                         <button class="btn btn-outline-primary d-none" id="allCompleteButton">전체입고</button>
-                                        <button class="btn btn-outline-primary" id="orderPreviewButton">발주서</button>
+                                        <button class="btn btn-outline-primary d-none" id="orderPreviewButton">발주서</button>
                                     </div>
                                 </div>
                                 <div class="" style="box-shadow: 0 0 0 1px #ccc inset;" >

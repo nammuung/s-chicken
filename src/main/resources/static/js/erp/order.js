@@ -5,6 +5,8 @@ import {getSupplierList} from "../api/supplier.js";
 import {addOrder, getOrder, getOrderList, updateOrder} from "../api/order.js";
 import {orderStatusToKR} from "../util/orderStatus.js";
 
+const orderPreviewButton = document.getElementById("orderPreviewButton")
+const modifyButtons = document.getElementById("modifyButtons")
 sw.init()
 searchOrder()
 //공급처별 발주 테이블 초기화
@@ -13,18 +15,17 @@ const supplierContainer = document.getElementById('supplierListContainer')
 const supplierCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
     if(checked){
         selectedSupplier = instance.getDataAtCell(row,1)
+        orderPreviewButton.classList.remove("d-none")
         searchDetailItem(selectedSupplier)
         if(instance.getDataAtCell(row,2) == "대기" ) {
-            approveOrderButton.classList.toggle("d-none")
-            refuseOrderButton.classList.toggle("d-none")
+            modifyButtons.classList.toggle("d-none")
         } else {
-            approveOrderButton.classList.add("d-none")
-            refuseOrderButton.classList.add("d-none")
+            modifyButtons.classList.add("d-none")
         }
     } else {
         selectedSupplier = null;
-        approveOrderButton.classList.add("d-none")
-        refuseOrderButton.classList.add("d-none")
+        orderPreviewButton.classList.add("d-none")
+        modifyButtons.classList.add("d-none")
     }
 })
 const supplierTableOptions = {
@@ -76,11 +77,12 @@ const itemHot = handsontable(itemContainer, itemTableOptions);
 //발주 테이블 초기화
 let selectedOrder = null;
 const orderListContainer = document.getElementById('orderListContainer')
-const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
+const orderCheckboxRenderer = checkboxRenderer(async ({checked, instance, td, row, col})=>{
     if(checked){
         selectedOrder = instance.getDataAtCell(row, 1)
-        searchDetail(selectedOrder);
+        await searchDetail(selectedOrder);
     } else {
+        orderPreviewButton.classList.add("d-none")
         selectedOrder = null;
         supplierHot.loadData([]);
         itemHot.loadData([]);
@@ -104,9 +106,11 @@ const orderHot = handsontable(orderListContainer, orderTableOptions);
 //발주서 검색
 const searchButton = document.getElementById("searchButton");
 searchButton.addEventListener("click", async function () {
-    searchOrder();
+    await searchOrder();
 })
 async function searchOrder(){
+    orderPreviewButton.classList.add("d-none")
+    modifyButtons.classList.add("d-none")
     const searchForm = document.getElementById("searchForm");
     const formData = new FormData(searchForm);
     const result = await getOrderList(formData);
@@ -121,6 +125,13 @@ async function searchOrder(){
     orderHot.loadData(datas);
     supplierHot.loadData([]);
     itemHot.loadData([]);
+    if(selectedOrder != null) {
+        [...orderListContainer.querySelectorAll("td:nth-child(2)")].forEach((el, index) => {
+            if(el.innerText == selectedOrder) {
+                orderListContainer.querySelectorAll("td:nth-child(1) input")[index].click();
+            }
+        })
+    }
 }
 
 
@@ -148,9 +159,7 @@ async function searchDetail(id){
             })})
     })
     supplierHot.loadData(datas);
-    [...supplierContainer.querySelectorAll("tr:nth-child(1) td:nth-child(1) input")].forEach(
-        el=> el.click()
-    )
+    supplierContainer.querySelector("tr:nth-child(1) td:nth-child(1) input").click();
 }
 
 //디테일 아이템
@@ -198,13 +207,37 @@ refuseOrderButton.addEventListener("click", async function () {
 
 
 //발주서 미리보기
-const orderPreviewButton = document.getElementById("orderPreviewButton")
 orderPreviewButton.addEventListener("click",  async function(){
     if(selectedSupplier == null){
         alert("발주서를 선택해 주세요.")
         return;
     }
     window.open("/getOrderSheet?id="+selectedOrder+"&supplier.id="+selectedSupplier, "new", "toolbar=no, menubar=no, scrollbars=yes, resizable=no, width=800, height=1000, left=0, top=0" )
+})
+
+
+//발주일 설정
+const searchStartDate = document.getElementById("searchStartDate")
+const searchEndDate = document.getElementById("searchEndDate")
+const todayDate = dayjs();
+const threeMonthBefore = dayjs(dayjs().set('month',dayjs().get('month')-3)).format("YYYY-MM-DD")
+searchStartDate.value = threeMonthBefore
+searchEndDate.value = todayDate.format("YYYY-MM-DD")
+searchStartDate.addEventListener("change", function (e) {
+    if(dayjs(e.target.value).isAfter(dayjs(searchEndDate.value))){
+        alert("종료일 보다 뒤의 날짜는 설정할 수 없습니다.")
+        e.target.value=dayjs(searchEndDate.value).format("YYYY-MM-DD")
+    }
+})
+searchEndDate.addEventListener("change", function (e) {
+    if(dayjs(e.target.value).isAfter(todayDate)){
+        alert("금일보다 뒤의 날짜는 설정할 수 없습니다.")
+        e.target.value=todayDate.format("YYYY-MM-DD")
+    }
+    if(dayjs(e.target.value).isBefore(dayjs(searchStartDate.value))){
+        alert("시작일 앞의 날짜는 설정할 수 없습니다.")
+        e.target.value=dayjs(searchStartDate.value).format("YYYY-MM-DD")
+    }
 })
 
 // function addIdChangeEventListener(){

@@ -14,6 +14,7 @@ import {orderStatus, itemStatus, itemStatusToKR, orderStatusToKR} from "../util/
 let isChanged = {};
 const modifyButtons = document.getElementById('modifyButtons');
 const allCompleteButton = document.getElementById("allCompleteButton");
+const orderPreviewButton = document.getElementById("orderPreviewButton")
 
 
 Object.defineProperty(isChanged, "change", {
@@ -34,6 +35,7 @@ let selectedOrder= null;
 const orderContainer = document.getElementById('orderListContainer')
 const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
     if(checked){
+        orderPreviewButton.classList.remove("d-none")
         selectedOrder = instance.getDataAtCell(row,1)
         searchDetail(selectedOrder)
         if(instance.getDataAtCell(row,2) == '진행'){
@@ -43,6 +45,7 @@ const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col
         }
     } else {
         selectedOrder = null;
+        orderPreviewButton.classList.add("d-none")
         allCompleteButton.classList.add("d-none")
     }
 })
@@ -103,13 +106,14 @@ const itemHot = handsontable(itemContainer, itemTableOptions);
 //발주서 검색
 const searchButton = document.getElementById("searchButton");
 searchButton.addEventListener("click", async function () {
-    searchOrder(selectedOrder);
+    await searchOrder(selectedOrder);
+
 })
 searchOrder();
 async function searchOrder(){
     isChanged.change = false;
+    orderPreviewButton.classList.add("d-none")
     allCompleteButton.classList.add("d-none")
-
     const searchForm = document.getElementById("searchForm");
     const formData = new FormData(searchForm);
     if(formData.get("totalId")){
@@ -135,6 +139,14 @@ async function searchOrder(){
         data.status = orderStatusToKR(data.status);
     })
     orderHot.loadData(datas);
+    itemHot.loadData([]);
+    if(selectedOrder != null) {
+        [...orderListContainer.querySelectorAll("td:nth-child(2)")].forEach((el, index) => {
+            if(el.innerText == selectedOrder) {
+                orderListContainer.querySelectorAll("td:nth-child(1) input")[index].click();
+            }
+        })
+    }
 }
 
 
@@ -257,7 +269,6 @@ allCompleteButton.addEventListener("click", async function () {
     })
     const result = await updateOrderItem(orderItems);
     if(result.status == "OK"){
-        searchDetail(selectedOrder)
         searchOrder();
         alert("입고 완료");
     } else {
@@ -268,7 +279,6 @@ allCompleteButton.addEventListener("click", async function () {
 
 
 //발주서 미리보기
-const orderPreviewButton = document.getElementById("orderPreviewButton")
 orderPreviewButton.addEventListener("click",  async function(){
     if(selectedOrder == null){
         alert("발주서를 선택해 주세요.")
