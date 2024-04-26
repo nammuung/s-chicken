@@ -22,16 +22,16 @@
     <section class="section">
         <div class="row justify-content-end p-3">
             <div class="col-auto">
-                <form class="search-form d-flex align-items-center " method="POST" action="#">
+                <form class="search-form d-flex align-items-center " action="#">
                     <label>
-                        <select class="form-select w-auto me-1">
+                        <select class="form-select w-auto me-1" name="kind">
                             <option value="0">제목</option>
                             <option value="1">문서종류</option>
                             <option value="2">내용</option>
                             <option value="3">제목+내용</option>
                         </select>
                     </label>
-                    <input type="text" name="query" placeholder="검색" title="Enter search keyword">
+                    <input type="text" name="search" placeholder="검색" title="Enter search keyword">
                     <button type="submit" title="Search"><i class="bi bi-search"></i></button>
                 </form>
             </div>
@@ -57,6 +57,7 @@
   								<c:if test="${vo.approvalVOs[0].rank ne 0}">                       		
                                 	<tr>
 		                                    <td>${vo.id}</td>
+		                                    
 		                                    <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> 
 		                                    	<td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.title}</a></td>
 		                                    </c:if>
@@ -89,15 +90,21 @@
                 </div>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">다음</a>
-                        </li>
+                    	<c:if test="${!pager.start}">
+	                        <li class="page-item disabled">
+	                            <a class="page-link" href="/document/approvalList?page=${pager.startNum-1}&kind=${pager.kind}&search=${pager.search}" tabindex="-1" aria-disabled="true">이전</a>
+	                        </li>
+                    	</c:if>
+                    	
+                    	<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="page">    
+	                        <li class="page-item <c:if test="${pager.page == page}">active</c:if>"><a class="page-link" href="/document/approvalList?page=${pager.page}&kind=${pager.kind}&search=${pager.search}">${page}</a></li>
+                        </c:forEach>
+                        
+                        <c:if test="${!pager.last}">
+	                        <li class="page-item">
+	                            <a class="page-link" href="/document/approvalList?page=${pager.lastNum+1}&kind=${pager.kind}&search=${pager.search}">다음</a>
+	                        </li>
+                        </c:if>
                     </ul>
                 </nav>
             </div>

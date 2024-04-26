@@ -54,20 +54,28 @@ public class DocumentController {
 	}
 	
 	@GetMapping("approvalList")
-	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO,Model model)throws Exception{
-	
-		List<DocumentVO> ar = documentService.approval(employeeVO);
+	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO,Model model,Pager pager)throws Exception{
+		
+		List<DocumentVO> ar = documentService.approvalList(employeeVO,pager);
 		model.addAttribute("list", ar);
+		model.addAttribute("pager", pager);
+		System.out.println(pager);
 	}
 
 	
 	
 	@GetMapping("document")
-	public void documentList(Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
+	public void documentList(@AuthenticationPrincipal EmployeeVO employeeVO,@RequestParam String categori,Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
+		System.out.println(employeeVO);
+		
+		System.out.println(categori);
+		
+		documentVO.setWriterId(employeeVO.getId());
 		List<DocumentVO> ar = documentService.list(documentVO, templateVO, pager);
 		
 		model.addAttribute("list", ar);
-		model.addAttribute("pager", pager);	
+		model.addAttribute("pager", pager);
+		System.out.println(pager);
 	}
 	@GetMapping("ref")
 	public void documentRef() {

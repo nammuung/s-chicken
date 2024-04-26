@@ -5,6 +5,15 @@
 
 <mapper namespace="com.groups.schicken.document.DocumentDAO">
 
+  	<sql id="search">
+		<choose>
+			<when test="pager.kind != null and pager.kind.equals('1')">AND doc.title LIKE CONCAT('%',#{pager.search},'%')</when>
+			<when test="pager.kind != null and pager.kind.equals('2')">AND tem.temp_Name LIKE CONCAT('%',#{pager.search},'%')</when>
+			<when test="pager.kind != null and pager.kind.equals('3')">AND doc.content LIKE CONCAT('%',#{pager.search},'%')</when>
+			<otherwise>AND(doc.title LIKE CONCAT('%',#{pager.search},'%') OR doc.content LIKE CONCAT('%',#{pager.search},'%'))</otherwise>
+		</choose>		
+	</sql>
+
 	<select id="getEx" resultMap="employeeResult">
 		SELECT emp.id,
 			emp.name,
@@ -68,31 +77,33 @@
 
 	<select id="approvalList" resultMap="allListResult">
 		SELECT 
-			d.id,
-			d.title,
-			d.write_date,
-			d.status,
+			doc.id,
+			doc.title,
+			doc.write_date,
+			doc.status,
 			a.*,
 			sub.count,
 			tem.*,
 			emp.name employee_name,
 			emp.id employee_id
-		FROM document d
-		LEFT JOIN approval a ON a.document_id = d.id
-		LEFT JOIN employee emp ON d.writer_id=emp.id
-		LEFT JOIN template tem ON tem.temp_id=d.template_id
-		INNER JOIN <include refid="countCheck"/> ON sub.document_id=d.id
-		WHERE a.employee_id=#{employeeVO.id} AND rank BETWEEN 0 and sub.count		
-		ORDER BY d.id DESC		
+		FROM document doc
+		LEFT JOIN approval a ON a.document_id = doc.id
+		LEFT JOIN employee emp ON doc.writer_id=emp.id
+		LEFT JOIN template tem ON tem.temp_id=doc.template_id
+		INNER JOIN <include refid="countCheck"/> ON sub.document_id=doc.id
+		WHERE a.employee_id=#{employeeVO.id} AND a.rank BETWEEN 0 and sub.count <include refid="search"/>
+		ORDER BY doc.id DESC
+		LIMIT #{pager.startIndex},#{pager.perPage}
 	</select>
 	
 
 	
 	<select id="allList" resultMap="allListResult">
 		SELECT doc.*,
-		tem.*
+		tem.*		
 		FROM document doc
-		LEFT JOIN template tem ON doc.template_id = tem.temp_id
+		LEFT JOIN template tem ON doc.template_id = tem.temp_id		
+		WHERE doc.temp=0 <include refid="search"/>
 		ORDER BY id DESC
 		LIMIT #{pager.startIndex},#{pager.perPage}
 	</select>

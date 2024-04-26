@@ -26,12 +26,16 @@ public class DocumentService {
 	}
 	
 	
-	public List<DocumentVO> approval(EmployeeVO employeeVO)throws Exception{
+	public List<DocumentVO> approvalList(EmployeeVO employeeVO,Pager pager)throws Exception{
 		
 		Map<String, Object> map = new HashMap<String,Object>();		
 				
 		map.put("employeeVO", employeeVO);
-				
+		map.put("pager", pager);
+		
+		pager.makeIndex();
+		pager.makeNum(documentDAO.allTotalCount(map)); 
+		
 		List<DocumentVO> ar = documentDAO.approvalList(map);	
 		
 		System.out.println(ar);
@@ -77,8 +81,7 @@ public class DocumentService {
 	}
 	
 	public int resultUpdate(ApprovalVO approvalVO)throws Exception{
-		int result = documentDAO.resultUpdate(approvalVO);
-		
+		int result = documentDAO.resultUpdate(approvalVO);		
 		result = documentDAO.statusUpdate(approvalVO);
 		
 		return result;
