@@ -233,11 +233,13 @@
 			const managerIdInput = document.getElementById("managerId");
 			const managerNameInput = document.getElementById("managerName");
 			const employeeid = document.getElementById("emid").value;
+			const title = document.getElementById("title").value;
 			let selectedEmployees = []; // 배열에 선택된 직원을 저장
+			
+			
 
-			console.log(orgChart, "로그6++++")
 			orgChart.init("orgChart", (data) => {
-				console.log(data, "로그입니다.");
+
 
 				if (!selectedEmployees.some(emp => emp.id === data.id || data.id === employeeid)) {
 					// 선택된 직원을 배열에 추가
@@ -256,11 +258,6 @@
 				modals.show();
 			});
 
-			// removeButton.addEventListener("click", () => {
-			//     // 모든 선택된 직원 제거
-			//     selectedEmployees = [];
-			//     updateSelectedEmployees();
-			// });
 
 			function updateSelectedEmployees() {
     // 중복된 값을 제거한 배열 생성
@@ -277,46 +274,80 @@
     managerNameInput.value = uniqueNames.join(", ");
     managerIdInput.value = JSON.stringify(uniqueEmployees.map(employee => ({ value: employee.name })));
 
-    // Tagify 태그 전체 초기화
-    tagify.removeAllTags();
+    // 선택된 직원이 없으면 태그 초기화하지 않음
+    if (uniqueNames.length === 0) {
+        return;
+    }
 
-    // 선택된 직원을 태그로 다시 추가
-    uniqueNames.forEach(name => {
-        tagify.addTags([{ value: name }]);
-    });
+    if (!tagify) {
+        initializeTagify(uniqueNames);  // 태그에 
+    } else {
+        // 기존 태그를 유지하면서 새로운 태그를 추가
+        uniqueNames.forEach(name => {
+            if (!tagify.value.some(tag => tag.value === name)) {
+                tagify.addTags([{ value: name }]);
+            }
+        });
+    }
 }
 
 
+			fetch('http://localhost/userlist', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+				.then(response => {
+					return response.json();
+				})
+				.then(data => {
+					const names = [];
 
+					data.forEach(department => {
+						names.push(department.name); // 부서명을 배열에 추가
+						if (department.employees && department.employees.length > 0) {
+							department.employees.forEach(employee => {
+								names.push(employee.name); // 직원의 이름을 배열에 추가.
+							});
+						}
+					});
 
-			var input = document.querySelector('textarea[name=tags2]');
-			var tagify = new Tagify(input, {
-				enforceWhitelist: true,
-				delimiters: null,
-				whitelist: [
-					"사장 김범서", "사장 사동일", "경영지원실"
-				],
-				callbacks: {
-					add: function (e) {
-						console.log("태그 추가됨: ", e.detail.data);
-					},
-					remove: function (e) {
-						console.log("태그 제거됨: ", e.detail.data);
-						const removedItem = e.detail.data.value;
-						console.log(removedItem);
-						const index = selectedEmployees.findIndex(employee => employee.name === removedItem);
-						if (index !== -1) {
-							selectedEmployees.splice(index, 1);
+					console.log(names);
+
+					initializeTagify(names);
+				})
+				.catch(error => {
+					console.error('에러났음요:', error);
+				});
+
+			let tagify; // 전역 변수로 tagify 선언
+
+			function initializeTagify(names) {
+				var input = document.querySelector('textarea[name=tags2]');
+				tagify = new Tagify(input, {
+					enforceWhitelist: true,
+					delimiters: null,
+					whitelist: names,
+					callbacks: {
+						add: function (e) {
+							console.log("태그 추가됨: ", e.detail.data);
+						},
+						remove: function (e) {
+							console.log("태그 제거됨: ", e.detail.data);
+							const removedItem = e.detail.data.value;
+							console.log(removedItem);
+							const index = selectedEmployees.findIndex(employee => employee.name === removedItem);
+							if (index !== -1) {
+								selectedEmployees.splice(index, 1);
+							}
 						}
 					}
-				}
-			});
+				});
+			}
 
+			
 		</script>
-
-
-
-
 
 
 
@@ -385,6 +416,9 @@
 							// 모달에서 이벤트 제목 입력 후 저장 버튼 클릭 시
 							$('#saveEventBtn').click(function () {
 								var title = $('#title').val(); // 모달의 이벤트 제목 입력란에서 제목 가져오기
+								if(title.trim()===""){
+									alert("ㅇㅇㅇㅇㅇ");
+								}
 								if (title) {
 									calendar.addEvent({
 										title: title,
