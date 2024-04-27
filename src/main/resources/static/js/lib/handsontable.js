@@ -52,12 +52,14 @@ export const checkboxRenderer = (callBack, reset = true) => {
     };
 };
 
-export const scaleArrayToSum = (arr, width=1130) => {
+export const scaleArrayToSum = (arr, width=1130, unUseCheckbox = false) => {
     const result = [];
     for (let i = 1; i < arr.length; i++) {
         result.push(width/arr.length-1);
     }
-    result.unshift(26)
+    if(!unUseCheckbox){
+        result.unshift(26)
+    }
     return result
 }
 

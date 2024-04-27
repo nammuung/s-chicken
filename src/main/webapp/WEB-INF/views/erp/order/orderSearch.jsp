@@ -29,7 +29,8 @@
                 <div class="col-9">
                     <select id="searchStatus" class="form-select" name="status">
                         <option value="4">전체</option>
-                        <option value="0" selected>대기</option>
+                        <option value="6" selected>대기 + 진행</option>
+                        <option value="0">대기</option>
                         <option value="1">진행</option>
                         <option value="2">완료</option>
                         <option value="3">반려</option>

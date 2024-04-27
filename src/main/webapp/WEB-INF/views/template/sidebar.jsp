@@ -154,17 +154,27 @@
                 </li>
                 <li>
                     <a href="/order">
-                        <i class="bi bi-circle"></i><span>발주</span>
+                        <i class="bi bi-circle"></i><span>발주내역</span>
                     </a>
                 </li>
                 <li>
                     <a href="/order/list">
-                        <i class="bi bi-circle"></i><span>발주리스트</span>
+                        <i class="bi bi-circle"></i><span>입고</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/order/list">
+                        <i class="bi bi-circle"></i><span>출고</span>
                     </a>
                 </li>
                 <li>
                     <a href="/products">
                         <i class="bi bi-circle"></i><span>품목 관리</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/stocks">
+                        <i class="bi bi-circle"></i><span>재고 관리</span>
                     </a>
                 </li>
                 <li>

@@ -16,7 +16,7 @@
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>발주 리스트</h1>
+        <h1>입고</h1>
     </div>
     <section class="section">
         <div class="row">

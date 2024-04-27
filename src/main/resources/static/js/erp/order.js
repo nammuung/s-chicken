@@ -3,10 +3,11 @@ import {addItem, getItemList, updateItem, getItem} from "../api/item.js";
 import {getProduct, getProductList} from "../api/product.js";
 import {getSupplierList} from "../api/supplier.js";
 import {addOrder, getOrder, getOrderList, updateOrder} from "../api/order.js";
-import {orderStatusToKR} from "../util/orderStatus.js";
+import {orderStatusToKR, itemStatus, itemStatusToKR} from "../util/orderStatus.js";
 
 const orderPreviewButton = document.getElementById("orderPreviewButton")
 const modifyButtons = document.getElementById("modifyButtons")
+const receivePreviewButton = document.getElementById("receivePreviewButton")
 sw.init()
 searchOrder()
 //공급처별 발주 테이블 초기화
@@ -22,10 +23,16 @@ const supplierCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, 
         } else {
             modifyButtons.classList.add("d-none")
         }
+        if(instance.getDataAtCell(row,2) == "진행" ) {
+            receivePreviewButton.classList.remove("d-none")
+        } else {
+            receivePreviewButton.classList.add("d-none")
+        }
     } else {
         selectedSupplier = null;
         orderPreviewButton.classList.add("d-none")
         modifyButtons.classList.add("d-none")
+        receivePreviewButton.classList.add("d-none")
     }
 })
 const supplierTableOptions = {
@@ -234,84 +241,57 @@ searchEndDate.addEventListener("change", function (e) {
     }
 })
 
-// function addIdChangeEventListener(){
-//     [...orderListContainer.querySelectorAll("td:nth-child(2)")].forEach(
-//         el=>el.addEventListener("click",async function (){
-//             clickedOrderId = el.innerText
-//         })
-//     )
-// }
 
-// async function setDetailDataToEditModal(id){
-//     const result = await getItem(id);
-//     const data = result.data;
-//     sw.matchData({supplierName: data.supplier.name})
-//     sw.matchData({productName: data.product.name})
-//     sw.matchData({productUnitName: data.product.unit.name})
-//     sw.matchData({productStandard: data.product.standard})
-//     sw.matchData({productSellPrice: data.product.sellPrice})
-//     sw.matchData(data)
-// }
+//입고 현황 미리보기 모달
+const receiveModalEl = document.getElementById("receive-modal");
+const receiveModal = new bootstrap.Modal(receiveModalEl);
+receivePreviewButton.onclick = async () => {
+    if(selectedSupplier == null){
+        alert("발주를 선택해 주세요.")
+        return;
+    }
+    receiveModal.show();
+    const result = await getOrder(selectedOrder, selectedSupplier);
+    const datas = result.data;
+    datas.orderDetails.forEach(orders => {
+        orders.status = itemStatusToKR(orders.status);
+    })
+    receiveHot.loadData(datas.orderDetails);
+}
+
+//아이템 테이블 초기화
+const receiveContainer = document.getElementById('receiveListContainer')
+const receiveCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
+    if(checked){
+        selectedItems.push(instance.getDataAtCell(row,1))
+    } else {
+        selectedItems.splice(selectedItems.indexOf(instance.getDataAtCell(row,1)),1)
+    }
+})
+const receiveTableOptions = {
+    data:[],
+    colHeaders : ['ID','카테고리', '품명', '규격','단위', '발주수량', '입고수량','상태'],
+    columns : [
+        {data:"id"},
+        {data:"item.product.category.name"},
+        {data:"item.product.name", renderer:"html"},
+        {data:"item.product.standard"},
+        {data:"item.product.unit.name"},
+        {data:"quantity"},
+        {data:"deliverQuantity"},
+        {
+            data:"status",
+            type:"dropdown",
+            strict:true,
+            source: itemStatus
+        },
+    ],
+    colWidths : scaleArrayToSum(Array(10), 798, true),
+    height:"280",
+}
+const receiveHot = handsontable(receiveContainer, receiveTableOptions);
 
 
-
-//모달
-// const registerModalEl = document.getElementById("register-modal")
-// const editModalEl = document.getElementById("edit-modal")
-// const registerModal = new bootstrap.Modal(registerModalEl);
-// const editModal = new bootstrap.Modal(editModalEl);
-//
-//
-//품목 추가
-// const addSubmitButton = document.getElementById("addSubmitButton");
-// addSubmitButton.addEventListener("click", async function(){
-//     if(selectedSupplier != null && selectedProduct != null){
-//         if(!checkValidation()) {
-//             alert("정보를 기입해주세요.")
-//             return;
-//         }
-//         const addForm = document.getElementById("addForm");
-//         const formData = new FormData(addForm);
-//         const result = await addItem(formData);
-//         alert(result.message);
-//         if (result.status === "OK") {
-//             await searchItem();
-//             registerModal.hide()
-//             addForm.reset();
-//         }
-//     }
-// })
-
-// const checkValidation = () => {
-//     const inputs = [...document.querySelectorAll("#addForm input")]
-//     const selects = [...document.querySelectorAll("#addForm select")]
-//     let valid = true;
-//     inputs.forEach(el => {
-//         if(el.value == "" || el.value == undefined || el.value == null || el.value == 0){
-//             valid = false;
-//         }
-//     })
-//     selects.forEach(el => {
-//         if(el.value == "" || el.value == undefined || el.value == null || el.value == 0){
-//             valid = false;
-//         }
-//     })
-//     return valid;
-// }
-
-//품목 수정
-// const editSubmitButton = document.getElementById("editSubmitButton");
-// editSubmitButton.addEventListener("click", async function(){
-//     const editForm = document.getElementById("editForm");
-//     const formData = new FormData(editForm);
-//     if(confirm("수정 하시겠습니까?")){
-//         const result = await updateItem(formData);
-//         alert(result.message);
-//         if(result.status === "OK"){
-//             await searchItem()
-//         }
-//     }
-// })
 
 //
 // const exportPlugin = hot.getPlugin('exportFile');
