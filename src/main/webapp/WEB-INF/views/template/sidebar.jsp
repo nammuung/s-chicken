@@ -173,7 +173,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/stocks">
+                    <a href="/products/stock">
                         <i class="bi bi-circle"></i><span>재고 관리</span>
                     </a>
                 </li>
