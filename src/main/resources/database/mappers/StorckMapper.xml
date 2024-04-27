@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.erp.product.StockMapper">
+    <select id="getStockHistory">
+        SELECT
+            *
+        FROM
+            stock
+        WHERE
+            product_id = #{product.id}
+        ORDER BY
+            create_date DESC
+    </select>
+    <select id="getTotalStock">
+        SELECT
+            SUM(quantity)
+        FROM
+            stock
+        WHERE
+            product_id = #{product.id}
+    </select>
+    <insert id="updateStock">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO
+            stock
+            (id, quantity, expire_date, product_id, history, create_date)
+        VALUES
+            (#{id}, #{quantity}, #{expireDate}, #{product.id}, #{history}, #{createDate})
+    </insert>
+</mapper>

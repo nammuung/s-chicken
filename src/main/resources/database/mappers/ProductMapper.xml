@@ -29,7 +29,8 @@
         SELECT
             p.*,
             c.name category_name,
-            uni.name unit_name
+            uni.name unit_name,
+            SUM(st.quantity) as stock
         FROM
             product p
         LEFT JOIN
@@ -38,8 +39,15 @@
         LEFT JOIN
             code uni
             ON p.unit_id = uni.id AND uni.type_id = '500'
+        LEFT JOIN
+            stock st
+            ON p.id = st.product_id
         WHERE
             p.id = #{id}
+        GROUP BY
+            p.id,
+            c.name,
+            uni.name
         ORDER BY
             p.id
     </select>
@@ -47,7 +55,8 @@
         SELECT
             p.*,
             c.name category_name,
-            uni.name unit_name
+            uni.name unit_name,
+            SUM(st.quantity) as stock
         FROM
             product p
         LEFT JOIN
@@ -56,7 +65,14 @@
         LEFT JOIN
             code uni
             ON p.unit_id = uni.id AND uni.type_id = '500'
+        LEFT JOIN
+            stock st
+            ON p.id = st.product_id
         <include refid="search"/>
+        GROUP BY
+            p.id,
+            c.name,
+            uni.name
         ORDER BY p.id
     </select>
     <sql id="search">

@@ -86,7 +86,7 @@ const myCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=
 })
 const tableOptions = {
     data:[],
-    colHeaders : ['','ID','카테고리', '품명', '규격', '단위','판매단가'],
+    colHeaders : ['','ID','카테고리', '품명', '규격', '단위','판매단가', "재고"],
     columns : [
         {renderer: myCheckboxRenderer},
         {data:"id"},
@@ -95,6 +95,7 @@ const tableOptions = {
         {data:"standard"},
         {data:"unit.name"},
         {data:"sellPrice"},
+        {data:"stock"},
     ],
     colWidths : scaleArrayToSum(Array(7),1130),
     height:"50vh",
