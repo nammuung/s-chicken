@@ -22,4 +22,6 @@ public interface OrderMapper {
     OrderVO getOrderSheet(OrderVO orderVO) throws Exception;
 
     int updateOrderItem(Map<String, Object> map) throws Exception;
+
+    OrderItemVO getOrderItemDetail(OrderItemVO orderItem) throws Exception;
 }

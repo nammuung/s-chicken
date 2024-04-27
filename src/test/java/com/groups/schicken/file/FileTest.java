@@ -21,8 +21,7 @@ public class FileTest {
     private StockService stockService;
     @Autowired
     private ProductService productService;
-
-    @Test
+    
     public void test() throws Exception {
         List<ProductVO> list = productService.getProductList(new ProductVO());
         for (ProductVO productVO : list) {

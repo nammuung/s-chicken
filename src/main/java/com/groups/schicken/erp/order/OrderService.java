@@ -3,6 +3,8 @@ package com.groups.schicken.erp.order;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.erp.item.ItemMapper;
+import com.groups.schicken.erp.product.StockMapper;
+import com.groups.schicken.erp.product.StockVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.*;
 public class OrderService {
     private final OrderMapper orderMapper;
     private final ItemMapper itemMapper;
+    private final StockMapper stockMapper;
 
     public List<OrderVO> getOrderList(OrderVO orderVO) throws Exception {
         return orderMapper.getOrderList(orderVO);
@@ -81,6 +84,18 @@ public class OrderService {
         map.put("list", orderItemVOList);
         Boolean statusTemp = null;
         for (OrderItemVO orderItem : orderItemVOList) {
+            OrderItemVO prevOrderItem = orderMapper.getOrderItemDetail(orderItem);
+            Integer prevQuantity = prevOrderItem.getDeliverQuantity();
+            if(!Objects.equals(prevQuantity, orderItem.getDeliverQuantity())){
+                Long difQuantity = (long) (orderItem.getDeliverQuantity() - prevQuantity);
+                StockVO stockVO = new StockVO();
+                stockVO.setCreateDate(DateManager.getTodayDateTime());
+                stockVO.setProduct(prevOrderItem.getItem().getProduct());
+                stockVO.setQuantity(difQuantity);
+                stockVO.setHistory("입고에 따른 재고 추가");
+                int result = stockMapper.updateStock(stockVO);
+                if(result == 0) throw new Exception("재고 추가 실패");
+            }
             if(orderItem.getStatus() == 0){
                 statusTemp = true;
                 break;
@@ -92,7 +107,7 @@ public class OrderService {
             order.setSupplier(orderItemVOList.get(0).getSupplier());
             order.setStatus(2);
             int result = orderMapper.updateOrder(order);
-            if(result == 0) throw new Exception();
+            if(result == 0) throw new Exception("발주서 상태 변경 실패");
         }
         return orderMapper.updateOrderItem(map);
     }

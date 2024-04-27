@@ -46,6 +46,9 @@
                     prd.name LIKE CONCAT('%',#{orderItems[0].item.product.name},'%')
                 )
             </if>
+            <if test="orderItems != null and orderItems[0].id != null">
+                 AND order_item.id = orderItems[0].id
+            </if>
         </where>
     </sql>
     <resultMap id="getOrderMap" type="OrderVO" autoMapping="true">
@@ -367,4 +370,22 @@
             WHERE id = #{item.id}
         </foreach>
     </update>
+    <resultMap id="getOrderItemDetailMap" type="OrderItemVO" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="item" javaType="ItemVO" autoMapping="true" columnPrefix="item_">
+            <association property="product" javaType="ProductVO" autoMapping="true" columnPrefix="product_"/>
+        </association>
+    </resultMap>
+    <select id="getOrderItemDetail" resultMap="getOrderItemDetailMap">
+        SELECT
+            oi.*
+            , i.product_id item_product_id
+        FROM
+            head_order_item oi
+        LEFT JOIN
+            item i
+            ON oi.item_id = i.id
+        WHERE
+            oi.id = #{id}
+    </select>
 </mapper>
