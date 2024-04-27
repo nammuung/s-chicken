@@ -32,6 +32,8 @@ editButton.addEventListener("click", async function(){
     editModal.show();
 })
 async function setDetailDataToEditModal(id){
+    const editForm = document.getElementById("editForm");
+    editForm.reset();
     const result = await getProduct(id);
     const data = result.data;
     sw.matchData({categoryName: data.category.name, unitName: data.unit.name})
@@ -121,14 +123,7 @@ editInButton.addEventListener("click", async function(){
     const formData = new FormData(editForm);
     const quantity = formData.get("quantity");
     const history = formData.get("history");
-    if(!history) {
-        alert("사유를 입력해 주세요.")
-        return;
-    }
-    if(quantity == 0) {
-        alert("입고할 수량을 입력해 주세요.")
-        return;
-    }
+    checkValid(quantity, history);
     if(quantity < 0){formData.set("quantity", quantity * -1)}
     if(confirm("입고 하시겠습니까?")){
         const result = await addStock(formData);
@@ -139,6 +134,20 @@ editInButton.addEventListener("click", async function(){
         }
     }
 })
+function checkValid(quantity,history) {
+    if(!history) {
+        alert("사유를 입력해 주세요.")
+        return;
+    }
+    if(quantity == 0) {
+        alert("수량을 입력해 주세요.")
+        return;
+    }
+    if(history.length > 20){
+        alert("사유는 20자 이내로 입력해 주세요.")
+        return;
+    }
+}
 //출고
 const editOutButton = document.getElementById("editOutButton");
 editOutButton.addEventListener("click", async function(){
@@ -146,14 +155,7 @@ editOutButton.addEventListener("click", async function(){
     const formData = new FormData(editForm);
     const quantity = formData.get("quantity");
     const history = formData.get("history");
-    if(!history) {
-        alert("사유를 입력해 주세요.")
-        return;
-    }
-    if(quantity == 0) {
-        alert("출고할 수량을 입력해 주세요.")
-        return;
-    }
+    checkValid(quantity, history);
     if(quantity > 0){formData.set("quantity", quantity * -1)}
     if(confirm("출고 하시겠습니까?")){
         const result = await addStock(formData);
