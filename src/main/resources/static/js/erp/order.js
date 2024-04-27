@@ -18,7 +18,7 @@ const supplierCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, 
         orderPreviewButton.classList.remove("d-none")
         searchDetailItem(selectedSupplier)
         if(instance.getDataAtCell(row,2) == "대기" ) {
-            modifyButtons.classList.toggle("d-none")
+            modifyButtons.classList.remove("d-none")
         } else {
             modifyButtons.classList.add("d-none")
         }

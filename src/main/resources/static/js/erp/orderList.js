@@ -149,51 +149,29 @@ async function searchOrder(){
     }
 }
 
-
+let tempDeliver = [];
 //상세 검색
-let detailItems = [];
 async function searchDetail(id){
     isChanged.change = false;
     const result = await getOrderSheet(id);
     const data = result.data;
-    console.log(data)
-    // detailItems = [];
-    // detailItems.push({
-        // id:orderDetail.order.id,
-        // orderDetails:data.orderDetails.map(orderDetail=> {
-        //     orderDetail.totalPrice = (orderDetail.price * orderDetail.quantity).toLocaleString()+"원";
-        //     orderDetail.price = orderDetail.price.toLocaleString()+"원"
-        //     return orderDetail;
-        // })})
-    // data.orderDetails.forEach((orderDetail,index) => {
-    //     // data.id = data.order.id;
-    //     // if(data.orderDetails.length == 1){
-    //     //     data.content = `${data.orderDetails[0].item.product.name}`
-    //     // } else {
-    //     //     data.content = `${data.orderDetails[0].item.product.name} 외 ${data.orderDetails.length-1}개`
-    //     // }
-    //     // data.vat = Math.floor(data.price / 10).toLocaleString()+"원";
-    //     // data.price = Math.floor(data.price).toLocaleString()+"원";
-    //     // console.log(data)
-    //
-    // })
-    // orderHot.loadData(datas);
-    // [...orderContainer.querySelectorAll("tr:nth-child(1) td:nth-child(1) input")].forEach(
-    //     el=> el.click()
-    // )
-    itemHot.loadData(
+    tempDeliver = [];
+    const detailItems =
         data.orderDetails.map(orderDetail=> {
-        orderDetail.totalPrice = (orderDetail.price * orderDetail.quantity).toLocaleString()+"원";
-        orderDetail.price = orderDetail.price.toLocaleString()+"원";
-        orderDetail.status = itemStatusToKR(orderDetail.status)
-        return orderDetail;
-    }));
+            orderDetail.totalPrice = (orderDetail.price * orderDetail.quantity).toLocaleString()+"원";
+            orderDetail.price = orderDetail.price.toLocaleString()+"원";
+            orderDetail.status = itemStatusToKR(orderDetail.status)
+            tempDeliver.push(orderDetail.deliverQuantity);
+            return orderDetail;
+        })
+    itemHot.loadData(
+        detailItems
+    );
     //상태 진행인 로우만 입력가능하게 풀어줌
     itemHot.updateSettings({
         cells(row, col) {
             const cellProperties = {};
             try{
-                console.log(itemHot.getData()[row][col+1])
                 if (itemHot.getData()[row][col+1] === '진행') {
                     cellProperties.readOnly = false;
                 }
@@ -292,12 +270,21 @@ orderPreviewButton.addEventListener("click",  async function(){
 itemHot.addHook("afterChange", changes => {
     changes?.forEach(async ([row, prop, before, after]) => {
         const quantity = itemHot.getDataAtRowProp(row, "quantity");
+        console.log(tempDeliver[row])
         if(prop == 'status'  && after && before != after) {
             if(after == "완료") {
                 itemHot.setDataAtRowProp(row,"deliverQuantity",quantity);
             }
         }
         if(prop == 'deliverQuantity'  && after && before != after){
+            if(isNaN(after)){
+                alert("숫자만 입력가능합니다.")
+                itemHot.setDataAtRowProp(row,"deliverQuantity",0);
+            }
+            if(tempDeliver[row] > after) {
+                alert("기존 입고된 수량보다 적게 입력할 수 없습니다.");
+                itemHot.setDataAtRowProp(row,"deliverQuantity",before);
+            }
             if(after > quantity) {
                 itemHot.setDataAtRowProp(row,"deliverQuantity",quantity);
             }
@@ -307,10 +294,6 @@ itemHot.addHook("afterChange", changes => {
             if(after < quantity) {
                 console.log(after, quantity)
                 itemHot.setDataAtRowProp(row,"status","진행");
-            }
-            if(isNaN(after)){
-                alert("숫자만 입력가능합니다.")
-                itemHot.setDataAtRowProp(row,"deliverQuantity",0);
             }
             isChanged.change = true;
         }
