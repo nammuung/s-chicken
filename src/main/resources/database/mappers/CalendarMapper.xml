@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.calendar.CalendarDAO">
+
+<insert id="insert" parameterType="CalendarVO">
+    <selectKey resultType="Long" keyProperty="id" order="BEFORE">
+        SELECT nextval(seq5)
+    </selectKey>
+    insert into calendar 
+    values 
+    (
+    #{id},
+    #{start},
+    #{end},
+    #{title},
+    #{userYn},
+    #{content},
+    #{share}
+    )
+    </insert>
+    
+    <insert id="insertuser" parameterType="CalendarVO">
+    insert into calendar_emp 
+    values
+    (#{calendareId},
+    #{employeeId}
+    )
+    </insert>
+
+
+    
+    
+</mapper>

@@ -180,7 +180,7 @@
 							<label for="content" class="form-label"><b>내용</b></label>
 							<input type="text" id="content" class="form-control mb-3" placeholder="내용을 입력해주세요.">
 							<label for="share" class="form-label"><b>공유자</b></label>
-							<input type="text" id="share" class="form-control mb-3" disabled value="${profile.name}">
+							<input type="text" id="share" nanem="share" class="form-control mb-3" disabled value="${profile.name}">
 							<input type="hidden" name="share" value="${profile.id}" id="emid" />
 
 
@@ -232,16 +232,17 @@
 			const removeButton = document.getElementById("removeButton");
 			const managerIdInput = document.getElementById("managerId");
 			const managerNameInput = document.getElementById("managerName");
-			const employeeid = document.getElementById("emid").value;
+			const employeeId = document.getElementById("emid").value;
 			const title = document.getElementById("title").value;
+
 			let selectedEmployees = []; // 배열에 선택된 직원을 저장
-			
-			
+
+
 
 			orgChart.init("orgChart", (data) => {
 
 
-				if (!selectedEmployees.some(emp => emp.id === data.id || data.id === employeeid)) {
+				if (!selectedEmployees.some(emp => emp.id === data.id || data.id === employeeId)) {
 					// 선택된 직원을 배열에 추가
 					selectedEmployees.push(data);
 
@@ -260,36 +261,37 @@
 
 
 			function updateSelectedEmployees() {
-    // 중복된 값을 제거한 배열 생성
-    const uniqueNames = [];
-    const uniqueEmployees = [];
-    for (const employee of selectedEmployees) {
-        if (!uniqueNames.includes(employee.name)) {
-            uniqueNames.push(employee.name);
-            uniqueEmployees.push(employee);
-        }
-    }
+				// 중복된 값을 제거한 배열 생성
+				const uniqueNames = [];
+				const uniqueEmployees = [];
+				for (const employee of selectedEmployees) {
+					if (!uniqueNames.includes(employee.name)) {
+						uniqueNames.push(employee.name);
+						uniqueEmployees.push(employee);
+					}
+				}
 
-    // 입력란 업데이트
-    managerNameInput.value = uniqueNames.join(", ");
-    managerIdInput.value = JSON.stringify(uniqueEmployees.map(employee => ({ value: employee.name })));
+				// 입력란 업데이트
+				managerNameInput.value = uniqueNames.join(", ");
+				managerIdInput.value = JSON.stringify(uniqueEmployees.map(employee => ({ value: employee.name })));
+				
+				console.log(managerIdInput.value);
+				// 선택된 직원이 없으면 태그 초기화하지 않음
+				if (uniqueNames.length === 0) {
+					return;
+				}
 
-    // 선택된 직원이 없으면 태그 초기화하지 않음
-    if (uniqueNames.length === 0) {
-        return;
-    }
-
-    if (!tagify) {
-        initializeTagify(uniqueNames);  // 태그에 
-    } else {
-        // 기존 태그를 유지하면서 새로운 태그를 추가
-        uniqueNames.forEach(name => {
-            if (!tagify.value.some(tag => tag.value === name)) {
-                tagify.addTags([{ value: name }]);
-            }
-        });
-    }
-}
+				if (!tagify) {
+					initializeTagify(uniqueNames);  // 태그에 
+				} else {
+					// 기존 태그를 유지하면서 새로운 태그를 추가
+					uniqueNames.forEach(name => {
+						if (!tagify.value.some(tag => tag.value === name)) {
+							tagify.addTags([{ value: name }]);
+						}
+					});
+				}
+			}
 
 
 			fetch('http://localhost/userlist', {
@@ -346,7 +348,7 @@
 				});
 			}
 
-			
+
 		</script>
 
 
@@ -415,9 +417,16 @@
 
 							// 모달에서 이벤트 제목 입력 후 저장 버튼 클릭 시
 							$('#saveEventBtn').click(function () {
+								var employeeId = $('#emid').val();
+								var content = $('#content').val();
+								if (content.trim() === "") {
+									alert("내용이 입력되지 않았습니다.")
+									return;
+								}
 								var title = $('#title').val(); // 모달의 이벤트 제목 입력란에서 제목 가져오기
-								if(title.trim()===""){
-									alert("ㅇㅇㅇㅇㅇ");
+								if (title.trim() === "") {
+									alert("제목을 입력하지 않았습니다.");
+									return;
 								}
 								if (title) {
 									calendar.addEvent({
@@ -426,16 +435,33 @@
 										end: arg.end,
 										allDay: arg.allDay
 									});
+								
+									// 저장 버튼 클릭 시 AJAX를 통해 데이터를 서버에 전송
+									$.ajax({
+										url: '/insert',
+										type: 'POST',
+										contentType: 'application/json',
+										data: JSON.stringify({
+											title: title,
+											content: content,
+											start: arg.start,
+											end: arg.end,
+											allDay: arg.allDay,
+											managerId: managerId
+
+										}),
+										success: function (response) {
+											console.log('저장 성공:', response);
+										},
+										error: function (error) {
+											console.error('저장 실패:', error);
+										}
+									});
 								}
 								calendar.unselect();
 								$('#eventModal').modal('hide'); // 모달 닫기
 							});
 
-							// 모달이 닫힐 때 이벤트 처리
-							$('#eventModal').on('hidden.bs.modal', function () {
-								// 모달이 닫힐 때마다 이벤트 처리를 위해 클릭 이벤트 해제
-								$('#saveEventBtn').off('click');
-							});
 						},
 
 
@@ -474,5 +500,5 @@
 			});
 
 		</script>
-
+		
 		</html>

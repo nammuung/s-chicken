@@ -1,6 +1,7 @@
 package com.groups.schicken;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +22,8 @@ import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.annual.AnnualController;
 import com.groups.schicken.board.BoardVO;
 import com.groups.schicken.board.represent.RepresentService;
+import com.groups.schicken.calendar.CalendarService;
+import com.groups.schicken.calendar.CalendarVO;
 import com.groups.schicken.common.vo.Pager;
 import com.groups.schicken.organization.ChattingEmployeeListVO;
 import com.groups.schicken.organization.OrganizationService;
@@ -32,7 +36,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 @Slf4j
-public class CalendarController {
+public class MainController {
 
 	
 	
@@ -82,11 +86,22 @@ public class CalendarController {
     }
     
     
-	/*
-	 * @PostMapping("add") public String addCalendar() {
-	 * 
-	 * }
-	 */
+    @PostMapping("insert")
+    @ResponseBody
+    public String insert(@RequestBody CalendarVO calendarVO) throws Exception  {
+            log.info("{}", calendarVO);
+            calendarVO.setUserYn(true);
+        	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    		String id = authentication.getName();
+    		calendarVO.setShare(id);
+            int result = calendarService.insert(calendarVO);
+        String  a= "일정이 성공적으로 추가되었습니다.";
+                return "일정이 성공적으로 추가되었습니다.";
+
+    }
+
+
+	 
     
     
     
