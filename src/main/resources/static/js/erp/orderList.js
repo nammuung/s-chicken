@@ -8,7 +8,7 @@ import {
     getOrderSheet,
     getOrderSheetList,
     updateOrder,
-    updateOrderItem
+    updateOrderDetail
 } from "../api/order.js";
 import {orderStatus, itemStatus, itemStatusToKR, orderStatusToKR} from "../util/orderStatus.js";
 let isChanged = {};
@@ -128,10 +128,10 @@ async function searchOrder(){
     const datas = result.data;
     console.log(datas)
     datas.forEach((data,index) => {
-        if(data.orderItems.length == 1){
-            data.content = `${data.orderItems[0].item.product.name}`
+        if(data.orderDetails.length == 1){
+            data.content = `${data.orderDetails[0].item.product.name}`
         } else {
-            data.content = `${data.orderItems[0].item.product.name} 외 ${data.orderItems.length-1}개`
+            data.content = `${data.orderDetails[0].item.product.name} 외 ${data.orderDetails.length-1}개`
         }
         data.id = data.id+"-"+data.supplier.id
         data.vat = Math.floor(data.price / 10).toLocaleString()+"원";
@@ -159,18 +159,18 @@ async function searchDetail(id){
     console.log(data)
     // detailItems = [];
     // detailItems.push({
-        // id:orderItem.order.id,
-        // orderItems:data.orderItems.map(orderItem=> {
-        //     orderItem.totalPrice = (orderItem.price * orderItem.quantity).toLocaleString()+"원";
-        //     orderItem.price = orderItem.price.toLocaleString()+"원"
-        //     return orderItem;
+        // id:orderDetail.order.id,
+        // orderDetails:data.orderDetails.map(orderDetail=> {
+        //     orderDetail.totalPrice = (orderDetail.price * orderDetail.quantity).toLocaleString()+"원";
+        //     orderDetail.price = orderDetail.price.toLocaleString()+"원"
+        //     return orderDetail;
         // })})
-    // data.orderItems.forEach((orderItem,index) => {
+    // data.orderDetails.forEach((orderDetail,index) => {
     //     // data.id = data.order.id;
-    //     // if(data.orderItems.length == 1){
-    //     //     data.content = `${data.orderItems[0].item.product.name}`
+    //     // if(data.orderDetails.length == 1){
+    //     //     data.content = `${data.orderDetails[0].item.product.name}`
     //     // } else {
-    //     //     data.content = `${data.orderItems[0].item.product.name} 외 ${data.orderItems.length-1}개`
+    //     //     data.content = `${data.orderDetails[0].item.product.name} 외 ${data.orderDetails.length-1}개`
     //     // }
     //     // data.vat = Math.floor(data.price / 10).toLocaleString()+"원";
     //     // data.price = Math.floor(data.price).toLocaleString()+"원";
@@ -182,11 +182,11 @@ async function searchDetail(id){
     //     el=> el.click()
     // )
     itemHot.loadData(
-        data.orderItems.map(orderItem=> {
-        orderItem.totalPrice = (orderItem.price * orderItem.quantity).toLocaleString()+"원";
-        orderItem.price = orderItem.price.toLocaleString()+"원";
-        orderItem.status = itemStatusToKR(orderItem.status)
-        return orderItem;
+        data.orderDetails.map(orderDetail=> {
+        orderDetail.totalPrice = (orderDetail.price * orderDetail.quantity).toLocaleString()+"원";
+        orderDetail.price = orderDetail.price.toLocaleString()+"원";
+        orderDetail.status = itemStatusToKR(orderDetail.status)
+        return orderDetail;
     }));
     //상태 진행인 로우만 입력가능하게 풀어줌
     itemHot.updateSettings({
@@ -208,7 +208,7 @@ async function searchDetail(id){
 
 // //디테일 아이템
 // async function searchDetailItem(orderId){
-//     const orderItems = detailItems.filter(obj => obj.id === orderId)[0].orderItems
+//     const orderDetails = detailItems.filter(obj => obj.id === orderId)[0].orderDetails
 //
 // }
 
@@ -219,13 +219,13 @@ saveChangeButton.addEventListener("click", async function () {
         alert("발주를 선택해 주세요.")
         return;
     }
-    const orderItems = [];
+    const orderDetails = [];
     const formData = new FormData();
     formData.append("id", selectedOrder);
     formData.append("status", 1);
     itemHot.getData().forEach(item => {
         console.log(item)
-        orderItems.push({
+        orderDetails.push({
             id:item[1],
             deliverQuantity:item[9],
             status:itemStatus.indexOf(item[10]),
@@ -237,8 +237,8 @@ saveChangeButton.addEventListener("click", async function () {
             },
         })
     })
-    console.log(orderItems)
-    const result = await updateOrderItem(orderItems);
+    console.log(orderDetails)
+    const result = await updateOrderDetail(orderDetails);
     alert(result.message);
     if(result.status == "OK"){
         searchOrder();
@@ -250,12 +250,12 @@ allCompleteButton.addEventListener("click", async function () {
         alert("발주를 선택해 주세요.")
         return;
     }
-    const orderItems = [];
+    const orderDetails = [];
     const formData = new FormData();
     formData.append("id", selectedOrder);
     formData.append("status", 1);
     itemHot.getData().forEach(item => {
-        orderItems.push({
+        orderDetails.push({
             id:item[1],
             deliverQuantity:item[8],
             status:itemStatus.indexOf("완료"),
@@ -267,7 +267,7 @@ allCompleteButton.addEventListener("click", async function () {
             },
         })
     })
-    const result = await updateOrderItem(orderItems);
+    const result = await updateOrderDetail(orderDetails);
     if(result.status == "OK"){
         searchOrder();
         alert("입고 완료");

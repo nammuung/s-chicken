@@ -13,7 +13,7 @@
             <div class="row col">
                 <label for="searchName" class="col-3 col-form-label text-nowrap">품명</label>
                 <div class="col-9">
-                    <input type="text" class="form-control" id="searchName" name="orderItems[0].item.product.name" value="">
+                    <input type="text" class="form-control" id="searchName" name="orderDetails[0].item.product.name" value="">
                 </div>
             </div>
             <div class="row col">

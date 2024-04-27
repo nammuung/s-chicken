@@ -48,9 +48,9 @@ public class OrderAPI {
 
     @PostMapping("orders")
     @Transactional
-    public ResponseEntity<?> addOrder(@AuthenticationPrincipal EmployeeVO employeeVO, @RequestBody List<OrderItemVO> orderItemList) throws Exception {
+    public ResponseEntity<?> addOrder(@AuthenticationPrincipal EmployeeVO employeeVO, @RequestBody List<OrderDetailVO> orderDetailList) throws Exception {
         try {
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주서 작성 완료", orderService.addOrder(orderItemList, employeeVO)));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주서 작성 완료", orderService.addOrder(orderDetailList, employeeVO)));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -114,12 +114,12 @@ public class OrderAPI {
         }
     }
 
-    @PutMapping("orderItems")
+    @PutMapping("orderDetails")
     @Transactional
-    public ResponseEntity<?> updateOrderItem(@RequestBody List<OrderItemVO> orderItemVOList) throws Exception {
-        System.out.println("orderItemVOList = " + orderItemVOList);
+    public ResponseEntity<?> updateOrderDetail(@RequestBody List<OrderDetailVO> orderDetailVOList) throws Exception {
+        System.out.println("orderDetailVOList = " + orderDetailVOList);
         try {
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "저장 되었습니다.", orderService.updateOrderItem(orderItemVOList)));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "저장 되었습니다.", orderService.updateOrderDetail(orderDetailVOList)));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

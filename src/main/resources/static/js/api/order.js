@@ -55,9 +55,9 @@ export const updateOrder = async (params) => {
     }
 }
 
-export const updateOrderItem = async (params) => {
+export const updateOrderDetail = async (params) => {
     try {
-        const response = await defaultInstance.put('orderItems', params);
+        const response = await defaultInstance.put('orderDetails', params);
         return response.data;
     } catch (err) {
         console.log(err);

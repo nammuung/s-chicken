@@ -1,13 +1,12 @@
 package com.groups.schicken.erp.order;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.groups.schicken.erp.item.ItemVO;
 import com.groups.schicken.erp.supplier.SupplierVO;
 import lombok.Data;
 
 @Data
 //@JsonInclude(JsonInclude.Include.NON_NULL)
-public class OrderItemVO {
+public class OrderDetailVO {
     private Long id;
     private ItemVO item;
     private SupplierVO supplier;

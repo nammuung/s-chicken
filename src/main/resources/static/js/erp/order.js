@@ -116,10 +116,10 @@ async function searchOrder(){
     const result = await getOrderList(formData);
     const datas = result.data;
     datas.forEach((data,index) => {
-        if(data.orderItems.length == 1){
-            data.content = `${data.orderItems[0].item.product.name}`
+        if(data.orderDetails.length == 1){
+            data.content = `${data.orderDetails[0].item.product.name}`
         } else {
-            data.content = `${data.orderItems[0].item.product.name} 외 ${data.orderItems.length-1}개`
+            data.content = `${data.orderDetails[0].item.product.name} 외 ${data.orderDetails.length-1}개`
         }
     })
     orderHot.loadData(datas);
@@ -143,19 +143,19 @@ async function searchDetail(id){
     detailItems = [];
     datas.forEach((data,index) => {
         data.id = data.supplier.id;
-        if(data.orderItems.length == 1){
-            data.content = `${data.orderItems[0].item.product.name}`
+        if(data.orderDetails.length == 1){
+            data.content = `${data.orderDetails[0].item.product.name}`
         } else {
-            data.content = `${data.orderItems[0].item.product.name} 외 ${data.orderItems.length-1}개`
+            data.content = `${data.orderDetails[0].item.product.name} 외 ${data.orderDetails.length-1}개`
         }
         data.vat = Math.floor(data.price / 10).toLocaleString()+"원";
         data.price = Math.floor(data.price).toLocaleString()+"원";
         data.status = orderStatusToKR(data.status);
         console.log(data)
-        detailItems.push({id:data.supplier.id,orderItems:data.orderItems.map(orderItem=> {
-                orderItem.totalPrice = (orderItem.price * orderItem.quantity).toLocaleString()+"원";
-                orderItem.price = orderItem.price.toLocaleString()+"원"
-                return orderItem;
+        detailItems.push({id:data.supplier.id,orderDetails:data.orderDetails.map(orderDetail=> {
+                orderDetail.totalPrice = (orderDetail.price * orderDetail.quantity).toLocaleString()+"원";
+                orderDetail.price = orderDetail.price.toLocaleString()+"원"
+                return orderDetail;
             })})
     })
     supplierHot.loadData(datas);
@@ -164,8 +164,8 @@ async function searchDetail(id){
 
 //디테일 아이템
 async function searchDetailItem(supplierId){
-    const orderItems = detailItems.filter(obj => obj.id === supplierId)[0].orderItems
-    itemHot.loadData(orderItems);
+    const orderDetails = detailItems.filter(obj => obj.id === supplierId)[0].orderDetails
+    itemHot.loadData(orderDetails);
 }
 
 //발주 승인 버튼
