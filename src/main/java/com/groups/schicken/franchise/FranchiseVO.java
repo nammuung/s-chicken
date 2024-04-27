@@ -24,10 +24,7 @@ public class FranchiseVO implements UserDetails {
     private String email;
     private String password;
     private String contractDate;
-    private String managerId;
-    private Long registerId;
-    private Long contractId;
-    private EmployeeVO manager = new EmployeeVO();
+    private EmployeeVO manager;
     private FileVO register;
     private FileVO contract;
     private String Role="ROLE_FRANCHISE";
