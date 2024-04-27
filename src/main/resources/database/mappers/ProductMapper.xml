@@ -13,19 +13,15 @@
         SELECT
             *
         FROM
-            code
-        WHERE
-            type_id = '600'
+            view_category
     </select>
     <select id="getUnit">
         SELECT
             *
         FROM
-            code
-        WHERE
-            type_id = '500'
+            view_unit
     </select>
-    <select id="getProduct" resultMap="getProductMap">
+    <sql id="getProductSQL">
         SELECT
             p.*,
             c.name category_name,
@@ -34,37 +30,11 @@
         FROM
             product p
         LEFT JOIN
-            code c
-            ON p.category_id = c.id AND c.type_id = '600'
+            view_category c
+            ON p.category_id = c.id
         LEFT JOIN
-            code uni
-            ON p.unit_id = uni.id AND uni.type_id = '500'
-        LEFT JOIN
-            stock st
-            ON p.id = st.product_id
-        WHERE
-            p.id = #{id}
-        GROUP BY
-            p.id,
-            c.name,
-            uni.name
-        ORDER BY
-            p.id
-    </select>
-    <select id="getProductList" resultMap="getProductMap">
-        SELECT
-            p.*,
-            c.name category_name,
-            uni.name unit_name,
-            SUM(st.quantity) as stock
-        FROM
-            product p
-        LEFT JOIN
-            code c
-            ON p.category_id = c.id AND c.type_id = '600'
-        LEFT JOIN
-            code uni
-            ON p.unit_id = uni.id AND uni.type_id = '500'
+            view_unit uni
+            ON p.unit_id = uni.id
         LEFT JOIN
             stock st
             ON p.id = st.product_id
@@ -73,12 +43,19 @@
             p.id,
             c.name,
             uni.name
-        ORDER BY p.id
+        ORDER BY
+            p.id
+    </sql>
+    <select id="getProduct" resultMap="getProductMap">
+        <include refid="getProductSQL"/>
+    </select>
+    <select id="getProductList" resultMap="getProductMap">
+        <include refid="getProductSQL"/>
     </select>
     <sql id="search">
         <where>
             <if test='id != null'>
-                p.id LIKE concat('%',#{id},'%')
+                p.id = #{id}
             </if>
             <if test='name != null'>
                 AND p.name LIKE concat('%',#{name},'%')
