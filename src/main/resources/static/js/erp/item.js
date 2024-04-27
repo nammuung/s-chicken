@@ -14,7 +14,6 @@ const myCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=
     } else {
         selectedRowId = null
     }
-    addNameEventListener();
 })
 const tableOptions = {
     data:[],
@@ -36,7 +35,9 @@ const tableOptions = {
     height:"50vh",
 }
 const hot = handsontable(container, tableOptions);
-
+hot.addHook("afterRender", function () {
+    addNameEventListener();
+})
 
 //품목 테이블 초기화
 // 테이블 초기화
@@ -91,7 +92,6 @@ async function searchItem(){
     })
     console.log(data)
     hot.loadData(data);
-    addNameEventListener();
 }
 
 let selectedRowId = null; //체크된 열 아이디
@@ -144,6 +144,9 @@ addSubmitButton.addEventListener("click", async function(){
         const addForm = document.getElementById("addForm");
         const formData = new FormData(addForm);
         const result = await addItem(formData);
+        productHot.clear();
+        supplierHot.clear();
+        console.log(productHot, supplierHot)
         alert(result.message);
         if (result.status === "OK") {
             await searchItem();
@@ -230,23 +233,28 @@ productTap.addEventListener("shown.bs.tab", function (){
 const addButton = document.getElementById("addButton")
 addButton.addEventListener("click", function(){
     registerModal.show();
-    productSearchButton.click();
-    const tableHeight = document.querySelector(".modal-body .position-relative").getBoundingClientRect().height- document.getElementById("productSearchContainer").getBoundingClientRect().height-document.getElementById("next")-document.getElementById("nextButton1").getBoundingClientRect().height -20
-    const productTableOptions = {
-        data:[],
-        colHeaders : ['','ID','카테고리', '품명', '규격','단위'],
-        columns : [
-            {renderer:productCheckboxRenderer},
-            {data:"id"},
-            {data:"category.name"},
-            {data:"name", renderer:"html"},
-            {data:"standard"},
-            {data:"unit.name"},
-        ],
-        colWidths : scaleArrayToSum(Array(6),1130),
-        height:tableHeight,
+    const productProcessButton = document.querySelector("button[data-bs-target='#product-select']");
+    productProcessButton.click();
+
+    if(productHot == null) {
+        const tableHeight = document.querySelector(".modal-body .position-relative").getBoundingClientRect().height- document.getElementById("productSearchContainer").getBoundingClientRect().height-document.getElementById("next")-document.getElementById("nextButton1").getBoundingClientRect().height -20
+        const productTableOptions = {
+            data:[],
+            colHeaders : ['','ID','카테고리', '품명', '규격','단위'],
+            columns : [
+                {renderer:productCheckboxRenderer},
+                {data:"id"},
+                {data:"category.name"},
+                {data:"name", renderer:"html"},
+                {data:"standard"},
+                {data:"unit.name"},
+            ],
+            colWidths : scaleArrayToSum(Array(6),1130),
+            height:tableHeight,
+        }
+        productHot = handsontable(productContainer, productTableOptions);
     }
-    productHot = handsontable(productContainer, productTableOptions);
+    productSearchButton.click();
 })
 
 const supplierTap = document.querySelector('button[data-bs-target="#supplier-select"]')
@@ -270,8 +278,8 @@ supplierTap.addEventListener("shown.bs.tab" , function(){
             height:tableHeight,
         }
         supplierHot = handsontable(supplierContainer, supplierTableOptions);
-        supplierSearchButton.click()
     }
+    supplierSearchButton.click()
 })
 const nextButton1 = document.getElementById("nextButton1")
 nextButton1.addEventListener("click", function(){
