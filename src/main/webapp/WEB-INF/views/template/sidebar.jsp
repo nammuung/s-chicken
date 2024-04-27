@@ -64,7 +64,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/document/temp">
+                    <a href="/document/tempList">
                         <i class="bi bi-circle"></i><span>임시저장</span>
                     </a>
                 </li>

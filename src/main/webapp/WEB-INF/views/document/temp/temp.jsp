@@ -1,7 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.Date" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ page import="java.util.Date" %>
 <%@page import="java.text.SimpleDateFormat"%>
+
 <!DOCTYPE html>
 <html>
 
@@ -23,20 +25,20 @@
 </head>
 
 <body>
-        <%
+	<sec:authentication property="principal" var="user"/>
+    <div data-login-id="${user.id}"></div>
+            <%
     Date date = new Date();
     SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
     
     String strDate = simpleDate.format(date);
     %>
-    <form method="POST">
+    <div id="date" data-strDate="<%= strDate %>"></div>
+    
+    <form method="post">
         <span>
             <p style="line-height: 150%; font-family: 맑은 고딕; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;"><span
                     style="font-family: 맑은 고딕; font-size: 10pt;"></span>&nbsp;</p>
-                <input type="hidden" name="status" value="0">
-                
-                <input type="hidden" name="templateId" value="1">
-                <input type="hidden" name="writerId" value="${list.id}">
             <table
                 style="border: 0px solid rgb(0, 0, 0); border-image: none; width: 800px; font-family: malgun gothic,dotum,arial,tahoma; margin-top: 1px; border-collapse: collapse;">
                 <!-- Header -->
@@ -49,13 +51,15 @@
                     <tr>
                         <td style="padding: 0px !important; border: 0px currentColor; border-image: none;text-align: right;font-weight: bold; vertical-align: middle;"
                         colspan="2" class="">
-                            <div class="mb-2">
-                                <button class="btn btn-primary">인쇄미리보기</button>
-                                <button class="btn btn-primary" id="sangsin">상신</button>
-                                <button class="btn btn-primary" type="button" id = "cancel">취소</button>
-                            </div>
-                            <button class="btn btn-primary">불러오기</button>
-                            <button class="btn btn-primary" id="tempSave">임시저장</button>
+                            <c:if test="${list[0].temp eq 1}">
+                                <div class="mb-2">
+                                    <button class="btn btn-primary">인쇄미리보기</button>
+                                    <button class="btn btn-primary" id="sangsin">상신</button>
+                                    <button class="btn btn-primary" type="button" id = "cancel">취소</button>
+                                </div>
+                                    <button class="btn btn-primary">불러오기</button>
+                                    <button class="btn btn-primary" id="updateSave">임시저장</button>
+                            </c:if>                          
                         </td>
                     </tr>
 
@@ -64,19 +68,22 @@
                         <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
                             colspan="2" class=""> 급여신청서
                             <div style="text-align: right;">
-
-                                <!-- Button to Open the Modal -->
-                                <button type="button" id="modal_show" class="btn btn-primary">
-                                결재선지정
-                                </button>
-
+                                    <button type="button" id="modal_show" class="btn btn-primary">
+                                        결재선지정
+                                    </button>
                             </div>
                         </td>
 
                         <!-- <td><button>결제미리보기</button></td> -->
 
                     </tr>
-
+					<input type="hidden" value="${list[0].id}" name="id">
+					<input type="hidden" value="<%=strDate %>" name="date">
+                    <input type="hidden" value="<%=strDate %>" name="WriteDate">
+                    <input type="hidden" name="status" value="0">
+                    <input type="hidden" name="templateId" value="1">
+                    <input type="hidden" name="writerId" value="${list[0].employeeVO.id}">
+                    
                     <tr>
                         <td
                             style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 506px; text-align: left; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
@@ -96,7 +103,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" value="<%=strDate %>" style="text-align: center;">
+                                                ${list[0].id}
                                             </div>
                                         </td>
                                     </tr>
@@ -106,7 +113,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" id="" name="tempName" style="text-align: center;" value="급여신청서" readonly>
+                                                ${list[0].templateVO.tempName}
                                             </div>
                                         </td>
                                     </tr>
@@ -116,7 +123,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" name="writeDate" value="<%=strDate %>" readonly  style="text-align: center;">
+                                                ${list[0].writeDate}
                                             </div>
                                         </td>
                                     </tr>
@@ -126,7 +133,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" value="${list.name}" style="text-align: center;">
+                                                ${list[0].employeeVO.name}
                                             </div>
                                         </td>
                                     </tr>
@@ -136,7 +143,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" value="${list.department.name}" style="text-align: center;">
+                                               	${list[0].department.name}
                                             </div>
                                         </td>
                                     </tr>
@@ -152,80 +159,106 @@
                                     <span class="sign_tit_wrap">
                                         <span class="sign_tit"><strong>결재선</strong></span>
                                     </span>
-                                    <input type="hidden" id="zeroId" value="${list.id}">
-                                    <input type="hidden" id="zeroRank" value="0">                                   
-                                    <input type="hidden" id="zeroResult" value="1">                                   
-                                    
 
-                                    <span class="sign_member_wrap" id="">                                        
+                                    <span class="sign_member_wrap">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank">${list.position.name}</span>
+                                                <span class="sign_rank" id="name">${list[0].codeVO.name}</span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date" id="name">${list.name}</span>
+                                                <span class="sign_date" data-id="${list[0].employeeVO.id}">${list[0].employeeVO.name}</span>
                                             </span>
 
                                             <span class="sign_wrap">
                                                 <span class="sign_name"><strong>ok</strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id=""><%=strDate %></span>
+                                                <span class="sign_date ">${list[0].writeDate}</span>
                                             </span>
                                         </span>
                                     </span>
-                                    <span class="sign_member_wrap nextdo">
-                                        <span class="sign_member">                                            
+                                    
+                                    <c:if test="${list[1].id eq null}">
+                                    	<span class="sign_member_wrap" id="">                                        
+                                        <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank">직급</span>
+                                                <span class="sign_rank"></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="name">이름</span>
+                                                <span class="sign_date " id="name"></span>
                                             </span>
 
                                             <span class="sign_wrap">
-                                                <span class="sign_name"><strong>서명</strong></span>
+                                                <span class="sign_name"><strong></strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date ">날짜</span>
+                                                <span class="sign_date " id=""></span>
                                             </span>
                                         </span>
                                     </span>
-                                    <span class="sign_member_wrap" id="">
-                                        <span class="sign_member">                                            
+                                    </c:if>
+
+                                    <c:if test="${list[2].id eq null}">
+                                    	<span class="sign_member_wrap" id="">                                        
+                                        <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank">직급</span>
+                                                <span class="sign_rank"></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="name">이름</span>
+                                                <span class="sign_date " id="name"></span>
                                             </span>
 
                                             <span class="sign_wrap">
-                                                <span class="sign_name"><strong>서명</strong></span>
+                                                <span class="sign_name"><strong></strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="">날짜</span>
+                                                <span class="sign_date " id=""></span>
                                             </span>
                                         </span>
                                     </span>
-                                    <span class="sign_member_wrap" id="">
-                                        <span class="sign_member">                                           
+                                    </c:if>
+                                    	<c:if test="${list[3].id eq null}">
+                                    		<span class="sign_member_wrap" id="">                                        
+                                        <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank">직급</span>
+                                                <span class="sign_rank"></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="name">이름</span>
+                                                <span class="sign_date" id="name"></span>
                                             </span>
 
                                             <span class="sign_wrap">
-                                                <span class="sign_name"><strong>서명</strong></span>
+                                                <span class="sign_name"><strong></strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="">날짜</span>
+                                                <span class="sign_date"></span>
                                             </span>
                                         </span>
-                                    </span>
+                                    </span>                                    	
+                                    	</c:if> 
+                                    
 
+                                    <c:forEach items="${list}" begin="1" var="vo">
+	                                    <span class="sign_member_wrap haveId" id="">
+	                                        <span class="sign_member">                                           
+	                                            <span class="sign_rank_wrap">
+	                                                <span class="sign_rank">${vo.codeVO.name}</span>
+	                                            </span>
+	                                            <span class="sign_date_wrap">
+	                                                <span class="sign_date" id="name" data-id="${vo.employeeVO.id}" data-level="${vo.codeVO.name}" data-name="${vo.employeeVO.name}">${vo.employeeVO.name}</span>
+	                                            </span>
+	
+	                                            <span class="sign_wrap">
+	                                                <span class="sign_name"><strong class="sign"></strong></span>
+	                                            </span>
+	                                            <span class="sign_date_wrap">
+	                                            	<c:forEach items="${vo.approvalVOs}" var="get">
+	                                                	<span class="sign_date date">${get.date}</span>
+	                                                </c:forEach>
+	                                            </span>
+	                                        </span>
+	                                    </span>
+									</c:forEach>
                                 </span>
                             </p>
                         </td>
@@ -239,16 +272,16 @@
                     <col width="300" />
 
                 </colgroup>
-                <tbody>
-                    
+                <tbody>                   
+                   
                     <tr>
                         <td
                             style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
                             제목 </td>
                         <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
                             colspan="5">
-
-                            <input type="text" class="form-control" id="title" name="title" style="width: 100%;">
+                            <input type="text" class="form-control" value ="${list[0].title}" id="title" name="title" style="width: 100%;">
+                            
                         </td>
                     </tr>
 
@@ -261,101 +294,111 @@
                     <tr>
                         <td style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;"
                             colspan="2">
-                            사유
+                            신청사유
                         </td>
                     </tr>
                     <tr>
                         <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                            <div id="editor"></div>
+                            <div id="editor">${list[0].content}</div>
                         </td>
                     </tr>
-
+                    <c:if test="${list[nowCount-1].approvalVOs[0].comment ne null}">
+	                     <tr>
+	                        <td style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;"
+	                            colspan="2">
+	                            반려사유
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+	                            <div>${list[nowCount-1].approvalVOs[0].comment}</div>
+	                        </td>
+	                    </tr>
+					</c:if>
                 </tbody>
             </table>
-            <div>
+<!--             <div>
                 <label for="file">파일첨부하기</label><br>
             <input type="file" name="attach">
+            </div> --> 
+        </span>           
+   	</form>
+
+        <!-- The Modal -->
+	<div class="modal" id="myModal">
+        <div class="modal-dialog modal-dialog-scrollable" id="modalContent">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header" >
+              <h4 class="modal-title">결재선지정</h4>
+              <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
             </div>
-    </form>
+            <!-- Modal body -->
+            <div class="modal-body">
+              <!-- 모달 내용 시작 -->
+              <div class="container-fluid mmdd">
+                <div class="row mmdd">
+                  <div class="col-md-5 card mmdd">
+                      <div class="card-body">
+                      조직도
+                          <div id="note-message-org-chart"></div>
+                      </div>
+  
+                  </div>
+                  <div class="col-md-2 mmdd d-flex justify-content-center align-items-center flex-column">
+                      <div class="text-center">
+                          <button class="btn btn-primary btn-sm mb-3" id="addbtn"> >> </button>
+                      </div>
+                      <div class="text-center">
+                          <button class="btn btn-primary btn-sm mt-3" id="delbtn"> &lt;&lt; </button>
+                      </div>
+                  </div>
+                  <div class="col-md-5 mmdd">
+                    <div id="right-top" class="row ssdd" style="background-color: lightblue;">
+                        <div style="text-align: left;">결재자</div>
+  
+                        <div>
+                          <ul class="list-group" id="approval_List">
+  
+                          </ul>
+                        </div>
+  
+                        <div class="text-right mt-2 align-self-end">
+                            <div class="col-auto">
+                                <div class="mb-2">
+                                <button class="btn btn-primary btn-sm">저장하기</button>
+                                <button class="btn btn-primary btn-sm" type="button" id="register">등록하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="right-bottom" class="row ssdd" style="background-color: lightgreen;">
+                      <div style="text-align: left;">나의 결재목록</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 모달 내용 끝 -->
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    	
         <p
             style="line-height: 150%; font-family: &quot;맑은 고딕&quot;; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;">
             &nbsp;</p>
     </span>
-
-    <!-- The Modal -->
-	<div class="modal" id="myModal">
-	  <div class="modal-dialog modal-dialog-scrollable" id="modalContent">
-	    <div class="modal-content">
-	      <!-- Modal Header -->
-	      <div class="modal-header" >
-	        <h4 class="modal-title">결재선지정</h4>
-	        <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-	      </div>
-	      <!-- Modal body -->
-	      <div class="modal-body">
-	        <!-- 모달 내용 시작 -->
-	        <div class="container-fluid mmdd">
-	          <div class="row mmdd">
-	            <div class="col-md-5 card mmdd">
-	                <div class="card-body">
-	                조직도
-	                	<div id="note-message-org-chart"></div>
-	                </div>
-
-	            </div>
-	            <div class="col-md-2 mmdd d-flex justify-content-center align-items-center flex-column">
-                    <div class="text-center">
-				        <button class="btn btn-primary btn-sm mb-3" id="addbtn"> >> </button>
-				    </div>
-				    <div class="text-center">
-				        <button class="btn btn-primary btn-sm mt-3" id="delbtn"> &lt;&lt; </button>
-				    </div>
-                </div>
-	            <div class="col-md-5 mmdd">
-	              <div id="right-top" class="row ssdd" style="background-color: lightblue;">
-	                  <div style="text-align: left;">결재자</div>
-
-                      <div>
-                        <ul class="list-group" id="approval_List">
-
-                        </ul>
-                      </div>
-
-	                  <div class="text-right mt-2 align-self-end">
-	                      <div class="col-auto">
-	                          <div class="mb-2">
-	                          <button class="btn btn-primary btn-sm">저장하기</button>
-	                          <button class="btn btn-primary btn-sm" id="register">등록하기</button>
-	                          </div>
-	                      </div>
-	                  </div>
-				  </div>
-	              <div id="right-bottom" class="row ssdd" style="background-color: lightgreen;">
-                    <div style="text-align: left;">나의 결재목록</div>
-                  </div>
-	            </div>
-	          </div>
-	        </div>
-	        <!-- 모달 내용 끝 -->
-	      </div>
-	      <!-- Modal footer -->
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-
-    <c:import url="../../template/script.jsp"></c:import>
-
-<script>
-   
+   <c:import url="../../template/script.jsp"></c:import>
 
 
-</script>
-<script src="/js/document/documentDetail.js" type="module"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-
+<script src="/js/document/temp/temp.js" type="module"></script>
 </body>
 
 </html>

@@ -25,23 +25,20 @@ function openbonus(id) {
     window.open(relativePath, '_blank', options);
 }
 
-const categori = document.querySelectorAll(".BOARDCATEGORY");
+const categori_sel = document.querySelectorAll(".BOARDCATEGORY");
 
 const cateList = document.getElementById("cateList");
 
-cateList.addEventListener("click",(e)=>{	
-	for(let i = 0; i < categori.length ; i++){
-		categori[i].classList.remove("active");
+const params = new URLSearchParams(window.location.search);
+const category = params.get("category");
+console.log(category);
+
+console.log(categori_sel[0].dataset)
+
+for(let i = 0 ; i < categori_sel.length ; i++){
+	categori_sel[i].classList.remove("active")
+	if(categori_sel[i].dataset.category == category){
+			categori_sel[i].classList.add("active")
 	}
-	e.target.classList.add("active");
-	console.log(e.target.dataset.category)
-	let data = {
-		categori : e.target.dataset.category
-	}
+}
 	
-	console.log(data)
-	fetch("/document/document",{
-		method:"get",
-		body:data
-	}).then(r=>console.log(r))
-}) 

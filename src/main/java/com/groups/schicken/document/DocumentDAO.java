@@ -13,20 +13,27 @@ public interface DocumentDAO {
 	
 	EmployeeVO getEx(EmployeeVO employeeVO)throws Exception;
 	
+	List<DocumentVO> getDetail(DocumentVO documentVO)throws Exception;
+	
 	int add(DocumentVO documentVO)throws Exception;
 	
 	int appAdd(ApprovalVO approvalVO)throws Exception;
+	
+	int tempTosang(DocumentVO documentVO)throws Exception;
+	
+	int tempTosangapp(ApprovalVO approvalVO)throws Exception;
 
 	
 	Long allTotalCount(Map<String, Object> map)throws Exception;
 	
-	List<DocumentVO> getDetail(DocumentVO documentVO)throws Exception;
+
 	
 	List<DocumentVO> approvalList(Map<String,Object> map)throws Exception;
 	
 	
 	
 	List<DocumentVO> allList(Map<String,Object> map)throws Exception;
+	List<DocumentVO> tempList(Map<String,Object> map)throws Exception;
 	
 	List<DocumentVO> approvalDetail(DocumentVO documentVO)throws Exception;
 	

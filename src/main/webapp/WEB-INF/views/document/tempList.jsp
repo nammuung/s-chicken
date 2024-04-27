@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -10,6 +11,8 @@
 </head>
 
 <body>
+    <sec:authentication property="principal" var="user"/>
+
 <!-- ======= Header ======= -->
 <c:import url="../template/header.jsp"/>
 <!-- ======= Sidebar ======= -->
@@ -49,15 +52,25 @@
                                     <th style="width: 5%">상태</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>20240312001</td>
-                                    <td class="text-start">3월 출장비 지출결의서입니다.</td>
-                                    <td>지출결의서</td>
-                                    <td>2024.03.12</td>
-                                    <td>진행중</td>
-                                </tr>
-                            </tbody>
+                            <c:forEach items="${list}" var="vo">
+	                            <c:if test="${vo.writerId eq user.id && vo.temp ==1}">
+		                            <tbody>
+		
+			                                    <tr>
+			                                        <td>${vo.id}</td>
+			                                        
+			                                        
+			                                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> <td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.title}</a></td></c:if>
+			                                        
+			                                        
+			                                        <td>${vo.templateVO.tempName}</td>
+			                                        <td>${vo.writeDate}</td>
+			                                        <td>임시저장</td>
+			                                    </tr>
+		                                    
+		                            </tbody>
+	                            </c:if>
+                           </c:forEach>
                         </table>
                     </div>
                 </div>
@@ -78,6 +91,7 @@
         </div>
     </section>
 </main><!-- End #main -->
+<script src="/js/document/tempList.js"></script>
 <!-- ======= Footer ======= -->
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->

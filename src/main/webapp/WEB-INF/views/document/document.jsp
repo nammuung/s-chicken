@@ -25,19 +25,19 @@
    	<div class="container mb-4" name="categorySelect">
 		<ul
 			class="nav nav-pills list-group-horizontal d-flex justify-content-center" id="cateList"
-			name="categorySelect">
+			name="category">
 			
 			<li class="nav-item px-2"><a
-				class="nav-link active BOARDCATEGORY" href="#" data-category="all">전체</a></li>
+				class="nav-link active BOARDCATEGORY" href="/document/document?category=all" data-category="all">전체</a></li>
 				
 			<li class="nav-item px-2" name="category0" id="category0"><a
-				class="nav-link BOARDCATEGORY" href="#" data-category="category0">진행</a></li>
+				class="nav-link BOARDCATEGORY" href="/document/document?category=category0" data-category="category0">진행</a></li>
 				
 			<li class="nav-item px-2" name="category1" id="category1"><a
-				class="nav-link BOARDCATEGORY" href="#" data-category="category1">반려</a></li>
+				class="nav-link BOARDCATEGORY" href="/document/document?category=category1" data-category="category1">반려</a></li>
 				
 			<li class="nav-item px-2" name="category2" id="category2"><a
-				class="nav-link BOARDCATEGORY" href="#" data-category="category2">완료</a></li>
+				class="nav-link BOARDCATEGORY" href="/document/document?category=category2" data-category="category2">완료</a></li>
 		</ul>
 	</div>
     

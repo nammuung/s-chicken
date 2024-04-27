@@ -1,6 +1,6 @@
 
 import oc from "/js/orgChart/orgChart.js";
-
+console.log("임시저장함")
 	const myModal = new bootstrap.Modal(document.getElementById("myModal"))
 	const add_btn = document.getElementById("addbtn")
 	const approval_List = document.getElementById("approval_List");
@@ -8,16 +8,59 @@ import oc from "/js/orgChart/orgChart.js";
 	const register = document.getElementById("register");
 	const modal_show = document.getElementById("modal_show");
 	const sangsin = document.getElementById("sangsin");
-	const tempSave = document.getElementById("tempSave");
+	const updateSave = document.getElementById("updateSave");
 	const frm= document.querySelector("form");
-	
+	const approve = document.querySelectorAll(".sign_member_wrap");		
 	const cancel = document.getElementById("cancel");
 	
 		
 	let employeeArr =[];
 	let rankArr=[];
 	let resultArr=[];
-	 let relativePath = '/document/pay/pay';
+	let relativePath = '/document/pay/pay';
+    let arr =[];
+	let getData;
+	let del_app;
+	
+	rankArr=[0];
+	employeeArr=[approve[0].querySelector(".sign_date").getAttribute("data-id")];
+	resultArr=[1];
+	
+	window.onload = function() {
+    for (let i = 1; i < approve.length; i++) {
+        const id = approve[i].querySelector(".sign_date").getAttribute("data-id");
+        const get_level = approve[i].querySelector(".sign_date").getAttribute("data-level");
+        const name = approve[i].querySelector(".sign_date").getAttribute("data-name");
+
+        console.log(id);
+
+        if (id != null) {
+            arr.push(id);
+            let str = `<li class="list-group-item" data-id="${id}" data-name="${name}" data-level="${get_level}">
+                            <i class="bi bi-arrow-down-up handle"></i>
+                                ${get_level} ${name}
+                            </li>`;
+            approval_List.innerHTML += str;
+        }
+    }
+
+    let goList = approval_List.querySelectorAll("li");
+    let approve_arr = 4 - arr.length;
+
+    for (let i = approve_arr, j = 1; i <= 3; i++, j++) {
+        approve[i].querySelector("#name").innerHTML = goList[i - approve_arr].getAttribute("data-name");
+        approve[i].querySelector(".sign_rank").innerHTML = goList[i - approve_arr].getAttribute("data-level");
+
+        rankArr.push(j);
+        employeeArr.push(goList[i - approve_arr].getAttribute("data-id"));
+        resultArr.push(0);
+
+        console.log(resultArr);
+        console.log(rankArr);
+        console.log(employeeArr);
+    }
+};
+	
 	 
 	cancel.addEventListener("click",()=>{
 		const isConfirmed = confirm("정말로 취소하시겠습니까?");
@@ -27,16 +70,7 @@ import oc from "/js/orgChart/orgChart.js";
 		}
 	})
 	
-/*	tempSave.addEventListener("click",(e)=>{
-		e.preventDefault();
-		
-		const formData= new Formdata(frm);
-		
-		
-		
-	})*/
-	
-		tempSave.addEventListener("click",(e)=>{
+		updateSave.addEventListener("click",(e)=>{
 		e.preventDefault();
 		
 		const formData = new FormData(frm);
@@ -45,7 +79,7 @@ import oc from "/js/orgChart/orgChart.js";
 		formData.append("employeeId",employeeArr)
 		formData.append("rank",rankArr)
 		formData.append("result",resultArr)
-		fetch('/document/temp',{
+		fetch('/document/tempTotemp',{
 			method:"post",
 			body:formData,
 		}).then(r=>console.log(r))
@@ -56,39 +90,34 @@ import oc from "/js/orgChart/orgChart.js";
 	})
 	 
 	sangsin.addEventListener("click",(e)=>{
-		e.preventDefault();		
+		e.preventDefault();	
 		
 		const formData = new FormData(frm);
-		formData.append("content", editor.getData())
-		
+		formData.append("content", editor.getData())		
 		
 		if(editor.getData()==""){
 			alert("사유를 입력하세요")
 			return
-		}
-		
-		
+		}		
 		
 		if(employeeArr[1]===undefined){
 			alert("결재자는 1명이상 입니다")
 			return
-		}
-		
+		}		
 		
 		formData.append("employeeId",employeeArr)
 		formData.append("rank",rankArr)
 		formData.append("result",resultArr)
-		fetch('/document/add',{
+		console.log(formData);
+		fetch('/document/tempToSang',{
 			method:"post",
 			body:formData,
 		}).then(r=>console.log(r))
 		.then(r=>{
 			alert("상신 되었습니다")
-			window.close(relativePath);
+			
 		})
 	})
-	
-//	window.close(relativePath)
 	
 function hyuga(){
     
@@ -135,8 +164,7 @@ function hyuga(){
   
   oc.init("note-message-org-chart", onSelectOrgChart, 'person', false);
   
-  let arr =[];
-  let getData;
+
   //내가 직접 선택한 콜백함수
   function onSelectOrgChart(data){
 	getData=data;
@@ -167,17 +195,19 @@ function hyuga(){
 						<i class="bi bi-arrow-down-up handle"></i>
 							${getData.name}
 						</li>`
-				approval_List.innerHTML += str;
-		}			
+			approval_List.innerHTML += str;
+		}
 	})
-	let del_app;
+
+	
 	approval_List.addEventListener("click",(e)=>{
 		del_app=e.target;
 		
 		console.log(e.target.getAttribute("data-id"))
 		
 	})
-		del_btn.addEventListener("click",()=>{
+	
+	del_btn.addEventListener("click",()=>{
 			
 			let real_del = del_app.getAttribute("data-id")
 			let bool = false;
@@ -194,38 +224,28 @@ function hyuga(){
 		console.log(arr);			
 			
 	})
-		
-			const zeroRank = document.getElementById("zeroRank").value;
-			const zeroId = document.getElementById("zeroId").value;
-			const zeroResult = document.getElementById("zeroResult").value;
-			rankArr=[zeroRank];
-			employeeArr=[zeroId];
-			resultArr=[zeroResult];
-		register.addEventListener("click",()=>{
 			
 			
-			let goList = approval_List.querySelectorAll("li")
-
+		register.addEventListener("click",()=>{									
 			
-			const approve = document.querySelectorAll(".sign_member_wrap");			
-			const element_level = approve[0].querySelector("#name");
+			const element_level = approve[0].querySelector("#name");			
 			
-			console.log(element_level)
-			
+			console.log(element_level)	
+			    let goList = approval_List.querySelectorAll("li");
+			    let approve_arr = 4 - arr.length;		
 
 			for(let i = 1 ; i<3;i++){
 			
-			
 			approve[i].querySelector(".sign_rank").innerHTML ="";
 			approve[i].querySelector("#name").innerHTML ="";
-			rankArr=[zeroRank];
-			employeeArr=[zeroId];
-			resultArr=[zeroResult];
+			
+			rankArr=[approve[0].querySelector(".sign_rank").innerHTML];
+			employeeArr=[approve[0].querySelector(".sign_date").innerHTML];
+			resultArr=[1];
 			
 			}
 			
 			
-			let approve_arr = 4 - arr.length;			
 			
 			for(let i = approve_arr, j = 1 ; i <= 3;i++,j++){
 			approve[i].querySelector("#name").innerHTML = goList[i-approve_arr].getAttribute("data-name");
@@ -261,6 +281,8 @@ function hyuga(){
 	modal_show.addEventListener("click",()=>{
 		myModal.show();
 	})
+	
+	
 let editor
 ClassicEditor
 	    .create(document.querySelector('#editor'))
@@ -274,10 +296,6 @@ ClassicEditor
     console.error(error);
 });
 
-		
-		
-		
-		
 		
 		
 		

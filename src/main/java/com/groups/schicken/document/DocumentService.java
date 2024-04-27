@@ -20,6 +20,12 @@ public class DocumentService {
 		return documentDAO.getEx(employeeVO);
 	}
 	
+	public List<DocumentVO> getDetail(DocumentVO documentVO)throws Exception{
+		
+		return documentDAO.getDetail(documentVO);
+	}
+	
+	
 	public List<DocumentVO> approvalDetail(DocumentVO documentVO)throws Exception{
 		
 		return documentDAO.approvalDetail(documentVO);
@@ -43,19 +49,32 @@ public class DocumentService {
 		return ar;
 		
 	}
-	public List<DocumentVO> list(DocumentVO documentVO,TemplateVO templateVO,Pager pager)throws Exception{
+	public List<DocumentVO> list(DocumentVO documentVO,TemplateVO templateVO,Pager pager,String cate)throws Exception{
 		Map<String, Object> map = new HashMap<String,Object>();
+
+		map.put("documentVO", documentVO);
+		map.put("pager", pager);
+		map.put("category", cate);
+		
+		pager.makeIndex();
+		pager.makeNum(documentDAO.allTotalCount(map));
+		System.out.println("123"+map);
 		
 		
+		return documentDAO.allList(map);
+	}
+	
+	public List<DocumentVO> tempList(DocumentVO documentVO,TemplateVO templateVO,Pager pager)throws Exception{
+		Map<String, Object> map = new HashMap<String,Object>();
+
 		map.put("documentVO", documentVO);
 		map.put("pager", pager);
 		
 		pager.makeIndex();
 		pager.makeNum(documentDAO.allTotalCount(map));
+
 		
-		
-		
-		return documentDAO.allList(map);
+		return documentDAO.tempList(map);
 	}
 	
 	public int add(DocumentVO documentVO)throws Exception{
@@ -73,13 +92,20 @@ public class DocumentService {
 		
 	}
 	
-	
-	
-	public List<DocumentVO> getDetail(DocumentVO documentVO)throws Exception{
+	public int tempToSang(DocumentVO documentVO)throws Exception{
+		int result = documentDAO.tempTosang(documentVO);
 		
-		return documentDAO.getDetail(documentVO);
+		return result;
 	}
 	
+	public int tempToSangApp(ApprovalVO approvalVO)throws Exception{
+		int result = documentDAO.tempTosangapp(approvalVO);
+		
+		return result;
+	}
+	
+	
+
 	public int resultUpdate(ApprovalVO approvalVO)throws Exception{
 		int result = documentDAO.resultUpdate(approvalVO);		
 		result = documentDAO.statusUpdate(approvalVO);

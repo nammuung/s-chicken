@@ -51,7 +51,15 @@
                     <tr>
                         <td style="padding: 0px !important; border: 0px currentColor; border-image: none;text-align: right;font-weight: bold; vertical-align: middle;"
                         colspan="2" class="">
-                                                        
+                            <c:if test="${list[0].temp eq 1}">
+                                <div class="mb-2">
+                                    <button class="btn btn-primary">인쇄미리보기</button>
+                                    <button class="btn btn-primary" id="sangsin">상신</button>
+                                    <button class="btn btn-primary" type="button" id = "cancel">취소</button>
+                                </div>
+                                    <button class="btn btn-primary">불러오기</button>
+                                    <button class="btn btn-primary" id="updateSave">임시저장</button>
+                            </c:if>                          
                         </td>
                     </tr>
 
@@ -61,21 +69,18 @@
                             colspan="2" class=""> 상여금신청서
                             <div style="text-align: right;">
                             
-                            	<c:if test="${list[0].temp eq 1}">
-	                            	<div class="mb-2">
-		                                <button class="btn btn-primary">인쇄미리보기</button>
-		                                <button class="btn btn-primary" id="sangsin">상신</button>
-		                                <button class="btn btn-primary" type="button" id = "cancel">취소</button>
-	                            	</div>
-			                            <button class="btn btn-primary">불러오기</button>
-			                            <button class="btn btn-primary" id="updateSave">임시저장</button>
-								</c:if>
+                            	
 								
-								<c:if test="${list[nowCount].approvalVOs[0].employeeId eq user.id}">      
+								<c:if test="${list[nowCount].approvalVOs[0].employeeId eq user.id and list[0].temp eq 0}">      
                                 	<button id="approval_btn" type="button" class="btn btn-primary">결재하기</button>
                                 	<button id="refuse_btn" type="button" class="btn btn-primary">반려하기</button>
                                 </c:if>
-                        	
+
+                                <c:if test="${list[0].temp eq 1}">
+                                    <button type="button" id="modal_show" class="btn btn-primary">
+                                        결재선지정
+                                    </button>
+                                </c:if>
 
                             </div>
                         </td>
@@ -164,7 +169,7 @@
                                     <span class="sign_member_wrap">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank">${list[0].level}</span>
+                                                <span class="sign_rank">${list[0].codeVO.name}</span>
                                             </span>
                                             <span class="sign_date_wrap">
                                                 <span class="sign_date ">${list[0].employeeVO.name}</span>
@@ -223,7 +228,7 @@
 	                                    <span class="sign_member_wrap haveId" id="">
 	                                        <span class="sign_member">                                           
 	                                            <span class="sign_rank_wrap">
-	                                                <span class="sign_rank">${vo.level}</span>
+	                                                <span class="sign_rank">${vo.codeVO.name}</span>
 	                                            </span>
 	                                            <span class="sign_date_wrap">
 	                                                <span class="sign_date" data-id="${vo.employeeVO.id}">${vo.employeeVO.name}</span>
@@ -313,6 +318,71 @@
             <input type="file" name="attach">
             </div> -->            
    	</form>
+
+        <!-- The Modal -->
+	<div class="modal" id="myModal">
+        <div class="modal-dialog modal-dialog-scrollable" id="modalContent">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header" >
+              <h4 class="modal-title">결재선지정</h4>
+              <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+              <!-- 모달 내용 시작 -->
+              <div class="container-fluid mmdd">
+                <div class="row mmdd">
+                  <div class="col-md-5 card mmdd">
+                      <div class="card-body">
+                      조직도
+                          <div id="note-message-org-chart"></div>
+                      </div>
+  
+                  </div>
+                  <div class="col-md-2 mmdd d-flex justify-content-center align-items-center flex-column">
+                      <div class="text-center">
+                          <button class="btn btn-primary btn-sm mb-3" id="addbtn"> >> </button>
+                      </div>
+                      <div class="text-center">
+                          <button class="btn btn-primary btn-sm mt-3" id="delbtn"> &lt;&lt; </button>
+                      </div>
+                  </div>
+                  <div class="col-md-5 mmdd">
+                    <div id="right-top" class="row ssdd" style="background-color: lightblue;">
+                        <div style="text-align: left;">결재자</div>
+  
+                        <div>
+                          <ul class="list-group" id="approval_List">
+  
+                          </ul>
+                        </div>
+  
+                        <div class="text-right mt-2 align-self-end">
+                            <div class="col-auto">
+                                <div class="mb-2">
+                                <button class="btn btn-primary btn-sm">저장하기</button>
+                                <button class="btn btn-primary btn-sm" id="register">등록하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="right-bottom" class="row ssdd" style="background-color: lightgreen;">
+                      <div style="text-align: left;">나의 결재목록</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 모달 내용 끝 -->
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
 <%--    	<c:forEach items="${list}" var="com">
    		<c:forEach items="${com.approvalVOs}" var="get">
     	<div>${get.comment}</div>
@@ -327,7 +397,7 @@
 					<div class="d-flex">
 						<div class="me-3">
 							<div>${list[nowCount-1].employeeVO.name}</div>
-							<div>${list[nowCount-1].level}</div>                                        
+							<div>${list[nowCount-1].codeVO.name}</div>                                        
 						</div>
 						<div>							
 							<div data-text="area" data-id="" ></div>

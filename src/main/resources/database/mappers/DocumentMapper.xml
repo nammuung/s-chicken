@@ -4,6 +4,14 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.groups.schicken.document.DocumentDAO">
+	
+	<sql id="categori">
+		<choose>
+			<when test="category != null and category.equals('category0')">AND doc.status='0'</when>
+			<when test="category != null and category.equals('category1')">AND doc.status='2'</when>
+			<when test="category != null and category.equals('category2')">AND doc.status='1'</when>
+		</choose>
+	</sql>
 
   	<sql id="search">
 		<choose>
@@ -30,6 +38,33 @@
 		<association property="department" autoMapping="true" javaType="DepartmentVO" columnPrefix="departmant_"/>
 		<association property="position" javaType="CodeVO" autoMapping="true" columnPrefix="code_"/>
 	</resultMap>
+	
+	<resultMap id="allListResult" type="DocumentVO" autoMapping="true">
+		<association property="templateVO" javaType="TemplateVO" autoMapping="true"/>
+		<association property="employeeVO" javaType="EmployeeVO" autoMapping="true" columnPrefix="employee_"/>
+		<association property="department" javaType="DepartmentVO" autoMapping="true" columnPrefix="department_"/>
+		<association property="codeVO" javaType="CodeVO" autoMapping="true" columnPrefix="code_"/>	
+		<collection property="approvalVOs" javaType="List" ofType="ApprovalVO" autoMapping="true"/>
+	</resultMap>
+	
+	<select id="getDetail" resultMap="allListResult">
+		SELECT doc.*,
+		tem.*,		
+		app.*,	
+		e.name employee_name,
+		e.id employee_id,	
+		d.name department_name,
+		c.name code_name
+		FROM document doc
+		LEFT JOIN template tem ON doc.template_id = tem.temp_id
+		LEFT JOIN approval app ON app.document_id = doc.id
+		INNER JOIN employee e ON e.id=app.employee_id 
+		INNER JOIN department d on d.id=e.department_id 
+		INNER join code c on c.id=e.pos_id and c.type_id =300
+		WHERE doc.id=#{id} 
+		ORDER BY app.rank		
+	</select>
+	
 	
 	<!-- DepartmentVO department;
 		CodeVO position; -->
@@ -58,6 +93,8 @@
 		SET status=2
 		WHERE a.result=2 
 	</update>
+	
+	
 	
 	<sql id="totalResult">
 		(SELECT count(*) AS "total",document_id FROM approval a 
@@ -103,7 +140,17 @@
 		tem.*		
 		FROM document doc
 		LEFT JOIN template tem ON doc.template_id = tem.temp_id		
-		WHERE doc.temp=0 <include refid="search"/>
+		WHERE doc.temp=0 <include refid="search"/> <include refid="categori"/>
+		ORDER BY id DESC
+		LIMIT #{pager.startIndex},#{pager.perPage}
+	</select>
+	
+	<select id="tempList" resultMap="allListResult">
+		SELECT doc.*,
+		tem.*		
+		FROM document doc
+		LEFT JOIN template tem ON doc.template_id = tem.temp_id		
+		WHERE doc.temp=1 <include refid="search"/>
 		ORDER BY id DESC
 		LIMIT #{pager.startIndex},#{pager.perPage}
 	</select>
@@ -121,32 +168,21 @@
 		VALUES(#{documentId},#{employeeId},#{rank},#{result},#{date},#{comment})
 	</insert>
 	
+	<update id="tempTosang">
+		UPDATE document
+		SET id=#{id}, title = #{title}, content = #{content}, start = #{start},  end = #{end},  write_date = #{writeDate},  status = #{status}, template_id = #{templateId},
+    			writer_id = #{writerId}, temp = #{temp}, count = #{count}
+    	WHERE id=#{id}
+	</update>
 	
-	<resultMap id="allListResult" type="DocumentVO" autoMapping="true">
-		<association property="templateVO" javaType="TemplateVO" autoMapping="true"/>
-		<association property="employeeVO" javaType="EmployeeVO" autoMapping="true" columnPrefix="employee_"/>
-		<association property="department" javaType="DepartmentVO" autoMapping="true" columnPrefix="department_"/>		
-		<collection property="approvalVOs" javaType="List" ofType="ApprovalVO" autoMapping="true"/>
-	</resultMap>
+	<update id="tempTosangapp">
+	UPDATE approval	
+	SET  document_id = #{documentId}, employee_id = #{employeeId}, rank = #{rank}, result = #{result},  date = #{date}, comment = #{comment}
+	WHERE document_id=#{documentId}
+	</update>
 	
-	<select id="getDetail" resultMap="allListResult">
-		SELECT doc.*,
-		tem.*,		
-		app.*,	
-		e.name employee_name,
-		e.id employee_id,	
-		d.name department_name,
-		c.name "level"
-		FROM document doc
-		LEFT JOIN template tem ON doc.template_id = tem.temp_id
-		LEFT JOIN approval app ON app.document_id = doc.id
-		INNER JOIN employee e ON e.id=app.employee_id 
-		INNER JOIN department d on d.id=e.department_id 
-		INNER join code c on c.id=e.pos_id and c.type_id =300
-		WHERE doc.id=#{id} 
-		ORDER BY app.rank		
-	</select>
 	
+
 
 	
 	<select id="allTotalCount" parameterType="Map" resultType="Long">

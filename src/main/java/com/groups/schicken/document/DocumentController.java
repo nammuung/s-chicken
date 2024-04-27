@@ -3,6 +3,7 @@ package com.groups.schicken.document;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -65,13 +66,16 @@ public class DocumentController {
 	
 	
 	@GetMapping("document")
-	public void documentList(@AuthenticationPrincipal EmployeeVO employeeVO,@RequestParam String categori,Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
-		System.out.println(employeeVO);
-		
-		System.out.println(categori);
+	public void documentList(String cate,@AuthenticationPrincipal EmployeeVO employeeVO,@RequestParam Map<String, Object> map,Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
+		System.out.println(map);
+		System.out.println(cate);
+		cate=(String)map.get("category");		
 		
 		documentVO.setWriterId(employeeVO.getId());
-		List<DocumentVO> ar = documentService.list(documentVO, templateVO, pager);
+		
+		List<DocumentVO> ar = documentService.list(documentVO, templateVO, pager,cate);
+		
+		System.out.println(ar);
 		
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
@@ -81,65 +85,35 @@ public class DocumentController {
 	public void documentRef() {
 		
 	}
-	@GetMapping("temp")
-	public void documentTemp() {
+	@GetMapping("tempList")
+	public void documentTemp(@AuthenticationPrincipal EmployeeVO employeeVO,Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
 		
+		documentVO.setWriterId(employeeVO.getId());
+		
+		List<DocumentVO> ar = documentService.tempList(documentVO, templateVO, pager);
+		
+		System.out.println(ar);
+		
+		model.addAttribute("list", ar);
+		model.addAttribute("pager", pager);		
 	}
+	
+	
+	
 	@GetMapping("exList/bonus")
 	public void sang(@AuthenticationPrincipal EmployeeVO employeeVO,Model model) throws Exception {
 		employeeVO = documentService.getEx(employeeVO);
 		
 		model.addAttribute("list", employeeVO);
 	}
-	@GetMapping("exList/pay")
-	public void pay() {
+	
+	@GetMapping("temp/temp")
+	public void tempBonus(DocumentVO documentVO,Model model)throws Exception{
+		List<DocumentVO> ar=documentService.getDetail(documentVO);
 		
+		
+		model.addAttribute("list", ar);
 	}
-	
-	@PostMapping("add")
-
-	public ResponseEntity<?> add(DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach,TemplateVO templateVO)throws Exception{
-		ApprovalVO approvalVO = new ApprovalVO();
-		
-		String ranks = (String) map.get("rank");
-		String ids = (String)map.get("employeeId");
-		String results = (String)map.get("result");
-		String[] rankArray = ranks.split(",");
-		String[] idsArray = ids.split(",");
-		String[] resultArray= results.split(",");
-		String[] date = documentVO.getWriteDate().split(" ");
-		
-		documentVO.setWriteDate(date[0]);
-		documentVO.setCount(rankArray.length);
-		
-		int result = documentService.add(documentVO);
-		approvalVO.setDocumentId(documentVO.getId());
-				
-		
-		Long[] longRankArray = new Long[rankArray.length];
-		Long[] longIdsArray = new Long[idsArray.length]; 
-		int[] longResultArray = new int[resultArray.length];
-
-		// 문자열 배열의 각 요소를 롱타입으로 변환하여 새롭게 생성한 롱타입 배열에 저장합니다.
-		for (int i = 0; i < rankArray.length; i++) {
-		    longRankArray[i] = Long.parseLong(rankArray[i]);
-		    longIdsArray[i] = Long.parseLong(idsArray[i]);
-		    longResultArray[i] = Integer.parseInt(resultArray[i]);
-		    
-		    approvalVO.setRank(longRankArray[i]);
-		    approvalVO.setEmployeeId(longIdsArray[i]);
-		    approvalVO.setResult(longResultArray[i]);
-		    
-		    
-		    
-		    result = documentService.appAdd(approvalVO);
-		}
-		
-
-		return ResponseEntity.ok(documentVO);
-	}
-	
-	
 	
 	@GetMapping("writenList/writenBonus")
 	public void writenBonus(DocumentVO documentVO,Model model)throws Exception{
@@ -164,4 +138,174 @@ public class DocumentController {
 		model.addAttribute("list", ar);
 	}
 	
+
+
+	
+	@GetMapping("exList/pay")
+	public void pay() {
+		
+	}
+	
+	@PostMapping("temp")
+	public ResponseEntity<?> addTemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach,TemplateVO templateVO)throws Exception{
+		ApprovalVO approvalVO = new ApprovalVO();
+		
+		String ranks = (String) map.get("rank");
+		String ids = (String)map.get("employeeId");
+		String results = (String)map.get("result");
+		String[] rankArray = ranks.split(",");
+		String[] idsArray = ids.split(",");
+		String[] resultArray= results.split(",");
+		String[] date = documentVO.getWriteDate().split(" ");
+		
+		documentVO.setWriteDate(date[0]);
+		documentVO.setCount(rankArray.length);
+		documentVO.setTemp(1);
+		
+		int result = documentService.add(documentVO);
+		approvalVO.setDocumentId(documentVO.getId());
+				
+		
+		Long[] longRankArray = new Long[rankArray.length];
+		Long[] longIdsArray = new Long[idsArray.length]; 
+		int[] longResultArray = new int[resultArray.length];
+
+		// 문자열 배열의 각 요소를 롱타입으로 변환하여 새롭게 생성한 롱타입 배열에 저장합니다.
+		for (int i = 0; i < rankArray.length; i++) {
+		    longRankArray[i] = Long.parseLong(rankArray[i]);
+		    longIdsArray[i] = Long.parseLong(idsArray[i]);
+		    longResultArray[i] = Integer.parseInt(resultArray[i]);
+		    
+		    approvalVO.setRank(longRankArray[i]);
+		    approvalVO.setEmployeeId(longIdsArray[i]);
+		    approvalVO.setResult(longResultArray[i]);		    
+		    
+		    result = documentService.appAdd(approvalVO);
+		}
+		
+
+		return ResponseEntity.ok(documentVO);
+	}
+	
+	@PostMapping("tempTotemp")
+	public ResponseEntity<?> tempTotemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
+		ApprovalVO approvalVO = new ApprovalVO();
+		
+		String ranks = (String) map.get("rank");
+		String ids = (String)map.get("employeeId");
+		String results = (String)map.get("result");
+		String[] rankArray = ranks.split(",");
+		String[] idsArray = ids.split(",");
+		String[] resultArray= results.split(",");
+		String[] date = documentVO.getWriteDate().split(" ");
+		
+		documentVO.setTemp(1);
+		documentVO.setCount(rankArray.length);
+		
+		int result = documentService.tempToSang(documentVO);
+		approvalVO.setDocumentId(documentVO.getId());
+				
+		
+		Long[] longRankArray = new Long[rankArray.length];
+		Long[] longIdsArray = new Long[idsArray.length]; 
+		int[] longResultArray = new int[resultArray.length];
+
+		// 문자열 배열의 각 요소를 롱타입으로 변환하여 새롭게 생성한 롱타입 배열에 저장합니다.
+		for (int i = 0; i < rankArray.length; i++) {
+		    longRankArray[i] = Long.parseLong(rankArray[i]);
+		    longIdsArray[i] = Long.parseLong(idsArray[i]);
+		    longResultArray[i] = Integer.parseInt(resultArray[i]);
+		    
+		    approvalVO.setRank(longRankArray[i]);
+		    approvalVO.setEmployeeId(longIdsArray[i]);
+		    approvalVO.setResult(longResultArray[i]);		    
+		    
+		    result = documentService.tempToSangApp(approvalVO);
+		}
+		return ResponseEntity.ok(documentVO);
+	}
+	
+ 
+	@PostMapping("tempToSang")
+	public ResponseEntity<?> tempToSang(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
+		ApprovalVO approvalVO = new ApprovalVO();
+		
+		String ranks = (String) map.get("rank");
+		String ids = (String)map.get("employeeId");
+		String results = (String)map.get("result");
+		String[] rankArray = ranks.split(",");
+		String[] idsArray = ids.split(",");
+		String[] resultArray= results.split(",");
+		String[] date = documentVO.getWriteDate().split(" ");
+		
+		documentVO.setTemp(0);
+		documentVO.setCount(rankArray.length);
+		
+		int result = documentService.tempToSang(documentVO);
+		approvalVO.setDocumentId(documentVO.getId());
+				
+		
+		Long[] longRankArray = new Long[rankArray.length];
+		Long[] longIdsArray = new Long[idsArray.length]; 
+		int[] longResultArray = new int[resultArray.length];
+
+		// 문자열 배열의 각 요소를 롱타입으로 변환하여 새롭게 생성한 롱타입 배열에 저장합니다.
+		for (int i = 0; i < rankArray.length; i++) {
+		    longRankArray[i] = Long.parseLong(rankArray[i]);
+		    longIdsArray[i] = Long.parseLong(idsArray[i]);
+		    longResultArray[i] = Integer.parseInt(resultArray[i]);
+		    
+		    approvalVO.setRank(longRankArray[i]);
+		    approvalVO.setEmployeeId(longIdsArray[i]);
+		    approvalVO.setResult(longResultArray[i]);		    
+		    
+		    result = documentService.tempToSangApp(approvalVO);
+		}
+		return ResponseEntity.ok(documentVO);
+	}
+	
+	@PostMapping("add")
+
+	public ResponseEntity<?> add(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
+		ApprovalVO approvalVO = new ApprovalVO();
+		
+		String ranks = (String) map.get("rank");
+		String ids = (String)map.get("employeeId");
+		String results = (String)map.get("result");
+		String[] rankArray = ranks.split(",");
+		String[] idsArray = ids.split(",");
+		String[] resultArray= results.split(",");
+		String[] date = documentVO.getWriteDate().split(" ");
+		
+		
+		documentVO.setCount(rankArray.length);
+		
+		int result = documentService.add(documentVO);
+		approvalVO.setDocumentId(documentVO.getId());
+				
+		
+		Long[] longRankArray = new Long[rankArray.length];
+		Long[] longIdsArray = new Long[idsArray.length]; 
+		int[] longResultArray = new int[resultArray.length];
+
+		// 문자열 배열의 각 요소를 롱타입으로 변환하여 새롭게 생성한 롱타입 배열에 저장합니다.
+		for (int i = 0; i < rankArray.length; i++) {
+		    longRankArray[i] = Long.parseLong(rankArray[i]);
+		    longIdsArray[i] = Long.parseLong(idsArray[i]);
+		    longResultArray[i] = Integer.parseInt(resultArray[i]);
+		    
+		    approvalVO.setRank(longRankArray[i]);
+		    approvalVO.setEmployeeId(longIdsArray[i]);
+		    approvalVO.setResult(longResultArray[i]);		    
+		    
+		    result = documentService.appAdd(approvalVO);
+		}
+		
+
+		return ResponseEntity.ok(documentVO);
+	}
+	
 }
+	
+	
+	
