@@ -5,8 +5,6 @@ import {
     addOrder,
     getOrder,
     getOrderList,
-    getOrderSheet,
-    getOrderSheetList,
     updateOrder,
     updateOrderDetail
 } from "../api/order.js";
@@ -124,7 +122,7 @@ async function searchOrder(){
         formData.append("id", ids[0])
         formData.delete("totalId")
     }
-    const result = await getOrderSheetList(formData);
+    const result = await getOrderList(formData);
     const datas = result.data;
     console.log(datas)
     datas.forEach((data,index) => {
@@ -153,7 +151,8 @@ let tempDeliver = [];
 //상세 검색
 async function searchDetail(id){
     isChanged.change = false;
-    const result = await getOrderSheet(id);
+    const ids = id.split("-");
+    const result = await getOrder(ids[0], ids[1]);
     const data = result.data;
     tempDeliver = [];
     const detailItems =
@@ -215,7 +214,6 @@ saveChangeButton.addEventListener("click", async function () {
             },
         })
     })
-    console.log(orderDetails)
     const result = await updateOrderDetail(orderDetails);
     alert(result.message);
     if(result.status == "OK"){
@@ -270,7 +268,6 @@ orderPreviewButton.addEventListener("click",  async function(){
 itemHot.addHook("afterChange", changes => {
     changes?.forEach(async ([row, prop, before, after]) => {
         const quantity = itemHot.getDataAtRowProp(row, "quantity");
-        console.log(tempDeliver[row])
         if(prop == 'status'  && after && before != after) {
             if(after == "완료") {
                 itemHot.setDataAtRowProp(row,"deliverQuantity",quantity);
@@ -292,7 +289,6 @@ itemHot.addHook("afterChange", changes => {
                 itemHot.setDataAtRowProp(row,"status","완료");
             }
             if(after < quantity) {
-                console.log(after, quantity)
                 itemHot.setDataAtRowProp(row,"status","진행");
             }
             isChanged.change = true;

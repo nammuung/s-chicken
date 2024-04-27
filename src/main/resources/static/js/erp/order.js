@@ -94,7 +94,7 @@ const orderTableOptions = {
     columns : [
         {renderer:orderCheckboxRenderer},
         {data:"id"},
-        {data:"content"},
+        {data:"comment"},
         {data:"writeDate"},
         {data:"employee.name"},
     ],
@@ -115,13 +115,6 @@ async function searchOrder(){
     const formData = new FormData(searchForm);
     const result = await getOrderList(formData);
     const datas = result.data;
-    datas.forEach((data,index) => {
-        if(data.orderDetails.length == 1){
-            data.content = `${data.orderDetails[0].item.product.name}`
-        } else {
-            data.content = `${data.orderDetails[0].item.product.name} 외 ${data.orderDetails.length-1}개`
-        }
-    })
     orderHot.loadData(datas);
     supplierHot.loadData([]);
     itemHot.loadData([]);
@@ -138,7 +131,9 @@ async function searchOrder(){
 //상세 검색
 let detailItems = [];
 async function searchDetail(id){
-    const result = await getOrder(id);
+    const formData = new FormData();
+    formData.append("id", id);
+    const result = await getOrderList(formData);
     const datas = result.data;
     detailItems = [];
     datas.forEach((data,index) => {
@@ -151,7 +146,6 @@ async function searchDetail(id){
         data.vat = Math.floor(data.price / 10).toLocaleString()+"원";
         data.price = Math.floor(data.price).toLocaleString()+"원";
         data.status = orderStatusToKR(data.status);
-        console.log(data)
         detailItems.push({id:data.supplier.id,orderDetails:data.orderDetails.map(orderDetail=> {
                 orderDetail.totalPrice = (orderDetail.price * orderDetail.quantity).toLocaleString()+"원";
                 orderDetail.price = orderDetail.price.toLocaleString()+"원"

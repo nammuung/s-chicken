@@ -22,6 +22,10 @@ public class OrderService {
         return orderMapper.getOrderList(orderVO);
     }
 
+    public OrderVO getOrder(OrderVO orderVO) throws Exception {
+        return orderMapper.getOrder(orderVO);
+    }
+
     public int addOrder(List<OrderDetailVO> orderDetailVOList, EmployeeVO employeeVO) throws Exception {
         HashMap<String, OrderVO> orderListMap = new HashMap<>();
         for(OrderDetailVO orderDetailVO : orderDetailVOList){
@@ -62,21 +66,9 @@ public class OrderService {
         return 1;
     }
 
-    public List<OrderVO> getOrderDetail(OrderVO orderVO) throws Exception {
-        return orderMapper.getOrderDetail(orderVO);
-    }
-
     public int updateOrder(OrderVO orderVO) throws Exception {
         orderVO.setOrderDate(DateManager.getTodayDate());
         return orderMapper.updateOrder(orderVO);
-    }
-
-    public List<OrderVO> getOrderSheetList(OrderVO orderVO) throws Exception {
-        return orderMapper.getOrderSheetList(orderVO);
-    }
-
-    public OrderVO getOrderSheet(OrderVO orderVO) throws Exception {
-        return orderMapper.getOrderSheet(orderVO);
     }
 
     public int updateOrderDetail(List<OrderDetailVO> orderDetailVOList) throws Exception {
@@ -84,7 +76,7 @@ public class OrderService {
         map.put("list", orderDetailVOList);
         Boolean statusTemp = null;
         for (OrderDetailVO orderDetail : orderDetailVOList) {
-            OrderDetailVO prevOrderDetail = orderMapper.getOrderDetailDetail(orderDetail);
+            OrderDetailVO prevOrderDetail = orderMapper.getOrderDetail(orderDetail);
             Integer prevQuantity = prevOrderDetail.getDeliverQuantity();
             if(!Objects.equals(prevQuantity, orderDetail.getDeliverQuantity())){
                 Long difQuantity = (long) (orderDetail.getDeliverQuantity() - prevQuantity);

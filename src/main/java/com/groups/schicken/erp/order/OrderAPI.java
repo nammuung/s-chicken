@@ -33,12 +33,28 @@ public class OrderAPI {
         }
     }
     @GetMapping("orders/{id}")
-    public ResponseEntity<?> getOrderList(@PathVariable Long id) throws Exception {
+    public ResponseEntity<?> getOrder(@PathVariable Long id) throws Exception {
         OrderVO orderVO = new OrderVO();
         orderVO.setId(id);
         try {
-            System.out.println(orderService.getOrderList(orderVO));
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), orderService.getOrderDetail(orderVO)));
+            System.out.println("오더 디테일 : "+orderService.getOrder(orderVO));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), orderService.getOrder(orderVO)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+    @GetMapping("orders/{orderId}/{supplierId}")
+    public ResponseEntity<?> getOrderList(@PathVariable Long orderId,@PathVariable Long supplierId) throws Exception {
+        OrderVO orderVO = new OrderVO();
+        SupplierVO supplierVO = new SupplierVO();
+        orderVO.setId(orderId);
+        supplierVO.setId(supplierId);
+        orderVO.setSupplier(supplierVO);
+        try {
+            System.out.println("오더 디테일 : "+orderService.getOrder(orderVO));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), orderService.getOrder(orderVO)));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -84,7 +100,7 @@ public class OrderAPI {
         System.out.println("startDate = " + startDate);
         System.out.println("endDate = " + endDate);
         try {
-            List<OrderVO> list = orderService.getOrderSheetList(orderVO);
+            List<OrderVO> list = orderService.getOrderList(orderVO);
             if(startDate!=null && endDate != null){
                 list.removeIf(order -> order.getWriteDate().compareTo(startDate) < 0 || order.getWriteDate().compareTo(endDate) > 0);
             }
@@ -105,8 +121,8 @@ public class OrderAPI {
         supplierVO.setId(Long.parseLong(ids[1]));
         orderVO.setSupplier(supplierVO);
         try {
-            System.out.println("orderService.getOrderSheet(orderVO) = " + orderService.getOrderSheet(orderVO));
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), orderService.getOrderSheet(orderVO)));
+            System.out.println("orderService.getOrderSheet(orderVO) = " + orderService.getOrder(orderVO));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), orderService.getOrder(orderVO)));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

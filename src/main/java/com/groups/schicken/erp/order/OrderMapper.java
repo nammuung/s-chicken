@@ -7,13 +7,11 @@ import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
-    List<OrderVO> getOrderDetail(OrderVO orderVO) throws Exception;
+    OrderVO getOrder(OrderVO orderVO) throws Exception;
 
     List<OrderVO> getOrderList(OrderVO orderVO) throws Exception;
-    OrderVO getOrderSheet(OrderVO orderVO) throws Exception;
 
-    List<OrderVO> getOrderSheetList(OrderVO orderVO) throws Exception;
-    OrderDetailVO getOrderDetailDetail(OrderDetailVO orderDetail) throws Exception;
+    OrderDetailVO getOrderDetail(OrderDetailVO orderDetail) throws Exception;
 
     int addOrder(OrderVO orderVO) throws Exception;
 

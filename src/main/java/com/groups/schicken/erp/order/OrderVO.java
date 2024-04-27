@@ -19,4 +19,5 @@ public class OrderVO {
     private String address;
     private EmployeeVO employee;
     private List<OrderDetailVO> orderDetails;
+    private String comment;
 }
