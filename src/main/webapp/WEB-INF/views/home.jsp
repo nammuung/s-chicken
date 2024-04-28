@@ -273,10 +273,10 @@
 					}
 				}
 
+
 				// 입력란 업데이트
 				managerNameInput.value = uniqueNames.join(", ");
-				managerIdInput.value = JSON.stringify(uniqueEmployees.map(employee => ({ value: employee.name })));
-
+				managerIdInput.value = JSON.stringify(uniqueEmployees.map(employee => ({ value: employee.id })));
 				console.log(managerIdInput.value);
 				// 선택된 직원이 없으면 태그 초기화하지 않음
 				if (uniqueNames.length === 0) {
@@ -450,7 +450,7 @@
 											start: arg.start,
 											end: arg.end,
 											allDay: arg.allDay,
-											managerId: managerId
+											employeeId: managerId.value
 
 										}),
 										success: function (response) {

@@ -172,7 +172,9 @@ public class EmployeeController {
 		    }
 
 		employeeVO = employeeService.userDetail(employeeVO);
+		EmployeeProfileVO employeeProfileVO =  employeeService.getProfile(id);
 		model.addAttribute("detail", employeeVO);
+		model.addAttribute("profile", employeeProfileVO);
 		return "employee/profile";
 
 	}

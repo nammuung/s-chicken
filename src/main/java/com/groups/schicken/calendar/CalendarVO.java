@@ -1,6 +1,8 @@
 package com.groups.schicken.calendar;
 
+import java.security.Timestamp;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import com.groups.schicken.calendar.CalendarVO;
 
@@ -9,8 +11,8 @@ import lombok.Data;
 public class CalendarVO {
 
 	public Long id;
-	public Date start;
-	public Date end;
+    public LocalDateTime start;
+    public LocalDateTime end;
 	public String title;
 	public Boolean userYn;
 	public String content;
@@ -21,4 +23,10 @@ public class CalendarVO {
     public Long getCalendareId() {
         return calendarId;
     }
+
+	public Object isAllDay() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

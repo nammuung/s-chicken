@@ -15,5 +15,6 @@ public interface CalendarDAO {
 	
 
 	public List<CalendarVO> calList(CalendarVO calendarVO)throws Exception;
+	public String departmentList (CalendarVO calendarVO)throws Exception;
 	
 }
