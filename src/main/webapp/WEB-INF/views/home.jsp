@@ -308,17 +308,31 @@
 				.then(data => {
 					const names = [];
 
+					// data.forEach(department => {
+					// 	names.push(department.name); // 부서명을 배열에 추가
+					// 	if (department.employees && department.employees.length > 0) {
+					// 		department.employees.forEach(employee => {
+					// 			names.push(employee.name); // 직원의 이름을 배열에 추가.
+					// 		});
+					// 	}
+					// });
+
+
+
 					data.forEach(department => {
-						names.push(department.name); // 부서명을 배열에 추가
+						// 부서명과 부서 ID를 배열에 추가
+						names.push({ id: department.id, name: department.name });
 						if (department.employees && department.employees.length > 0) {
 							department.employees.forEach(employee => {
-								names.push(employee.name); // 직원의 이름을 배열에 추가.
+								// 직원의 이름과 ID를 배열에 추가
+								names.push({ id: employee.id, name: employee.name });
 							});
 						}
 					});
+					managerNameInput.value = names.join(", ");
+			managerIdInput.value = JSON.stringify(names.map(employee => ({ value: employee.id })));
 
 					console.log(names);
-
 					initializeTagify(names);
 				})
 				.catch(error => {
@@ -335,7 +349,11 @@
 					whitelist: names,
 					callbacks: {
 						add: function (e) {
+							const tagName = e.detail.data.value; // 추가된 태그의 이름 가져오기
 							console.log("태그 추가됨: ", e.detail.data);
+							console.log("dlq" + tagName);
+
+
 						},
 						remove: function (e) {
 							console.log("태그 제거됨: ", e.detail.data);
@@ -417,8 +435,9 @@
 								return hour + ':' + minute; // 시간과 분을 합쳐서 반환
 							}
 
+
 							// 모달에서 이벤트 제목 입력 후 저장 버튼 클릭 시
-							$('#saveEventBtn').click(function () {
+							$('#saveEventBtn').off('click').click(function () {
 								var employeeId = $('#emid').val();
 								var content = $('#content').val();
 								if (content.trim() === "") {
@@ -451,12 +470,9 @@
 											end: arg.end,
 											allDay: arg.allDay,
 											employeeId: managerId.value
-
 										}),
 										success: function (response) {
 											console.log('저장 성공:', response);
-
-
 										},
 										error: function (error) {
 											console.error('저장 실패:', error);
@@ -466,8 +482,8 @@
 								calendar.unselect();
 								$('#eventModal').modal('hide'); // 모달 닫기
 							});
-
 						},
+
 					});
 					// 캘린더 랜더링
 					$(document).ready(function () {

@@ -11,8 +11,8 @@ import lombok.Data;
 public class CalendarVO {
 
 	public Long id;
-    public LocalDateTime start;
-    public LocalDateTime end;
+    public Date start;
+    public Date end;
 	public String title;
 	public Boolean userYn;
 	public String content;
