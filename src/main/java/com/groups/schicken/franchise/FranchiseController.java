@@ -18,6 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FranchiseController {
     private final FranchiseService franchiseService;
+
+
+    @GetMapping("/franchise/home")
+    public String getFranchiseHome(Model model, Pager pager) throws Exception {
+        model.addAttribute("pager", pager);
+        return "franchise/home";
+    }
     @GetMapping("/franchise/inquiry")
     public String getFranchiseList(Model model, Pager pager) throws Exception {
         List<FranchiseVO> franchiseVOList = franchiseService.getFranchiseList(pager);

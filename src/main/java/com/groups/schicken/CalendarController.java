@@ -1,6 +1,10 @@
 package com.groups.schicken;
 
+import com.groups.schicken.franchise.FranchiseVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +23,6 @@ import java.util.List;
 @Slf4j
 public class CalendarController {
 
-	
 	/*
 	 * @Autowired private CalendarService calendarService;
 	 */
@@ -33,7 +36,15 @@ public class CalendarController {
     
     @GetMapping("/")
     public String calendar ()throws Exception{
-        return "home";
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("authentication = " + authentication);
+		if (authentication != null) {
+			boolean hasFranchiseAuthority = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_FRANCHISE"));
+			if (hasFranchiseAuthority) {
+				return "franchise/home";
+			}
+		}
+        return "home";// 본사 직원 화면
     }
     
 	/*
