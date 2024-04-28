@@ -13,7 +13,7 @@
             <div class="row col">
                 <label for="searchName" class="col-3 col-form-label text-nowrap">품명</label>
                 <div class="col-9">
-                    <input type="text" class="form-control" id="searchName" name="orderItems[0].item.product.name" value="">
+                    <input type="text" class="form-control" id="searchName" name="orderDetails[0].item.product.name" value="">
                 </div>
             </div>
             <div class="row col">
@@ -29,7 +29,8 @@
                 <div class="col-9">
                     <select id="searchStatus" class="form-select" name="status">
                         <option value="4">전체</option>
-                        <option value="0" selected>대기</option>
+                        <option value="6" selected>대기 + 진행</option>
+                        <option value="0">대기</option>
                         <option value="1">진행</option>
                         <option value="2">완료</option>
                         <option value="3">반려</option>

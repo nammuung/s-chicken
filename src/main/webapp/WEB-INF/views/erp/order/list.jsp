@@ -18,7 +18,7 @@
 <main id="main" class="main">
     <section class="section erp ms-auto me-auto">
         <div class="pagetitle">
-            <h1>발주리스트</h1>
+            <h1>입고</h1>
         </div>
         <div class="row">
             <div class="col">

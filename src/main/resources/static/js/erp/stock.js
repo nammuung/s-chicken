@@ -1,6 +1,7 @@
 import {checkboxRenderer, handsontable, scaleArrayToSum} from "../lib/handsontable.js";
 import {addProduct, getProduct, getProductList, updateProduct} from "../api/product.js";
 import {getItemList} from "../api/item.js";
+import {addStock, getStock} from "../api/stock.js";
 
 sw.init()
 searchProduct()
@@ -14,7 +15,6 @@ async function searchProduct(){
     const formData = new FormData(productSearchForm);
     const result = await getProductList(formData);
     const data = result.data;
-    console.log(data)
     data.forEach((object,index) => {
         data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
     })
@@ -32,36 +32,26 @@ editButton.addEventListener("click", async function(){
     editModal.show();
 })
 async function setDetailDataToEditModal(id){
+    const editForm = document.getElementById("editForm");
+    editForm.reset();
     const result = await getProduct(id);
     const data = result.data;
+    sw.matchData({categoryName: data.category.name, unitName: data.unit.name})
     sw.matchData(data)
-    const category = document.getElementById("category");
-    Array.prototype.slice.call(category)
-        .forEach(option=>{
-            if(option.value === data.category.id){
-                option.selected = true;
-            }
-        })
-    const unit = document.getElementById("unit");
-    Array.prototype.slice.call(unit)
-        .forEach(option=>{
-            if(option.value === data.unit.id){
-                option.selected = true;
-            }
-        })
     const formData = new FormData();
     formData.append("product.id", id);
-    const items = await getItemList(formData)
+    const stocks = await getStock(id)
     const supplierTable = document.querySelector("#supplierTable tbody")
     supplierTable.innerHTML = ""
-    items.data.forEach((item,index) => {
+    stocks.data.forEach((item,index) => {
         supplierTable.innerHTML += `
             <tr>
                 <td>
                     ${index+1}
                 </td>
-                <td>${item.supplier.name}</td>
-                <td>${item.contractPrice}</td>
+                <td>${item.history}</td>
+                <td>${item.quantity}</td>
+                <td>${item.createDate}</td>
             </tr>
         `
     })
@@ -126,20 +116,66 @@ addSubmitButton.addEventListener("click", async function(){
     }
 })
 
-//품목 수정
-const editSubmitButton = document.getElementById("editSubmitButton");
-editSubmitButton.addEventListener("click", async function(){
+//입고
+const editInButton = document.getElementById("editInButton");
+editInButton.addEventListener("click", async function(){
     const editForm = document.getElementById("editForm");
     const formData = new FormData(editForm);
-    if(confirm("수정 하시겠습니까?")){
-        const result = await updateProduct(formData);
+    const quantity = formData.get("quantity");
+    const history = formData.get("history");
+    checkValid(quantity, history);
+    if(quantity < 0){formData.set("quantity", quantity * -1)}
+    if(confirm("입고 하시겠습니까?")){
+        const result = await addStock(formData);
         alert(result.message);
         if(result.status === "OK"){
             await searchProduct()
+            editModal.hide()
+        }
+    }
+})
+function checkValid(quantity,history) {
+    if(!history) {
+        alert("사유를 입력해 주세요.")
+        return;
+    }
+    if(quantity == 0) {
+        alert("수량을 입력해 주세요.")
+        return;
+    }
+    if(history.length > 20){
+        alert("사유는 20자 이내로 입력해 주세요.")
+        return;
+    }
+}
+//출고
+const editOutButton = document.getElementById("editOutButton");
+editOutButton.addEventListener("click", async function(){
+    const editForm = document.getElementById("editForm");
+    const formData = new FormData(editForm);
+    const quantity = formData.get("quantity");
+    const history = formData.get("history");
+    checkValid(quantity, history);
+    if(quantity > 0){formData.set("quantity", quantity * -1)}
+    if(confirm("출고 하시겠습니까?")){
+        const result = await addStock(formData);
+        alert(result.message);
+        if(result.status === "OK"){
+            await searchProduct()
+            editModal.hide()
         }
     }
 })
 
+
+const calcQuantity = (num) => {
+    const editQuantity = document.getElementById("editQuantity")
+    editQuantity.value = Number(editQuantity.value) + num;
+    if(editQuantity.value < 0) {
+        editQuantity.value = 0;
+    }
+}
+window.calcQuantity = calcQuantity;
 
 const exportPlugin = hot.getPlugin('exportFile');
 const exportButton = document.getElementById("exportButton");

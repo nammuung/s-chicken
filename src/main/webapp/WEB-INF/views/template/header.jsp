@@ -7,11 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<sec:authorize access="isAuthenticated()">
-    <sec:authentication property="principal" var="principal"/>
-    <div data-logined-id="${principal.id}"></div>
-</sec:authorize>
+<%--<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>--%>
+<%--<sec:authorize access="isAuthenticated()">--%>
+<%--    <sec:authentication property="principal" var="principal"/>--%>
+<%--    <div data-logined-id="${principal.id}"></div>--%>
+<%--</sec:authorize>--%>
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">

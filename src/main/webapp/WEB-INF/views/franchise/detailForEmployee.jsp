@@ -178,7 +178,7 @@
                                         <div class="row mb-3">
                                             <label for="managerId" class="col-md-4 col-lg-3 col-form-label">담당자</label>
                                             <div class="col-md-8 col-lg-9 d-flex">
-                                                <input class="form-select" type="hidden" id="managerId" name="managerId" value="${vo.manager.id}">
+                                                <input class="form-select" type="hidden" id="managerId" name="manager.id" value="${vo.manager.id}">
                                                 <input class="form-select me-1" id="managerName" value="${vo.manager.department.name} ${vo.manager.name} ${vo.manager.position.name}">
                                                 <input class="btn btn-primary" id="managerSearch" value="찾기">
                                             </div>

@@ -7,19 +7,19 @@ import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
+    OrderVO getOrder(OrderVO orderVO) throws Exception;
+
     List<OrderVO> getOrderList(OrderVO orderVO) throws Exception;
 
-    int addOrder(OrderVO orderVO) throws Exception;
-    int addOrderItem(OrderItemVO orderItem) throws Exception;
-    Long getId() throws Exception;
+    OrderDetailVO getOrderDetail(OrderDetailVO orderDetail) throws Exception;
 
-    List<OrderVO> getOrderDetail(OrderVO orderVO) throws Exception;
+    int addOrder(OrderVO orderVO) throws Exception;
+
+    int addOrderDetail(OrderDetailVO orderDetail) throws Exception;
+
+    Long getId() throws Exception;
 
     int updateOrder(OrderVO orderVO) throws Exception;
 
-    List<OrderVO> getOrderSheetList(OrderVO orderVO) throws Exception;
-
-    OrderVO getOrderSheet(OrderVO orderVO) throws Exception;
-
-    int updateOrderItem(Map<String, Object> map) throws Exception;
+    int updateOrderDetail(Map<String, Object> map) throws Exception;
 }

@@ -4,6 +4,7 @@ import com.groups.schicken.common.vo.ResultVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,6 +37,7 @@ public class ProductApi {
         }
     }
     @PostMapping
+    @Transactional
     public ResponseEntity<?> addProduct(ProductVO productVO) throws Exception {
         try {
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "제품 추가 완료", productService.addProduct(productVO)));

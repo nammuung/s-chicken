@@ -126,7 +126,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="position-relative" style="height: 50vh">
+                <div class="position-relative" style="height: 400px">
                     <div class="tab-content pt-2">
                         <div class="tab-pane fade show active profile-overview" id="product-overview">
                             <form id="editForm" class="text-nowrap text-end">
@@ -208,7 +208,7 @@
                             </div>
                         </div>
                         <div class="tab-pane fade profile-overview" id="supplier-overview">
-                            <div class="row overflow-auto" style="max-height: 50vh">
+                            <div class="row overflow-auto" style="height: 400px">
                                 <table class="table" id="supplierTable">
                                     <thead>
                                         <tr>

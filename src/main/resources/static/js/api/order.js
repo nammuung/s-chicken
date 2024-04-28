@@ -14,31 +14,15 @@ export const getOrderList = async (formData) => {
     }
 }
 
-export const getOrder = async (id) => {
+export const getOrder = async (orderId,supplierId = null) => {
     try {
-        const response = await defaultInstance.get('orders/'+id);
-        return response.data;
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-export const getOrderSheetList = async (formData) => {
-    const params = new URLSearchParams();
-    for(const [key, value] of formData.entries()){
-        if(value)
-            params.append(key, value);
-    }
-    try {
-        const response = await defaultInstance.get('orderSheets', {params});
-        return response.data;
-    } catch (err) {
-        console.log(err);
-    }
-}
-export const getOrderSheet = async (id) => {
-    try {
-        const response = await defaultInstance.get('orderSheets/'+id);
+        let url = ""
+        if(supplierId === null){
+            url = 'orders/'+orderId
+        } else {
+            url = 'orders/'+orderId+'/'+supplierId
+        }
+        const response = await defaultInstance.get(url);
         return response.data;
     } catch (err) {
         console.log(err);
@@ -55,9 +39,9 @@ export const updateOrder = async (params) => {
     }
 }
 
-export const updateOrderItem = async (params) => {
+export const updateOrderDetail = async (params) => {
     try {
-        const response = await defaultInstance.put('orderItems', params);
+        const response = await defaultInstance.put('orderDetails', params);
         return response.data;
     } catch (err) {
         console.log(err);

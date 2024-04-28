@@ -25,7 +25,7 @@ public class FranchiseService {
     }
     public FranchiseVO getFranchise(FranchiseVO franchiseVO) throws Exception {
         franchiseVO = franchiseMapper.getFranchise(franchiseVO);
-        franchiseVO.getManager().setId(franchiseVO.getManagerId());
+        franchiseVO.getManager().setId(franchiseVO.getManager().getId());
         franchiseVO.setManager(employeeService.userDetail(franchiseVO.getManager()));
         return franchiseVO;
     }
@@ -36,10 +36,10 @@ public class FranchiseService {
         file.setTblId("101");
         if(!fileManager.uploadFile(attach[0], file)) return 0;
         System.out.println("file = " + file);
-        franchiseVO.setContractId(file.getId());
+        franchiseVO.getContract().setId(file.getId());
         if(!fileManager.uploadFile(attach[1], file)) return 0;
         System.out.println("file = " + file);
-        franchiseVO.setRegisterId(file.getId());
+        franchiseVO.getRegister().setId(file.getId());
 
         franchiseVO.setPassword(passwordEncoder.encode(franchiseVO.getEmail()));//초기 비밀번호는 이메일
         result += franchiseMapper.addFranchise(franchiseVO);

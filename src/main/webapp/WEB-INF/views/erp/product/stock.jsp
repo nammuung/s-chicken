@@ -7,7 +7,6 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>S치킨-그룹웨어</title>
     <c:import url="../../template/head.jsp"/>
-
 </head>
 
 <body>
@@ -18,12 +17,12 @@
 <main id="main" class="main">
     <section class="section erp ms-auto me-auto">
         <div class="pagetitle">
-            <h1>납품처 관리</h1>
+            <h1>재고 관리</h1>
         </div>
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <c:import url="./supplierSearch.jsp"/>
+                    <c:import url="./productSearch.jsp"/>
                     <div class="card-body mt-3 row">
                         <div class="p-3 d-flex flex-column" style="width: 1200px;">
                             <div >
@@ -35,9 +34,8 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-start">
-                                <button id="" class="btn btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#register-modal"><i class="bi bi-database-add"></i>신규</button>
-                                <button id="editButton" class="btn btn-outline-primary me-1"><i class="bi bi-pencil"></i>수정</button>
-                                <button id="exportButton" class="btn btn-primary"><i class="bi bi-file-earmark-spreadsheet-fill"></i> 저장</button>
+                                <button id="editButton" class="btn btn-outline-primary me-1" ><i class="bi bi-pencil"></i>수정</button>
+                                <button id="exportButton" class="btn btn-primary"><i class="bi bi-file-earmark-spreadsheet-fill"></i>다운로드</button>
                             </div>
                         </div>
                     </div>
@@ -50,69 +48,55 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">납품처 추가</h5>
+                <h5 class="modal-title">품목 추가</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-
                 <form id="addForm" class="text-nowrap text-end">
                     <div class="row">
                         <div class="col-6">
                             <div class="mb-3 row">
-                                <label for="addFormName" class="col-4 col-form-label">납품처명</label>
+                                <label for="addCategory" class="col-4 col-form-label">카테고리</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control" id="addFormName" name="name" value="">
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="addFormOwnerName" class="col-4 col-form-label">대표명</label>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" id="addFormOwnerName" name="ownerName" value="">
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="addFormContactNumber" class="col-4 col-form-label">연락처</label>
-                                <div class="col-8">
-                                    <input type="text" class="form-control" id="addFormContactNumber" name="contactNumber">
+                                    <select type="text" class="form-control form-select" id="addCategory" name="category.id">
+                                        <option value="">선택</option>
+                                        <c:forEach items="${category}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
 
-
+                            <div class="mb-3 row">
+                                <label for="addStandard" class="col-4 col-form-label">규격</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="addStandard" name="standard" value="">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="addSellPrice" class="col-4 col-form-label">판매단가</label>
+                                <div class="col-8">
+                                    <input type="text" class="form-control" id="addStandard" name="sellPrice" value="">
+                                </div>
+                            </div>
 
                         </div>
                         <div class="col-6">
                             <div class="mb-3 row">
-                                <label for="addFormContractDate" class="col-4 col-form-label">계약일</label>
+                                <label for="addName" class="col-4 col-form-label">품목명</label>
                                 <div class="col-8">
-                                    <input type="date" class="form-control" id="addFormContractDate" name="contractDate" value="">
+                                    <input type="text" class="form-control" id="addName" name="name" value="">
                                 </div>
                             </div>
                             <div class="mb-3 row">
-                                <label for="addFormRegistrationNumber" class="col-4 col-form-label">사업자번호</label>
+                                <label for="addUnit" class="col-4 col-form-label">단위</label>
                                 <div class="col-8">
-                                    <input type="text" class="form-control" id="addFormRegistrationNumber" name="registrationNumber" value="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="mb-3 row">
-                                <label for="addEmail" class="col-2 col-form-label">이메일</label>
-                                <div class="col-10">
-                                    <input type="email" class="form-control" id="addEmail" name="email" value="">
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="addFormAddress" class="col-2 col-form-label">주소</label>
-                                <div class="col-10">
-                                    <input type="text" class="form-control" id="addFormAddress" name="address" value="">
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="addFormAddressDetail" class="col-2 col-form-label">상세주소</label>
-                                <div class="col-10">
-                                    <input type="text" class="form-control" id="addFormAddressDetail" name="addressDetail" value="">
+                                    <select type="text" class="form-control form-select" id="addUnit" name="unit.id">
+                                        <option value="">선택</option>
+                                        <c:forEach items="${unit}" var="item">
+                                            <option value="${item.id}">${item.name}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -132,10 +116,10 @@
             <div class="modal-header pb-0">
                 <ul class="nav nav-tabs nav-tabs-bordered">
                     <li class="nav-item">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#supplier-overview">거래처 정보</button>
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#product-overview">재고 수정</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#product-overview">계약 품목</button>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#supplier-overview">수불대장</button>
                     </li>
                 </ul>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -143,93 +127,103 @@
             <div class="modal-body">
                 <div class="position-relative" style="height: 400px">
                     <div class="tab-content pt-2">
-                        <div class="tab-pane fade show active profile-overview" id="supplier-overview">
+                        <div class="tab-pane fade show active profile-overview" id="product-overview">
                             <form id="editForm" class="text-nowrap text-end">
                                 <div class="row">
                                     <div class="col-6">
-                                        <input type="hidden" name="id" sw="value_id">
-                                        <input type="hidden" name="managerId" sw="value_managerId">
+                                        <input type="hidden" name="product.id" sw="value_id">
                                         <div class="mb-3 row">
-                                            <label for="editName" class="col-4 col-form-label">납품처명</label>
+                                            <label for="category" disabled class="col-4 col-form-label">카테고리</label>
                                             <div class="col-8">
-                                                <input type="text" class="form-control" id="editName" name="name" sw="value_name">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label for="editOwnerName" class="col-4 col-form-label">대표명</label>
-                                            <div class="col-8">
-                                                <input type="text" class="form-control" id="editOwnerName" name="ownerName" sw="value_ownerName">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label for="editContactNumber" class="col-4 col-form-label">연락처</label>
-                                            <div class="col-8">
-                                                <input type="text" class="form-control" id="editContactNumber" name="contactNumber" sw="value_contactNumber">
+                                                <input type="text" disabled class="form-control" id="category" sw="value_categoryName">
                                             </div>
                                         </div>
 
+                                        <div class="mb-3 row">
+                                            <label for="editOwnerName" class="col-4 col-form-label">규격</label>
+                                            <div class="col-8">
+                                                <input type="text" disabled class="form-control" id="editOwnerName" sw="value_standard">
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3 row">
+                                            <label for="editSellPrice" class="col-4 col-form-label">판매 단가</label>
+                                            <div class="col-8">
+                                                <input type="text" disabled class="form-control" id="editSellPrice" sw="value_sellPrice">
+                                            </div>
+                                        </div>
 
 
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 row">
-                                            <label for="editContractDate" class="col-4 col-form-label">등록일</label>
+                                            <label for="editName" class="col-4 col-form-label">품목명</label>
                                             <div class="col-8">
-                                                <input type="date" disabled class="form-control" id="editContractDate" name="contractDate" sw="value_contractDate">
+                                                <input type="text" disabled class="form-control" id="editName" sw="value_name">
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label for="editRegistrationNumber" class="col-4 col-form-label">사업자번호</label>
+                                            <label for="unit" class="col-4 col-form-label">단위</label>
                                             <div class="col-8">
-                                                <input type="text" disabled class="form-control" id="editRegistrationNumber" name="registrationNumber" sw="value_registrationNumber">
+                                                <input type="text" disabled class="form-control" id="unit" sw="value_unitName"/>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label for="editManagerName" class="col-4 col-form-label">등록자</label>
+                                            <label for="editStock" class="col-4 col-form-label">재고</label>
                                             <div class="col-8">
-                                                <input type="text" disabled class="form-control" id="editManagerName" name="managerName" sw="value_managerName">
+                                                <input type="text" disabled class="form-control" id="editStock" sw="value_stock">
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mt-3">
                                     <div class="col-12">
                                         <div class="mb-3 row">
-                                            <label for="editEmail" class="col-2 col-form-label">이메일</label>
+                                            <label for="editComment" class="col-2 col-form-label">사유</label>
                                             <div class="col-10">
-                                                <input type="email" class="form-control" id="editEmail" name="email" sw="value_email">
+                                                <input type="text" class="form-control" id="editComment" name="history" placeholder="입고 및 출고 사유를 작성해주세요.">
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label for="editAddress" class="col-2 col-form-label">주소</label>
+                                            <label for="editQuantity" class="col-2 col-form-label">수량</label>
                                             <div class="col-10">
-                                                <input type="text" class="form-control" id="editAddress" name="address" sw="value_address">
+                                                <input type="text" class="form-control mb-1 text-end" id="editQuantity" name="quantity" value="0">
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <button type="button" onclick="calcQuantity(-100)" class="btn btn-outline-danger ">-100</button>
+                                                        <button type="button" onclick="calcQuantity(-10)" class="btn btn-outline-danger ">-10</button>
+                                                        <button type="button" onclick="calcQuantity(-1)" class="btn btn-outline-danger ">-1</button>
+                                                    </div>
+                                                    <div>
+                                                        <button type="button" onclick="calcQuantity(1)" class="btn btn-outline-primary ">+1</button>
+                                                        <button type="button" onclick="calcQuantity(10)" class="btn btn-outline-primary ">+10</button>
+                                                        <button type="button" onclick="calcQuantity(100)" class="btn btn-outline-primary ">+100</button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
-                                            <label for="editAddressDetail" class="col-2 col-form-label">상세주소</label>
-                                            <div class="col-10">
-                                                <input type="text" class="form-control" id="editAddressDetail" name="addressDetail" sw="value_addressDetail">
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </form>
                             <div class="position-absolute end-0 bottom-0">
-                                <button type="button" class="btn btn-primary" id="editSubmitButton">수정</button>
+                                <button type="button" class="btn btn-danger" id="editOutButton">출고</button>
+                                <button type="button" class="btn btn-primary" id="editInButton">입고</button>
                             </div>
                         </div>
-                        <div class="tab-pane fade profile-overview" id="product-overview">
-                            <div class="row overflow-auto" style="height: 400px">
-                                <table class="table" id="productTable">
+                        <div class="tab-pane fade profile-overview" id="supplier-overview">
+                            <div class="row overflow-auto" style="max-height: 400px">
+                                <table class="table text-center" id="supplierTable">
                                     <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">품명</th>
-                                        <th scope="col">규격</th>
-                                        <th scope="col">단위</th>
-                                        <th scope="col">계약단가</th>
-                                    </tr>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">내용</th>
+                                            <th scope="col">수량</th>
+                                            <th scope="col">날짜</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
 
@@ -247,13 +241,11 @@
         </div>
     </div>
 </div>
-
 <!-- ======= Footer ======= -->
 <c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../../template/script.jsp"/>
-<script src="/js/erp/supplier.js" type="module"></script>
-
+<script src="/js/erp/stock.js" type="module"></script>
 </body>
 
 </html>

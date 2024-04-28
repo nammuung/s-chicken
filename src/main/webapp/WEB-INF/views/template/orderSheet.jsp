@@ -113,7 +113,7 @@
         </div>
     </div>
     <c:set var="total" value="0" />
-    <c:forEach items="${order.orderItems}" var="item">
+    <c:forEach items="${order.orderDetails}" var="item">
         <c:set var="total" value="${total + item.quantity*item.price}" />
     </c:forEach>
     <jsp:useBean id="util" class="com.groups.schicken.common.util.NumberToKorean"/>
@@ -139,7 +139,7 @@
                 </tr>
             </thead>
             <tbody class="">
-            <c:forEach items="${order.orderItems}" var="item" varStatus="status">
+            <c:forEach items="${order.orderDetails}" var="item" varStatus="status">
                 <tr>
                     <td>${status.index+1}</td>
                     <td>${item.id}</td>

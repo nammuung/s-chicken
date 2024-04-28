@@ -7,7 +7,7 @@
 <mapper namespace="com.groups.schicken.erp.order.OrderMapper">
     <sql id="search">
         <where>
-            <if test="status != null and status != 4 and status != 5">
+            <if test="status != null and status != 4 and status != 5 and status != 6">
                 ord.status = #{status}
             </if>
             <if test="status != null and status == 4">
@@ -15,6 +15,9 @@
             </if>
             <if test="status != null and status == 5">
                 AND ord.status IN (1,2)
+            </if>
+            <if test="status != null and status == 6">
+                AND ord.status IN (0,1)
             </if>
             <if test="id != null">
                 AND ord.id = #{id}
@@ -28,14 +31,14 @@
             <if test="employee != null and employee.name != null">
                 AND emp.name LIKE CONCAT('%',#{employee.name},'%')
             </if>
-            <if test="orderItems != null and orderItems[0].item != null">
+            <if test="orderDetails != null and orderDetails[0].item != null">
                 AND (ord.id, sup.id) IN
                 (
                 SELECT
                     oi.order_id
                     , oi.supplier_id
                 FROM
-                    head_order_item oi
+                    head_order_detail oi
                 LEFT JOIN
                     item i
                     ON oi.item_id = i.id
@@ -43,78 +46,84 @@
                     product prd
                     ON i.product_id = prd.id
                 WHERE
-                    prd.name LIKE CONCAT('%',#{orderItems[0].item.product.name},'%')
+                    prd.name LIKE CONCAT('%',#{orderDetails[0].item.product.name},'%')
                 )
+            </if>
+            <if test="orderDetails != null and orderDetails[0].id != null">
+                 AND order_detail.id = orderDetails[0].id
             </if>
         </where>
     </sql>
+    <sql id="getOrderSQL">
+        SELECT
+            ord.*,
+            sup.name supplier_name,
+            sup.owner_name supplier_owner_name,
+            sup.address supplier_address,
+            sup.address_detail supplier_address_detail,
+            sup.contact_number supplier_contact_number,
+            sup.registration_number supplier_registration_number,
+            sup.email supplier_email,
+            sup.contract_date supplier_contract_date,
+            emp.*,
+            order_detail.id order_detail_id,
+            order_detail.item_id order_detail_item_id,
+            order_detail.supplier_id order_detail_supplier_id,
+            order_detail.order_id order_detail_order_id,
+            order_detail.quantity order_detail_quantity,
+            order_detail.deliver_quantity order_detail_deliver_quantity,
+            order_detail.status order_detail_status,
+            order_detail.price order_detail_price,
+            order_detail.comment order_detail_comment,
+            item.id item_id,
+            item.contract_price item_contract_price,
+            prd.id order_detail_item_product_id,
+            prd.name order_detail_item_product_name,
+            prd.standard order_detail_item_product_standard,
+            prd.sell_price order_detail_item_product_sell_price,
+            unit.id order_detail_item_product_unit_id,
+            unit.name order_detail_item_product_unit_name,
+            cat.id order_detail_item_product_category_id,
+            cat.name order_detail_item_product_category_name
+        FROM
+            head_order ord
+        LEFT JOIN
+            supplier sup
+            ON ord.supplier_id = sup.id
+        LEFT JOIN
+            view_employee emp
+            ON ord.employee_id = emp.employee_id
+        LEFT JOIN
+            head_order_detail order_detail
+            ON ord.id = order_detail.order_id AND ord.supplier_id = order_detail.supplier_id
+        LEFT JOIN
+            item
+            ON order_detail.item_id = item.id
+        LEFT JOIN
+            product prd
+            ON item.product_id = prd.id
+        LEFT JOIN
+            view_unit unit
+            ON prd.unit_id = unit.id
+        LEFT JOIN
+            view_category cat
+            ON prd.category_id = cat.id
+        <include refid="search"/>
+        ORDER BY
+            ord.write_date desc
+    </sql>
+    <select id="getOrderList" resultMap="getOrderMap">
+        <include refid="getOrderSQL"/>
+    </select>
     <resultMap id="getOrderMap" type="OrderVO" autoMapping="true">
         <id column="id" property="id"/>
-        <association property="supplier" javaType="SupplierVO" columnPrefix="supplier_" autoMapping="true"/>
-        <association property="employee" javaType="EmployeeVO" columnPrefix="employee_" autoMapping="true"/>
-        <collection property="orderItems" javaType="List" ofType="OrderItemVO" columnPrefix="order_item_" autoMapping="true">
-            <id column="id" property="id"/>
-            <association property="item" javaType="ItemVO" columnPrefix="item_" autoMapping="true">
-                    <association property="product" javaType="ProductVO" columnPrefix="product_" autoMapping="true"/>
-            </association>
-        </collection>
-    </resultMap>
-    <select id="getOrderList" resultMap="getOrderMap">
-        SELECT
-            ord.*,
-            sup.name supplier_name,
-            sup.owner_name supplier_owner_name,
-            sup.address supplier_address,
-            sup.address_detail supplier_address_detail,
-            sup.contact_number supplier_contact_number,
-            sup.registration_number supplier_registration_number,
-            sup.email supplier_email,
-            sup.contract_date supplier_contract_date,
-            emp.name employee_name,
-            order_item.id order_item_id,
-            order_item.item_id order_item_item_id,
-            order_item.order_id order_item_order_id,
-            order_item.quantity order_item_quantity,
-            order_item.deliver_quantity order_item_deliver_quantity,
-            order_item.status order_item_status,
-            order_item.price order_item_price,
-            order_item.comment order_item_comment,
-            item.id item_id,
-            item.contract_price item_contract_price,
-            prd.id order_item_item_product_id,
-            prd.name order_item_item_product_name,
-            prd.standard order_item_item_product_standard,
-            prd.sell_price order_item_item_product_sell_price,
-            unit_id order_item_item_product_unit_id,
-            unit.name order_item_item_product_unit_name
-        FROM
-            head_order ord
-        LEFT JOIN
-            supplier sup
-            ON ord.supplier_id = sup.id
-        LEFT JOIN
-            employee emp
-            ON ord.employee_id = emp.id
-        LEFT JOIN
-            head_order_item order_item
-            ON ord.id = order_item.order_id
-        LEFT JOIN
-            item
-            ON order_item.item_id = item.id
-        LEFT JOIN
-            product prd
-            ON item.product_id = prd.id
-        LEFT JOIN
-            code unit
-            ON prd.unit_id = unit.id and unit.type_id = '500'
-        <include refid="search"/>
-        ORDER BY ord.write_date desc
-    </select>
-    <resultMap id="getOrderDetailMap" type="OrderVO" autoMapping="true">
-        <id column="id" property="id"/>
         <id column="supplier_id" property="supplier.id"/>
         <association property="supplier" javaType="SupplierVO" columnPrefix="supplier_" autoMapping="true"/>
-        <collection property="orderItems" javaType="List" ofType="OrderItemVO" columnPrefix="order_item_" autoMapping="true">
+        <association property="employee" javaType="EmployeeVO" columnPrefix="employee_" autoMapping="true">
+            <association property="position" javaType="CodeVO" columnPrefix="position_" autoMapping="true"/>
+            <association property="department" javaType="DepartmentVO" columnPrefix="department_" autoMapping="true"/>
+        </association>
+        <collection property="orderDetails" javaType="List" ofType="OrderDetailVO" columnPrefix="order_detail_" autoMapping="true">
             <id column="id" property="id"/>
             <id column="supplier_id" property="supplier.id"/>
             <association property="item" javaType="ItemVO" columnPrefix="item_" autoMapping="true">
@@ -125,210 +134,23 @@
             </association>
         </collection>
     </resultMap>
-    <select id="getOrderDetail" resultMap="getOrderDetailMap">
-        SELECT
-        ord.*,
-        sup.name supplier_name,
-        sup.owner_name supplier_owner_name,
-        sup.address supplier_address,
-        sup.address_detail supplier_address_detail,
-        sup.contact_number supplier_contact_number,
-        sup.registration_number supplier_registration_number,
-        sup.email supplier_email,
-        sup.contract_date supplier_contract_date,
-        emp.name employee_name,
-        order_item.id order_item_id,
-        order_item.item_id order_item_item_id,
-        order_item.supplier_id order_item_supplier_id,
-        order_item.order_id order_item_order_id,
-        order_item.quantity order_item_quantity,
-        order_item.deliver_quantity order_item_deliver_quantity,
-        order_item.status order_item_status,
-        order_item.price order_item_price,
-        order_item.comment order_item_comment,
-        item.id item_id,
-        item.contract_price item_contract_price,
-        prd.id order_item_item_product_id,
-        prd.name order_item_item_product_name,
-        prd.standard order_item_item_product_standard,
-        prd.sell_price order_item_item_product_sell_price,
-        unit_id order_item_item_product_unit_id,
-        unit.name order_item_item_product_unit_name,
-        cat.id order_item_item_product_category_id,
-        cat.name order_item_item_product_category_name
-        FROM
-        head_order ord
-        LEFT JOIN
-        supplier sup
-        ON ord.supplier_id = sup.id
-        LEFT JOIN
-        employee emp
-        ON ord.employee_id = emp.id
-        LEFT JOIN
-        head_order_item order_item
-        ON ord.id = order_item.order_id AND ord.supplier_id = order_item.supplier_id
-        LEFT JOIN
-        item
-        ON order_item.item_id = item.id
-        LEFT JOIN
-        product prd
-        ON item.product_id = prd.id
-        LEFT JOIN
-        code unit
-        ON prd.unit_id = unit.id and unit.type_id = '500'
-        LEFT JOIN
-        code cat
-        ON prd.category_id = cat.id and cat.type_id = '600'
-        <include refid="search"/>
-        ORDER BY ord.write_date desc
-    </select>
-    <resultMap id="getOrderSheetMap" type="OrderVO" autoMapping="true">
-        <id column="id" property="id"/>
-        <id column="supplier_id" property="supplier.id"/>
-        <association property="employee" javaType="EmployeeVO" columnPrefix="employee_" autoMapping="true"/>
-        <association property="supplier" javaType="SupplierVO" columnPrefix="supplier_" autoMapping="true"/>
-        <collection property="orderItems" javaType="List" ofType="OrderItemVO" columnPrefix="order_item_" autoMapping="true">
-            <id column="id" property="id"/>
-            <id column="supplier_id" property="supplier.id"/>
-            <association property="item" javaType="ItemVO" columnPrefix="item_" autoMapping="true">
-                <association property="product" javaType="ProductVO" columnPrefix="product_" autoMapping="true">
-                    <association property="unit" javaType="CodeVO" columnPrefix="unit_" autoMapping="true"/>
-                    <association property="category" javaType="CodeVO" columnPrefix="category_" autoMapping="true"/>
-                </association>
-            </association>
-        </collection>
-    </resultMap>
-    <select id="getOrderSheetList" resultMap="getOrderSheetMap">
-        SELECT
-            ord.*,
-            sup.name supplier_name,
-            sup.owner_name supplier_owner_name,
-            sup.address supplier_address,
-            sup.address_detail supplier_address_detail,
-            sup.contact_number supplier_contact_number,
-            sup.registration_number supplier_registration_number,
-            sup.email supplier_email,
-            sup.contract_date supplier_contract_date,
-            emp.name employee_name,
-            emp.phone_number employee_phoneNumber,
-            order_item.id order_item_id,
-            order_item.item_id order_item_item_id,
-            order_item.supplier_id order_item_supplier_id,
-            order_item.order_id order_item_order_id,
-            order_item.quantity order_item_quantity,
-            order_item.deliver_quantity order_item_deliver_quantity,
-            order_item.status order_item_status,
-            order_item.price order_item_price,
-            order_item.comment order_item_comment,
-            item.id item_id,
-            item.contract_price item_contract_price,
-            prd.id order_item_item_product_id,
-            prd.name order_item_item_product_name,
-            prd.standard order_item_item_product_standard,
-            prd.sell_price order_item_item_product_sell_price,
-            unit_id order_item_item_product_unit_id,
-            unit.name order_item_item_product_unit_name,
-            cat.id order_item_item_product_category_id,
-            cat.name order_item_item_product_category_name
-        FROM
-            head_order ord
-        LEFT JOIN
-            supplier sup
-            ON ord.supplier_id = sup.id
-        LEFT JOIN
-            employee emp
-            ON ord.employee_id = emp.id
-        LEFT JOIN
-            head_order_item order_item
-            ON ord.id = order_item.order_id AND ord.supplier_id = order_item.supplier_id
-        LEFT JOIN
-            item
-            ON order_item.item_id = item.id
-        LEFT JOIN
-            product prd
-            ON item.product_id = prd.id
-        LEFT JOIN
-            code unit
-            ON prd.unit_id = unit.id and unit.type_id = '500'
-        LEFT JOIN
-            code cat
-            ON prd.category_id = cat.id and cat.type_id = '600'
-        <include refid="search"/>
-        ORDER BY ord.write_date desc
-    </select>
-    <select id="getOrderSheet" resultMap="getOrderSheetMap">
-        SELECT
-            ord.*,
-            sup.name supplier_name,
-            sup.owner_name supplier_owner_name,
-            sup.address supplier_address,
-            sup.address_detail supplier_address_detail,
-            sup.contact_number supplier_contact_number,
-            sup.registration_number supplier_registration_number,
-            sup.email supplier_email,
-            sup.contract_date supplier_contract_date,
-            emp.name employee_name,
-            emp.phone_number employee_phoneNumber,
-            order_item.id order_item_id,
-            order_item.item_id order_item_item_id,
-            order_item.supplier_id order_item_supplier_id,
-            order_item.order_id order_item_order_id,
-            order_item.quantity order_item_quantity,
-            order_item.deliver_quantity order_item_deliver_quantity,
-            order_item.status order_item_status,
-            order_item.price order_item_price,
-            order_item.comment order_item_comment,
-            item.id item_id,
-            item.contract_price item_contract_price,
-            prd.id order_item_item_product_id,
-            prd.name order_item_item_product_name,
-            prd.standard order_item_item_product_standard,
-            prd.sell_price order_item_item_product_sell_price,
-            unit_id order_item_item_product_unit_id,
-            unit.name order_item_item_product_unit_name,
-            cat.id order_item_item_product_category_id,
-            cat.name order_item_item_product_category_name
-        FROM
-            head_order ord
-        LEFT JOIN
-            supplier sup
-            ON ord.supplier_id = sup.id
-        LEFT JOIN
-            employee emp
-            ON ord.employee_id = emp.id
-        LEFT JOIN
-            head_order_item order_item
-            ON ord.id = order_item.order_id AND ord.supplier_id = order_item.supplier_id
-        LEFT JOIN
-            item
-            ON order_item.item_id = item.id
-        LEFT JOIN
-            product prd
-            ON item.product_id = prd.id
-        LEFT JOIN
-            code unit
-            ON prd.unit_id = unit.id and unit.type_id = '500'
-        LEFT JOIN
-            code cat
-            ON prd.category_id = cat.id and cat.type_id = '600'
-        WHERE
-            ord.id = #{id} AND ord.supplier_id = #{supplier.id}
-        ORDER BY ord.write_date desc
+    <select id="getOrder" resultMap="getOrderMap">
+        <include refid="getOrderSQL"/>
     </select>
     <insert id="addOrder">
         INSERT INTO
             head_order
-            (id, supplier_id, status, address, write_date, employee_id, price)
+            (id, supplier_id, status, address, write_date, employee_id, price, comment)
         VALUES
-            (#{id}, #{supplier.id}, 0, #{address}, #{writeDate}, #{employee.id}, #{price})
+            (#{id}, #{supplier.id}, 0, #{address}, #{writeDate}, #{employee.id}, #{price}, #{comment})
     </insert>
 
-    <insert id="addOrderItem">
+    <insert id="addOrderDetail">
         <selectKey keyProperty="id" order="BEFORE" resultType="Long">
             SELECT nextval(seq1)
         </selectKey>
         INSERT INTO
-            head_order_item
+            head_order_detail
             (id, supplier_id, item_id, order_id, quantity, deliver_quantity, status, comment, price)
         VALUES
             (#{id}, #{supplier.id}, #{item.id}, #{order.id}, #{quantity}, 0, #{status}, #{comment}, #{price})
@@ -349,10 +171,10 @@
         </set>
         WHERE id = #{id} and supplier_id = #{supplier.id}
     </update>
-    <update id="updateOrderItem" parameterType="java.util.List">
+    <update id="updateOrderDetail" parameterType="java.util.List">
         <foreach collection="list" item="item" separator=";">
             UPDATE
-                head_order_item
+                head_order_detail
             <set>
                 <if test="item.status != null">
                     status = #{item.status}
@@ -367,4 +189,22 @@
             WHERE id = #{item.id}
         </foreach>
     </update>
+    <resultMap id="getOrderDetailMap" type="OrderDetailVO" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="item" javaType="ItemVO" autoMapping="true" columnPrefix="item_">
+            <association property="product" javaType="ProductVO" autoMapping="true" columnPrefix="product_"/>
+        </association>
+    </resultMap>
+    <select id="getOrderDetail" resultMap="getOrderDetailMap">
+        SELECT
+            oi.*
+            , i.product_id item_product_id
+        FROM
+            head_order_detail oi
+        LEFT JOIN
+            item i
+            ON oi.item_id = i.id
+        WHERE
+            oi.id = #{id}
+    </select>
 </mapper>

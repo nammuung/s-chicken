@@ -162,9 +162,9 @@ orderPreviewButton.addEventListener("click",  async function(){
         quantity.push(row[9]);
         datas.push(result.data);
     }
-    const orderItems = []
+    const orderDetails = []
     datas.forEach((data,index) => {
-        orderItems.push({
+        orderDetails.push({
             item:{
                 ...data,
             },
@@ -172,7 +172,7 @@ orderPreviewButton.addEventListener("click",  async function(){
         })
     })
     const result = await addOrder(
-        orderItems
+        orderDetails
     )
     alert(result.message)
     if(result.status == 'OK'){

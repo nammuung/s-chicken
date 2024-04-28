@@ -5,10 +5,8 @@ import {
     addOrder,
     getOrder,
     getOrderList,
-    getOrderSheet,
-    getOrderSheetList,
     updateOrder,
-    updateOrderItem
+    updateOrderDetail
 } from "../api/order.js";
 import {orderStatus, itemStatus, itemStatusToKR, orderStatusToKR} from "../util/orderStatus.js";
 let isChanged = {};
@@ -124,14 +122,14 @@ async function searchOrder(){
         formData.append("id", ids[0])
         formData.delete("totalId")
     }
-    const result = await getOrderSheetList(formData);
+    const result = await getOrderList(formData);
     const datas = result.data;
     console.log(datas)
     datas.forEach((data,index) => {
-        if(data.orderItems.length == 1){
-            data.content = `${data.orderItems[0].item.product.name}`
+        if(data.orderDetails.length == 1){
+            data.content = `${data.orderDetails[0].item.product.name}`
         } else {
-            data.content = `${data.orderItems[0].item.product.name} 외 ${data.orderItems.length-1}개`
+            data.content = `${data.orderDetails[0].item.product.name} 외 ${data.orderDetails.length-1}개`
         }
         data.id = data.id+"-"+data.supplier.id
         data.vat = Math.floor(data.price / 10).toLocaleString()+"원";
@@ -149,51 +147,30 @@ async function searchOrder(){
     }
 }
 
-
+let tempDeliver = [];
 //상세 검색
-let detailItems = [];
 async function searchDetail(id){
     isChanged.change = false;
-    const result = await getOrderSheet(id);
+    const ids = id.split("-");
+    const result = await getOrder(ids[0], ids[1]);
     const data = result.data;
-    console.log(data)
-    // detailItems = [];
-    // detailItems.push({
-        // id:orderItem.order.id,
-        // orderItems:data.orderItems.map(orderItem=> {
-        //     orderItem.totalPrice = (orderItem.price * orderItem.quantity).toLocaleString()+"원";
-        //     orderItem.price = orderItem.price.toLocaleString()+"원"
-        //     return orderItem;
-        // })})
-    // data.orderItems.forEach((orderItem,index) => {
-    //     // data.id = data.order.id;
-    //     // if(data.orderItems.length == 1){
-    //     //     data.content = `${data.orderItems[0].item.product.name}`
-    //     // } else {
-    //     //     data.content = `${data.orderItems[0].item.product.name} 외 ${data.orderItems.length-1}개`
-    //     // }
-    //     // data.vat = Math.floor(data.price / 10).toLocaleString()+"원";
-    //     // data.price = Math.floor(data.price).toLocaleString()+"원";
-    //     // console.log(data)
-    //
-    // })
-    // orderHot.loadData(datas);
-    // [...orderContainer.querySelectorAll("tr:nth-child(1) td:nth-child(1) input")].forEach(
-    //     el=> el.click()
-    // )
+    tempDeliver = [];
+    const detailItems =
+        data.orderDetails.map(orderDetail=> {
+            orderDetail.totalPrice = (orderDetail.price * orderDetail.quantity).toLocaleString()+"원";
+            orderDetail.price = orderDetail.price.toLocaleString()+"원";
+            orderDetail.status = itemStatusToKR(orderDetail.status)
+            tempDeliver.push(orderDetail.deliverQuantity);
+            return orderDetail;
+        })
     itemHot.loadData(
-        data.orderItems.map(orderItem=> {
-        orderItem.totalPrice = (orderItem.price * orderItem.quantity).toLocaleString()+"원";
-        orderItem.price = orderItem.price.toLocaleString()+"원";
-        orderItem.status = itemStatusToKR(orderItem.status)
-        return orderItem;
-    }));
+        detailItems
+    );
     //상태 진행인 로우만 입력가능하게 풀어줌
     itemHot.updateSettings({
         cells(row, col) {
             const cellProperties = {};
             try{
-                console.log(itemHot.getData()[row][col+1])
                 if (itemHot.getData()[row][col+1] === '진행') {
                     cellProperties.readOnly = false;
                 }
@@ -208,7 +185,7 @@ async function searchDetail(id){
 
 // //디테일 아이템
 // async function searchDetailItem(orderId){
-//     const orderItems = detailItems.filter(obj => obj.id === orderId)[0].orderItems
+//     const orderDetails = detailItems.filter(obj => obj.id === orderId)[0].orderDetails
 //
 // }
 
@@ -219,13 +196,13 @@ saveChangeButton.addEventListener("click", async function () {
         alert("발주를 선택해 주세요.")
         return;
     }
-    const orderItems = [];
+    const orderDetails = [];
     const formData = new FormData();
     formData.append("id", selectedOrder);
     formData.append("status", 1);
     itemHot.getData().forEach(item => {
         console.log(item)
-        orderItems.push({
+        orderDetails.push({
             id:item[1],
             deliverQuantity:item[9],
             status:itemStatus.indexOf(item[10]),
@@ -237,8 +214,7 @@ saveChangeButton.addEventListener("click", async function () {
             },
         })
     })
-    console.log(orderItems)
-    const result = await updateOrderItem(orderItems);
+    const result = await updateOrderDetail(orderDetails);
     alert(result.message);
     if(result.status == "OK"){
         searchOrder();
@@ -250,12 +226,12 @@ allCompleteButton.addEventListener("click", async function () {
         alert("발주를 선택해 주세요.")
         return;
     }
-    const orderItems = [];
+    const orderDetails = [];
     const formData = new FormData();
     formData.append("id", selectedOrder);
     formData.append("status", 1);
     itemHot.getData().forEach(item => {
-        orderItems.push({
+        orderDetails.push({
             id:item[1],
             deliverQuantity:item[8],
             status:itemStatus.indexOf("완료"),
@@ -267,7 +243,7 @@ allCompleteButton.addEventListener("click", async function () {
             },
         })
     })
-    const result = await updateOrderItem(orderItems);
+    const result = await updateOrderDetail(orderDetails);
     if(result.status == "OK"){
         searchOrder();
         alert("입고 완료");
@@ -298,6 +274,14 @@ itemHot.addHook("afterChange", changes => {
             }
         }
         if(prop == 'deliverQuantity'  && after && before != after){
+            if(isNaN(after)){
+                alert("숫자만 입력가능합니다.")
+                itemHot.setDataAtRowProp(row,"deliverQuantity",0);
+            }
+            if(tempDeliver[row] > after) {
+                alert("기존 입고된 수량보다 적게 입력할 수 없습니다.");
+                itemHot.setDataAtRowProp(row,"deliverQuantity",before);
+            }
             if(after > quantity) {
                 itemHot.setDataAtRowProp(row,"deliverQuantity",quantity);
             }
@@ -305,12 +289,7 @@ itemHot.addHook("afterChange", changes => {
                 itemHot.setDataAtRowProp(row,"status","완료");
             }
             if(after < quantity) {
-                console.log(after, quantity)
                 itemHot.setDataAtRowProp(row,"status","진행");
-            }
-            if(isNaN(after)){
-                alert("숫자만 입력가능합니다.")
-                itemHot.setDataAtRowProp(row,"deliverQuantity",0);
             }
             isChanged.change = true;
         }

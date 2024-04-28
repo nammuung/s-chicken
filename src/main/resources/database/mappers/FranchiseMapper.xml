@@ -8,94 +8,98 @@
         <selectKey order="BEFORE" resultType="String" keyProperty="id">
             SELECT nextval(seq1)
         </selectKey>
-        INSERT INTO franchise
-        (id, name, owner_name, post_code, address, address_detail, contact_number, registration_number, email, password, contract_date, manager_id, contract_id, register_id)
+        INSERT INTO
+            franchise
+            (id, name, owner_name, post_code, address, address_detail, contact_number, registration_number, email, password, contract_date, manager_id, contract_id, register_id)
         VALUES
-        (#{id}, #{name}, #{ownerName}, #{postCode}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{password}, #{contractDate}, #{managerId}, #{contractId}, #{registerId})
+            (#{id}, #{name}, #{ownerName}, #{postCode}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{password}, #{contractDate}, #{managerId}, #{contractId}, #{registerId})
     </insert>
     <resultMap id="franchiseResultMap" type="FranchiseVO" autoMapping="true">
         <id property="id" column="id"/>
         <association property="register" javaType="FileVO" columnPrefix="register_" autoMapping="true"/>
         <association property="contract" javaType="FileVO" columnPrefix="contract_" autoMapping="true"/>
+        <association property="manager" javaType="EmployeeVO" columnPrefix="manager_" autoMapping="true"/>
     </resultMap>
-    <select id="getFranchise" resultMap="franchiseResultMap">
+    <sql id="getFranchiseSQL">
         SELECT
-        frc.id,
-        frc.name,
-        frc.owner_name,
-        frc.address,
-        frc.address_detail,
-        frc.contact_number,
-        frc.registration_number,
-        frc.email,
-        frc.contract_date,
-        frc.manager_id,
-        frc.post_code,
-        frc.contract_id,
-        frc.register_id,
-        frc.password,
-        at1.name contract_name,
-        at1.origin_name contract_origin_name,
-        at1.url contract_url,
-        at1.extension contract_extension,
-        at2.name register_name,
-        at2.origin_name register_origin_name,
-        at2.url register_url,
-        at2.extension register_extension
-        FROM franchise frc
-        LEFT JOIN attach at1
-        ON frc.contract_id = at1.id
-        LEFT JOIN attach at2
-        ON frc.register_id = at2.id
+            frc.id,
+            frc.name,
+            frc.owner_name,
+            frc.address,
+            frc.address_detail,
+            frc.contact_number,
+            frc.registration_number,
+            frc.email,
+            frc.contract_date,
+            frc.manager_id,
+            frc.post_code,
+            frc.contract_id,
+            frc.register_id,
+            frc.password,
+            at1.name contract_name,
+            at1.origin_name contract_origin_name,
+            at1.url contract_url,
+            at1.extension contract_extension,
+            at2.name register_name,
+            at2.origin_name register_origin_name,
+            at2.url register_url,
+            at2.extension register_extension
+        FROM
+            franchise frc
+        LEFT JOIN
+            attach at1
+            ON frc.contract_id = at1.id
+        LEFT JOIN
+            attach at2
+            ON frc.register_id = at2.id
+
+    </sql>
+    <select id="getFranchise" resultMap="franchiseResultMap">
+        <include refid="getFranchiseSQL"/>
+        <include refid="where"/>
+    </select>
+    <select id="getFranchiseList">
+        <include refid="getFranchiseSQL"/>
+        <include refid="search"/>
+    </select>
+    <sql id="where">
         <where>
             <if test="id != null">
                 frc.id = #{id}
             </if>
             <if test="name != null">
-                OR frc.name = #{name}
+                AND frc.name = #{name}
             </if>
-            <if test="managerId != null">
-                OR frc.manager_id = #{managerId}
+            <if test="manager != null">
+                AND frc.manager_id = #{manager.id}
             </if>
+
         </where>
-    </select>
-    <select id="getFranchiseList">
-        SELECT
-        id,
-        name,
-        owner_name,
-        address,
-        address_detail,
-        contact_number,
-        registration_number,
-        email,
-        contract_date,
-        manager_id,
-        post_code
-        FROM franchise
+    </sql>
+    <sql id="search">
         <choose>
             <when test='kind != null and kind.equals("name")'>
-                WHERE name LIKE CONCAT('%',#{search},'%')
+                WHERE frc.name LIKE CONCAT('%',#{search},'%')
             </when>
             <when test='kind != null and kind.equals("manager")'>
-                WHERE manager_id in (SELECT id FROM employee WHERE name LIKE CONCAT('%',#{search},'%'))
+                WHERE frc.manager_id in (SELECT id FROM employee WHERE name LIKE CONCAT('%',#{search},'%'))
             </when>
         </choose>
-    </select>
+    </sql>
     <update id="updateFranchise">
         UPDATE franchise
         <set>
             <if test="password != null">
                 password = #{password}
             </if>
-            <if test="managerId != null">
-                , manager_id = #{managerId}
+            <if test="manager != null">
+                , manager_id = #{manager.id}
             </if>
-            <if test="contractId != null">
-                 , contract_id = #{contractId}
+            <if test="contract != null">
+                 , contract_id = #{contract.id}
             </if>
-            <if test="registerId != null">
-                , register_id = #{registerId}
+            <if test="register != null">
+                , register_id = #{register.id}
             </if>
             <if test="contactNumber != null">
                 , contact_number = #{contactNumber}

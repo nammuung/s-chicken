@@ -13,4 +13,5 @@ public class ProductVO {
     private CodeVO category;
     private CodeVO unit;
     private Long sellPrice;
+    private Long stock;
 }

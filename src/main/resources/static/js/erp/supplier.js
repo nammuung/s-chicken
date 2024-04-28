@@ -25,7 +25,6 @@ async function searchSupplier(){
         data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
     })
     hot.loadData(data);
-    addNameEventListener();
 }
 async function loadSupplierDetail(id){
     const result = await getSupplier(id);
@@ -86,7 +85,6 @@ const myCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=
     } else {
         selectedRowId = null
     }
-    addNameEventListener();
 })
 const tableOptions = {
     data:[],
@@ -104,7 +102,9 @@ const tableOptions = {
     height:"50vh",
 }
 const hot = handsontable(container, tableOptions);
-
+hot.addHook("afterRender", function () {
+    addNameEventListener();
+})
 
 //수정
 const editSubmitButton = document.getElementById('editSubmitButton');

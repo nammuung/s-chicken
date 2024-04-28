@@ -18,5 +18,6 @@ public class OrderVO {
     private Long price;
     private String address;
     private EmployeeVO employee;
-    private List<OrderItemVO> orderItems;
+    private List<OrderDetailVO> orderDetails;
+    private String comment;
 }
