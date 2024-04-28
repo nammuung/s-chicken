@@ -26,6 +26,8 @@
 </head>
 <body class="container-fluid" style="padding: 0 0 0 0 !important;">
 
+    <div class="d-none" data-logined-id="${myProfile.id}"></div>
+
     <nav class="text-center">
         <div>
             <ul class="list-group">
@@ -45,7 +47,7 @@
 
     <main id="main" class="carousel slide">
         <div class="carousel-inner">
-            <section class="carousel-item">
+            <section class="carousel-item active">
                 <div class="row justify-content-end">
                     <button class="btn btn-primary btn-sm">
                         +
@@ -97,21 +99,46 @@
                     </c:forEach>
                 </div>
             </section>
+
             <section class="carousel-item"></section>
-            <section class="carousel-item active">
+
+            <section class="carousel-item" data-now-open>
                 <div class="row justify-content-center chatroom-title">
-                    <h1 class="col-8 text-center">채팅방 이름</h1>
+                    <h1 id="chatroom-name" class="col-8 text-center">채팅방 이름</h1>
                 </div>
-                <div>공지창</div>
-                <div>채팅창</div>
-                <div class="row">
-                    <div class="col-4 text-center fs-4">일정</div>
-                    <div class="col-4 text-center fs-4">파일</div>
-                    <div class="col-4 text-center fs-4">사진</div>
-                    <div class="input-group">
-                        <textarea class="form-control"></textarea>
-                        <button class="btn btn-primary"><i class="far fa-paper-plane"></i></button>
+                <%-- 채팅 공지용 --%>
+<%--                <div class="border-bottom row py-3">--%>
+<%--                    <div class="col-1 ps-3"><i class="bi bi-megaphone-fill"></i></div>--%>
+<%--                    <h2 class="col-10 text-center">이 채팅방의 공지입니다이 채팅방의 공지입니다이 채팅방의 공지입니다이 채팅방의 공지입니다이 채팅방의 공지입니다</h2>--%>
+<%--                    <div class="col-1"></div>--%>
+<%--                </div>--%>
+                <div id="chatting-space">
+                    <div class="chatting d-flex mt-2 ms-1">
+                        <div class="chatting-profile-img">
+                            <img onclick="onProfileClick(${myProfile.id})" class="rounded-circle" src="${myProfile.profileImg}" alt="" width="55px" height="55px">
+                        </div>
+                        <div class="chatting-content">
+                            <div data-send-info>
+                                <span onclick="onProfileClick(${myProfile.id})" class="me-2 linkable text-black hovercursor">이동일</span>
+                                <span class="small text-secondary">2024-04-27 오후 7:48</span>
+                            </div>
+                            <div data-send-message class="mt-1 p-2 rounded-3 text-break bg-schicken-light d-inline-block">
+                                message
+                            </div>
+                        </div>
                     </div>
+                </div>
+
+                    <%-- 채팅에서 여러가지 공유용 --%>
+<%--                <div class="row d-none">--%>
+<%--                    <div class="col-4 text-center fs-4">일정</div>--%>
+<%--                    <div class="col-4 text-center fs-4">파일</div>--%>
+<%--                    <div class="col-4 text-center fs-4">사진</div>--%>
+<%--                </div>--%>
+
+                <div class="input-group" style="height: 83px">
+                    <textarea class="form-control" style="height: 100%;" maxlength="1000"></textarea>
+                    <button class="btn btn-primary"><i class="far fa-paper-plane"></i></button>
                 </div>
             </section>
         </div>
@@ -137,7 +164,29 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/js/chatting/chatroom.js"></script>
+<script src="/js/chatting/chatroom.js" type="module"></script>
+<script>
+    const namecardModal = new bootstrap.Modal(document.getElementById("namecard-modal"));
+    async function onProfileClick(empId){
+        let info= await fetch('/employee/getProfile?id=' + empId).then(res=>res.json())
+
+        document.querySelectorAll("[data-profile-type]")
+            .forEach(e => {
+                let profileType = e.dataset.profileType;
+                switch (profileType){
+                    case 'img':
+                        e.setAttribute("src", info.profileImg == null ? '/img/기본.jpg' : info.profileImg);
+                        break;
+                    case 'chatting':
+                        e.dataset.targetId = empId;
+                        break;
+                    default:
+                        e.innerText = info[profileType];
+                }
+            })
+        namecardModal.show();
+    }
+</script>
 </body>
 
 </html>

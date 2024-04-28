@@ -70,6 +70,27 @@ button:active{
 }
 
 .chatroom-title{
-    padding: 1rem 0 1rem 0;
+    padding: 1rem 0 .25rem 0;
     border-bottom: 1px solid #00000030;
+}
+
+#chatting-space{
+    height: calc(100vh - 147px);
+    overflow-y: auto;
+}
+
+.chatting-content{
+    width: calc(100vw - 185px);
+    min-width: 290px;
+    margin-left: 8px;
+}
+
+.chatting-profile-img{
+    width: 60px !important;
+    text-align: center;
+}
+
+.chatting-profile-img > img{
+    width: 55px !important;
+    height: 55px !important;
 }

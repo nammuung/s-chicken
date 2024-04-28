@@ -139,4 +139,31 @@ public class ChatService {
     private String getChatroomName(String chatroomId) {
         return chatDAO.getChatroomName(chatroomId);
     }
+
+    public ChattingVO getChattingData(String id, String chatroomId) {
+        return getChattingData(id, chatroomId, null);
+    }
+
+    @Transactional
+    public ChattingVO getChattingData(String employeeId, String chatroomId, String page){
+        ChattingVO chattingData = chatDAO.getChatroomData(employeeId, chatroomId);
+
+        if(chattingData == null){
+            return null;
+        }
+
+
+        chattingData.setChatMessages(chatDAO.getChatMessageData(chatroomId, chattingData.getLastReadId(), page));
+
+        System.out.println("chattingData = " + chattingData);
+        System.out.println("chattingData = " + chattingData);
+        System.out.println("chattingData = " + chattingData);
+        System.out.println("chattingData = " + chattingData);
+
+        if(!chattingData.isLastReaded()){
+            chatDAO.updateLastRead(chattingData.getLastMessage().getId(), chatroomId, employeeId);
+        }
+
+        return chattingData;
+    }
 }

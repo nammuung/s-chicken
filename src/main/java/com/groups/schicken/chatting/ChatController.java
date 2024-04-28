@@ -42,15 +42,30 @@ public class ChatController {
         return "chatting/popup";
     }
 
-    @GetMapping("one/{targetId}")
-    public ResponseEntity<ChatroomVO> getChatrooms(@PathVariable String targetId, @AuthenticationPrincipal EmployeeVO employee){
+    @GetMapping("getData/one/{targetId}")
+    public ResponseEntity<ChattingVO> getChattingDataOne(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String targetId){
         ChatroomVO chatroom = chatService.getOneChatrooms(employee.getId(), targetId);
+        System.out.println("chatroom = " + chatroom);
+        System.out.println("chatroom = " + chatroom);
+        System.out.println("chatroom = " + chatroom);
+        System.out.println("chatroom = " + chatroom);
+        System.out.println("chatroom = " + chatroom);
+        System.out.println("chatroom = " + chatroom);
 
         if(chatroom == null){
             chatroom = chatService.createOneChatroom(employee.getId(), targetId);
         }
 
-        return ResponseEntity.ok(chatroom);
+        ChattingVO chattingVO = chatService.getChattingData(employee.getId(), chatroom.getId());
+
+        return ResponseEntity.ok(chattingVO);
+    }
+
+    @GetMapping("getData/many/{chatroomId}")
+    public ResponseEntity<ChattingVO> getChattingDataMany(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId){
+        ChattingVO chattingVO = chatService.getChattingData(employee.getId(), chatroomId);
+
+        return ResponseEntity.ok(chattingVO);
     }
 
     @GetMapping("list")
@@ -60,6 +75,7 @@ public class ChatController {
 
         return ResponseEntity.ok(list);
     }
+
 
     @PostMapping("join/{chatroomId}")
     public ResponseEntity<Boolean> joinChatroom(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId){
