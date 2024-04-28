@@ -81,6 +81,24 @@ public class DocumentController {
 		model.addAttribute("pager", pager);
 		System.out.println(pager);
 	}
+	
+	@GetMapping("callList")
+	public void callList(String cate,@AuthenticationPrincipal EmployeeVO employeeVO,@RequestParam Map<String, Object> map,Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
+		System.out.println(map);
+		System.out.println(cate);
+		cate=(String)map.get("category");		
+		
+		documentVO.setWriterId(employeeVO.getId());
+		
+		List<DocumentVO> ar = documentService.list(documentVO, templateVO, pager,cate);
+		
+		System.out.println(ar);
+		
+		model.addAttribute("list", ar);
+		model.addAttribute("pager", pager);
+		System.out.println(pager);
+	}
+	
 	@GetMapping("ref")
 	public void documentRef() {
 		
@@ -145,6 +163,8 @@ public class DocumentController {
 	public void pay() {
 		
 	}
+	
+
 	
 	@PostMapping("temp")
 	public ResponseEntity<?> addTemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach,TemplateVO templateVO)throws Exception{

@@ -54,7 +54,9 @@
                                 <button class="btn btn-primary" id="sangsin">상신</button>
                                 <button class="btn btn-primary" type="button" id = "cancel">취소</button>
                             </div>
-                            <button class="btn btn-primary">불러오기</button>
+                            <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
+                                불러오기
+                            </button>
                             <button class="btn btn-primary" id="tempSave">임시저장</button>
                         </td>
                     </tr>
@@ -345,6 +347,27 @@
 	    </div>
 	  </div>
 	</div>
+
+    <div class="modal fade" id="call" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- 모달 내용 -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">모달 제목</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   
+                    
+                </div>
+                <!-- 모달 footer (선택적) -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <button type="button" class="btn btn-primary">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <c:import url="../../template/script.jsp"></c:import>
 

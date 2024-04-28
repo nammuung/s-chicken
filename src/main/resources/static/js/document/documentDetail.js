@@ -274,7 +274,23 @@ ClassicEditor
     console.error(error);
 });
 
-		
+
+
+/*$('#callModalButton').click(function() {
+    $.ajax({
+        url: '/document/callList',
+        type: 'GET',
+        success: function(response) {
+			alert("불러오기")
+
+        }
+    });
+});
+*/
+
+$(function() {
+        $("#call .modal-body").load("/document/callList");
+    });
 		
 		
 		
