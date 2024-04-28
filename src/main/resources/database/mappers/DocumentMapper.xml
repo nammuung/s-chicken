@@ -175,13 +175,15 @@
     	WHERE id=#{id}
 	</update>
 	
-	<update id="tempTosangapp">
-	UPDATE approval	
-	SET  document_id = #{documentId}, employee_id = #{employeeId}, rank = #{rank}, result = #{result},  date = #{date}, comment = #{comment}
-	WHERE document_id=#{documentId}
-	</update>
+	<delete id="tempToappDel">
+		DELETE FROM approval
+		WHERE document_id=#{documentId}
+	</delete>
 	
-	
+	<insert id="tempToappAdd">
+		INSERT INTO approval
+		VALUES(#{documentId},#{employeeId},#{rank},#{result},#{date},#{comment})		
+	</insert>
 
 
 	

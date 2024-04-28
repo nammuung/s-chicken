@@ -22,11 +22,12 @@ console.log("임시저장함")
 	let getData;
 	let del_app;
 	
-	rankArr=[0];
-	employeeArr=[approve[0].querySelector(".sign_date").getAttribute("data-id")];
-	resultArr=[1];
+	
 	
 	window.onload = function() {
+		rankArr=[0];
+		employeeArr=[approve[0].querySelector(".sign_date").getAttribute("data-id")];
+		resultArr=[1];
     for (let i = 1; i < approve.length; i++) {
         const id = approve[i].querySelector(".sign_date").getAttribute("data-id");
         const get_level = approve[i].querySelector(".sign_date").getAttribute("data-level");
@@ -239,8 +240,8 @@ function hyuga(){
 			approve[i].querySelector(".sign_rank").innerHTML ="";
 			approve[i].querySelector("#name").innerHTML ="";
 			
-			rankArr=[approve[0].querySelector(".sign_rank").innerHTML];
-			employeeArr=[approve[0].querySelector(".sign_date").innerHTML];
+			rankArr=[0];
+			employeeArr=[approve[0].querySelector(".sign_date").getAttribute("data-id")];
 			resultArr=[1];
 			
 			}

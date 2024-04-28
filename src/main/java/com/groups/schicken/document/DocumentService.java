@@ -92,16 +92,19 @@ public class DocumentService {
 		
 	}
 	
-	public int tempToSang(DocumentVO documentVO)throws Exception{
-		int result = documentDAO.tempTosang(documentVO);
+	public int tempToSang(DocumentVO documentVO,ApprovalVO approvalVO)throws Exception{
+			
+			int result = documentDAO.tempToappDel(approvalVO);
+			result = documentDAO.tempTosang(documentVO);
+			
 		
 		return result;
 	}
 	
 	public int tempToSangApp(ApprovalVO approvalVO)throws Exception{
-		int result = documentDAO.tempTosangapp(approvalVO);
+		int result = documentDAO.tempToappAdd(approvalVO);
 		
-		return result;
+		return result ;
 	}
 	
 	

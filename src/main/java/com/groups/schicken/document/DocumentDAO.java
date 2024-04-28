@@ -21,7 +21,9 @@ public interface DocumentDAO {
 	
 	int tempTosang(DocumentVO documentVO)throws Exception;
 	
-	int tempTosangapp(ApprovalVO approvalVO)throws Exception;
+	int tempToappAdd(ApprovalVO approvalVO)throws Exception;
+	
+	int tempToappDel(ApprovalVO approvalVO)throws Exception;
 
 	
 	Long allTotalCount(Map<String, Object> map)throws Exception;

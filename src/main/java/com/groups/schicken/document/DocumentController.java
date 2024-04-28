@@ -190,7 +190,7 @@ public class DocumentController {
 	@PostMapping("tempTotemp")
 	public ResponseEntity<?> tempTotemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
-		
+		System.out.println(map);
 		String ranks = (String) map.get("rank");
 		String ids = (String)map.get("employeeId");
 		String results = (String)map.get("result");
@@ -202,8 +202,8 @@ public class DocumentController {
 		documentVO.setTemp(1);
 		documentVO.setCount(rankArray.length);
 		
-		int result = documentService.tempToSang(documentVO);
 		approvalVO.setDocumentId(documentVO.getId());
+		int result = documentService.tempToSang(documentVO, approvalVO);
 				
 		
 		Long[] longRankArray = new Long[rankArray.length];
@@ -241,8 +241,8 @@ public class DocumentController {
 		documentVO.setTemp(0);
 		documentVO.setCount(rankArray.length);
 		
-		int result = documentService.tempToSang(documentVO);
 		approvalVO.setDocumentId(documentVO.getId());
+		int result = documentService.tempToSang(documentVO,approvalVO);
 				
 		
 		Long[] longRankArray = new Long[rankArray.length];

@@ -77,6 +77,7 @@
                         <!-- <td><button>결제미리보기</button></td> -->
 
                     </tr>
+                    <input type="hidden" value="${list[0].id}" name="documentId">
 					<input type="hidden" value="${list[0].id}" name="id">
 					<input type="hidden" value="<%=strDate %>" name="date">
                     <input type="hidden" value="<%=strDate %>" name="WriteDate">
@@ -159,8 +160,7 @@
                                     <span class="sign_tit_wrap">
                                         <span class="sign_tit"><strong>결재선</strong></span>
                                     </span>
-
-                                    <span class="sign_member_wrap">                                        
+                                        <span class="sign_member_wrap">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
                                                 <span class="sign_rank" id="name">${list[0].codeVO.name}</span>
