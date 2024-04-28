@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.amazonaws.auth.policy.Principal;
 import com.groups.schicken.Employee.EmployeeProfileVO;
@@ -27,11 +28,18 @@ import com.groups.schicken.calendar.CalendarVO;
 import com.groups.schicken.common.vo.Pager;
 import com.groups.schicken.organization.ChattingEmployeeListVO;
 import com.groups.schicken.organization.OrganizationService;
+import com.nimbusds.jose.shaded.gson.JsonObject;
 
+import io.micrometer.observation.Observation.Event;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/")
@@ -101,7 +109,20 @@ public class MainController {
     }
 
 
-	 
+
+ 
+    
+    @GetMapping("list")
+    @ResponseBody
+    public List<CalendarVO> list (CalendarVO calendarVO)throws Exception{
+    	List<CalendarVO> ar = calendarService.getList(calendarVO);
+    	return ar;
+    }
+    
+    
+    
+
+
     
     
     

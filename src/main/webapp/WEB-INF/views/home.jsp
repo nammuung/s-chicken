@@ -180,7 +180,8 @@
 							<label for="content" class="form-label"><b>내용</b></label>
 							<input type="text" id="content" class="form-control mb-3" placeholder="내용을 입력해주세요.">
 							<label for="share" class="form-label"><b>공유자</b></label>
-							<input type="text" id="share" nanem="share" class="form-control mb-3" disabled value="${profile.name}">
+							<input type="text" id="share" nanem="share" class="form-control mb-3" disabled
+								value="${profile.name}">
 							<input type="hidden" name="share" value="${profile.id}" id="emid" />
 
 
@@ -225,6 +226,7 @@
 			</div>
 
 		</body>
+
 		<script type="module">
 			import orgChart from "/js/orgChart/orgChart.js";
 
@@ -274,7 +276,7 @@
 				// 입력란 업데이트
 				managerNameInput.value = uniqueNames.join(", ");
 				managerIdInput.value = JSON.stringify(uniqueEmployees.map(employee => ({ value: employee.name })));
-				
+
 				console.log(managerIdInput.value);
 				// 선택된 직원이 없으면 태그 초기화하지 않음
 				if (uniqueNames.length === 0) {
@@ -428,6 +430,7 @@
 									alert("제목을 입력하지 않았습니다.");
 									return;
 								}
+
 								if (title) {
 									calendar.addEvent({
 										title: title,
@@ -435,7 +438,7 @@
 										end: arg.end,
 										allDay: arg.allDay
 									});
-								
+
 									// 저장 버튼 클릭 시 AJAX를 통해 데이터를 서버에 전송
 									$.ajax({
 										url: '/insert',
@@ -452,6 +455,8 @@
 										}),
 										success: function (response) {
 											console.log('저장 성공:', response);
+
+
 										},
 										error: function (error) {
 											console.error('저장 실패:', error);
@@ -463,14 +468,30 @@
 							});
 
 						},
-
-
-
-
-
-
 					});
 					// 캘린더 랜더링
+					$(document).ready(function () {
+						// 서버에서 데이터를 가져오는 AJAX 요청
+						$.ajax({
+							url: 'http://localhost/list',
+							type: 'GET',
+							success: function (data) {
+								// 가져온 데이터를 풀캘린더에 추가
+								data.forEach(function (eventData) {
+									calendar.addEvent({
+										id: eventData.id, // 이벤트 ID
+										title: eventData.title, // 이벤트 제목
+										start: eventData.start, // 이벤트 시작 날짜
+										end: eventData.end, // 이벤트 종료 날짜
+										// 기타 이벤트 속성 등을 추가할 수 있습니다.
+									});
+								});
+							},
+							error: function (error) {
+								console.error('데이터를 가져오는 데 실패했습니다:', error);
+							}
+						});
+					});
 					calendar.render();
 				});
 			})();
@@ -500,5 +521,5 @@
 			});
 
 		</script>
-		
+
 		</html>

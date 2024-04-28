@@ -29,7 +29,13 @@
     #{employeeId}
     )
     </insert>
-
+	
+	<select id="calList" parameterType="CalendarVO" resultType="CalendarVO">
+	select * from calendar 
+inner join calendar_emp ce 
+on calendar.id  = ce.calendar_id 
+where use_yn = 1 
+	</select>
 
     
     

@@ -13,5 +13,7 @@ public interface CalendarDAO {
 	public int insert (CalendarVO calendarVO) throws Exception;
 	public int insertuser(CalendarVO calendarVO)throws Exception;
 	
+
+	public List<CalendarVO> calList(CalendarVO calendarVO)throws Exception;
 	
 }
