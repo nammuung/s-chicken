@@ -1,7 +1,13 @@
-import setWhenReceiveMessage from '/js/chatting/chatting.js';
+import {setWhenReceiveMessage, sendMessage} from '/js/chatting/chatting.js';
+
+const chattingSpace = document.getElementById("chatting-space");
+const chattingArea = document.getElementById("chatting-area");
+const sendMessageBtn = document.getElementById("send-message-btn");
 
 let memberData = {};
 let lastChatting;
+let nowOpenPage = "";
+let nowPageType = "";
 
 document.getElementById("search-input").addEventListener("keyup", event=>{
     let searchName = event.target.value;
@@ -32,22 +38,26 @@ function openChatting(event, type){
     pageChange();
     namecardModal.hide();
     document.getElementById("chatting-page-btn").click()
-    document.querySelector("[data-now-open]").dataset.nowOpen=targetId;
+    nowOpenPage=targetId;
+    nowPageType = type;
 
-    setChatroom(targetId, type);
+    setChatroom(targetId);
 }
 
-async function setChatroom(targetId, type) {
+async function setChatroom(targetId) {
     let option = {
         'one' : `/one/${targetId}`,
         'many' : `/many/${targetId}`
-    }[type];
+    }[nowPageType];
 
     if(option == null) return;
 
     let chattingData = await fetch('/chatrooms/getData' + option).then(res => res.json());
 
     memberData = {};
+    chattingSpace.innerHTML = "";
+    chattingArea.value = "";
+    lastChatting = null;
     chattingData.members.forEach(member => memberData[member.id] = member);
     console.log("memberData : " , memberData);
 
@@ -55,7 +65,6 @@ async function setChatroom(targetId, type) {
 }
 
 function appendChatting(data){
-    const chattingSpace = document.getElementById("chatting-space");
     if(lastChatting == null || lastChatting.dataset.senderId !== data.senderId){
         lastChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
         chattingSpace.append(lastChatting);
@@ -63,6 +72,10 @@ function appendChatting(data){
 
     const messageSpace = chattingSpace.lastElementChild.querySelector(".chatting-content");
     messageSpace.append(createChattingMessage(data.content));
+
+
+    if(chattingSpace.scrollTop !== chattingSpace.scrollHeight)
+        chattingSpace.scrollTop = chattingSpace.scrollHeight;
 }
 
 function createChattingProfile(data, sendDate){
@@ -132,14 +145,25 @@ function pageChange(to){
     to.classList.add("now-page");
 }
 
-function countChattingCharacter(event){
-    const len = event.target.value.length;
-    document.getElementById("chatting-counter").innerText = len;
+function onSendMessageBtnClick(){
+    const chatMsg = chattingArea.value;
+    if(chatMsg.length === 0) return;
+
+    let data = {
+        chatroomId : nowOpenPage,
+        type : "Message",
+        pageType : nowPageType,
+        content : chatMsg
+    };
+
+    sendMessage(data);
+
+    chattingArea.value = "";
 }
 
 setWhenReceiveMessage(appendChatting);
 
-// document.getElementById("chatting-area").addEventListener("keyup", countChattingCharacter);
+sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
 document.querySelector("a[data-profile-type=chatting]").addEventListener("click", event=>openChatting(event, 'one'))
 document.getElementById("employee-list-btn").addEventListener("click",event=>pageChange(event.target))
 document.getElementById("chatroom-list-btn").addEventListener("click",event=>pageChange(event.target))

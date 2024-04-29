@@ -12,6 +12,16 @@ window.addEventListener("DOMContentLoaded", async ()=>{
     chatrooms.forEach(chatroom => mapping('chat/' + chatroom.id, data=>getMessage(data)));
 })
 
-export default function setWhenReceiveMessage(callback) {
+export function sendMessage(data){
+    if(data.pageType === 'one'){
+        data.chatroomId = [loginedId, data.chatroomId].sort().join("");
+    }
+
+    data.senderId = loginedId;
+
+    send("chat/" + data.chatroomId, data);
+}
+
+export function setWhenReceiveMessage(callback) {
     getMessage = callback;
 }

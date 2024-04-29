@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -17,10 +18,10 @@ public class ChatWebsocketController {
     private final SimpMessagingTemplate template;
 
     @MessageMapping("/chat/{chatroomId}")
-    public void sendMessage(@DestinationVariable("chatroomId") String chatroomId, @AuthenticationPrincipal EmployeeVO loginVO, ChatMessage content) {
-        log.info("sendMessage : from - {} , to - {} , message - {}", loginVO.getName(), chatroomId, content.getContent());
+    public void sendMessage(@DestinationVariable("chatroomId") String chatroomId, ChatMessage content) {
+        log.info("sendMessage : from - {} , to - {} , message - {}", content.getSenderId(), chatroomId, content.getContent());
 
-        ChatMessage message = chatService.makeMessage(chatroomId, loginVO.getId(), content.getContent());
+        ChatMessage message = chatService.makeMessage(chatroomId, content.getSenderId(), content.getContent());
         template.convertAndSend("/sub/chat/" + chatroomId, message);
 
         message.setChatroomId(chatroomId);

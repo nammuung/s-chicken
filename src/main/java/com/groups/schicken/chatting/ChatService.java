@@ -122,6 +122,8 @@ public class ChatService {
         String id = chatroomId + senderId + sendDate;
         id = (new BigInteger(id)).toString(16);
 
+        content = content.replaceAll("<","&lt;").replaceAll("\n", "<br>");
+
         return ChatMessage.of(id, chatroomId, senderId, sendDate, content);
     }
 

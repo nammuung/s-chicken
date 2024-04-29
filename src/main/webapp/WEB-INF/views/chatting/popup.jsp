@@ -113,20 +113,6 @@
 <%--                    <div class="col-1"></div>--%>
 <%--                </div>--%>
                 <div id="chatting-space">
-                    <div class="chatting d-flex mt-2 ms-1">
-                        <div class="chatting-profile-img">
-                            <img onclick="onProfileClick(${myProfile.id})" class="rounded-circle" src="${myProfile.profileImg}" alt="" width="55px" height="55px">
-                        </div>
-                        <div class="chatting-content">
-                            <div data-send-info>
-                                <span onclick="onProfileClick(${myProfile.id})" class="me-2 linkable text-black hovercursor">이동일</span>
-                                <span class="small text-secondary">2024-04-27 오후 7:48</span>
-                            </div>
-                            <div data-send-message class="mt-1 p-2 rounded-3 text-break bg-schicken-light d-inline-block">
-                                message
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                     <%-- 채팅에서 여러가지 공유용 --%>
@@ -137,8 +123,8 @@
 <%--                </div>--%>
 
                 <div class="input-group" style="height: 83px">
-                    <textarea class="form-control" style="height: 100%;" maxlength="1000"></textarea>
-                    <button class="btn btn-primary"><i class="far fa-paper-plane"></i></button>
+                    <textarea id="chatting-area" class="form-control" style="height: 100%;" maxlength="1000"></textarea>
+                    <button id="send-message-btn" class="btn btn-primary"><i class="far fa-paper-plane"></i></button>
                 </div>
             </section>
         </div>

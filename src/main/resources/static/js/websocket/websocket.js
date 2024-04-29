@@ -4,7 +4,7 @@ let waitting = [];
 
 let subs = {};
 const stompClient = new StompJs.Client({
-    brokerURL : 'ws://localhost/ws',
+    brokerURL : 'ws://192.168.7.161/ws',
     debug : str => console.log(str),
     reconnectDelay : 5000,
     heartbeatIncoming : 4000,
@@ -31,7 +31,7 @@ function receiveMessage(message, callback){
 
 function addHandler(sub, handler, id){
     if(id == null) {
-        id = crypto.randomUUID();
+        id = Math.floor(Math.random()*13195) + sub;
         waitting.push({sub, handler, id});
     }
 
