@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class OrderDetailVO {
+    private Long id;
     private OrderVO order;
     private Integer quantity;
     private Integer deliverQuantity;

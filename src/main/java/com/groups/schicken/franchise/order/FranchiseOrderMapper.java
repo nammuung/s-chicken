@@ -22,4 +22,5 @@ public interface FranchiseOrderMapper {
     int updateOrder(FranchiseOrderVO franchiseOrderVO) throws Exception;
 
     int updateOrderDetail(Map<String, Object> map) throws Exception;
+    int submitOrderDetail(Map<String, Object> map) throws Exception;
 }

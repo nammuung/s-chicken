@@ -18,11 +18,15 @@ import java.util.List;
 @RequestMapping("/v1/api/franchise/")
 public class FranchiseOrderAPI {
     private final FranchiseOrderService franchiseOrderService;
-
+    private FranchiseVO franchiseVO = new FranchiseVO();
+    {
+        franchiseVO.setId("1098");
+    };
     @GetMapping("orders")
-    public ResponseEntity<?> getOrderList(FranchiseOrderVO franchiseOrderVO) throws Exception {
+    public ResponseEntity<?> getOrderList(@AuthenticationPrincipal FranchiseVO franchise ,FranchiseOrderVO franchiseOrderVO) throws Exception {
         try {
-            System.out.println(franchiseOrderService.getOrderList(franchiseOrderVO));
+//            if(franchiseVO == null) return ResponseEntity.badRequest().build();
+            franchiseOrderVO.setFranchise(franchiseVO);
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), franchiseOrderService.getOrderList(franchiseOrderVO)));
         } catch (Exception e){
             e.printStackTrace();
@@ -59,8 +63,8 @@ public class FranchiseOrderAPI {
 
     @PostMapping("orders")
     @Transactional
-    public ResponseEntity<?> addOrder(@AuthenticationPrincipal FranchiseVO franchiseVO,@RequestBody FranchiseOrderVO franchiseOrderVO) throws Exception {
-        if (franchiseVO == null) return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> addOrder(@AuthenticationPrincipal FranchiseVO franchise,@RequestBody FranchiseOrderVO franchiseOrderVO) throws Exception {
+//        if (franchiseVO == null) return ResponseEntity.badRequest().build();
         try {
             franchiseOrderVO.setFranchise(franchiseVO);
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주 완료", franchiseOrderService.addOrder(franchiseOrderVO)));

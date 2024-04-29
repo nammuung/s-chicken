@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class HeadOrderDetailVO extends OrderDetailVO {
-    private Long id;
     private ItemVO item;
     private SupplierVO supplier;
     private HeadOrderVO order;

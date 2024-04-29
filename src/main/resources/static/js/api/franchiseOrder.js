@@ -7,22 +7,16 @@ export const getFranchiseOrderList = async (formData) => {
             params.append(key, value);
     }
     try {
-        const response = await defaultInstance.get('franchiseOrders', {params});
+        const response = await defaultInstance.get('franchise/orders', {params});
         return response.data;
     } catch (err) {
         console.log(err);
     }
 }
 
-export const getFranchiseOrder = async (franchiseOrderId,supplierId = null) => {
+export const getFranchiseOrder = async (franchiseOrderId) => {
     try {
-        let url = ""
-        if(supplierId === null){
-            url = 'franchiseOrders/'+franchiseOrderId
-        } else {
-            url = 'franchiseOrders/'+franchiseOrderId+'/'+supplierId
-        }
-        const response = await defaultInstance.get(url);
+        const response = await defaultInstance.get("franchise/orders/"+franchiseOrderId);
         return response.data;
     } catch (err) {
         console.log(err);
@@ -32,16 +26,7 @@ export const getFranchiseOrder = async (franchiseOrderId,supplierId = null) => {
 
 export const updateFranchiseOrder = async (params) => {
     try {
-        const response = await defaultInstance.put('franchiseOrders', params);
-        return response.data;
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-export const updateFranchiseOrderDetail = async (params) => {
-    try {
-        const response = await defaultInstance.put('franchiseOrderDetails', params);
+        const response = await defaultInstance.put('franchise/orders', params);
         return response.data;
     } catch (err) {
         console.log(err);

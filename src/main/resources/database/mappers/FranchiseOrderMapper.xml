@@ -7,46 +7,30 @@
 <mapper namespace="com.groups.schicken.franchise.order.FranchiseOrderMapper">
     <sql id="search">
         <where>
-            <if test="status != null and status != 4 and status != 5 and status != 6">
+            <if test="status != null and status != 5 and status != 6">
                 ord.status = #{status}
             </if>
-            <if test="status != null and status == 4">
-                AND ord.status IN (0,1,2)
-            </if>
             <if test="status != null and status == 5">
-                AND ord.status IN (1,2)
+                AND ord.status IN (0,1,2,3,4)
             </if>
             <if test="status != null and status == 6">
-                AND ord.status IN (0,1)
+                AND ord.status IN (1,2)
             </if>
             <if test="id != null">
                 AND ord.id = #{id}
             </if>
-            <if test="supplier != null and supplier.id != null">
-                AND sup.id = #{supplier.id}
-            </if>
-            <if test="supplier != null and supplier.name != null">
-                AND sup.name LIKE CONCAT('%',#{supplier.name},'%')
-            </if>
-            <if test="employee != null and employee.name != null">
-                AND emp.name LIKE CONCAT('%',#{employee.name},'%')
-            </if>
-            <if test="orderDetails != null and orderDetails[0].item != null">
-                AND (ord.id, sup.id) IN
+            <if test="orderDetails != null and orderDetails[0].product != null">
+                AND (ord.id) IN
                 (
                 SELECT
                     oi.order_id
-                    , oi.supplier_id
                 FROM
                     franchise_order_detail oi
                 LEFT JOIN
-                    item i
-                    ON oi.item_id = i.id
-                LEFT JOIN
                     product prd
-                    ON i.product_id = prd.id
+                    ON oi.product_id = prd.id
                 WHERE
-                    prd.name LIKE CONCAT('%',#{orderDetails[0].item.product.name},'%')
+                    prd.name LIKE CONCAT('%',#{orderDetails[0].product.name},'%')
                 )
             </if>
             <if test="orderDetails != null and orderDetails[0].id != null">
@@ -57,51 +41,29 @@
     <sql id="getOrderSQL">
         SELECT
             ord.*,
-            sup.name supplier_name,
-            sup.owner_name supplier_owner_name,
-            sup.address supplier_address,
-            sup.address_detail supplier_address_detail,
-            sup.contact_number supplier_contact_number,
-            sup.registration_number supplier_registration_number,
-            sup.email supplier_email,
-            sup.contract_date supplier_contract_date,
-            emp.*,
             order_detail.id order_detail_id,
-            order_detail.item_id order_detail_item_id,
-            order_detail.supplier_id order_detail_supplier_id,
             order_detail.order_id order_detail_order_id,
             order_detail.quantity order_detail_quantity,
             order_detail.deliver_quantity order_detail_deliver_quantity,
             order_detail.status order_detail_status,
             order_detail.price order_detail_price,
             order_detail.comment order_detail_comment,
-            item.id item_id,
-            item.contract_price item_contract_price,
-            prd.id order_detail_item_product_id,
-            prd.name order_detail_item_product_name,
-            prd.standard order_detail_item_product_standard,
-            prd.sell_price order_detail_item_product_sell_price,
-            unit.id order_detail_item_product_unit_id,
-            unit.name order_detail_item_product_unit_name,
-            cat.id order_detail_item_product_category_id,
-            cat.name order_detail_item_product_category_name
+            prd.id order_detail_product_id,
+            prd.name order_detail_product_name,
+            prd.standard order_detail_product_standard,
+            prd.sell_price order_detail_product_sell_price,
+            unit.id order_detail_product_unit_id,
+            unit.name order_detail_product_unit_name,
+            cat.id order_detail_product_category_id,
+            cat.name order_detail_product_category_name
         FROM
             franchise_order ord
         LEFT JOIN
-            supplier sup
-            ON ord.supplier_id = sup.id
-        LEFT JOIN
-            view_employee emp
-            ON ord.employee_id = emp.employee_id
-        LEFT JOIN
             franchise_order_detail order_detail
-            ON ord.id = order_detail.order_id AND ord.supplier_id = order_detail.supplier_id
-        LEFT JOIN
-            item
-            ON order_detail.item_id = item.id
+            ON ord.id = order_detail.order_id
         LEFT JOIN
             product prd
-            ON item.product_id = prd.id
+            ON order_detail.product_id = prd.id
         LEFT JOIN
             view_unit unit
             ON prd.unit_id = unit.id
@@ -117,20 +79,12 @@
     </select>
     <resultMap id="getOrderMap" type="FranchiseOrderVO" autoMapping="true">
         <id column="id" property="id"/>
-        <id column="supplier_id" property="supplier.id"/>
-        <association property="supplier" javaType="SupplierVO" columnPrefix="supplier_" autoMapping="true"/>
-        <association property="employee" javaType="EmployeeVO" columnPrefix="employee_" autoMapping="true">
-            <association property="position" javaType="CodeVO" columnPrefix="position_" autoMapping="true"/>
-            <association property="department" javaType="DepartmentVO" columnPrefix="department_" autoMapping="true"/>
-        </association>
+        <id column="franchise_id" property="franchise.id"/>
         <collection property="orderDetails" javaType="List" ofType="FranchiseOrderDetailVO" columnPrefix="order_detail_" autoMapping="true">
             <id column="id" property="id"/>
-            <id column="supplier_id" property="supplier.id"/>
-            <association property="item" javaType="ItemVO" columnPrefix="item_" autoMapping="true">
-                <association property="product" javaType="ProductVO" columnPrefix="product_" autoMapping="true">
-                    <association property="unit" javaType="CodeVO" columnPrefix="unit_" autoMapping="true"/>
-                    <association property="category" javaType="CodeVO" columnPrefix="category_" autoMapping="true"/>
-                </association>
+            <association property="product" javaType="ProductVO" columnPrefix="product_" autoMapping="true">
+                <association property="unit" javaType="CodeVO" columnPrefix="unit_" autoMapping="true"/>
+                <association property="category" javaType="CodeVO" columnPrefix="category_" autoMapping="true"/>
             </association>
         </collection>
     </resultMap>
@@ -143,20 +97,20 @@
         </selectKey>
         INSERT INTO
             franchise_order
-            (id, franchise_id, status, address, order_date, price, comment)
+            (id, franchise_id, status, address, write_date, price, comment)
         VALUES
-            (#{id}, #{franchise.id}, 0, #{address}, #{orderDate}, #{price}, #{comment})
+            (#{id}, #{franchise.id}, 0, #{address}, #{writeDate}, #{price}, #{comment})
     </insert>
 
     <insert id="addOrderDetail">
-        <selectKey keyProperty="order.id" order="BEFORE" resultType="Long">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
             SELECT nextval(seq1)
         </selectKey>
         INSERT INTO
             franchise_order_detail
-            (order_id, product_id, quantity, deliver_quantity, status, comment, price)
+            (id,order_id, product_id, quantity, deliver_quantity, status, comment, price)
         VALUES
-            (#{order.id}, #{product.id}, #{quantity}, 0, 0, #{comment}, #{price})
+            (#{id},#{order.id}, #{product.id}, #{quantity}, 0, 0, #{comment}, #{price})
     </insert>
     <select id="getId">
         SELECT nextval(seq1)
@@ -172,7 +126,17 @@
                 , order_date = #{orderDate}
             </if>
         </set>
-        WHERE id = #{id} and supplier_id = #{supplier.id}
+        WHERE id = #{id}
+    </update>
+    <update id="submitOrderDetail">
+        UPDATE
+            franchise_order_detail
+        <set>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </set>
+        WHERE order_id = #{orderId}
     </update>
     <update id="updateOrderDetail" parameterType="java.util.List">
         <foreach collection="list" item="item" separator=";">

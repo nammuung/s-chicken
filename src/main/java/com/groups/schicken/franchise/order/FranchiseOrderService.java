@@ -2,6 +2,7 @@ package com.groups.schicken.franchise.order;
 
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
+import com.groups.schicken.common.vo.OrderDetailVO;
 import com.groups.schicken.erp.item.ItemMapper;
 import com.groups.schicken.erp.product.ProductMapper;
 import com.groups.schicken.erp.product.ProductVO;
@@ -29,13 +30,14 @@ public class FranchiseOrderService {
     }
 
     public int addOrder(FranchiseOrderVO franchiseOrderVO) throws Exception {
-        franchiseOrderVO.setOrderDate(DateManager.getTodayDate());
+        franchiseOrderVO.setWriteDate(DateManager.getTodayDate());
         franchiseOrderVO.setComment("");
         List<Long> detailPrice = new ArrayList<Long>();
         Long totalPrice = 0L;
         for(FranchiseOrderDetailVO detail : franchiseOrderVO.getOrderDetails()) {
-            Long price = productMapper.getProduct(detail.getProduct()).getSellPrice();
-            detailPrice.add(price);
+            ProductVO productVO = productMapper.getProduct(detail.getProduct());
+            Long price = productVO.getSellPrice() * detail.getQuantity();
+            detailPrice.add(productVO.getSellPrice());
             totalPrice += price;
         }
         franchiseOrderVO.setPrice(totalPrice);
@@ -54,7 +56,14 @@ public class FranchiseOrderService {
 
     public int updateOrder(FranchiseOrderVO franchiseOrderVO) throws Exception {
         franchiseOrderVO.setOrderDate(DateManager.getTodayDate());
-        return franchiseOrderMapper.updateOrder(franchiseOrderVO);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("status", franchiseOrderVO.getStatus());
+        map.put("orderId", franchiseOrderVO.getId());
+        int result = franchiseOrderMapper.submitOrderDetail(map);
+        if (result == 0) throw new Exception();
+        result = franchiseOrderMapper.updateOrder(franchiseOrderVO);
+        if (result == 0) throw new Exception();
+        return 1;
     }
 
     public int updateOrderDetail(List<FranchiseOrderDetailVO> franchiseOrderDetailVOList) throws Exception {

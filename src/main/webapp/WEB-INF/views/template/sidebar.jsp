@@ -225,7 +225,12 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="/franchise/order">
-                <i class="bi bi-box-seam"></i><span>발주</span>
+                <i class="bi bi-box-seam"></i><span>발주서작성</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/order/list">
+                <i class="bi bi-box-seam"></i><span>발주내역</span>
             </a>
         </li>
         <li class="nav-item">

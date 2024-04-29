@@ -7,6 +7,7 @@ public class OrderVO {
     private Long id;
     private Integer status;
     private String address;
+    private String writeDate;
     private String orderDate;
     private Long price;
     private String comment;

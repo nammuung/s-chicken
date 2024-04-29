@@ -23,8 +23,9 @@ public class FranchiseOrderController {
     }
     @GetMapping("/getOrderSheet")
     public String getOrderSheet(Model model, FranchiseOrderVO franchiseOrderVO) throws Exception {
+        System.out.println("franchiseOrderService.getOrder(franchiseOrderVO) = " + franchiseOrderService.getOrder(franchiseOrderVO));
         model.addAttribute("order", franchiseOrderService.getOrder(franchiseOrderVO));
-        return "template/orderSheet";
+        return "franchise/order/orderSheet";
     }
 
     @GetMapping("/order/list")
