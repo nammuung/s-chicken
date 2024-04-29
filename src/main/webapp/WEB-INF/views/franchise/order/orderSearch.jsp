@@ -11,16 +11,6 @@
                 </div>
             </div>
             <div class="row col">
-                <label for="searchEmployee" class="col-3 col-form-label text-nowrap">발주자</label>
-                <div class="col-9">
-                    <input type="text" class="form-control" id="searchEmployee" name="employee.name" value="">
-                </div>
-            </div>
-            <div class="row col">
-            </div>
-        </div>
-        <div class="mb-3 row">
-            <div class="row col">
                 <label for="searchStatus" class="col-3 col-form-label text-nowrap">상태</label>
                 <div class="col-9">
                     <select id="searchStatus" class="form-select" name="status">
@@ -43,8 +33,6 @@
                         <input type="date" class="form-control" id="searchEndDate" name="endDate">
                     </div>
                 </div>
-            </div>
-            <div class="row col">
             </div>
         </div>
         <div class="d-flex justify-content-center">

@@ -36,6 +36,9 @@
             <if test="orderDetails != null and orderDetails[0].id != null">
                  AND order_detail.id = orderDetails[0].id
             </if>
+            <if test="true">
+                AND ord.status != 7
+            </if>
         </where>
     </sql>
     <sql id="getOrderSQL">

@@ -67,7 +67,7 @@ public class FranchiseOrderAPI {
 //        if (franchiseVO == null) return ResponseEntity.badRequest().build();
         try {
             franchiseOrderVO.setFranchise(franchiseVO);
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주 완료", franchiseOrderService.addOrder(franchiseOrderVO)));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "저장 완료", franchiseOrderService.addOrder(franchiseOrderVO)));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -86,7 +86,7 @@ public class FranchiseOrderAPI {
                 if (franchiseOrderVO.getStatus() == 1){
                     return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주 완료", null));
                 } else  {
-                    return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "반려 완료", null));
+                    return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "삭제 완료", null));
                 }
             }
         } catch (Exception e) {

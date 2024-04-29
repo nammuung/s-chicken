@@ -46,7 +46,7 @@ const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col
         orderPreviewButton.classList.remove("d-none")
         selectedOrder = instance.getDataAtCell(row,1)
         searchDetail(selectedOrder)
-        if(instance.getDataAtCell(row,5) == "대기" ) {
+        if(instance.getDataAtCell(row,5) == "미발주" ) {
             modifyButtons.classList.remove("d-none")
         } else {
             modifyButtons.classList.add("d-none")
@@ -198,7 +198,7 @@ approveOrderButton.addEventListener("click", async function () {
     const result = await updateFranchiseOrder(formData);
     alert(result.message);
     if(result.status == "OK"){
-        searchDetail(selectedOrder);
+        searchOrder()
     }
 })
 
@@ -209,13 +209,15 @@ refuseOrderButton.addEventListener("click", async function () {
         alert("발주를 선택해 주세요.")
         return;
     }
-    const formData = new FormData();
-    formData.append("id", selectedOrder);
-    formData.append("status", 3);
-    const result = await updateFranchiseOrder(formData);
-    alert(result.message);
-    if(result.status == "OK"){
-        searchDetail(selectedOrder);
+    if(confirm("삭제 하겠습니까?")){
+        const formData = new FormData();
+        formData.append("id", selectedOrder);
+        formData.append("status", 7);
+        const result = await updateFranchiseOrder(formData);
+        alert(result.message);
+        if(result.status == "OK"){
+            searchOrder()
+        }
     }
 })
 

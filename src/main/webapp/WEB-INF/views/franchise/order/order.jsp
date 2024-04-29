@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <div class="d-none" id="visibleContainer">
-                                        <button class="btn btn-primary" id="orderButton">발주</button>
+                                        <button class="btn btn-primary" id="orderButton">저장</button>
                                     </div>
                                 </div>
                             </div>
