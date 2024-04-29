@@ -24,9 +24,12 @@ public class HeadOrderController {
         model.addAttribute("order", headOrderService.getOrder(headOrderVO));
         return "template/orderSheet";
     }
-
     @GetMapping("/order/list")
     public String orderList(Model model) {
         return "erp/order/list";
+    }
+    @GetMapping("/order/sell")
+    public String sellList(Model model) {
+        return "erp/order/sell";
     }
 }

@@ -7,7 +7,10 @@ import com.groups.schicken.franchise.FranchiseVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +28,14 @@ public class FranchiseOrderAPI {
     @GetMapping("orders")
     public ResponseEntity<?> getOrderList(@AuthenticationPrincipal FranchiseVO franchise ,FranchiseOrderVO franchiseOrderVO) throws Exception {
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null) {
+                boolean hasFranchiseAuthority = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_FRANCHISE"));
+                if (hasFranchiseAuthority) {
+                    franchiseOrderVO.setFranchise(franchiseVO);
+                }
+            }
 //            if(franchiseVO == null) return ResponseEntity.badRequest().build();
-            franchiseOrderVO.setFranchise(franchiseVO);
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), franchiseOrderService.getOrderList(franchiseOrderVO)));
         } catch (Exception e){
             e.printStackTrace();

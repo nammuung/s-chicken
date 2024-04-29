@@ -19,6 +19,9 @@
             <if test="id != null">
                 AND ord.id = #{id}
             </if>
+            <if test="franchise != null and franchise.name != null">
+                AND frn.name LIKE CONCAT('%',#{franchise.name},'%')
+            </if>
             <if test="orderDetails != null and orderDetails[0].product != null">
                 AND (ord.id) IN
                 (
@@ -44,6 +47,7 @@
     <sql id="getOrderSQL">
         SELECT
             ord.*,
+            frn.name franchise_name,
             order_detail.id order_detail_id,
             order_detail.order_id order_detail_order_id,
             order_detail.quantity order_detail_quantity,
@@ -55,6 +59,7 @@
             prd.name order_detail_product_name,
             prd.standard order_detail_product_standard,
             prd.sell_price order_detail_product_sell_price,
+            SUM(st.quantity) as order_detail_product_stock,
             unit.id order_detail_product_unit_id,
             unit.name order_detail_product_unit_name,
             cat.id order_detail_product_category_id,
@@ -62,11 +67,17 @@
         FROM
             franchise_order ord
         LEFT JOIN
+            franchise frn
+            ON ord.franchise_id = frn.id
+        LEFT JOIN
             franchise_order_detail order_detail
             ON ord.id = order_detail.order_id
         LEFT JOIN
             product prd
             ON order_detail.product_id = prd.id
+        LEFT JOIN
+            stock st
+            ON prd.id = st.product_id
         LEFT JOIN
             view_unit unit
             ON prd.unit_id = unit.id
@@ -74,6 +85,10 @@
             view_category cat
             ON prd.category_id = cat.id
         <include refid="search"/>
+        GROUP BY
+            prd.id,
+            cat.name,
+            unit.name
         ORDER BY
             ord.write_date desc
     </sql>
@@ -83,6 +98,7 @@
     <resultMap id="getOrderMap" type="FranchiseOrderVO" autoMapping="true">
         <id column="id" property="id"/>
         <id column="franchise_id" property="franchise.id"/>
+        <association property="franchise" javaType="FranchiseVO" columnPrefix="franchise_" autoMapping="true"/>
         <collection property="orderDetails" javaType="List" ofType="FranchiseOrderDetailVO" columnPrefix="order_detail_" autoMapping="true">
             <id column="id" property="id"/>
             <association property="product" javaType="ProductVO" columnPrefix="product_" autoMapping="true">

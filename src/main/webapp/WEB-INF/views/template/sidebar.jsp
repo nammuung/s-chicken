@@ -158,12 +158,17 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/order/sell">
+                        <i class="bi bi-circle"></i><span>구매요청</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/order/list">
                         <i class="bi bi-circle"></i><span>입고</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/order/list">
+                    <a href="/order/sell">
                         <i class="bi bi-circle"></i><span>출고</span>
                     </a>
                 </li>
