@@ -6,15 +6,15 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>S치킨-그룹웨어</title>
-    <c:import url="../template/head.jsp"/>
+    <c:import url="../../template/head.jsp"/>
 
 </head>
 
 <body>
 <!-- ======= Header ======= -->
-<c:import url="../template/header.jsp"/>
+<c:import url="../../template/header.jsp"/>
 <!-- ======= Sidebar ======= -->
-<c:import url="../template/sidebar.jsp"/>
+<c:import url="../../template/sidebar.jsp"/>
 <main id="main" class="main">
     <section class="section erp ms-auto me-auto">
         <div class="pagetitle">
@@ -23,7 +23,7 @@
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <c:import url="../erp/product/productSearch.jsp"/>
+                    <c:import url="../../erp/product/productSearch.jsp"/>
                     <div class="card-body mt-3 row">
                         <div class="p-3 d-flex" style="width: 1200px;">
                             <div class="me-2" style="width: 500px;">
@@ -84,9 +84,9 @@
 
 
 <!-- ======= Footer ======= -->
-<c:import url="../template/footer.jsp"/>
+<c:import url="../../template/footer.jsp"/>
 <!-- ======= Script ======= -->
-<c:import url="../template/script.jsp"/>
+<c:import url="../../template/script.jsp"/>
 <script type="module" src="/js/franchise/order.js"> </script>
 
 </body>

@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
-public class OrderController {
-    private final OrderService orderService;
+public class HeadOrderController {
+    private final HeadOrderService headOrderService;
 
     @GetMapping("/order")
     public String order(Model model) {
@@ -21,8 +20,8 @@ public class OrderController {
     }
 
     @GetMapping("/getOrderSheet")
-    public String getOrderSheet(Model model, OrderVO orderVO) throws Exception {
-        model.addAttribute("order", orderService.getOrder(orderVO));
+    public String getOrderSheet(Model model, HeadOrderVO headOrderVO) throws Exception {
+        model.addAttribute("order", headOrderService.getOrder(headOrderVO));
         return "template/orderSheet";
     }
 

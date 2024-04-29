@@ -86,10 +86,5 @@ public class FranchiseController {
         return "result";
     }
 
-    @GetMapping("/franchise/order")
-    public String getFranchiseOrder(Model model) throws Exception {
-        model.addAttribute("category", productService.getCategory());
-        return "franchise/order";
-    }
 
 }
