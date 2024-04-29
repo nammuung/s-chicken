@@ -14,43 +14,16 @@ let nowPageType = "";
 let options = {
     threshold: 0,
 };
-let $end;
 const callback = (entries, observer) => {
     entries.forEach(async (entry) => {
         if (entry.isIntersecting) {
-            const $result = document.querySelector("#messageBox");
-            observer.unobserve($end);
-            const loadingElement = document.createElement("div");
-            loadingElement.classList.add(
-                "d-flex",
-                "flex-row",
-                "justify-content-center"
-            );
-            const loadingHtml = `
-            <div class="spinner-border mb-3 mt-1" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            `;
+            console.log(entry);
+            let direction = entry.target.dataset.direction;
 
-            loadingElement.innerHTML = loadingHtml;
-            $result.insertAdjacentElement("afterbegin", loadingElement);
-            loadingElementHeight = loadingElement.offsetHeight;
-            const data = await getMessage();
-            loadingElement.remove();
-            let messageElements = new DocumentFragment();
-            for (let message of data.messages) {
-                $result.prepend();
-                messageElements.appendChild(
-                    showMessage(message, messageElements)
-                );
-            }
-            const tempHeight = messageBox.scrollHeight;
-            $result.insertBefore(messageElements, $result.firstChild);
-            $end = $result.firstElementChild;
-            messageBox.scrollTop =
-                messageBox.scrollHeight - tempHeight - loadingElementHeight;
-            if (data.messages.length < 20) return;
-            observer.observe($end);
+            console.log(direction);
+            console.log(entry.target)
+            getChatting(entry.target.dataset.sendDate, direction);
+            observer.unobserve(entry.target);
         }
     });
 };
@@ -90,7 +63,10 @@ function openChatting(event, type){
     nowOpenPage=targetId;
     nowPageType = type;
 
-    setChatroom(targetId);
+    setChatroom(targetId).then(()=>{
+        document.querySelector("[data-last-read]")?.scrollIntoView({block:"center"})
+    })
+
 }
 
 async function setChatroom(targetId) {
@@ -109,9 +85,20 @@ async function setChatroom(targetId) {
     lastChatting = null;
     beginChatting = null;
     chattingData.members.forEach(member => memberData[member.id] = member);
-    console.log("memberData : " , memberData);
 
-    chattingData.chatMessages.forEach(chatMessage => appendChatting(chatMessage));
+    chattingData.chatMessages.forEach(chatMessage => appendChatting(chatMessage, chattingData.lastReadId));
+
+    let chattings = chattingSpace.querySelectorAll(".chatting-content");
+    if(chattings.length !== 0){
+        let start = chattings[0].firstElementChild.querySelector("[data-send-message]");
+        let end = chattings[chattings.length-1].lastElementChild.querySelector("data-send-message");
+
+        start.dataset.direction = "up";
+        end.dataset.direction = "down";
+
+        observer.observe(chattings[0].firstElementChild);
+        observer.observe(chattings[chattings.length-1].lastElementChild);
+    }
 }
 
 function getChatting(from, direction){
@@ -129,21 +116,22 @@ function prependChatting(data){
     }
 
     const messageSpace = chattingSpace.firstElementChild.querySelector(".chatting-content");
-    messageSpace.prepend(createChattingMessage(data.content));
+    messageSpace.prepend(createChattingMessage(data.content, data.sendDate));
 }
 
-function appendChatting(data, noScroll){
+function appendChatting(data, lastReadId){
     if(lastChatting == null || lastChatting.dataset.senderId !== data.senderId){
         lastChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
         chattingSpace.append(lastChatting);
     }
 
     const messageSpace = chattingSpace.lastElementChild.querySelector(".chatting-content");
-    messageSpace.append(createChattingMessage(data.content));
+    let chatMsg = createChattingMessage(data.content, data.sendDate);
+    if(lastReadId != null && lastReadId === data.id){
+        chatMsg.dataset.lastRead;
+    }
+    messageSpace.append(chatMsg);
 
-
-    if(!noScroll && chattingSpace.scrollTop !== chattingSpace.scrollHeight)
-        chattingSpace.scrollTop = chattingSpace.scrollHeight;
 }
 
 function createChattingProfile(data, sendDate){
@@ -197,8 +185,8 @@ function chatDateFormat(date){
     return year + "-" + month + "-" + day + " " + afternoon + " " + hour + ":" + minute;
 }
 
-function createChattingMessage(data){
-    let div = makeElement("div", {className : ["mt-1", "p-2", "rounded-3", "text-break", "bg-schicken-light", "d-inline-block"], dataset : {"sendMessage" : ""}})
+function createChattingMessage(data, sendDate){
+    let div = makeElement("div", {className : ["mt-1", "p-2", "rounded-3", "text-break", "bg-schicken-light", "d-inline-block"], dataset : {"sendMessage" : "", "sendDate" : sendDate}})
     div.innerText = data;
 
     let div2 = makeElement("div");
@@ -224,6 +212,7 @@ function makeElement(tagName ,{className, option, dataset} = {}){
 }
 
 function pageChange(to){
+    observer.disconnect();
     [...document.getElementsByClassName("now-page")].forEach(e => e.classList.remove("now-page"));
 
     if(to == null) return;

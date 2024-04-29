@@ -4,7 +4,7 @@ let waitting = [];
 
 let subs = {};
 const stompClient = new StompJs.Client({
-    brokerURL : 'ws://192.168.7.161/ws',
+    brokerURL : 'ws://localhost/ws',
     debug : str => console.log(str),
     reconnectDelay : 5000,
     heartbeatIncoming : 4000,

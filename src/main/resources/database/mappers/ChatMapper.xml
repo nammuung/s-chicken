@@ -80,7 +80,7 @@
     <select id="getChatMessageData">
         SELECT
               id
-            , sender_id
+            , employee_id
             , type
             , send_date
             , content
@@ -88,7 +88,7 @@
         WHERE chatroom_id=#{chatroomId}
             AND send_date <if test="direction=='up'">&lt;#{from}</if><if test="direction=='down'">>#{from}</if>
         ORDER BY send_date <if test="direction=='up'">DESC</if>
-        LIMIT 20
+        LIMIT 10
     </select>
 
     <insert id="createOneChatroom">
@@ -119,7 +119,7 @@
     </update>
 
     <sql id="getLastReadRowNum">
-        (SELECT (sub.r + 15)
+        (SELECT (sub.r + 13)
         FROM (
             SELECT
                   id
