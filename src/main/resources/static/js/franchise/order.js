@@ -3,7 +3,7 @@ import {addItem, getItemList, updateItem, getItem} from "../api/item.js";
 import {getProduct, getProductList} from "../api/product.js";
 import {getSupplierList} from "../api/supplier.js";
 import {addFranchiseOrder} from "../api/franchiseOrder.js";
-
+const visibleContainer = document.getElementById("visibleContainer")
 sw.init()
 
 //아이템 테이블 초기화
@@ -58,16 +58,16 @@ const orderTableOptions = {
         {data:"sellPrice"},
         {data:"orderQuantity", readOnly:false}
     ],
-    colWidths : scaleArrayToSum(Array(8),667),
+    colWidths : scaleArrayToSum(Array(7),667),
     height:"50vh",
 }
 const orderHot = handsontable(orderListContainer, orderTableOptions);
 const orderButton = document.getElementById("orderButton");
 orderHot.addHook("afterRender", function () {
     if(orderHot.getData().length > 0) {
-        orderButton.classList.remove("d-none")
+        visibleContainer.classList.remove("d-none")
     } else {
-        orderButton.classList.add("d-none")
+        visibleContainer.classList.add("d-none")
     }
 })
 //품목 검색
@@ -123,6 +123,12 @@ orderHot.addHook("afterChange", changes => {
                     orderHot.setDataAtRowProp(row,"id",before);
                 }
             })
+        }
+        if(prop == 'orderQuantity'  && after && before != after) {
+            if(isNaN(after)){
+                alert("숫자만 입력가능합니다.")
+                orderHot.setDataAtRowProp(row,"orderQuantity",before);
+            }
         }
     })
 })

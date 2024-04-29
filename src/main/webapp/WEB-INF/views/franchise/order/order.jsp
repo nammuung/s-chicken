@@ -43,7 +43,6 @@
                                 <div class="d-flex justify-content-between" style="line-height: 40px; padding-bottom: 3px;">
                                     <div>
                                         <button class="btn btn-outline-primary d-none" id="receivePreviewButton">입고현황</button>
-                                        <button class="btn btn-outline-primary d-none" id="orderPreviewButton">발주서</button>
                                     </div>
                                 </div>
                                 <div class="" style="line-height: 40px; padding-bottom: 3px;">
@@ -53,7 +52,9 @@
                                     <div id="orderListContainer"></div>
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    <button class="btn btn-outline-primary d-none" id="orderButton">발주</button>
+                                    <div class="d-none" id="visibleContainer">
+                                        <button class="btn btn-primary" id="orderButton">발주</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
