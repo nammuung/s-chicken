@@ -288,9 +288,8 @@ ClassicEditor
 });
 */
 
-$(function() {
         $("#call .modal-body").load("/document/callList");
-    });
+    
 		
 		
 		

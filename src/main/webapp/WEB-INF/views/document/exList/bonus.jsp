@@ -349,7 +349,7 @@
 	</div>
 
     <div class="modal fade" id="call" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <!-- 모달 내용 -->
                 <div class="modal-header">

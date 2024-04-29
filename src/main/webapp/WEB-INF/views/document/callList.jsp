@@ -1,24 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html lang="kr">
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>S치킨-그룹웨어</title>
-    <c:import url="../template/head.jsp"/>
-</head>
-
-<style>
-            body {
-            display: flex;
-            justify-content: center; /* 수평 가운데 정렬 */
-
-            height: 100vh;
-            margin: 0;
-        }
-</style>
 
 <body>
 <sec:authentication property="principal" var="user"/>
@@ -26,7 +8,7 @@
 <!-- ======= Header ======= -->
 <!-- ======= Sidebar ======= -->
 
-<main id="main" class="main">
+<div>
     <div class="pagetitle" style="text-align: center;">
         <h1>결재상신함</h1>
     </div>
@@ -55,7 +37,7 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table text-center ">
+                        <table class="table text-center">
                             <thead>
                                 <tr>
                                     <th style="width: 15%">문서번호</th>
@@ -109,11 +91,7 @@
             </div>
         </div>
     </section>
-</main><!-- End #main -->
+</div><!-- End #main -->
 <!-- ======= Footer ======= -->
-<!-- ======= Script ======= -->
-<c:import url="../template/script.jsp"/>
-<script src="/js/document/writen/list.js"></script>
-</body>
 
-</html>
+<script src="/js/document/writen/list.js"></script>
