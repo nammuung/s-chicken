@@ -50,7 +50,8 @@ export const updateFranchiseOrderDetail = async (params) => {
 
 export const addFranchiseOrder = async (params) => {
     try {
-        const response = await defaultInstance.post('franchiseOrders', params);
+        const config = {headers:{"Content-Type": "application/json"}}
+        const response = await defaultInstance.post('franchise/orders', params, config);
         return response.data;
     } catch (err) {
         console.log(err);

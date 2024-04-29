@@ -138,22 +138,25 @@
         <include refid="getOrderSQL"/>
     </select>
     <insert id="addOrder">
-        INSERT INTO
-            franchise_order
-            (id, supplier_id, status, address, write_date, employee_id, price, comment)
-        VALUES
-            (#{id}, #{supplier.id}, 0, #{address}, #{writeDate}, #{employee.id}, #{price}, #{comment})
-    </insert>
-
-    <insert id="addOrderDetail">
         <selectKey keyProperty="id" order="BEFORE" resultType="Long">
             SELECT nextval(seq1)
         </selectKey>
         INSERT INTO
-            franchise_order_detail
-            (id, supplier_id, item_id, order_id, quantity, deliver_quantity, status, comment, price)
+            franchise_order
+            (id, franchise_id, status, address, order_date, price, comment)
         VALUES
-            (#{id}, #{supplier.id}, #{item.id}, #{order.id}, #{quantity}, 0, #{status}, #{comment}, #{price})
+            (#{id}, #{franchise.id}, 0, #{address}, #{orderDate}, #{price}, #{comment})
+    </insert>
+
+    <insert id="addOrderDetail">
+        <selectKey keyProperty="order.id" order="BEFORE" resultType="Long">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO
+            franchise_order_detail
+            (order_id, product_id, quantity, deliver_quantity, status, comment, price)
+        VALUES
+            (#{order.id}, #{product.id}, #{quantity}, 0, 0, #{comment}, #{price})
     </insert>
     <select id="getId">
         SELECT nextval(seq1)

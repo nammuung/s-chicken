@@ -2,7 +2,7 @@ import {checkboxRenderer, handsontable, scaleArrayToSum} from "../lib/handsontab
 import {addItem, getItemList, updateItem, getItem} from "../api/item.js";
 import {getProduct, getProductList} from "../api/product.js";
 import {getSupplierList} from "../api/supplier.js";
-import {addOrder} from "../api/order.js";
+import {addFranchiseOrder} from "../api/franchiseOrder.js";
 
 sw.init()
 
@@ -161,22 +161,26 @@ orderButton.addEventListener("click",  async function(){
         quantity.push(row[7]);
         datas.push(result.data);
     }
+    // const addOrderForm = document.getElementById("addOrderForm");
     const orderDetails = []
     datas.forEach((data,index) => {
         orderDetails.push({
             product:{
-                ...data,
+                id: data.id
             },
-            quantity: quantity[index],
+            quantity: quantity[index]
         })
     })
-    // const result = await addOrder(
-    //     orderDetails
-    // )
-    // alert(result.message)
-    // if(result.status == 'OK'){
-    //     orderHot.loadData([]);
-    // }
+    const request = {
+        orderDetails,
+    }
+    const result = await addFranchiseOrder(
+        request
+    )
+    alert(result.message)
+    if(result.status == 'OK'){
+        orderHot.loadData([]);
+    }
 })
 
 // function addIdChangeEventListener(){

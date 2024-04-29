@@ -3,8 +3,11 @@ package com.groups.schicken.franchise.order;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.erp.item.ItemMapper;
+import com.groups.schicken.erp.product.ProductMapper;
+import com.groups.schicken.erp.product.ProductVO;
 import com.groups.schicken.erp.product.StockMapper;
 import com.groups.schicken.erp.product.StockVO;
+import com.groups.schicken.franchise.FranchiseVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +17,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class FranchiseOrderService {
     private final FranchiseOrderMapper franchiseOrderMapper;
-    private final ItemMapper itemMapper;
     private final StockMapper stockMapper;
+    private final ProductMapper productMapper;
 
     public List<FranchiseOrderVO> getOrderList(FranchiseOrderVO franchiseOrderVO) throws Exception {
         return franchiseOrderMapper.getOrderList(franchiseOrderVO);
@@ -25,7 +28,27 @@ public class FranchiseOrderService {
         return franchiseOrderMapper.getOrder(franchiseOrderVO);
     }
 
-    public int addOrder(List<FranchiseOrderDetailVO> franchiseOrderDetailVOList, EmployeeVO employeeVO) throws Exception {
+    public int addOrder(FranchiseOrderVO franchiseOrderVO) throws Exception {
+        franchiseOrderVO.setOrderDate(DateManager.getTodayDate());
+        franchiseOrderVO.setComment("");
+        List<Long> detailPrice = new ArrayList<Long>();
+        Long totalPrice = 0L;
+        for(FranchiseOrderDetailVO detail : franchiseOrderVO.getOrderDetails()) {
+            Long price = productMapper.getProduct(detail.getProduct()).getSellPrice();
+            detailPrice.add(price);
+            totalPrice += price;
+        }
+        franchiseOrderVO.setPrice(totalPrice);
+        int result = franchiseOrderMapper.addOrder(franchiseOrderVO);
+        if(result == 0) throw new Exception("주문 추가 실패");
+        List<FranchiseOrderDetailVO> orderDetails = franchiseOrderVO.getOrderDetails();
+        for (int i = 0, orderDetailsSize = orderDetails.size(); i < orderDetailsSize; i++) {
+            FranchiseOrderDetailVO detail = orderDetails.get(i);
+            detail.setOrder(franchiseOrderVO);
+            detail.setPrice(detailPrice.get(i));
+            result = franchiseOrderMapper.addOrderDetail(detail);
+            if (result == 0) throw new Exception("주문 상세 추가 실패");
+        }
         return 1;
     }
 

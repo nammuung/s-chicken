@@ -3,6 +3,7 @@ package com.groups.schicken.franchise.order;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.ResultVO;
 import com.groups.schicken.erp.supplier.SupplierVO;
+import com.groups.schicken.franchise.FranchiseVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,9 +59,11 @@ public class FranchiseOrderAPI {
 
     @PostMapping("orders")
     @Transactional
-    public ResponseEntity<?> addOrder(@AuthenticationPrincipal EmployeeVO employeeVO, @RequestBody List<FranchiseOrderDetailVO> orderDetailList) throws Exception {
+    public ResponseEntity<?> addOrder(@AuthenticationPrincipal FranchiseVO franchiseVO,@RequestBody FranchiseOrderVO franchiseOrderVO) throws Exception {
+        if (franchiseVO == null) return ResponseEntity.badRequest().build();
         try {
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주서 작성 완료", franchiseOrderService.addOrder(orderDetailList, employeeVO)));
+            franchiseOrderVO.setFranchise(franchiseVO);
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주 완료", franchiseOrderService.addOrder(franchiseOrderVO)));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
