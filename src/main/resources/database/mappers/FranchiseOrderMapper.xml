@@ -48,6 +48,11 @@
         SELECT
             ord.*,
             frn.name franchise_name,
+            frn.registration_number franchise_registrationNumber,
+            frn.owner_name franchise_ownerName,
+            frn.address franchise_address,
+            frn.address_detail franchise_addressDetail,
+            frn.contact_number franchise_contactNumber,
             order_detail.id order_detail_id,
             order_detail.order_id order_detail_order_id,
             order_detail.quantity order_detail_quantity,

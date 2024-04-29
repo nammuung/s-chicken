@@ -96,42 +96,27 @@
                 <tr>
                     <th>사업자등록번호</th>
                     <td>
-                        <sec:authorize access="isAuthenticated()">
-                            <sec:authentication property="principal" var="user"/>
-                            ${user.registrationNumber}
-                        </sec:authorize>
+                        ${order.franchise.registrationNumber}
                     </td>
                 </tr>
                 <tr>
                     <th>지점명/대표</th>
                     <td>
-                        <sec:authorize access="isAuthenticated()">
-                            <sec:authentication property="principal" var="user"/>
-                            ${user.name}
-                        </sec:authorize>
+                        ${order.franchise.name}
                         /
-                        <sec:authorize access="isAuthenticated()">
-                            <sec:authentication property="principal" var="user"/>
-                            ${user.ownerName}
-                        </sec:authorize>
+                        ${order.franchise.ownerName}
                     </td>
                 </tr>
                 <tr>
                     <th>주소</th>
                     <td>
-                        <sec:authorize access="isAuthenticated()">
-                            <sec:authentication property="principal" var="user"/>
-                            ${user.address} ${user.addressDetail}
-                        </sec:authorize>
+                        ${order.franchise.address} ${order.franchise.addressDetail}
                     </td>
                 </tr>
                 <tr>
                     <th>연락처</th>
                     <td>
-                        <sec:authorize access="isAuthenticated()">
-                            <sec:authentication property="principal" var="user"/>
-                            ${user.contactNumber}
-                        </sec:authorize>
+                        ${order.franchise.contactNumber}
                     </td>
                 </tr>
                 </tbody>
