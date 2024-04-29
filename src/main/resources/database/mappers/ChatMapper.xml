@@ -55,15 +55,40 @@
         </collection>
     </resultMap>
 
+    <select id="getChatMessageDataFirst">
+        SELECT
+              id
+            , sender_id
+            , type
+            , send_date
+            , content
+        FROM (
+            SELECT
+                  id
+                , employee_id AS "sender_id"
+                , type
+                , send_date
+                , content
+                , ROW_NUMBER() over (partition by 1 ORDER BY send_date) AS rn
+            FROM chat_message
+            WHERE chatroom_id=#{chatroomId}) cm
+        WHERE rn &lt;=<include refid="getLastReadRowNum"/>
+        ORDER BY send_date DESC
+        LIMIT 20
+    </select>
+
     <select id="getChatMessageData">
         SELECT
               id
-            , employee_id AS "sender_id"
+            , sender_id
             , type
             , send_date
             , content
         FROM chat_message
         WHERE chatroom_id=#{chatroomId}
+            AND send_date <if test="direction=='up'">&lt;#{from}</if><if test="direction=='down'">>#{from}</if>
+        ORDER BY send_date <if test="direction=='up'">DESC</if>
+        LIMIT 20
     </select>
 
     <insert id="createOneChatroom">
@@ -92,4 +117,15 @@
         SET last_read_id=#{chattingId}
         WHERE chatroom_id=#{chatroomId} AND employee_id=#{employeeId}
     </update>
+
+    <sql id="getLastReadRowNum">
+        (SELECT (sub.r + 15)
+        FROM (
+            SELECT
+                  id
+                , ROW_NUMBER() over (partition by 1 ORDER BY send_date) AS r
+            FROM chat_message
+            WHERE chatroom_id=#{chatroomId} ) sub
+        WHERE id=#{lastReadId})
+    </sql>
 </mapper>

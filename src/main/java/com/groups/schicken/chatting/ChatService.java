@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -142,30 +145,39 @@ public class ChatService {
         return chatDAO.getChatroomName(chatroomId);
     }
 
-    public ChattingVO getChattingData(String id, String chatroomId) {
-        return getChattingData(id, chatroomId, null);
+    public ChattingVO getChattingDataFirst(String id, String chatroomId) {
+        return getChattingDataFirst(id, chatroomId, null);
     }
 
     @Transactional
-    public ChattingVO getChattingData(String employeeId, String chatroomId, String page){
+    public ChattingVO getChattingDataFirst(String employeeId, String chatroomId, String page){
         ChattingVO chattingData = chatDAO.getChatroomData(employeeId, chatroomId);
 
         if(chattingData == null){
             return null;
         }
 
+        if(page == null) page = "0";
 
-        chattingData.setChatMessages(chatDAO.getChatMessageData(chatroomId, chattingData.getLastReadId(), page));
+        List<ChatMessage> chatMessageData = chatDAO.getChatMessageDataFirst(chatroomId, chattingData.getLastReadId(), page);
+        Collections.reverse(chatMessageData);
 
-        System.out.println("chattingData = " + chattingData);
-        System.out.println("chattingData = " + chattingData);
-        System.out.println("chattingData = " + chattingData);
-        System.out.println("chattingData = " + chattingData);
+        chattingData.setChatMessages(chatMessageData);
 
-        if(!chattingData.isLastReaded()){
-            chatDAO.updateLastRead(chattingData.getLastMessage().getId(), chatroomId, employeeId);
-        }
+//        if(!chattingData.isLastReaded()){
+//            chatDAO.updateLastRead(chattingData.getLastMessage().getId(), chatroomId, employeeId);
+//        }
 
         return chattingData;
+    }
+
+    public List<ChatMessage> getChattingDataNext(String employeeId, String chatroomId, String from, String direction){
+        List<ChatMessage> chatMessageData = chatDAO.getChatMessageData(chatroomId, from, direction);
+
+        if(!chatMessageData.isEmpty() && direction.equals("down")){
+            chatDAO.updateLastRead(chatMessageData.get(chatMessageData.size()-1).getId(), chatroomId, employeeId);
+        }
+
+        return chatMessageData;
     }
 }

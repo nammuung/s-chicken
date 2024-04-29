@@ -24,5 +24,7 @@ public interface ChatDAO {
 
     void updateLastRead(String chattingId, String chatroomId, String employeeId);
 
-    List<ChatMessage> getChatMessageData(String chatroomId, String lastReadId, String page);
+    List<ChatMessage> getChatMessageDataFirst(String chatroomId, String lastReadId, String page);
+
+    List<ChatMessage> getChatMessageData(String chatroomId, String from, String direction);
 }

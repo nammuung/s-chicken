@@ -6,8 +6,57 @@ const sendMessageBtn = document.getElementById("send-message-btn");
 
 let memberData = {};
 let lastChatting;
+let beginChatting;
 let nowOpenPage = "";
 let nowPageType = "";
+
+
+let options = {
+    threshold: 0,
+};
+let $end;
+const callback = (entries, observer) => {
+    entries.forEach(async (entry) => {
+        if (entry.isIntersecting) {
+            const $result = document.querySelector("#messageBox");
+            observer.unobserve($end);
+            const loadingElement = document.createElement("div");
+            loadingElement.classList.add(
+                "d-flex",
+                "flex-row",
+                "justify-content-center"
+            );
+            const loadingHtml = `
+            <div class="spinner-border mb-3 mt-1" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            `;
+
+            loadingElement.innerHTML = loadingHtml;
+            $result.insertAdjacentElement("afterbegin", loadingElement);
+            loadingElementHeight = loadingElement.offsetHeight;
+            const data = await getMessage();
+            loadingElement.remove();
+            let messageElements = new DocumentFragment();
+            for (let message of data.messages) {
+                $result.prepend();
+                messageElements.appendChild(
+                    showMessage(message, messageElements)
+                );
+            }
+            const tempHeight = messageBox.scrollHeight;
+            $result.insertBefore(messageElements, $result.firstChild);
+            $end = $result.firstElementChild;
+            messageBox.scrollTop =
+                messageBox.scrollHeight - tempHeight - loadingElementHeight;
+            if (data.messages.length < 20) return;
+            observer.observe($end);
+        }
+    });
+};
+
+const observer = new IntersectionObserver(callback, options);
+
 
 document.getElementById("search-input").addEventListener("keyup", event=>{
     let searchName = event.target.value;
@@ -58,13 +107,32 @@ async function setChatroom(targetId) {
     chattingSpace.innerHTML = "";
     chattingArea.value = "";
     lastChatting = null;
+    beginChatting = null;
     chattingData.members.forEach(member => memberData[member.id] = member);
     console.log("memberData : " , memberData);
 
     chattingData.chatMessages.forEach(chatMessage => appendChatting(chatMessage));
 }
 
-function appendChatting(data){
+function getChatting(from, direction){
+    let option = nowPageType === 'one' ? [document.querySelector("[data-logined-id]")?.dataset.loginedId, nowOpenPage].sort().join("") : nowOpenPage
+
+    fetch(`/chatrooms/chattings/${option}?from=${from}&direction=${direction}`)
+        .then(res=>res.json())
+        .then(r=>console.log(r));
+}
+
+function prependChatting(data){
+    if(beginChatting == null || beginChatting.dataset.senderId !== data.senderId){
+        beginChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
+        chattingSpace.prepend(beginChatting);
+    }
+
+    const messageSpace = chattingSpace.firstElementChild.querySelector(".chatting-content");
+    messageSpace.prepend(createChattingMessage(data.content));
+}
+
+function appendChatting(data, noScroll){
     if(lastChatting == null || lastChatting.dataset.senderId !== data.senderId){
         lastChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
         chattingSpace.append(lastChatting);
@@ -74,7 +142,7 @@ function appendChatting(data){
     messageSpace.append(createChattingMessage(data.content));
 
 
-    if(chattingSpace.scrollTop !== chattingSpace.scrollHeight)
+    if(!noScroll && chattingSpace.scrollTop !== chattingSpace.scrollHeight)
         chattingSpace.scrollTop = chattingSpace.scrollHeight;
 }
 
@@ -101,7 +169,7 @@ function createChattingProfile(data, sendDate){
     span.innerText = data.name;
     span.addEventListener("click", ()=> onProfileClick(data.id))
     let span2 = makeElement("span", {className : ["small", "text-secondary"]});
-    span2.innerText = sendDate;
+    span2.innerText = chatDateFormat(sendDate);
 
     div4.append(span, span2);
     div3.append(div4);
@@ -109,6 +177,24 @@ function createChattingProfile(data, sendDate){
     div.append(div3);
 
     return div;
+}
+
+function chatDateFormat(date){
+    let year = date.substring(0,4);
+    let month = date.substring(4,6);
+    let day = date.substring(6,8);
+    let hour = date.substring(8,10);
+    let minute = date.substring(10,12);
+    let afternoon;
+
+    if(Number(hour) >= 12){
+        afternoon = "오후";
+        hour = Number(hour)%12 + 1;
+    } else {
+        afternoon = "오전";
+    }
+
+    return year + "-" + month + "-" + day + " " + afternoon + " " + hour + ":" + minute;
 }
 
 function createChattingMessage(data){
