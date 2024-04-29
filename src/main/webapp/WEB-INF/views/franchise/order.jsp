@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>S치킨-그룹웨어</title>
     <c:import url="../template/head.jsp"/>
+
 </head>
 
 <body>
@@ -15,108 +16,45 @@
 <!-- ======= Sidebar ======= -->
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1>발주</h1>
-    </div>
-    <section class="section">
+    <section class="section erp ms-auto me-auto">
+        <div class="pagetitle">
+            <h1>발주</h1>
+        </div>
         <div class="row">
             <div class="col">
                 <div class="card">
-                    <div class="p-3 border-bottom">
-                        <b>검색</b>
-                        <form>
-                            <div class="mb-3 row">
-                                <label for="product" class="col-2 col-form-label">상품명</label>
-                                <div class="col-3">
-                                    <input type="text" class="form-control" id="product" value="">
-                                </div>
-                            </div>
-                            <div class="mb-3 row">
-                                <label for="product" class="col-2 col-form-label">상품코드</label>
-                                <div class="col-3">
-                                    <input type="text" class="form-control" id="product" value="">
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-center">
-                                <button class="btn btn-primary">검색</button>
-                            </div>
-                        </form>
-                    </div>
+                    <c:import url="../erp/product/productSearch.jsp"/>
                     <div class="card-body mt-3 row">
-                        <div class="col-4">
-                            <b>결과</b>
-                            <table class="table table-bordered text-nowrap text-center">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>번호</th>
-                                    <th>코드</th>
-                                    <th>품명</th>
-                                    <th>규격</th>
-                                </tr>
-                                </thead>
-                                <tbody class="">
-                                <tr>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                    <th>1</th>
-                                    <td>C101-1</td>
-                                    <td>닭다리</td>
-                                    <td>9호</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">다음</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-primary">추가</button>
+                        <div class="p-3 d-flex" style="width: 1200px;">
+                            <div class="me-2" style="width: 500px;">
+                                <div style="line-height: 40px; padding-bottom: 3px;">
+                                    <b>목록</b>
+                                </div>
+                                <div class="mb-3" style="box-shadow: 0 0 0 1px #ccc inset;" >
+                                    <div id="productListContainer" ></div>
+                                </div>
+                                <div>
+                                    <button type="button" class="btn btn-outline-primary" id="productToOrderButton">추가</button>
+                                    <button type="button" class="btn btn-outline-primary" id="addRowButton">행추가</button>
+                                    <button type="button" class="btn btn-outline-danger" id="deleteRowButton">행삭제</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-8">
-                            <b>선택</b>
-                            <table class="table table-bordered text-nowrap text-center">
-                                <thead>
-                                <tr>
-                                    <th style="width: 5%">#</th>
-                                    <th style="width: 5%">번호</th>
-                                    <th style="width: 5%">코드</th>
-                                    <th style="width: 70%">품명</th>
-                                    <th style="width: 5%">규격</th>
-                                    <th style="width: 5%">수량</th>
-                                    <th style="width: 5%">단위</th>
-                                </tr>
-                                </thead>
-                                <tbody class="">
-                                <tr>
-                                    <td>
-                                        <input type="checkbox">
-                                    </td>
-                                    <th>1</th>
-                                    <td>C101-1</td>
-                                    <td>닭다리</td>
-                                    <td>9호</td>
-                                    <td class="p-0">
-                                        <input type="text" class="form-control border-0" placeholder="" value="0">
-                                    </td>
-                                    <td>KG</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-outline-danger me-3">삭제</button>
-                                <button type="button" class="btn btn-primary">발주</button>
+                            <div style="width: 700px;">
+                                <div class="d-flex justify-content-between" style="line-height: 40px; padding-bottom: 3px;">
+                                    <div>
+                                        <button class="btn btn-outline-primary d-none" id="receivePreviewButton">입고현황</button>
+                                        <button class="btn btn-outline-primary d-none" id="orderPreviewButton">발주서</button>
+                                    </div>
+                                </div>
+                                <div class="" style="line-height: 40px; padding-bottom: 3px;">
+                                    <b>상세</b>
+                                </div>
+                                <div class="mb-3" style="box-shadow: 0 0 0 1px #ccc inset;" >
+                                    <div id="orderListContainer"></div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-outline-primary d-none" id="orderButton">발주</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -125,10 +63,32 @@
         </div>
     </section>
 </main><!-- End #main -->
+<div class="modal" tabindex="-1" id="receive-modal">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">입고 현황</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="" style="box-shadow: 0 0 0 1px #ccc inset;" >
+                    <div id="receiveListContainer"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- ======= Footer ======= -->
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
+<script type="module" src="/js/franchise/order.js"> </script>
+
 </body>
 
 </html>
