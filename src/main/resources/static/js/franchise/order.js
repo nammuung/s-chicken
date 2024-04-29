@@ -28,7 +28,7 @@ const productTableOptions = {
         {data:"unit.name"},
         {data:"sellPrice"},
     ],
-    colWidths : scaleArrayToSum(Array(7), 381),
+    colWidths : scaleArrayToSum(Array(6), 381),
     height:"50vh",
 }
 const productHot = handsontable(productContainer, productTableOptions);

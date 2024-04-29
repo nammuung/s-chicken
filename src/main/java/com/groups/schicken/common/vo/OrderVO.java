@@ -9,4 +9,5 @@ public class OrderVO {
     private String address;
     private String orderDate;
     private Long price;
+    private String comment;
 }
