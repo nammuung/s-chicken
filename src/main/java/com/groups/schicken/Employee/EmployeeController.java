@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,12 +43,14 @@ public class EmployeeController {
 		System.out.println(employeeVO.getId());
 		if (obj == null) {
 			log.info("============오브젝트 Null=================================");
+		    
 			return "employee/login";
 		}
 		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
 		String user = contextImpl.getAuthentication().getPrincipal().toString();
 
 		if(user.equals("anonymousUser")) {
+		    
 			return "employee/login";
 		}
 
@@ -55,6 +58,11 @@ public class EmployeeController {
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		    String id = auth.getName();
 		    
+		 
+		 // 로그인할때 세션에 프로필 넣기
+		    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		    EmployeeVO a = (EmployeeVO)authentication.getPrincipal();
+		    session.setAttribute("detail", a);
 		    model.addAttribute("id",id);
 		    return "redirect:/";
 

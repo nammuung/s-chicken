@@ -62,8 +62,7 @@ public class MainController {
     @GetMapping("/")
     public String bordarList (Model model, String id)throws Exception{
     	
-    	
-    	
+
     	EmployeeVO employeeVO = new EmployeeVO();
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		id = authentication.getName();

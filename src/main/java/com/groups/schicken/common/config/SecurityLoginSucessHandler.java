@@ -48,7 +48,7 @@ public class SecurityLoginSucessHandler implements AuthenticationSuccessHandler{
 		}
 		
 		
-		response.sendRedirect("/employee/join");
+		response.sendRedirect("/employee/login");
 		
 	}
 

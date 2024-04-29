@@ -23,12 +23,22 @@
 	</insert>
 
 	<insert id="insertuser" parameterType="CalendarVO">
-		insert into calendar_emp
+		insert into calendar_emp (calendar_id, employee_id)
 		values
-		(#{calendareId},
+		(#{calendarId},
 		#{employeeId}
 		)
 	</insert>
+<insert id="insertAllUser" parameterType="list">
+    insert into calendar_emp(calendar_id, employee_id)
+    <foreach collection="list" item="i" separator="," open="VALUES">
+        (#{i.calendarId}, #{i.employeeId})
+    </foreach>
+</insert>
+
+
+
+
 
 	<select id="calList" parameterType="CalendarVO"
 		resultType="CalendarVO">
@@ -53,9 +63,10 @@
 	</select>
 
 
-	<select id="departmentList" parameterType="CalendarVO" resultType="CalendarVO">
+<select id="departmentList" parameterType="CalendarVO" resultType="CalendarVO">
 select 
-e.id 
+c.id AS calendar_id ,  
+e.id AS employee_id 
 from calendar c 
 inner join 
 calendar_emp ce on c.id = ce.calendar_id   
@@ -63,6 +74,19 @@ inner join employee e
 on e.department_id  = ce.employee_id
 where e.id != #{share}
 	</select>
+
+<select id="depList" parameterType="CalendarVO" resultType="CalendarVO">
+	select ce.calendar_id ,
+	ce.employee_id 
+	from calendar_emp ce 
+	inner join department d on
+	ce.employee_id = d.id 
+	</select>
+
+
+<delete id="depDelete" parameterType="CalendarVO">
+DELETE from calendar_emp where employee_id = #{employeeId}
+</delete>
 
 
 </mapper>

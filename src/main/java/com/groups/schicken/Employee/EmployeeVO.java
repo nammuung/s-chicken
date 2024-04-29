@@ -50,7 +50,7 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 
 	private AnnualVO annualVO;
 	
-	
+
 	//소셜 Login
 	private SocialVO socialVO;
 	

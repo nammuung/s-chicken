@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.annual.AnnualService;
 import com.nimbusds.jose.shaded.gson.Gson;
 import com.nimbusds.jose.shaded.gson.reflect.TypeToken;
@@ -57,13 +58,19 @@ public class CalendarService {
 	        System.out.println(calendarVO.getCalendarId());
 	        int result = calendarDAO.insertuser(calendarVO);
 	    }
-
-		/*
-		 * // 부서 리스트를 조회하여 CalendarVO에 설정하고 인서트 String departmentList =
-		 * calendarDAO.departmentList(calendarVO);
-		 * calendarVO.setEmployeeId(departmentList); int result =
-		 * calendarDAO.insertuser(calendarVO);
-		 */
+	    
+		
+		  // 부서 리스트를 조회하여 CalendarVO에 설정하고 인서트 
+	    List<CalendarVO> a = calendarDAO.departmentList(calendarVO);
+	    if(a.isEmpty()) {
+	        return result;
+	    } else {
+	        calendarVO.setCalendarId(calendarVO.getId());
+	        calendarDAO.insertAllUser(a);   
+	        calendarDAO.depList(calendarVO);
+	        calendarDAO.depDelte(calendarVO);
+	    }
+	   // calendarDAO.depDelte(calendarVO);
 	    return result;
 	}
 

@@ -106,6 +106,9 @@
 											<option value="신한은행">신한은행</option>
 											<option value="농협">농협</option>
 											<option value="신협">신협</option>
+											<option value="기업은행">기업은행</option>
+											<option value="카카오뱅크">카카오뱅크</option>
+											<option value="토스뱅크">토스뱅크</option>
 										</select>
 									</div>
 									<div class="form-group mb-3 col-8">
