@@ -50,7 +50,8 @@ export const updateOrderDetail = async (params) => {
 
 export const addOrder = async (params) => {
     try {
-        const response = await defaultInstance.post('orders', params);
+        const config = {headers:{"Content-Type": "application/json"}}
+        const response = await defaultInstance.post('orders', params, config);
         return response.data;
     } catch (err) {
         console.log(err);

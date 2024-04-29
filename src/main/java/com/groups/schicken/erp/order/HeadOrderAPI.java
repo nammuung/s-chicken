@@ -61,9 +61,11 @@ public class HeadOrderAPI {
 
     @PostMapping("orders")
     @Transactional
-    public ResponseEntity<?> addOrder(@AuthenticationPrincipal EmployeeVO employeeVO, @RequestBody List<HeadOrderDetailVO> orderDetailList) throws Exception {
+    public ResponseEntity<?> addOrder(@AuthenticationPrincipal EmployeeVO employeeVO, @RequestBody HeadOrderVO headOrderVO) throws Exception {
         try {
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주서 작성 완료", headOrderService.addOrder(orderDetailList, employeeVO)));
+            System.out.println("employeeVO = " + employeeVO);
+            headOrderVO.setEmployee(employeeVO);
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주서 작성 완료", headOrderService.addOrder(headOrderVO)));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

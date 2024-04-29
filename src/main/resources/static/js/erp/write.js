@@ -162,6 +162,11 @@ orderPreviewButton.addEventListener("click",  async function(){
         quantity.push(row[9]);
         datas.push(result.data);
     }
+    const comment = document.getElementById("comment")
+    if(!comment.value){
+        alert("내용 입력해 주세요.")
+        return;
+    }
     const orderDetails = []
     datas.forEach((data,index) => {
         orderDetails.push({
@@ -172,7 +177,10 @@ orderPreviewButton.addEventListener("click",  async function(){
         })
     })
     const result = await addOrder(
-        orderDetails
+        {
+            orderDetails,
+            comment: comment.value
+        }
     )
     alert(result.message)
     if(result.status == 'OK'){

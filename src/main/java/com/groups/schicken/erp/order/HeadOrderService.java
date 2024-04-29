@@ -25,9 +25,9 @@ public class HeadOrderService {
         return headOrderMapper.getOrder(headOrderVO);
     }
 
-    public int addOrder(List<HeadOrderDetailVO> headOrderDetailVOList, EmployeeVO employeeVO) throws Exception {
+    public int addOrder(HeadOrderVO headOrderVO) throws Exception {
         HashMap<String, HeadOrderVO> orderListMap = new HashMap<>();
-        for(HeadOrderDetailVO headOrderDetailVO : headOrderDetailVOList){
+        for(HeadOrderDetailVO headOrderDetailVO : headOrderVO.getOrderDetails()){
             String supplierName = headOrderDetailVO.getItem().getSupplier().getName();
             Long itemPrice = headOrderDetailVO.getItem().getContractPrice();
             Integer itemQuantity = headOrderDetailVO.getQuantity();
@@ -39,7 +39,7 @@ public class HeadOrderService {
                 headOrderDetailVO.setPrice(itemPrice);
             } else {
                 HeadOrderVO order = new HeadOrderVO();
-                order.setEmployee(employeeVO);
+                order.setEmployee(headOrderVO.getEmployee());
                 List<HeadOrderDetailVO> list = new ArrayList<>();
                 list.add(headOrderDetailVO);
                 order.setSupplier(headOrderDetailVO.getItem().getSupplier());
@@ -52,12 +52,13 @@ public class HeadOrderService {
         }
         Long orderId = headOrderMapper.getId();
         for (String key : orderListMap.keySet()) {
-            HeadOrderVO headOrderVO = (HeadOrderVO) orderListMap.get(key);
-            headOrderVO.setId(orderId);
-            headOrderMapper.addOrder(headOrderVO);
-            for(HeadOrderDetailVO orderDetail : headOrderVO.getOrderDetails()){
+            HeadOrderVO headOrderVO2 = (HeadOrderVO) orderListMap.get(key);
+            headOrderVO2.setId(orderId);
+            headOrderVO2.setComment(headOrderVO.getComment());
+            headOrderMapper.addOrder(headOrderVO2);
+            for(HeadOrderDetailVO orderDetail : headOrderVO2.getOrderDetails()){
                 System.out.println("orderDetail = " + orderDetail);
-                orderDetail.setOrder(headOrderVO);
+                orderDetail.setOrder(headOrderVO2);
                 orderDetail.setStatus(0);
                 if(headOrderMapper.addOrderDetail(orderDetail)!=1) throw new Exception();
             }

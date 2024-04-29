@@ -48,7 +48,15 @@
                                         <button class="btn btn-outline-primary" id="addRowButton">행추가</button>
                                         <button class="btn btn-outline-danger" id="deleteRowButton">삭제</button>
                                     </div>
-                                    <button class="btn btn-primary" id="orderPreviewButton">저장</button>
+                                    <div class="d-flex">
+                                        <div class="row  me-1">
+                                            <label for="comment" class="form-label text-nowrap text-end col-2 m-0 align-self-center">내용</label>
+                                            <div class="col-10">
+                                                <input type="text" id="comment" class="form-control" placeholder="발주내용">
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary" id="orderPreviewButton">저장</button>
+                                    </div>
                                 </div>
                             </div>
 <%--                            <div class="d-flex justify-content-start">--%>
