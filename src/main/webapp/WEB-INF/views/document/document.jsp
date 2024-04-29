@@ -80,7 +80,7 @@
 			                                        <td>${vo.id}</td>
 			                                        
 			                                        
-			                                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> <td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.content}</a></td></c:if>
+			                                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> <td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.title}</a></td></c:if>
 			                                        
 			                                        
 			                                        <td>${vo.templateVO.tempName}</td>

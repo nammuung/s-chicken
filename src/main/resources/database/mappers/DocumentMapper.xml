@@ -36,8 +36,16 @@
 	
 	<resultMap type="employeeVO" id="employeeResult" autoMapping="true">
 		<association property="department" autoMapping="true" javaType="DepartmentVO" columnPrefix="departmant_"/>
-		<association property="position" javaType="CodeVO" autoMapping="true" columnPrefix="code_"/>
+		<association property="position" javaType="CodeVO" autoMapping="true" columnPrefix="code_"/>		
 	</resultMap>
+	
+	<!-- 결재선 저장 라인 가져오기 -->
+	<select id="getApp">
+		SELECT * FROM saveapp
+		where employee_id=#{id}
+	</select>
+	
+	
 	
 	<resultMap id="allListResult" type="DocumentVO" autoMapping="true">
 		<association property="templateVO" javaType="TemplateVO" autoMapping="true"/>
@@ -189,7 +197,15 @@
 	
 	<select id="allTotalCount" parameterType="Map" resultType="Long">
 		SELECT COUNT(id) FROM document r
-	</select>	
+	</select>
+	
+	<insert id="appSave">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Long">
+			SELECT NEXTVAL(seq3)
+		</selectKey>
+		INSERT INTO saveapp
+		VALUES (#{id},#{employeeId},#{appId},#{title},#{rank},#{date})
+	</insert>
 
 </mapper>
 

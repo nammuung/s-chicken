@@ -2,6 +2,9 @@
 import oc from "/js/orgChart/orgChart.js";
 
 	const myModal = new bootstrap.Modal(document.getElementById("myModal"))
+	
+	const me = document.getElementById("me");
+	
 	const add_btn = document.getElementById("addbtn")
 	const approval_List = document.getElementById("approval_List");
 	const del_btn = document.getElementById("delbtn");
@@ -11,8 +14,11 @@ import oc from "/js/orgChart/orgChart.js";
 	const tempSave = document.getElementById("tempSave");
 	const frm= document.querySelector("form");
 	
+	
+	
 	const cancel = document.getElementById("cancel");
 	
+	const save_btn = document.getElementById("save_btn");
 		
 	let employeeArr =[];
 	let rankArr=[];
@@ -138,9 +144,10 @@ function hyuga(){
   let arr =[];
   let getData;
   //내가 직접 선택한 콜백함수
-  function onSelectOrgChart(data){
-	getData=data;
-  }
+	  function onSelectOrgChart(data){
+		getData=data;
+	  }
+	  
 	  add_btn.addEventListener("click",(e)=>{
 		
 		let fullName = getData.name.split(" ");
@@ -153,17 +160,24 @@ function hyuga(){
 			return;
 		}
 		let bool = false;
+		
+		if(me.value == getData.id){
+			alert("본인은 선택할수 없습니다.")
+			return;
+		}
+		
 		for(let i =0 ; i <arr.length ; i++){
+							
 				if(arr[i] == getData.id){
 					bool = true;					
 				}					
-		}		
+		}	
 		
 		if(!bool){
 			arr.push(getData.id)
 			console.log(arr)
 			console.log("들오오기")
-			let str = `<li class="list-group-item" data-id="${getData.id}" data-name="${selName}" data-level="${level}" >
+			let str = `<li class="list-group-item" data-id="${getData.id}" data-name="${selName}" data-level="${level}">
 						<i class="bi bi-arrow-down-up handle"></i>
 							${getData.name}
 						</li>`
@@ -174,24 +188,73 @@ function hyuga(){
 	approval_List.addEventListener("click",(e)=>{
 		del_app=e.target;
 		
+		const active = document.querySelectorAll('#right-top .list-group-item');
+		active.forEach(item=>{
+			item.classList.remove('active');
+		})
+		
+		console.log(active[0].dataset);
+		for(let i =0 ; i < arr.length ; i++){		
+			
+			if(active[i].dataset.id == e.target.getAttribute("data-id")){
+			active[i].classList.add('active')
+			}
+		}
+		
+		
+		console.log(approval_List);
+
 		console.log(e.target.getAttribute("data-id"))
 		
 	})
-		del_btn.addEventListener("click",()=>{
-			
-			let real_del = del_app.getAttribute("data-id")
-			let bool = false;
-			for(let i = 0; i<arr.length;i++){
-				if(arr[i]==real_del){
-					arr.splice(i,1);
-					bool =true;
-				}
+	
+	save_btn.addEventListener("click",()=>{
+		
+		const active = document.querySelectorAll('#right-top .list-group-item');
+		const strDate = document.getElementById("strDate");
+		
+		console.log("세이브를 해보자")
+		let title = prompt("제목을 입력하세요")
+		let data = [];
+		for(let i = 0 ; i < arr.length ; i++){		
+			 data.push({				
+				employeeId : me.value ,
+				appId : active[i].dataset.id,
+				title : title,
+				rank : i ,
+				date :	strDate.value				
+			})
+		}
+		console.log(data);
+				
+		
+		
+		fetch("/document/saveApp",{
+			method:'post',
+			body:JSON.stringify(data),			
+			headers:{
+				"Content-Type" : "application/json"
 			}
-			
-			if(bool){
-				del_app.remove()
+		}).then(r=>console.log(r));
+		
+		
+	})
+	
+	del_btn.addEventListener("click",()=>{
+		
+		let real_del = del_app.getAttribute("data-id")
+		let bool = false;
+		for(let i = 0; i<arr.length;i++){
+			if(arr[i]==real_del){
+				arr.splice(i,1);
+				bool =true;
 			}
-		console.log(arr);			
+		}
+		
+		if(bool){
+			del_app.remove()
+		}
+	console.log(arr);			
 			
 	})
 		
@@ -288,7 +351,8 @@ ClassicEditor
 });
 */
 
-        $("#call .modal-body").load("/document/callList");
+//불러오기 모달 내용 jsp
+$("#call .modal-body").load("/document/callList");
     
 		
 		

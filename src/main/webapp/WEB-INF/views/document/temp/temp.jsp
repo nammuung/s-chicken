@@ -54,12 +54,27 @@
                             <c:if test="${list[0].temp eq 1}">
                                 <div class="mb-2">
                                     <button class="btn btn-primary">인쇄미리보기</button>
-                                    <button class="btn btn-primary" id="sangsin">상신</button>
+                                    <button class="btn btn-primary" id="sangsin" data-temp=1>상신</button>
                                     <button class="btn btn-primary" type="button" id = "cancel">취소</button>
                                 </div>
-                                    <button class="btn btn-primary">불러오기</button>
-                                    <button class="btn btn-primary" id="updateSave">임시저장</button>
-                            </c:if>                          
+                                    <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
+		                                불러오기
+		                            </button>
+                                    <button class="btn btn-primary" id="updateSave" data-temp=1>임시저장</button>
+                            </c:if>
+                            
+                            <c:if test="${list[0].temp eq 0}">
+                                <div class="mb-2">
+                                    <button class="btn btn-primary">인쇄미리보기</button>
+                                    <button class="btn btn-primary" id="sangsin"data-temp=0>상신</button>
+                                    <button class="btn btn-primary" type="button" id = "cancel">취소</button>
+                                </div>
+                                    <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
+		                                불러오기
+		                            </button>
+                                    <button class="btn btn-primary" id="updateSave" data-temp=0>임시저장</button>
+                            </c:if>
+                            
                         </td>
                     </tr>
 
@@ -77,13 +92,16 @@
                         <!-- <td><button>결제미리보기</button></td> -->
 
                     </tr>
-                    <input type="hidden" value="${list[0].id}" name="documentId">
-					<input type="hidden" value="${list[0].id}" name="id">
+                    <c:if test="${list[0].id ne null}">
+	                    <input type="hidden" value="${list[0].id}" name="documentId">
+						<input type="hidden" value="${list[0].id}" name="id">						
+					</c:if>
+					
 					<input type="hidden" value="<%=strDate %>" name="date">
                     <input type="hidden" value="<%=strDate %>" name="WriteDate">
                     <input type="hidden" name="status" value="0">
                     <input type="hidden" name="templateId" value="1">
-                    <input type="hidden" name="writerId" value="${list[0].employeeVO.id}">
+                    <input type="hidden" id="me" name="writerId" value="${list[0].employeeVO.id}">
                     
                     <tr>
                         <td
@@ -98,16 +116,18 @@
                                 </colgroup>
 
                                 <tbody>
-                                    <tr>
-                                        <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
-                                            문서번호
-                                        </td>
-                                        <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                                            <div style="width: 100%; text-align: center;">
-                                                ${list[0].id}
-                                            </div>
-                                        </td>
-                                    </tr>
+                                	<c:if test="${list[0].temp eq 1}">
+	                                    <tr>
+	                                        <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
+	                                            문서번호
+	                                        </td>
+	                                        <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+	                                            <div style="width: 100%; text-align: center;">
+	                                                ${list[0].id}
+	                                            </div>
+	                                        </td>
+	                                    </tr>
+                                    </c:if>
                                     <tr>
                                         <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
                                             문서종류
@@ -178,7 +198,7 @@
                                         </span>
                                     </span>
                                     
-                                    <c:if test="${list[1].id eq null}">
+                                    <c:if test="${list[1].writerId eq null}">
                                     	<span class="sign_member_wrap" id="">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
@@ -198,7 +218,7 @@
                                     </span>
                                     </c:if>
 
-                                    <c:if test="${list[2].id eq null}">
+                                    <c:if test="${list[2].writerId eq null}">
                                     	<span class="sign_member_wrap" id="">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
@@ -217,7 +237,7 @@
                                         </span>
                                     </span>
                                     </c:if>
-                                    	<c:if test="${list[3].id eq null}">
+                                    	<c:if test="${list[3].writerId eq null}">
                                     		<span class="sign_member_wrap" id="">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
@@ -387,6 +407,29 @@
           </div>
         </div>
       </div>
+      
+      <!-- 불러오기 모달 -->
+      <div class="modal fade" id="call" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- 모달 내용 -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">불러오기</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                   
+                    
+                </div>
+                <!-- 모달 footer (선택적) -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+      
 
     	
         <p

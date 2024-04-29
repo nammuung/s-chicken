@@ -26,10 +26,26 @@ public class DocumentService {
 	}
 	
 	
+	
+	public List<SaveAppVO> getApp(EmployeeVO employeeVO)throws Exception{
+			
+		return documentDAO.getApp(employeeVO);
+	}
+	
+	
+	
+	
 	public List<DocumentVO> approvalDetail(DocumentVO documentVO)throws Exception{
 		
 		return documentDAO.approvalDetail(documentVO);
 	}
+	
+	public int appSave(SaveAppVO saveAppVO)throws Exception{
+		
+		return documentDAO.appSave(saveAppVO);
+	}
+	
+	
 	
 	
 	public List<DocumentVO> approvalList(EmployeeVO employeeVO,Pager pager)throws Exception{

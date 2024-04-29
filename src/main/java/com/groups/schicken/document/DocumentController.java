@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.common.vo.Pager;
 
 
@@ -38,6 +39,17 @@ public class DocumentController {
 	@GetMapping("list")
 	public void getList() {
 		
+	}
+	
+	@PostMapping("document/saveApp")
+	@ResponseBody
+	public ResponseEntity<?> saveApp(@RequestBody List<SaveAppVO> ar)throws Exception{
+		SaveAppVO saveAppVO = new SaveAppVO();
+		for(int i = 0 ; i < ar.size() ; i++) {
+			saveAppVO = ar.get(i);
+			documentService.appSave(saveAppVO);
+		}
+		return ResponseEntity.ok(ar);
 	}
 	
 	@PostMapping("document/approvalUpdate")
@@ -120,8 +132,10 @@ public class DocumentController {
 	
 	@GetMapping("exList/bonus")
 	public void sang(@AuthenticationPrincipal EmployeeVO employeeVO,Model model) throws Exception {
+		
 		employeeVO = documentService.getEx(employeeVO);
 		
+		System.out.println(documentService.getApp(employeeVO));
 		model.addAttribute("list", employeeVO);
 	}
 	
@@ -131,6 +145,45 @@ public class DocumentController {
 		
 		
 		model.addAttribute("list", ar);
+	}
+	
+	@GetMapping("call")
+	public String  call(DocumentVO documentVO,Model model)throws Exception{
+		ApprovalVO approvalVO = new ApprovalVO();
+		List<DocumentVO> ar = documentService.getDetail(documentVO);
+		System.out.println(ar);	
+		
+//			documentVO.setId(null);
+//			documentVO.setTitle(ar.get(0).getTitle()); 
+//			documentVO.setContent(ar.get(0).getContent());
+//			documentVO.setTemplateId(ar.get(0).getTemplateId());
+//			documentVO.setEmployeeVO(ar.get(0).getEmployeeVO());
+//			documentVO.setWriterId(ar.get(0).getWriterId());
+//			documentVO.setWriteDate(DateManager.getTodayDate());
+//			documentVO.setStatus("0");
+//			documentVO.setTemp(2);
+//			documentService.add(documentVO);
+//			approvalVO.setDate(null);
+//			approvalVO.setDocumentId(documentVO.getId());
+//			System.out.println(approvalVO.getEmployeeId());
+		for(int i =0 ; i <ar.size() ; i++ ) {
+			ar.get(i).setId(null);
+			for(int j =0 ; j <ar.get(i).getApprovalVOs().size();j++) {			
+				
+			ar.get(i).getApprovalVOs().get(j).setDocumentId(null);
+			ar.get(i).getApprovalVOs().get(j).setResult(0);			
+			ar.get(i).getApprovalVOs().get(j).setDate(null);			
+			ar.get(i).getApprovalVOs().get(j).setComment(null);			
+			
+			}			
+		}
+		
+		System.out.println(ar);
+		
+		model.addAttribute("list", ar);
+		
+		return "document/temp/temp";
+		
 	}
 	
 	@GetMapping("writenList/writenBonus")
@@ -167,7 +220,7 @@ public class DocumentController {
 
 	
 	@PostMapping("temp")
-	public ResponseEntity<?> addTemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map, @RequestPart("attach") MultipartFile attach,TemplateVO templateVO)throws Exception{
+	public ResponseEntity<?> addTemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
 		
 		String ranks = (String) map.get("rank");
@@ -178,6 +231,7 @@ public class DocumentController {
 		String[] resultArray= results.split(",");
 		String[] date = documentVO.getWriteDate().split(" ");
 		
+		documentVO.setId(null);
 		documentVO.setWriteDate(date[0]);
 		documentVO.setCount(rankArray.length);
 		documentVO.setTemp(1);

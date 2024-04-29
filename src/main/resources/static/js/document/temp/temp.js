@@ -2,6 +2,9 @@
 import oc from "/js/orgChart/orgChart.js";
 console.log("임시저장함")
 	const myModal = new bootstrap.Modal(document.getElementById("myModal"))
+	
+	const me = document.getElementById("me");
+	
 	const add_btn = document.getElementById("addbtn")
 	const approval_List = document.getElementById("approval_List");
 	const del_btn = document.getElementById("delbtn");
@@ -71,53 +74,88 @@ console.log("임시저장함")
 		}
 	})
 	
-		updateSave.addEventListener("click",(e)=>{
-		e.preventDefault();
+	updateSave.addEventListener("click",(e)=>{
+	e.preventDefault();
+	console.log(updateSave.dataset.temp);
+	//return;
+	//임시저장 다시 임시저장하기
+	const formData = new FormData(frm);
+	formData.append("content", editor.getData())	
+	formData.append("employeeId",employeeArr)
+	formData.append("rank",rankArr)
+	formData.append("result",resultArr)
+	
+	if(updateSave.dataset.temp ==1){
 		
-		const formData = new FormData(frm);
-		formData.append("content", editor.getData())
-		
-		formData.append("employeeId",employeeArr)
-		formData.append("rank",rankArr)
-		formData.append("result",resultArr)
 		fetch('/document/tempTotemp',{
 			method:"post",
 			body:formData,
 		}).then(r=>console.log(r))
 		.then(r=>{
 			alert("임시저장 되었습니다")
-
+	
 		})
-	})
-	 
-	sangsin.addEventListener("click",(e)=>{
-		e.preventDefault();	
-		
-		const formData = new FormData(frm);
-		formData.append("content", editor.getData())		
-		
-		if(editor.getData()==""){
-			alert("사유를 입력하세요")
-			return
-		}		
-		
-		if(employeeArr[1]===undefined){
-			alert("결재자는 1명이상 입니다")
-			return
-		}		
-		
-		formData.append("employeeId",employeeArr)
-		formData.append("rank",rankArr)
-		formData.append("result",resultArr)
-		console.log(formData);
-		fetch('/document/tempToSang',{
+	}
+	
+	if(updateSave.dataset.temp ==0){
+		fetch('/document/temp',{
 			method:"post",
 			body:formData,
 		}).then(r=>console.log(r))
 		.then(r=>{
-			alert("상신 되었습니다")
-			
+			alert("불러오기가 임시저장 되었습니다")
+
 		})
+	}
+})
+	 
+	
+		
+	sangsin.addEventListener("click",(e)=>{
+		e.preventDefault();
+		console.log(sangsin.dataset.temp);
+		
+			const formData = new FormData(frm);
+			formData.append("content", editor.getData())		
+			
+			if(editor.getData()==""){
+				alert("사유를 입력하세요")
+				return
+			}		
+			
+			if(employeeArr[1]===undefined){
+				alert("결재자는 1명이상 입니다")
+				return
+			}		
+			
+			formData.append("employeeId",employeeArr)
+			formData.append("rank",rankArr)
+			formData.append("result",resultArr)
+		
+		//임시저장 상신하기
+		if(sangsin.dataset.temp == 1){
+			console.log(formData);
+			fetch('/document/tempToSang',{
+				method:"post",
+				body:formData,
+			}).then(r=>console.log(r))
+			.then(r=>{
+				alert("임시저장이 상신 되었습니다")
+				
+			})
+		}
+		//불러오기 상신하기
+		if(sangsin.dataset.temp == 0){			
+			fetch('/document/add',{
+				method:"post",
+				body:formData,
+			}).then(r=>console.log(r))
+			.then(r=>{
+				alert("불러오기가 상신 되었습니다")
+				window.close(relativePath);
+			})
+			
+		}
 	})
 	
 function hyuga(){
@@ -181,6 +219,12 @@ function hyuga(){
 			alert("결제자는 3명까지 입니다")
 			return;
 		}
+		
+		if(me.value == getData.id){
+			alert("본인은 선택할수 없습니다.")
+			return;
+		}
+		
 		let bool = false;
 		for(let i =0 ; i <arr.length ; i++){
 				if(arr[i] == getData.id){
@@ -203,6 +247,20 @@ function hyuga(){
 	
 	approval_List.addEventListener("click",(e)=>{
 		del_app=e.target;
+		
+		const active = document.querySelectorAll('#right-top .list-group-item');
+		
+		active.forEach(item=>{
+			item.classList.remove('active');
+		})
+		
+		console.log(active[0].dataset);
+		for(let i =0 ; i < arr.length ; i++){		
+			
+			if(active[i].dataset.id == e.target.getAttribute("data-id")){
+			active[i].classList.add('active')
+			}
+		}
 		
 		console.log(e.target.getAttribute("data-id"))
 		
@@ -297,6 +355,6 @@ ClassicEditor
     console.error(error);
 });
 
-		
-		
+//불러오기 모달 내용 jsp
+$("#call .modal-body").load("/document/callList");
 		
