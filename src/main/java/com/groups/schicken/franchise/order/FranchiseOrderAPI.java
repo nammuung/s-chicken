@@ -88,16 +88,14 @@ public class FranchiseOrderAPI {
     public ResponseEntity<?> updateOrder(FranchiseOrderVO franchiseOrderVO) throws Exception {
         try {
             int result = franchiseOrderService.updateOrder(franchiseOrderVO);
-            if (result == 0) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(ResultVO.res(HttpStatus.OK, "발주 실패", null));
-            } else {
-                if (franchiseOrderVO.getStatus() == 1){
-                    return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주 완료", null));
-                } else  {
-                    return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "삭제 완료", null));
-                }
-            }
+            return switch (franchiseOrderVO.getStatus()){
+                case 0 -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ResultVO.res(HttpStatus.OK, "발주 실패", null));
+                case 1 -> ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주 완료", null));
+                case 2 -> ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "접수 완료", null));
+                case 3 -> ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "완료 되었습니다.", null));
+                case 4 -> ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "반려 되었습니다.", null));
+                default -> ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "삭제 완료", null));
+            };
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

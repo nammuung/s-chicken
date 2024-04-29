@@ -47,8 +47,8 @@
                                 </div>
                                 <div class="d-flex justify-content-end">
                                     <div id="modifyButtons" class="d-none">
-                                        <button class="btn btn-outline-primary" id="approveOrderButton">발주</button>
-                                        <button class="btn btn-outline-danger" id="refuseOrderButton">삭제</button>
+                                        <button class="btn btn-outline-primary" id="approveOrderButton">접수</button>
+                                        <button class="btn btn-outline-danger" id="refuseOrderButton">반려</button>
                                     </div>
                                 </div>
                             </div>
