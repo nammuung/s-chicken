@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,6 +125,8 @@ public class ChatService {
         String id = chatroomId + senderId + sendDate;
         id = (new BigInteger(id)).toString(16);
 
+        content = content.replaceAll("<","&lt;").replaceAll("\n", "<br>");
+
         return ChatMessage.of(id, chatroomId, senderId, sendDate, content);
     }
 
@@ -138,5 +143,41 @@ public class ChatService {
     }
     private String getChatroomName(String chatroomId) {
         return chatDAO.getChatroomName(chatroomId);
+    }
+
+    public ChattingVO getChattingDataFirst(String id, String chatroomId) {
+        return getChattingDataFirst(id, chatroomId, null);
+    }
+
+    @Transactional
+    public ChattingVO getChattingDataFirst(String employeeId, String chatroomId, String page){
+        ChattingVO chattingData = chatDAO.getChatroomData(employeeId, chatroomId);
+
+        if(chattingData == null){
+            return null;
+        }
+
+        if(page == null) page = "0";
+
+        List<ChatMessage> chatMessageData = chatDAO.getChatMessageDataFirst(chatroomId, chattingData.getLastReadId(), page);
+        Collections.reverse(chatMessageData);
+
+        chattingData.setChatMessages(chatMessageData);
+
+        if(!chattingData.isLastReaded()){
+            chatDAO.updateLastRead(chattingData.getLastMessage().getId(), chatroomId, employeeId);
+        }
+
+        return chattingData;
+    }
+
+    public List<ChatMessage> getChattingDataNext(String employeeId, String chatroomId, String from, String direction){
+        List<ChatMessage> chatMessageData = chatDAO.getChatMessageData(chatroomId, from, direction);
+
+        if(!chatMessageData.isEmpty() && direction.equals("down")){
+            chatDAO.updateLastRead(chatMessageData.get(chatMessageData.size()-1).getId(), chatroomId, employeeId);
+        }
+
+        return chatMessageData;
     }
 }

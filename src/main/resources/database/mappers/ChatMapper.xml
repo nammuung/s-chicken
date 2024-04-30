@@ -11,7 +11,7 @@
             , cr.type
             , room_name AS "name"
             , max(cms.send_date) AS "last_chatting"
-            , last_connect
+            , last_read_id
             , join_date
         FROM chatroom cr
             INNER JOIN chat_member cm ON cr.id = cm.chatroom_id
@@ -28,6 +28,69 @@
         FROM chatroom cr
             INNER JOIN chat_member cm ON cr.id = cm.chatroom_id
         WHERE cm.employee_id=#{id}
+    </select>
+
+    <select id="getChatroomData" resultMap="chatroomDataResult">
+        SELECT
+              cr.id AS "chatroom_id"
+            , cm.room_name AS "chatroom_name"
+            , e.id AS "employee_id"
+            , concat(c.name, ' ' , e.name) AS "name"
+            , a.url AS "profile_img"
+            , d.name AS "department_name"
+            , cm.last_read_id
+        FROM chatroom cr
+            INNER JOIN chat_member cm ON cr.id = cm.chatroom_id
+            INNER JOIN employee e ON e.id = cm.employee_id
+            INNER JOIN department d ON d.id = e.department_id
+            INNER JOIN code c ON c.id = e.pos_id AND c.type_id='300'
+            LEFT JOIN attach a ON a.parent_id = e.id AND a.tbl_id=1077
+        WHERE cr.id=#{chatroomId}
+    </select>
+
+    <resultMap id="chatroomDataResult" type="ChattingVO" autoMapping="true">
+        <id column="chatroom_id" property="chatroomId"/>
+        <collection property="members" autoMapping="true" javaType="List" ofType="EmployeeProfileVO">
+            <id column="employee_id" property="id"/>
+        </collection>
+    </resultMap>
+
+    <select id="getChatMessageDataFirst">
+        SELECT
+              id
+            , sender_id
+            , type
+            , send_date
+            , content
+        FROM (
+            SELECT
+                  id
+                , employee_id AS "sender_id"
+                , type
+                , send_date
+                , content
+                , ROW_NUMBER() over (partition by 1 ORDER BY send_date) AS rn
+            FROM chat_message
+            WHERE chatroom_id=#{chatroomId}) cm
+        <if test="lastReadId != null">
+            WHERE rn &lt;=<include refid="getLastReadRowNum"/>
+        </if>
+        ORDER BY send_date DESC
+        LIMIT 20
+    </select>
+
+    <select id="getChatMessageData">
+        SELECT
+              id
+            , employee_id AS "sender_id"
+            , type
+            , send_date
+            , content
+        FROM chat_message
+        WHERE chatroom_id=#{chatroomId}
+            AND send_date <if test="direction=='up'">&lt;#{from}</if><if test="direction=='down'">>#{from}</if>
+        ORDER BY send_date <if test="direction=='up'">DESC</if>
+        LIMIT 10
     </select>
 
     <insert id="createOneChatroom">
@@ -50,4 +113,21 @@
         FROM chatroom
         WHERE id=#{chatroomId}
     </select>
+
+    <update id="updateLastRead">
+        UPDATE chat_member
+        SET last_read_id=#{chattingId}
+        WHERE chatroom_id=#{chatroomId} AND employee_id=#{employeeId}
+    </update>
+
+    <sql id="getLastReadRowNum">
+        (SELECT (sub.r + 13)
+        FROM (
+            SELECT
+                  id
+                , ROW_NUMBER() over (partition by 1 ORDER BY send_date) AS r
+            FROM chat_message
+            WHERE chatroom_id=#{chatroomId} ) sub
+        WHERE id=#{lastReadId})
+    </sql>
 </mapper>

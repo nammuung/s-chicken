@@ -1,5 +1,6 @@
 package com.groups.schicken.organization;
 
+import com.groups.schicken.common.util.PhoneNumberHyphenInserter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class OrganizationService {
     }
 
     public List<ChattingEmployeeListVO> getChattingEmployeeList(String id) {
-        return organizationDAO.getChattingEmployeeList(id);
+        List<ChattingEmployeeListVO> list = organizationDAO.getChattingEmployeeList(id);
+
+        return list;
     }
 }

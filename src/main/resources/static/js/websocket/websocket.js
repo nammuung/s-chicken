@@ -31,7 +31,7 @@ function receiveMessage(message, callback){
 
 function addHandler(sub, handler, id){
     if(id == null) {
-        id = crypto.randomUUID();
+        id = Math.floor(Math.random()*13195) + sub;
         waitting.push({sub, handler, id});
     }
 

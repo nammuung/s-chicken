@@ -5,7 +5,6 @@ import com.groups.schicken.Employee.EmployeeService;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.organization.ChattingEmployeeListVO;
 import com.groups.schicken.organization.OrganizationService;
-import com.groups.schicken.organization.OrganizationVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
 
 @Controller
 @RequestMapping("/chatrooms/*")
@@ -39,18 +36,27 @@ public class ChatController {
         EmployeeProfileVO myProfile = employeeService.getProfile(employee.getId());
         model.addAttribute("myProfile", myProfile);
 
-        return "chatting/list";
+        return "chatting/popup";
     }
 
-    @GetMapping("one/{targetId}")
-    public ResponseEntity<ChatroomVO> getChatrooms(@PathVariable String targetId, @AuthenticationPrincipal EmployeeVO employee){
+    @GetMapping("getData/one/{targetId}")
+    public ResponseEntity<ChattingVO> getChattingDataOne(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String targetId){
         ChatroomVO chatroom = chatService.getOneChatrooms(employee.getId(), targetId);
 
         if(chatroom == null){
             chatroom = chatService.createOneChatroom(employee.getId(), targetId);
         }
 
-        return ResponseEntity.ok(chatroom);
+        ChattingVO chattingVO = chatService.getChattingDataFirst(employee.getId(), chatroom.getId());
+
+        return ResponseEntity.ok(chattingVO);
+    }
+
+    @GetMapping("getData/many/{chatroomId}")
+    public ResponseEntity<ChattingVO> getChattingDataMany(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId){
+        ChattingVO chattingVO = chatService.getChattingDataFirst(employee.getId(), chatroomId);
+
+        return ResponseEntity.ok(chattingVO);
     }
 
     @GetMapping("list")
@@ -61,10 +67,18 @@ public class ChatController {
         return ResponseEntity.ok(list);
     }
 
+
     @PostMapping("join/{chatroomId}")
     public ResponseEntity<Boolean> joinChatroom(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId){
         Boolean result = chatService.joinChatroom(employee.getId(), chatroomId);
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("chattings/{chatroomId}")
+    public ResponseEntity<List<ChatMessage>> getMoreMessages(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId, String from, String direction){
+        List<ChatMessage> list = chatService.getChattingDataNext(employee.getId(), chatroomId, from,direction);
+
+        return ResponseEntity.ok(list);
     }
 }

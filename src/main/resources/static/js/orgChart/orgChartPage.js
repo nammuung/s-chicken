@@ -109,15 +109,15 @@ function getDepartmentLis({id, upperId}){
 
             li.classList.add("list-group-item","d-flex","justify-content-between", "filtered");
             li.setAttribute("data-sort", e.sort);
-            if(id == e.id){
+            if(id == e.id) {
                 isId = true;
 
                 li.classList.add("bg-schicken-light");
                 li.classList.remove("filtered");
-                li.id="target-li";
+                li.id = "target-li";
 
                 i = document.createElement("i");
-                i.classList.add("fas","fa-bars");
+                i.classList.add(...("bi bi-arrows-vertical".split(" ")));
                 i.id = "drag-icon";
                 i.draggable = true;
             }
@@ -192,7 +192,8 @@ function setModalUpdateDept(data){
 
     $(deptList).sortable({
         filter : ".filtered",
-        animation : 50,
+        ghostClass : "ghost",
+        animation : 150,
         onEnd : setDataSort
     });
 

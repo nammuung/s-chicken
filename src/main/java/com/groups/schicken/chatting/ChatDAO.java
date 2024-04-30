@@ -19,4 +19,12 @@ public interface ChatDAO {
     int insertChat(ChatMessage message);
 
     String getChatroomName(String chatroomId);
+
+    ChattingVO getChatroomData(String employeeId, String chatroomId);
+
+    void updateLastRead(String chattingId, String chatroomId, String employeeId);
+
+    List<ChatMessage> getChatMessageDataFirst(String chatroomId, String lastReadId, String page);
+
+    List<ChatMessage> getChatMessageData(String chatroomId, String from, String direction);
 }
