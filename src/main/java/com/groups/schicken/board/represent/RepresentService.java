@@ -68,7 +68,9 @@ public class RepresentService implements BoardService {
 		map.put("boardVO", boardVO);
 		
 		pager.makeIndex();
-		pager.makeNum(representDAO.getTotalCount(map));
+		pager.makeNum(representDAO.allTotalCount(map));
+		
+		System.out.println(representDAO.allTotalCount(map));
 		
 		return representDAO.allList(map);
 	}

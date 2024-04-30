@@ -38,6 +38,8 @@ public class AllController {
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
 		
+		System.out.println(pager);
+		
 		
 		return "board/list";
 	}
