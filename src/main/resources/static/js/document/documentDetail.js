@@ -32,10 +32,12 @@ import oc from "/js/orgChart/orgChart.js";
 	 getSave.addEventListener("click",(e)=>{
 		 
 		 	approval_List.innerHTML =""
-		 	console.log(e.target)		 	
+		 	console.log(e.target)
 		 	
 			 if(e.target.tagName=='I'){
-				 
+				 arr = [];
+				 rankArr=[];
+				 employeeArr=[];
 				 const isConfirmed = confirm("정말로 삭제하시겠습니까?");
 				let data ={
 						employeeId:me.value,
@@ -54,7 +56,7 @@ import oc from "/js/orgChart/orgChart.js";
 					}).then(r=>console.log(r))
 					.then(r=>{
 						console.log(e.target)
-						e.target.remove();
+						e.target.parentElement.parentElement.remove();
 					})
 				}			 
 			 return			 
@@ -190,7 +192,7 @@ function hyuga(){
     function adjustSize() {
       var windowHeight = $(window).height();
       var windowWidth = $(window).width();
-      var modalWidth = windowWidth * 1; // 화면 너비의 50%
+      var modalWidth = windowWidth * 0.8; // 화면 너비의 50%
       var modalHeight = windowHeight * 0.8; // 화면 높이의 80%
       
       $('#modalContent').css('width', modalWidth);
@@ -313,7 +315,7 @@ function hyuga(){
 			r.forEach(reply=>{
 					getSave.innerHTML +=
 						`<li class="list-group-item" data-title="${reply.title}">								    	 
-										   		${reply.title}<button class="saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${reply.title}" ></i></button>									 
+										   		<span style="line-height: 38px;">${reply.title}</span><button class="btn saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${reply.title}" ></i></button>									 
 								    </li>`
 				})
 		})

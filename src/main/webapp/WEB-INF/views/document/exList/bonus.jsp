@@ -296,7 +296,7 @@
 	          <div class="row mmdd">
 	            <div class="col-md-5 card mmdd">
 	                <div class="card-body">
-	                조직도
+                        <h5>조직도</h5>
 	                	<div id="note-message-org-chart"></div>
 	                </div>
 
@@ -310,42 +310,48 @@
 				    </div>
                 </div>
 	            <div class="col-md-5 mmdd">
-	              <div id="right-top" class="row ssdd" style="background-color: lightblue;">
-	                  <div style="text-align: left;">결재선 등록</div>
+	              <div id="right-top" class="row ssdd">
+                      <div class="card">
+                          <div class="card-body">
+                              <div class="h5" style="text-align: left;">결재선 등록</div>
 
-                      <div>
-                        <ul class="list-group" id="approval_List">
+                              <div>
+                                <ul class="list-group" id="approval_List">
 
-                        </ul>
+                                </ul>
+                              </div>
+                              <div class="position-absolute end-0 bottom-0">
+                                  <div class="col-auto">
+                                      <div class="mb-2">
+                                          <button class="btn btn-outline-primary btn-sm" id="save_btn">결제선 저장</button>
+                                          <button class="btn btn-primary btn-sm" id="register">등록하기</button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
                       </div>
+                  </div>
+	              <div id="right-bottom" class="row ssdd">
+                      <div class="card">
+                          <div class="card-body">
+                              <div class="h5" style="text-align: left;">나의 결재목록</div>
 
-	                  <div class="text-right mt-2 align-self-end">
-	                      <div class="col-auto">
-	                          <div class="mb-2">
-		                          <button class="btn btn-primary btn-sm" id="save_btn">저장하기</button>
-		                          <button class="btn btn-primary btn-sm" id="register">등록하기</button>
-	                          </div>
-	                      </div>
-	                  </div>
-				  </div>
-	              <div id="right-bottom" class="row ssdd" style="background-color: lightgreen;">
-                    <div style="text-align: left;">나의 결재목록</div>
-                    	
-                    	<div class="list-item-container">                    		
-                          <ol class="list-group" id="getSave">
-	                            <c:forEach items="${title}" var="get">
-								    <li class="list-group-item" data-title="${get.title}">								    	 
-										   		${get.title}<button class="saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${get.title}" ></i></button>									 
-								    </li>
-	                            </c:forEach>
-							</ol>
-                    	</div>
-                    	
-                     <div class="text-right mt-2 align-self-end">
-	                      <div class="col-auto">
-	                        
-	                      </div>
-	                  </div>                    
+                                <div class="list-item-container">
+                                  <ol class="list-group" id="getSave">
+                                        <c:forEach items="${title}" var="get">
+                                            <li class="list-group-item" data-title="${get.title}">
+                                                <span style="line-height: 38px;">${get.title}</span><button class="saveDel btn" style="float: right;"><i class="bi bi-trash-fill" data-title="${get.title}" ></i></button>
+                                            </li>
+                                        </c:forEach>
+                                    </ol>
+                                </div>
+
+                                 <div class="text-right mt-2 align-self-end">
+                                      <div class="col-auto">
+
+                                      </div>
+                                  </div>
+                          </div>
                   </div>
                   
 	            </div>
@@ -355,7 +361,7 @@
 	      </div>
 	      <!-- Modal footer -->
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	      </div>
 	    </div>
 	  </div>
