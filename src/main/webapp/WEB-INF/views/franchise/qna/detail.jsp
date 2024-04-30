@@ -35,7 +35,7 @@
 
                     <div class="card-body pt-3" style="min-height: 10vh">
                         ${vo.content}
-                        <sec:authorize access="hasAnyRole('ADMIN', 'ROLE_FRANCHISE')">
+                        <sec:authorize access="hasAnyRole('ROLE_FRANCHISE')">
                             <div class="d-flex justify-content-end">
                                 <a class="btn btn-primary me-1" href="./update?id=${vo.id}">수정</a>
                                 <button class="btn btn-outline-danger" id="deleteButton">삭제</button>

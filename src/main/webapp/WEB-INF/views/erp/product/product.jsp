@@ -208,7 +208,7 @@
                             </div>
                         </div>
                         <div class="tab-pane fade profile-overview" id="supplier-overview">
-                            <div class="row overflow-auto" style="height: 400px">
+                            <div class="row overflow-auto" style="max-height: 400px">
                                 <table class="table" id="supplierTable">
                                     <thead>
                                         <tr>
