@@ -81,19 +81,19 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                     <img src="/fileDown?id=${detail.file.id}" alt="Profile" onerror="this.onerror=null; this.src='/img/기본.jpg';" class="rounded-circle">
+                     <img src="/fileDown?id=${details.file.id}" alt="Profile" onerror="this.onerror=null; this.src='/img/기본.jpg';" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">
-                    ${detail.name}</span>
+                    ${details.name}</span>
                 </a><!-- End Profile Iamge Icon -->
 					
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 
                     <li class="dropdown-header">
-                        <img width="50" height="50" src="/fileDown?id=${detail.file.id}" alt="Profile"
+                        <img width="50" height="50" src="/fileDown?id=${details.file.id}" alt="Profile"
 									class="rounded-circle"
 									onerror="this.onerror=null; this.src='/img/기본.jpg';">
-                       <h6>부서 : ${detail.department.name}</h6>
-                       <h6>직급 : ${detail.position.name}</h6>
+                       <h6>부서 : ${details.department.name}</h6>
+                       <h6>직급 : ${details.position.name}</h6>
                        
                     </li>
                     

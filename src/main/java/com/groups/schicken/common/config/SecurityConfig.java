@@ -51,7 +51,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(
 						(authorizeRequests)->
 											authorizeRequests
-											.requestMatchers("/", "/login**", "/employee/**").authenticated()
+											.requestMatchers("/", "/login**", "/addDepartment/**").authenticated()
 //											.requestMatchers("/").permitAll()
 											.requestMatchers("employee/role").hasRole("ADMIN")
 											.requestMatchers("employee/list").hasRole("PERSONNEL_WRITER")

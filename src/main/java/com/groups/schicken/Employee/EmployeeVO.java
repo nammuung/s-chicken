@@ -39,7 +39,7 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	private Integer salary;
 	private String accountNumber;
 	private String bankName;
-	private Boolean isLeaved;
+	private Boolean isLeaved = false;
 	private Long departmentId;
 	private String posId;
 	private String posName; // 직급이름
@@ -108,10 +108,7 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	public boolean isEnabled() {
 		
 		
-//		if (this.isLeaved == false) { return false; }
-		 
-		
-		return true;
+		return this.isLeaved;
 	}
 
 }

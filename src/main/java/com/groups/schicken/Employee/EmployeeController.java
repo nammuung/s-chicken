@@ -64,7 +64,7 @@ public class EmployeeController {
 		if(authentication.getPrincipal().getClass() == EmployeeVO.class){
 			EmployeeVO a = (EmployeeVO)authentication.getPrincipal();
 			model.addAttribute("id",id);
-			session.setAttribute("detail", a);
+			session.setAttribute("details", a);
 				return "redirect:/";
 			} else {
 				return "redirect:/franchise/home";
