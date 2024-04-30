@@ -131,7 +131,7 @@ public class EmployeeController {
 
 	// 직원 정보 수정
 	@PostMapping("updateEmployee")
-	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id, @RequestParam("fid")Long fid)throws Exception{
+	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id, @RequestParam(value = "fid", required = false)Long fid)throws Exception{
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		    int result = employeeService.updateEmployee(employeeVO, attach, fid);

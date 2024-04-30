@@ -99,7 +99,7 @@
                 <li><a href="/employee/isuserList"> <i class="bi bi-circle"></i><span>퇴사자목록</span></a></li>
                 
                 <li><a href="/employee/role"> <i class="bi bi-circle"></i><span>권한</span></a></li>
-
+                <li><a href="/employee/join"> <i class="bi bi-circle"></i><span>직원등록</span></a></li>
             </ul></li>
         <!-- End Charts Nav -->
         </sec:authorize>

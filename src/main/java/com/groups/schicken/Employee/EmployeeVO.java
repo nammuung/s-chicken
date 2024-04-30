@@ -108,7 +108,7 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	public boolean isEnabled() {
 		
 		
-		/* if (this.isLeaved == false) { return false; } */
+//		if (this.isLeaved == false) { return false; }
 		 
 		
 		return true;

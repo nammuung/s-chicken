@@ -272,16 +272,18 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
             Long lid = Long.parseLong(id);
             file.setParentId(lid);
             file.setTblId("1077");
+			if(fid != null) {
 
-            file.setId(fid);
-            System.out.println(lid);
-            
-            // 기존 파일 삭제
-            fileManager.deleteFile(file);
+				file.setId(fid);
+				System.out.println(lid);
 
-            // 새 파일 업로드
-            fileManager.uploadFile(attach, file);
-        }
+				// 기존 파일 삭제
+				fileManager.deleteFile(file);
+
+				// 새 파일 업로드
+			}
+			fileManager.uploadFile(attach, file);
+		}
 
         // 파일 첨부 여부와 상관없이 직원 정보를 업데이트
         result = employeeDAO.updateEmployee(employeeVO);
