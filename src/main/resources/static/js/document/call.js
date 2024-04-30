@@ -1,3 +1,7 @@
+
+	const call = new bootstrap.Modal(document.getElementById("call"))
+
+
 function screen(){
     // 현재 화면의 너비와 높이를 가져옵니다.
     let screenWidth = window.screen.width;
@@ -17,21 +21,33 @@ function screen(){
     return `width=${width}, height=${height}, left=${left}, top=${top}`;
 }
 
-function openbonus() {
+function openbonus(id) {
 	let options = screen();
-    let relativePath = '/document/exList/bonus'; // 문서의 상대 경로를 설정합니다.
+    let relativePath = '/document/call?id='+id; // 문서의 상대 경로를 설정합니다.
+    call.hide();    
+    window.close('.document/exList/bous');
+    
 
     window.open(relativePath, '_blank', options);
 }
-function openretire() {
-	let options = screen();
-    let relativePath = '/js/document/retire/퇴사신청서.html'; // 문서의 상대 경로를 설정합니다.
 
-    window.open(relativePath, '_blank', options);
-}
-function openvaca() {
-	let options = screen();
-    let relativePath = '/js/document/vacation/휴가계획서.html'; // 문서의 상대 경로를 설정합니다.
+const categori_sel = document.querySelectorAll(".BOARDCATEGORY");
 
-    window.open(relativePath, '_blank', options);
+const cateList = document.getElementById("cateList");
+
+const params = new URLSearchParams(window.location.search);
+const category = params.get("category");
+console.log(category);
+
+console.log(categori_sel[0].dataset)
+
+for(let i = 0 ; i < categori_sel.length ; i++){
+	categori_sel[i].classList.remove("active")
+	if(categori_sel[i].dataset.category == category){
+			categori_sel[i].classList.add("active")
+	}
 }
+
+const close = document.querySelector(".text-start")
+
+

@@ -1,68 +1,43 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<!DOCTYPE html>
-<html lang="kr">
-<head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>S치킨-그룹웨어</title>
-    <c:import url="../template/head.jsp"/>
-</head>
 
 <body>
 <sec:authentication property="principal" var="user"/>
 <div data-login-id="${user.id}"></div>
 <!-- ======= Header ======= -->
-<c:import url="../template/header.jsp"/>
 <!-- ======= Sidebar ======= -->
-<c:import url="../template/sidebar.jsp"/>
-<main id="main" class="main">
+
+<div>
     <div class="pagetitle" style="text-align: center;">
         <h1>결재상신함</h1>
     </div>
     
-   	<div class="container mb-4" name="categorySelect">
-		<ul
-			class="nav nav-pills list-group-horizontal d-flex justify-content-center" id="cateList"
-			name="category">
-			
-			<li class="nav-item px-2"><a
-				class="nav-link active BOARDCATEGORY" href="/document/document?category=all" data-category="all">전체</a></li>
-				
-			<li class="nav-item px-2" name="category0" id="category0"><a
-				class="nav-link BOARDCATEGORY" href="/document/document?category=category0" data-category="category0">진행</a></li>
-				
-			<li class="nav-item px-2" name="category1" id="category1"><a
-				class="nav-link BOARDCATEGORY" href="/document/document?category=category1" data-category="category1">반려</a></li>
-				
-			<li class="nav-item px-2" name="category2" id="category2"><a
-				class="nav-link BOARDCATEGORY" href="/document/document?category=category2" data-category="category2">완료</a></li>
-		</ul>
-	</div>
-    
     <section class="section">
         <div class="row justify-content-end p-3">
+            <div class="col-auto float-start">
+                <label>
+                    <select class="form-select w-auto me-1" name="kind" style="float: left;">
+                        <option value="0">제목</option>
+                        <option value="1">문서종류</option>
+                        <option value="2">내용</option>
+                        <option value="3">제목+내용</option>
+                    </select>
+                </label>
+            </div>
             <div class="col-auto">
                 <form class="search-form d-flex align-items-center">
-                    <label>
-                        <select class="form-select w-auto me-1" name="kind">
-                            <option value="0">제목</option>
-                            <option value="1">문서종류</option>
-                            <option value="2">내용</option>
-                            <option value="3">제목+내용</option>
-                        </select>
-                    </label>
                     <input type="text" name="search" placeholder="검색" title="Enter search keyword">
                     <button type="submit" title="Search"><i class="bi bi-search"></i></button>
                 </form>
             </div>
         </div>
+        
         <div class="row text-nowrap justify-content-center">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table text-center ">
+                        <table class="table text-center">
                             <thead>
                                 <tr>
                                     <th style="width: 15%">문서번호</th>
@@ -80,7 +55,9 @@
 			                                        <td>${vo.id}</td>
 			                                        
 			                                        
-			                                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> <td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.title}</a></td></c:if>
+			                                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> 
+			                                        	<td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.title}</a></td>
+		                                        	</c:if>
 			                                        
 			                                        
 			                                        <td>${vo.templateVO.tempName}</td>
@@ -116,12 +93,7 @@
             </div>
         </div>
     </section>
-</main><!-- End #main -->
+</div><!-- End #main -->
 <!-- ======= Footer ======= -->
-<c:import url="../template/footer.jsp"/>
-<!-- ======= Script ======= -->
-<c:import url="../template/script.jsp"/>
-<script src="/js/document/writen/list.js"></script>
-</body>
 
-</html>
+<script src="/js/document/call.js"></script>

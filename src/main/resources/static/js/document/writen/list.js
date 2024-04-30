@@ -1,4 +1,3 @@
-console.log("들어오기")
 
 function screen(){
     // 현재 화면의 너비와 높이를 가져옵니다.
@@ -25,3 +24,21 @@ function openbonus(id) {
 
     window.open(relativePath, '_blank', options);
 }
+
+const categori_sel = document.querySelectorAll(".BOARDCATEGORY");
+
+const cateList = document.getElementById("cateList");
+
+const params = new URLSearchParams(window.location.search);
+const category = params.get("category");
+console.log(category);
+
+console.log(categori_sel[0].dataset)
+
+for(let i = 0 ; i < categori_sel.length ; i++){
+	categori_sel[i].classList.remove("active")
+	if(categori_sel[i].dataset.category == category){
+			categori_sel[i].classList.add("active")
+	}
+}
+	

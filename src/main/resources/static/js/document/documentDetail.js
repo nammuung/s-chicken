@@ -2,30 +2,166 @@
 import oc from "/js/orgChart/orgChart.js";
 
 	const myModal = new bootstrap.Modal(document.getElementById("myModal"))
+	
+	const me = document.getElementById("me");
+	
 	const add_btn = document.getElementById("addbtn")
 	const approval_List = document.getElementById("approval_List");
 	const del_btn = document.getElementById("delbtn");
 	const register = document.getElementById("register");
 	const modal_show = document.getElementById("modal_show");
 	const sangsin = document.getElementById("sangsin");
+	const tempSave = document.getElementById("tempSave");
 	const frm= document.querySelector("form");
 	
-		
+	const getSave = document.getElementById("getSave");
+	
+	const cancel = document.getElementById("cancel");
+	
+	const save_btn = document.getElementById("save_btn");
+	
+	const save_del = document.querySelectorAll(".list-group-item");
+	
+	
+	let arr =[];
 	let employeeArr =[];
 	let rankArr=[];
-	 let relativePath = '/document/pay/pay';
+	let resultArr=[];
+ 	let relativePath = '/document/pay/pay';
+ 	
+	 getSave.addEventListener("click",(e)=>{
+		 
+		 	approval_List.innerHTML =""
+		 	console.log(e.target)		 	
+		 	
+			 if(e.target.tagName=='I'){
+				 
+				 const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+				let data ={
+						employeeId:me.value,
+						title:e.target.dataset.title
+					}
+				console.log(data)
+				console.log(JSON.stringify(data))
+				
+				if(isConfirmed){
+					fetch("/document/saveDel",{
+						method:'post',
+						body:JSON.stringify(data),
+						headers:{
+						"Content-Type" : "application/json"
+						}
+					}).then(r=>console.log(r))
+					.then(r=>{
+						console.log(e.target)
+						e.target.remove();
+					})
+				}			 
+			 return			 
+		 }
+		 
+		 	
+		 	console.log(e.target.dataset)
+			let data = {
+				employeeId:me.value,			
+				title:e.target.dataset.title
+			}
+			console.log(data)
+			fetch("/document/tansferSave",{
+				method:'post',
+				body:JSON.stringify(data),
+				headers:{
+					"Content-Type" : "application/json"
+				}
+			}).then(r=>r.json())
+			.then(r => {
+				console.log(r);
+				r.forEach(reply=>{
+					approval_List.innerHTML +=
+					`<li class="list-group-item" data-id="${reply.appId}" data-name="${reply.employee.name}" data-level="${reply.code.name}">
+					<i class="bi bi-arrow-down-up handle"></i>
+						${reply.employee.name } ${reply.code.name}
+					</li>
+					`
+					let arr_id = `${reply.appId}`
+					
+					arr.push(arr_id);
+					
+				})
+			})
+	 })
+	 
+	cancel.addEventListener("click",()=>{
+		const isConfirmed = confirm("정말로 취소하시겠습니까?");
+		
+		if(isConfirmed){
+			window.close(relativePath);
+		}
+	})
+	
+	/*body:JSON.stringify(data),			
+			headers:{
+				"Content-Type" : "application/json"
+			}*/
+/*	tempSave.addEventListener("click",(e)=>{
+		e.preventDefault();
+		
+		const formData= new Formdata(frm);
+		
+		
+		
+	})*/
+	
+		tempSave.addEventListener("click",(e)=>{
+		e.preventDefault();
+		
+		const formData = new FormData(frm);
+		formData.append("content", editor.getData())
+		
+		formData.append("employeeId",employeeArr)
+		formData.append("rank",rankArr)
+		formData.append("result",resultArr)
+		fetch('/document/temp',{
+			method:"post",
+			body:formData,
+		}).then(r=>console.log(r))
+		.then(r=>{
+			alert("임시저장 되었습니다")
+
+		})
+	})
+	 
 	sangsin.addEventListener("click",(e)=>{
 		e.preventDefault();		
 		
 		const formData = new FormData(frm);
 		formData.append("content", editor.getData())
+		
+		
+		if(editor.getData()==""){
+			alert("사유를 입력하세요")
+			return
+		}
+		
+		
+		
+		if(employeeArr[1]===undefined){
+			alert("결재자는 1명이상 입니다")
+			return
+		}
+		
+		
 		formData.append("employeeId",employeeArr)
 		formData.append("rank",rankArr)
+		formData.append("result",resultArr)
 		fetch('/document/add',{
 			method:"post",
 			body:formData,
 		}).then(r=>console.log(r))
-		
+		.then(r=>{
+			alert("상신 되었습니다")
+			window.close(relativePath);
+		})
 	})
 	
 //	window.close(relativePath)
@@ -75,12 +211,13 @@ function hyuga(){
   
   oc.init("note-message-org-chart", onSelectOrgChart, 'person', false);
   
-  let arr =[];
+  
   let getData;
   //내가 직접 선택한 콜백함수
-  function onSelectOrgChart(data){
-	getData=data;
-  }
+	  function onSelectOrgChart(data){
+		getData=data;
+	  }
+	  
 	  add_btn.addEventListener("click",(e)=>{
 		
 		let fullName = getData.name.split(" ");
@@ -93,58 +230,130 @@ function hyuga(){
 			return;
 		}
 		let bool = false;
+		
+		if(me.value == getData.id){
+			alert("본인은 선택할수 없습니다.")
+			return;
+		}
+		
 		for(let i =0 ; i <arr.length ; i++){
+							
 				if(arr[i] == getData.id){
 					bool = true;					
 				}					
-		}		
+		}	
 		
 		if(!bool){
 			arr.push(getData.id)
 			console.log(arr)
 			console.log("들오오기")
-			let str = `<li class="list-group-item" data-id="${getData.id}" data-name="${selName}" data-level="${level}" >
+			let str = `<li class="list-group-item" data-id="${getData.id}" data-name="${selName}" data-level="${level}">
 						<i class="bi bi-arrow-down-up handle"></i>
 							${getData.name}
 						</li>`
 				approval_List.innerHTML += str;
+				
 		}			
 	})
 	let del_app;
 	approval_List.addEventListener("click",(e)=>{
 		del_app=e.target;
 		
+		
+		const active = document.querySelectorAll('#right-top .list-group-item');
+		active.forEach(item=>{
+			item.classList.remove('active');
+		})
+		console.log(arr)
+		console.log(active[0].dataset.id);
+		console.log(e.target.getAttribute("data-id"));
+		for(let i =0 ; i < arr.length ; i++){		
+			
+			if(active[i].dataset.id == e.target.getAttribute("data-id")){
+			active[i].classList.add('active')
+			}
+		}
+		
+		
+		console.log(approval_List);
+
 		console.log(e.target.getAttribute("data-id"))
 		
 	})
-		del_btn.addEventListener("click",()=>{
-			
-			let real_del = del_app.getAttribute("data-id")
-			let bool = false;
-			for(let i = 0; i<arr.length;i++){
-				if(arr[i]==real_del){
-					arr.splice(i,1);
-					bool =true;
-				}
+	
+	save_btn.addEventListener("click",()=>{
+		
+		const active = document.querySelectorAll('#right-top .list-group-item');
+		const strDate = document.getElementById("strDate");
+		getSave.innerHTML="";
+		console.log("세이브를 해보자")
+		console.log(arr)
+		let title = prompt("제목을 입력하세요")
+		let data = [];
+		for(let i = 0 ; i < arr.length ; i++){		
+			 data.push({
+				employeeId : me.value ,
+				appId : active[i].dataset.id,
+				title : title,
+				rank : i ,
+				date :	strDate.value				
+			})
+		}
+		console.log(data);		
+		
+		fetch("/document/saveApp",{
+			method:'post',
+			body:JSON.stringify(data),			
+			headers:{
+				"Content-Type" : "application/json"
 			}
-			
-			if(bool){
-				del_app.remove()
+		}).then(r=>r.json())
+		.then(r=>{
+			console.log(r)
+			r.forEach(reply=>{
+					getSave.innerHTML +=
+						`<li class="list-group-item" data-title="${reply.title}">								    	 
+										   		${reply.title}<button class="saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${reply.title}" ></i></button>									 
+								    </li>`
+				})
+		})
+		
+		
+	})
+	
+	del_btn.addEventListener("click",()=>{
+		
+		let real_del = del_app.getAttribute("data-id")
+		let bool = false;
+		for(let i = 0; i<arr.length;i++){
+			if(arr[i]==real_del){
+				arr.splice(i,1);
+				bool =true;
 			}
-		console.log(arr);			
+		}
+		
+		if(bool){
+			del_app.remove()
+		}
+	console.log(arr);			
 			
 	})
 		
-		register.addEventListener("click",()=>{
-			
 			const zeroRank = document.getElementById("zeroRank").value;
 			const zeroId = document.getElementById("zeroId").value;
-		
+			const zeroResult = document.getElementById("zeroResult").value;
+			rankArr=[zeroRank];
+			employeeArr=[zeroId];
+			resultArr=[zeroResult];
+		register.addEventListener("click",()=>{
+			
+			
 			let goList = approval_List.querySelectorAll("li")
 
 			
 			const approve = document.querySelectorAll(".sign_member_wrap");			
 			const element_level = approve[0].querySelector("#name");
+			
 			console.log(element_level)
 			
 
@@ -155,6 +364,8 @@ function hyuga(){
 			approve[i].querySelector("#name").innerHTML ="";
 			rankArr=[zeroRank];
 			employeeArr=[zeroId];
+			resultArr=[zeroResult];
+			
 			}
 			
 			
@@ -162,10 +373,14 @@ function hyuga(){
 			
 			for(let i = approve_arr, j = 1 ; i <= 3;i++,j++){
 			approve[i].querySelector("#name").innerHTML = goList[i-approve_arr].getAttribute("data-name");
-			approve[i].querySelector(".sign_rank").innerHTML = goList[i-approve_arr].getAttribute("data-level");	
+			approve[i].querySelector(".sign_rank").innerHTML = goList[i-approve_arr].getAttribute("data-level");
+			
+				
 			rankArr.push(j);
 			employeeArr.push(goList[i-approve_arr].getAttribute("data-id"));
+			resultArr.push(0);
 			
+			console.log(resultArr)
 			console.log(rankArr)
 			console.log(employeeArr)
 			}
@@ -203,7 +418,23 @@ ClassicEditor
     console.error(error);
 });
 
-		
+
+
+/*$('#callModalButton').click(function() {
+    $.ajax({
+        url: '/document/callList',
+        type: 'GET',
+        success: function(response) {
+			alert("불러오기")
+
+        }
+    });
+});
+*/
+
+//불러오기 모달 내용 jsp
+$("#call .modal-body").load("/document/callList");
+    
 		
 		
 		

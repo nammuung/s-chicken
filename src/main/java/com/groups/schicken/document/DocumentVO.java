@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.poi.ss.formula.functions.Code;
 
 import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.common.vo.CodeVO;
 import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.department.DepartmentVO;
 
@@ -21,11 +22,12 @@ public class DocumentVO {
 	private String status;
 	private Long templateId;
 	private String writerId;
-	private String des;
+	private int temp;
+	private int count;
 	
 	private TemplateVO templateVO;
 	private List<ApprovalVO> approvalVOs;
-	private String level;
+	private CodeVO codeVO;
 	private EmployeeVO employeeVO;
 	private DepartmentVO department;
 	
