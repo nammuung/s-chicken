@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -85,8 +86,12 @@
                     </ul>
                 </nav>
                 <div class="d-flex justify-content-end">
+                    <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
                     <a href="./sequenceAnswer" class="btn btn-primary float-end">답변하기</a>
-                    <a href="./add" class="btn btn-primary float-end">질문작성</a>
+                    </sec:authorize>
+                    <sec:authorize access="hasRole('ROLE_FRANCHISE')">
+                        <a href="./add" class="btn btn-primary float-end">질문작성</a>
+                    </sec:authorize>
                 </div>
             </div>
         </div>

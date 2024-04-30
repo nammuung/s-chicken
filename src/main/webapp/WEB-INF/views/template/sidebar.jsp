@@ -86,7 +86,7 @@
                 </a></li>
             </ul></li>
         <!-- End Tables Nav -->
-
+        <sec:authorize access="hasAnyRole('ADMIN','PERSONNEL_WRITER')">
         <li class="nav-item"><a class="nav-link collapsed"
                                 data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-bar-chart"></i><span>인사관리</span><i
@@ -102,7 +102,7 @@
 
             </ul></li>
         <!-- End Charts Nav -->
-
+        </sec:authorize>
         <li class="nav-item">
             <a class="nav-link <c:if test="${cookie.navToggle.value ne '#icons-nav'}">collapsed</c:if>" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-houses"></i><span>가맹점 관리</span><i class="bi bi-chevron-down ms-auto"></i>

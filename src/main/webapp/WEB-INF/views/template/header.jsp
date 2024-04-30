@@ -7,11 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>--%>
-<%--<sec:authorize access="isAuthenticated()">--%>
-<%--    <sec:authentication property="principal" var="principal"/>--%>
-<%--    <div data-logined-id="${principal.id}"></div>--%>
-<%--</sec:authorize>--%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
@@ -37,7 +33,7 @@
                     <i class="bi bi-search"></i>
                 </a>
             </li><!-- End Search Icon-->
-
+            <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
             <!-- 알림 드롭다운 -->
             <li class="nav-item dropdown">
                 <a id="notification-icon" class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
@@ -93,7 +89,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                 
                     <li class="dropdown-header">
-                    <img src="/fileDown?id=${detail.file.id}" alt="Profile"
+                        <img width="50" height="50" src="/fileDown?id=${detail.file.id}" alt="Profile"
 									class="rounded-circle"
 									onerror="this.onerror=null; this.src='/img/기본.jpg';">
                        <h6>부서 : ${detail.department.name}</h6>
@@ -108,7 +104,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="../employee/profile?id=${id}">
                             <i class="bi bi-person"></i>
-                            <span>My Profile</span>
+                            <span>마이페이지</span>
                         </a>
                     </li>
 
@@ -120,13 +116,22 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="/employee/logout">
                             <i class="bi bi-box-arrow-right"></i>
-                            <span>Sign Out</span>
+                            <span>로그아웃</span>
                         </a>
                     </li>
 
                 </ul><!-- End Profile Dropdown Items -->
             </li><!-- End Profile Nav -->
-
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_FRANCHISE')">
+                <!-- 쪽지 창 -->
+                <li class="nav-item">
+                    <a class="nav-link nav-icon" href="/employee/logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>로그아웃</span>
+                    </a><!-- End Messages Icon -->
+                </li><!-- End NoteMessages Nav -->
+            </sec:authorize>
         </ul>
     </nav><!-- End Icons Navigation -->
 

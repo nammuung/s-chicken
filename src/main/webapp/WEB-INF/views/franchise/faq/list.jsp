@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -32,7 +33,9 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex justify-content-end mt-3">
+                                <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
                                 <button class="btn btn-primary" id="changeSortButton">순서변경</button>
+                                </sec:authorize>
                             </div>
                             <div class="d-flex justify-content-center p-3">
                                 <h1><b>자주 묻는 질문</b></h1>
@@ -121,7 +124,9 @@
             </ul>
         </nav>
         <div class="d-flex justify-content-end">
+            <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
             <a href="/franchise/faq/add" class="btn btn-primary float-end">FAQ 작성</a>
+            </sec:authorize>
         </div>
     </section>
 </main><!-- End #main -->
