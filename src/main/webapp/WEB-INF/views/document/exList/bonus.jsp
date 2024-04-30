@@ -331,18 +331,19 @@
 	              <div id="right-bottom" class="row ssdd" style="background-color: lightgreen;">
                     <div style="text-align: left;">나의 결재목록</div>
                     	
-                    	<div>
-                    		<ol class="list-group" id="save_App">
-                    			
-                    		</ol>
+                    	<div class="list-item-container">                    		
+                          <ol class="list-group" id="getSave">
+	                            <c:forEach items="${title}" var="get">
+								    <li class="list-group-item" data-title="${get.title}">								    	 
+										   		${get.title}<button class="saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${get.title}" ></i></button>									 
+								    </li>
+	                            </c:forEach>
+							</ol>
                     	</div>
                     	
                      <div class="text-right mt-2 align-self-end">
 	                      <div class="col-auto">
-	                          <div class="mb-2">
-		                          <button class="btn btn-primary btn-sm" id="">결재선등록</button>
-		                          <button class="btn btn-primary btn-sm" id="delete">삭제하기</button>
-	                          </div>
+	                        
 	                      </div>
 	                  </div>                    
                   </div>
@@ -370,7 +371,6 @@
                 </div>
                 <div class="modal-body">
                    
-                    
                 </div>
                 <!-- 모달 footer (선택적) -->
                 <div class="modal-footer">

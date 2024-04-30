@@ -14,16 +14,82 @@ import oc from "/js/orgChart/orgChart.js";
 	const tempSave = document.getElementById("tempSave");
 	const frm= document.querySelector("form");
 	
-	
+	const getSave = document.getElementById("getSave");
 	
 	const cancel = document.getElementById("cancel");
 	
 	const save_btn = document.getElementById("save_btn");
-		
+	
+	const save_del = document.querySelectorAll(".list-group-item");
+	
+	
+	let arr =[];
 	let employeeArr =[];
 	let rankArr=[];
 	let resultArr=[];
-	 let relativePath = '/document/pay/pay';
+ 	let relativePath = '/document/pay/pay';
+ 	
+	 getSave.addEventListener("click",(e)=>{
+		 
+		 	approval_List.innerHTML =""
+		 	console.log(e.target)		 	
+		 	
+			 if(e.target.tagName=='I'){
+				 
+				 const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+				let data ={
+						employeeId:me.value,
+						title:e.target.dataset.title
+					}
+				console.log(data)
+				console.log(JSON.stringify(data))
+				
+				if(isConfirmed){
+					fetch("/document/saveDel",{
+						method:'post',
+						body:JSON.stringify(data),
+						headers:{
+						"Content-Type" : "application/json"
+						}
+					}).then(r=>console.log(r))
+					.then(r=>{
+						console.log(e.target)
+						e.target.remove();
+					})
+				}			 
+			 return			 
+		 }
+		 
+		 	
+		 	console.log(e.target.dataset)
+			let data = {
+				employeeId:me.value,			
+				title:e.target.dataset.title
+			}
+			console.log(data)
+			fetch("/document/tansferSave",{
+				method:'post',
+				body:JSON.stringify(data),
+				headers:{
+					"Content-Type" : "application/json"
+				}
+			}).then(r=>r.json())
+			.then(r => {
+				console.log(r);
+				r.forEach(reply=>{
+					approval_List.innerHTML +=
+					`<li class="list-group-item" data-id="${reply.appId}" data-name="${reply.employee.name}" data-level="${reply.code.name}">
+					<i class="bi bi-arrow-down-up handle"></i>
+						${reply.employee.name } ${reply.code.name}
+					</li>
+					`
+					let arr_id = `${reply.appId}`
+					
+					arr.push(arr_id);
+					
+				})
+			})
+	 })
 	 
 	cancel.addEventListener("click",()=>{
 		const isConfirmed = confirm("정말로 취소하시겠습니까?");
@@ -33,6 +99,10 @@ import oc from "/js/orgChart/orgChart.js";
 		}
 	})
 	
+	/*body:JSON.stringify(data),			
+			headers:{
+				"Content-Type" : "application/json"
+			}*/
 /*	tempSave.addEventListener("click",(e)=>{
 		e.preventDefault();
 		
@@ -141,7 +211,7 @@ function hyuga(){
   
   oc.init("note-message-org-chart", onSelectOrgChart, 'person', false);
   
-  let arr =[];
+  
   let getData;
   //내가 직접 선택한 콜백함수
 	  function onSelectOrgChart(data){
@@ -182,18 +252,21 @@ function hyuga(){
 							${getData.name}
 						</li>`
 				approval_List.innerHTML += str;
+				
 		}			
 	})
 	let del_app;
 	approval_List.addEventListener("click",(e)=>{
 		del_app=e.target;
 		
+		
 		const active = document.querySelectorAll('#right-top .list-group-item');
 		active.forEach(item=>{
 			item.classList.remove('active');
 		})
-		
-		console.log(active[0].dataset);
+		console.log(arr)
+		console.log(active[0].dataset.id);
+		console.log(e.target.getAttribute("data-id"));
 		for(let i =0 ; i < arr.length ; i++){		
 			
 			if(active[i].dataset.id == e.target.getAttribute("data-id")){
@@ -212,12 +285,13 @@ function hyuga(){
 		
 		const active = document.querySelectorAll('#right-top .list-group-item');
 		const strDate = document.getElementById("strDate");
-		
+		getSave.innerHTML="";
 		console.log("세이브를 해보자")
+		console.log(arr)
 		let title = prompt("제목을 입력하세요")
 		let data = [];
 		for(let i = 0 ; i < arr.length ; i++){		
-			 data.push({				
+			 data.push({
 				employeeId : me.value ,
 				appId : active[i].dataset.id,
 				title : title,
@@ -225,9 +299,7 @@ function hyuga(){
 				date :	strDate.value				
 			})
 		}
-		console.log(data);
-				
-		
+		console.log(data);		
 		
 		fetch("/document/saveApp",{
 			method:'post',
@@ -235,7 +307,16 @@ function hyuga(){
 			headers:{
 				"Content-Type" : "application/json"
 			}
-		}).then(r=>console.log(r));
+		}).then(r=>r.json())
+		.then(r=>{
+			console.log(r)
+			r.forEach(reply=>{
+					getSave.innerHTML +=
+						`<li class="list-group-item" data-title="${reply.title}">								    	 
+										   		${reply.title}<button class="saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${reply.title}" ></i></button>									 
+								    </li>`
+				})
+		})
 		
 		
 	})

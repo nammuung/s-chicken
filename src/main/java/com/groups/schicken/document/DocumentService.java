@@ -25,13 +25,21 @@ public class DocumentService {
 		return documentDAO.getDetail(documentVO);
 	}
 	
-	
-	
-	public List<SaveAppVO> getApp(EmployeeVO employeeVO)throws Exception{
-			
-		return documentDAO.getApp(employeeVO);
+	public int appDel(SaveAppVO saveAppVO)throws Exception{
+		
+		return documentDAO.appDel(saveAppVO);
 	}
 	
+	
+	public List<SaveAppVO> getTitle(EmployeeVO employeeVO)throws Exception{
+		
+		return documentDAO.getTitle(employeeVO);
+	}
+	
+	public List<SaveAppVO> getApp(SaveAppVO saveAppVO)throws Exception{
+		
+		return documentDAO.getApp(saveAppVO);
+	}
 	
 	
 	

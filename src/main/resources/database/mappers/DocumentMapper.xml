@@ -40,10 +40,27 @@
 	</resultMap>
 	
 	<!-- 결재선 저장 라인 가져오기 -->
-	<select id="getApp">
-		SELECT * FROM saveapp
+	<select id="getTitle">
+		SELECT distinct title FROM saveapp
 		where employee_id=#{id}
 	</select>
+	
+	<select id="getApp" resultMap="getAppresult">
+		SELECT sa.app_id,
+				emp.name person,
+				c.name
+		 FROM saveapp sa
+			INNER JOIN employee emp ON emp.id = sa.app_id			
+			INNER JOIN code c ON c.id=emp.pos_id and c.type_id = 300 
+		where employee_id=#{employeeId} and title=#{title}
+	</select>
+	
+	<resultMap type="saveappVO" id="getAppresult" autoMapping="true">
+		<association property="employee" javaType="EmployeeVO" autoMapping="true">
+			<result column="person" property="name"/>
+		</association>
+		<association property="code" javaType="codeVO" autoMapping="true"/>
+	</resultMap>
 	
 	
 	
@@ -206,6 +223,11 @@
 		INSERT INTO saveapp
 		VALUES (#{id},#{employeeId},#{appId},#{title},#{rank},#{date})
 	</insert>
+	
+	<delete id="appDel">
+		DELETE FROM saveapp
+		WHERE employee_id=#{employeeId} AND title=#{title}
+	</delete>
 
 </mapper>
 

@@ -41,15 +41,31 @@ public class DocumentController {
 		
 	}
 	
+	@PostMapping("document/saveDel")
+	@ResponseBody
+	public ResponseEntity<Integer> saveDel(@RequestBody SaveAppVO saveAppVO)throws Exception{
+		System.out.println(saveAppVO);
+		int result = documentService.appDel(saveAppVO);		
+		
+		return ResponseEntity.ok(result);
+	}
+	
 	@PostMapping("document/saveApp")
 	@ResponseBody
 	public ResponseEntity<?> saveApp(@RequestBody List<SaveAppVO> ar)throws Exception{
 		SaveAppVO saveAppVO = new SaveAppVO();
+		EmployeeVO employeeVO = new EmployeeVO();
 		for(int i = 0 ; i < ar.size() ; i++) {
 			saveAppVO = ar.get(i);
 			documentService.appSave(saveAppVO);
 		}
-		return ResponseEntity.ok(ar);
+		
+		employeeVO.setId(ar.get(0).getEmployeeId());
+		
+		List<SaveAppVO> br = documentService.getTitle(employeeVO);		
+		System.out.println(br);
+		
+		return ResponseEntity.ok(br);
 	}
 	
 	@PostMapping("document/approvalUpdate")
@@ -131,13 +147,18 @@ public class DocumentController {
 	
 	
 	@GetMapping("exList/bonus")
-	public void sang(@AuthenticationPrincipal EmployeeVO employeeVO,Model model) throws Exception {
+	public void sang(@AuthenticationPrincipal EmployeeVO employeeVO,Model model,SaveAppVO saveAppVO) throws Exception {
 		
 		employeeVO = documentService.getEx(employeeVO);
-		
-		System.out.println(documentService.getApp(employeeVO));
+				
 		model.addAttribute("list", employeeVO);
+		
+		List<SaveAppVO> ar = documentService.getTitle(employeeVO);
+		
+		model.addAttribute("title", ar);		
+		
 	}
+	
 	
 	@GetMapping("temp/temp")
 	public void tempBonus(DocumentVO documentVO,Model model)throws Exception{
@@ -260,6 +281,18 @@ public class DocumentController {
 
 		return ResponseEntity.ok(documentVO);
 	}
+	
+	@PostMapping("document/tansferSave")
+	@ResponseBody
+	public ResponseEntity<?> tansferSave(@RequestBody SaveAppVO saveAppVO)throws Exception{
+		
+		List<SaveAppVO> ar=documentService.getApp(saveAppVO);
+		
+		System.out.println(ar);
+		
+		return ResponseEntity.ok(ar);
+	}
+	
 	
 	@PostMapping("tempTotemp")
 	public ResponseEntity<?> tempTotemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
