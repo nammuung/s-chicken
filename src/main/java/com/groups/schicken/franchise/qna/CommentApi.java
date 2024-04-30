@@ -20,8 +20,7 @@ public class CommentApi {
     @PostMapping("franchise/qna/comment/{id}")
     public ResponseEntity<?> commentQna(@AuthenticationPrincipal EmployeeVO employeeVO, @PathVariable Long id,@RequestBody QnaCommentVO commentVO) throws Exception {
         commentVO.setQnaId(id);
-        commentVO.setEmployeeId("19990806228");
-        System.out.println("commentVO = " + commentVO);
+        commentVO.setEmployeeId(employeeVO.getId());
         int result = qnaService.commentQna(commentVO);
         if (result == 1) {
             EmployeeVO emp = new EmployeeVO();

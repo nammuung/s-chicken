@@ -7,10 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <aside id="sidebar" class="sidebar">
 	<ul class="sidebar-nav" id="sidebar-nav">
-		<li class="nav-item"><a class="nav-link " href="home.jsp"> <i
+    <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
+        <li class="nav-item"><a class="nav-link " href="home.jsp"> <i
 				class="bi bi-grid"></i> <span>대시보드</span>
 		</a></li>
 		<!-- End Dashboard Nav -->
@@ -218,6 +219,9 @@
 		<li class="nav-item"><a class="nav-link collapsed"
 			href="pages-blank.html"> <i class="bi bi-file-earmark"></i> <span>쪽지함</span>
 		</a></li>
+
+    </sec:authorize>
+    <sec:authorize access="hasRole('ROLE_FRANCHISE')">
 		<!-- End Blank Page Nav -->
         <li class="nav-heading">가맹점</li>
         <li class="nav-item">
@@ -250,11 +254,16 @@
                 <i class="bi bi-question-circle"></i><span>F.A.Q</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/franchise/detail?id=${id}">
+        <sec:authorize access="isAuthenticated()">
+            <sec:authentication property="principal" var="user"/>
+            <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/detail?id=${user.id}">
                 <i class="bi bi-person"></i><span>마이페이지</span>
             </a>
         </li>
+        </sec:authorize>
+
+    </sec:authorize>
 	</ul>
 </aside>
 

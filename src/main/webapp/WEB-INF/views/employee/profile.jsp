@@ -145,7 +145,7 @@
 											<div class="col-lg-3 col-md-4 label">상세주소</div>
 											<div class="col-lg-9 col-md-8">${detail.addressDetail}</div>
 										</div>
-
+										<input type="hidden" id="isLeaved" name="isLeaved" value="true">
 										<sec:authorize
 											access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
 											<div class="row">

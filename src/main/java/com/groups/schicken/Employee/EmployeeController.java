@@ -57,19 +57,23 @@ public class EmployeeController {
 
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		    String id = auth.getName();
-		    
-		 
-		 // 로그인할때 세션에 프로필 넣기
-		    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		    EmployeeVO a = (EmployeeVO)authentication.getPrincipal();
-		    
 
-		    
-		    
-		    
-		    session.setAttribute("detail", a);
-		    model.addAttribute("id",id);
-		    return "redirect:/";
+
+		// 로그인할때 세션에 프로필 넣기
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if(authentication.getPrincipal().getClass() == EmployeeVO.class){
+			EmployeeVO a = (EmployeeVO)authentication.getPrincipal();
+			model.addAttribute("id",id);
+			session.setAttribute("detail", a);
+				return "redirect:/";
+			} else {
+				return "redirect:/franchise/home";
+			}
+
+
+
+
+
 
 	}
 
