@@ -1,5 +1,6 @@
 package com.groups.schicken.franchise;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.FileVO;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FranchiseVO implements UserDetails {
     private String id;
     private String name;

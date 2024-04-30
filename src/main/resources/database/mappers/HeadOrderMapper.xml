@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<mapper namespace="com.groups.schicken.erp.order.OrderMapper">
+<mapper namespace="com.groups.schicken.erp.order.HeadOrderMapper">
     <sql id="search">
         <where>
             <if test="status != null and status != 4 and status != 5 and status != 6">
@@ -115,15 +115,14 @@
     <select id="getOrderList" resultMap="getOrderMap">
         <include refid="getOrderSQL"/>
     </select>
-    <resultMap id="getOrderMap" type="OrderVO" autoMapping="true">
+    <resultMap id="getOrderMap" type="HeadOrderVO" autoMapping="true">
         <id column="id" property="id"/>
-        <id column="supplier_id" property="supplier.id"/>
         <association property="supplier" javaType="SupplierVO" columnPrefix="supplier_" autoMapping="true"/>
         <association property="employee" javaType="EmployeeVO" columnPrefix="employee_" autoMapping="true">
             <association property="position" javaType="CodeVO" columnPrefix="position_" autoMapping="true"/>
             <association property="department" javaType="DepartmentVO" columnPrefix="department_" autoMapping="true"/>
         </association>
-        <collection property="orderDetails" javaType="List" ofType="OrderDetailVO" columnPrefix="order_detail_" autoMapping="true">
+        <collection property="orderDetails" javaType="List" ofType="HeadOrderDetailVO" columnPrefix="order_detail_" autoMapping="true">
             <id column="id" property="id"/>
             <id column="supplier_id" property="supplier.id"/>
             <association property="item" javaType="ItemVO" columnPrefix="item_" autoMapping="true">
@@ -134,7 +133,29 @@
             </association>
         </collection>
     </resultMap>
+    <resultMap id="getOrderSupMap" type="HeadOrderVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <id column="supplier_id" property="supplier.id"/>
+        <association property="supplier" javaType="SupplierVO" columnPrefix="supplier_" autoMapping="true"/>
+        <association property="employee" javaType="EmployeeVO" columnPrefix="employee_" autoMapping="true">
+            <association property="position" javaType="CodeVO" columnPrefix="position_" autoMapping="true"/>
+            <association property="department" javaType="DepartmentVO" columnPrefix="department_" autoMapping="true"/>
+        </association>
+        <collection property="orderDetails" javaType="List" ofType="HeadOrderDetailVO" columnPrefix="order_detail_" autoMapping="true">
+            <id column="id" property="id"/>
+            <id column="supplier" property="supplier.id"/>
+            <association property="item" javaType="ItemVO" columnPrefix="item_" autoMapping="true">
+                <association property="product" javaType="ProductVO" columnPrefix="product_" autoMapping="true">
+                    <association property="unit" javaType="CodeVO" columnPrefix="unit_" autoMapping="true"/>
+                    <association property="category" javaType="CodeVO" columnPrefix="category_" autoMapping="true"/>
+                </association>
+            </association>
+        </collection>
+    </resultMap>
     <select id="getOrder" resultMap="getOrderMap">
+        <include refid="getOrderSQL"/>
+    </select>
+    <select id="getOrderSupList" resultMap="getOrderSupMap">
         <include refid="getOrderSQL"/>
     </select>
     <insert id="addOrder">
@@ -189,7 +210,7 @@
             WHERE id = #{item.id}
         </foreach>
     </update>
-    <resultMap id="getOrderDetailMap" type="OrderDetailVO" autoMapping="true">
+    <resultMap id="getOrderDetailMap" type="HeadOrderDetailVO" autoMapping="true">
         <id property="id" column="id"/>
         <association property="item" javaType="ItemVO" autoMapping="true" columnPrefix="item_">
             <association property="product" javaType="ProductVO" autoMapping="true" columnPrefix="product_"/>

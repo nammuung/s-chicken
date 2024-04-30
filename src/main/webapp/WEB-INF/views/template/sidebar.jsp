@@ -155,12 +155,17 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/order/sell">
+                        <i class="bi bi-circle"></i><span>구매요청</span>
+                    </a>
+                </li>
+                <li>
                     <a href="/order/list">
                         <i class="bi bi-circle"></i><span>입고</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/order/list">
+                    <a href="/order/sell">
                         <i class="bi bi-circle"></i><span>출고</span>
                     </a>
                 </li>
@@ -214,6 +219,42 @@
 			href="pages-blank.html"> <i class="bi bi-file-earmark"></i> <span>쪽지함</span>
 		</a></li>
 		<!-- End Blank Page Nav -->
+        <li class="nav-heading">가맹점</li>
+        <li class="nav-item">
+            <a class="nav-link " href="/franchise/home">
+                <i class="bi bi-grid"></i><span>대시보드</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/order">
+                <i class="bi bi-box-seam"></i><span>발주서작성</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/order/list">
+                <i class="bi bi-box-seam"></i><span>발주내역</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/sells">
+                <i class="bi bi-bar-chart"></i><span>매출</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/qna/list">
+                <i class="bi bi-person-raised-hand"></i><span>QnA</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/faq/list">
+                <i class="bi bi-question-circle"></i><span>F.A.Q</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/detail?id=${id}">
+                <i class="bi bi-person"></i><span>마이페이지</span>
+            </a>
+        </li>
 	</ul>
 </aside>
 

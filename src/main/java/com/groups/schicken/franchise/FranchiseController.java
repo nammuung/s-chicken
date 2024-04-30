@@ -2,6 +2,7 @@ package com.groups.schicken.franchise;
 
 import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.common.vo.Pager;
+import com.groups.schicken.erp.product.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FranchiseController {
     private final FranchiseService franchiseService;
-
+    private final ProductService productService;
 
     @GetMapping("/franchise/home")
     public String getFranchiseHome(Model model, Pager pager) throws Exception {
@@ -84,5 +85,6 @@ public class FranchiseController {
         }
         return "result";
     }
+
 
 }
