@@ -69,7 +69,7 @@ public class SecurityConfig {
 									.loginPage("/employee/login")
 									.successHandler(handler)
 									.usernameParameter("id") // username이 아니라 id임
-									.defaultSuccessUrl("/")	// 성공했을때 localhost 로 이동
+									//.defaultSuccessUrl("/")	// 성공했을때 localhost 로 이동
 									.failureHandler(failHandler)
 
 									.permitAll()

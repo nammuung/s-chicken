@@ -23,6 +23,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +35,7 @@ import com.groups.schicken.common.vo.Pager;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -61,7 +63,6 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 	    System.out.println("입력 아이디: "+id);
 	    EmployeeVO employeeVO = new EmployeeVO();
-
 	    // emp로 시작하는 경우 그룹웨어 사용자
 	    if (id.startsWith("emp")) {
 	        // "emp"를 제거한 실제 id 파싱

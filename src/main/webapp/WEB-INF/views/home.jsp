@@ -154,7 +154,7 @@
 			<c:import url="template/script.jsp" />
 
 			<!-- 모달 추가 -->
-			<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+			<div class="modal fade modal" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
 				aria-hidden="true">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -180,7 +180,8 @@
 							<label for="content" class="form-label"><b>내용</b></label>
 							<input type="text" id="content" class="form-control mb-3" placeholder="내용을 입력해주세요.">
 							<label for="share" class="form-label"><b>공유자</b></label>
-							<input type="text" id="share" class="form-control mb-3" disabled value="${profile.name}">
+							<input type="text" id="share" nanem="share" class="form-control mb-3" disabled
+								value="${profile.name}">
 							<input type="hidden" name="share" value="${profile.id}" id="emid" />
 
 
@@ -225,6 +226,7 @@
 			</div>
 
 		</body>
+
 		<script type="module">
 			import orgChart from "/js/orgChart/orgChart.js";
 
@@ -232,16 +234,22 @@
 			const removeButton = document.getElementById("removeButton");
 			const managerIdInput = document.getElementById("managerId");
 			const managerNameInput = document.getElementById("managerName");
-			const employeeid = document.getElementById("emid").value;
+			const employeeId = document.getElementById("emid").value;
 			const title = document.getElementById("title").value;
+			const share = document.getElementById("share").value;
+
 			let selectedEmployees = []; // 배열에 선택된 직원을 저장
-			
-			
+			let uniqueids = [];
+
 
 			orgChart.init("orgChart", (data) => {
 
+				if (selectedEmployees.includes(data.id) || uniqueids.includes(data.id)){
+					alert('이미 선택 되었습니다.');
+					return;
+				}
 
-				if (!selectedEmployees.some(emp => emp.id === data.id || data.id === employeeid)) {
+				if (!selectedEmployees.some(emp => emp.id === data.id || data.id === employeeId)) {
 					// 선택된 직원을 배열에 추가
 					selectedEmployees.push(data);
 
@@ -260,36 +268,40 @@
 
 
 			function updateSelectedEmployees() {
-    // 중복된 값을 제거한 배열 생성
-    const uniqueNames = [];
-    const uniqueEmployees = [];
-    for (const employee of selectedEmployees) {
-        if (!uniqueNames.includes(employee.name)) {
-            uniqueNames.push(employee.name);
-            uniqueEmployees.push(employee);
-        }
-    }
+				// 중복된 값을 제거한 배열 생성
+				const uniqueNames = [];
+				const uniqueEmployees = [];
+				for (const employee of selectedEmployees) {
+					if (!uniqueNames.includes(employee.name)) {
+						uniqueNames.push(employee.name);
+						uniqueEmployees.push(employee);
+					}
+				}
 
-    // 입력란 업데이트
-    managerNameInput.value = uniqueNames.join(", ");
-    managerIdInput.value = JSON.stringify(uniqueEmployees.map(employee => ({ value: employee.name })));
 
-    // 선택된 직원이 없으면 태그 초기화하지 않음
-    if (uniqueNames.length === 0) {
-        return;
-    }
+				// 입력란 업데이트
+				managerNameInput.value = uniqueNames.join(", ");
+				managerIdInput.value = JSON.stringify(uniqueEmployees.map(employee => ({ value: employee.id })));
+				console.log(managerIdInput.value);
+				// 선택된 직원이 없으면 태그 초기화하지 않음
+				if (uniqueNames.length === 0) {
+					return;
+				}
 
-    if (!tagify) {
-        initializeTagify(uniqueNames);  // 태그에 
-    } else {
-        // 기존 태그를 유지하면서 새로운 태그를 추가
-        uniqueNames.forEach(name => {
-            if (!tagify.value.some(tag => tag.value === name)) {
-                tagify.addTags([{ value: name }]);
-            }
-        });
-    }
-}
+				if (!tagify) {
+					initializeTagify(uniqueNames);  // 태그에 
+				} else {
+					// 기존 태그를 유지하면서 새로운 태그를 추가
+					uniqueNames.forEach(name => {
+						if (!tagify.value.some(tag => tag.value === name)) {
+							tagify.addTags([{ value: name }]);
+						}
+					});
+				}
+			}
+			const ids = [];
+			
+			const idName = [];
 
 
 			fetch('http://localhost/userlist', {
@@ -303,7 +315,7 @@
 				})
 				.then(data => {
 					const names = [];
-
+					// NAME
 					data.forEach(department => {
 						names.push(department.name); // 부서명을 배열에 추가
 						if (department.employees && department.employees.length > 0) {
@@ -313,8 +325,32 @@
 						}
 					});
 
-					console.log(names);
+					// ID
+					data.forEach(department => {
+						// 부서명과 부서 ID를 배열에 추가
+						ids.push({ id: department.id });
+						if (department.employees && department.employees.length > 0) {
+							department.employees.forEach(employee => {
+								// 직원의 이름과 ID를 배열에 추가
+								ids.push({ id: employee.id });
+							});
+						}
+					});
+					// ID, NAME
+					data.forEach(department => {
+						// 부서명과 부서 ID를 배열에 추가
+						idName.push({ id: department.id, name: department.name });
+						if (department.employees && department.employees.length > 0) {
+							department.employees.forEach(employee => {
+								// 직원의 이름과 ID를 배열에 추가
+								idName.push({ id: employee.id, name: employee.name });
+							});
+						}
+					});
+					console.log(ids);
+					managerNameInput.value = names.join(", ");
 
+					console.log(names);
 					initializeTagify(names);
 				})
 				.catch(error => {
@@ -331,12 +367,31 @@
 					whitelist: names,
 					callbacks: {
 						add: function (e) {
-							console.log("태그 추가됨: ", e.detail.data);
+							const tagName = e.detail.data.value; // 추가된 태그의 이름 가져오기
+    console.log("태그 추가됨: ", e.detail.data);
+    console.log("dlq" + tagName);
+    // 태그의 이름을 기반으로 해당하는 ID를 찾기
+    const foundIds = idName.filter(item => item.name === tagName).map(item => item.id);
+    console.log(foundIds);
+    // 찾은 ID를 uniqueids 배열에 추가
+    uniqueids.push(...foundIds);
+    console.log(uniqueids);
+    // uniqueids 배열에 있는 ID들을 managerIdInput에 추가
+    managerIdInput.value = JSON.stringify(uniqueids.map(id => ({ value: id }))); // ID만 추가
+    console.log(managerIdInput.value); // managerIdInput의 값 확
+
+
 						},
 						remove: function (e) {
 							console.log("태그 제거됨: ", e.detail.data);
-							const removedItem = e.detail.data.value;
-							console.log(removedItem);
+                const removedItem = e.detail.data.value;
+                console.log(removedItem);
+                // 제거된 태그에 해당하는 ID를 uniqueids 배열에서 제거
+                uniqueids = uniqueids.filter(id => !idName.some(item => item.name === removedItem && id === item.id));
+                console.log(uniqueids);
+                // uniqueids 배열에 있는 ID들을 managerIdInput에 추가
+                managerIdInput.value = JSON.stringify(uniqueids.map(id => ({ value: id }))); // 변경된 ID 배열을 다시 할당
+                console.log(managerIdInput.value); // managerIdInput의 값 확인
 							const index = selectedEmployees.findIndex(employee => employee.name === removedItem);
 							if (index !== -1) {
 								selectedEmployees.splice(index, 1);
@@ -346,7 +401,7 @@
 				});
 			}
 
-			
+
 		</script>
 
 
@@ -380,31 +435,61 @@
 								, textColor: 'red' // an option!
 							}
 						],
-
+						
 						eventAdd: function (obj) { // 이벤트가 추가되면 발생하는 이벤트
 							console.log(obj);
+							console.log("추가임");
 						},
 						eventChange: function (obj) { // 이벤트가 수정되면 발생하는 이벤트
 							console.log(obj);
+							console.log("수정임");
+							console.log(obj.event.start);
+							console.log(obj.event.end);
+							console.log(obj.event.content);
+							console.log(obj.event.title);
+							console.log(obj.event.id);
+							$.ajax({
+										url: '/update',
+										type: 'POST',
+										contentType: 'application/json',
+										data: JSON.stringify({
+											title: obj.event.title,
+											content: obj.event.content,
+											start: obj.event.start,
+											end: obj.event.end,
+											id: obj.event.id
+										}),
+										success: function (response) {
+											console.log('수정 성공:', response);
+										},
+										error: function (error) {
+											console.error('수정 실패:', error);
+										}
+									});
 						},
 						eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
 							console.log(obj);
+							console.log("삭제임");
+						},
+						eventClick : function(obj){
+							console.log(obj)
+							console.log("클릭임");
 						},
 						select: function (arg) {
-							// 부트스트랩 모달 열기
 							$('#eventModal').modal('show');
-
+							// 부트스트랩 모달 열기
+							
 							var startDate = arg.start.toISOString().slice(0, 10); // 선택된 날짜의 날짜 부분만 추출
 							var endDate = arg.end ? arg.end.toISOString().slice(0, 10) : startDate; // 종료 날짜가 있으면 그 날짜를 선택, 없으면 시작 날짜와 같은 날짜 선택
-
+							
 							// 시작 날짜에 하루를 더하여 설정
 							var nextDay = new Date(arg.start);
 							nextDay.setDate(nextDay.getDate() + 1);
 							var nextDayISO = nextDay.toISOString().slice(0, 10);
-
+							
 							$('#start').val(nextDayISO + 'T' + getCurrentTime()); // 시작 날짜 입력란에 선택된 날짜와 현재 시간 값 설정
 							$('#end').val(endDate + 'T18:00'); // 종료 날짜 입력란에 선택된 날짜 값 설정
-
+							
 							// 현재 시간을 HH:mm 형식으로 반환하는 함수
 							function getCurrentTime() {
 								var now = new Date();
@@ -412,39 +497,84 @@
 								var minute = now.getMinutes().toString().padStart(2, '0'); // 분을 두 자리로 변환하고 앞에 0을 채움
 								return hour + ':' + minute; // 시간과 분을 합쳐서 반환
 							}
-
+							
+							
 							// 모달에서 이벤트 제목 입력 후 저장 버튼 클릭 시
-							$('#saveEventBtn').click(function () {
-								var title = $('#title').val(); // 모달의 이벤트 제목 입력란에서 제목 가져오기
-								if(title.trim()===""){
-									alert("ㅇㅇㅇㅇㅇ");
+							$('#saveEventBtn').off('click').click(function () {
+								var employeeId = $('#emid').val();
+								var content = $('#content').val();
+								if (content.trim() === "") {
+									alert("내용이 입력되지 않았습니다.")
+									return;
 								}
+								var title = $('#title').val(); // 모달의 이벤트 제목 입력란에서 제목 가져오기
+								if (title.trim() === "") {
+									alert("제목을 입력하지 않았습니다.");
+									return;
+								}
+
 								if (title) {
 									calendar.addEvent({
 										title: title,
 										start: arg.start,
 										end: arg.end,
 										allDay: arg.allDay
+
+									});
+
+									// 저장 버튼 클릭 시 AJAX를 통해 데이터를 서버에 전송
+									let start = document.getElementById("start").value;
+									let end = document.getElementById("end").value;
+									$.ajax({
+										url: '/insert',
+										type: 'POST',
+										contentType: 'application/json',
+										data: JSON.stringify({
+											title: title,
+											content: content,
+											start: start,
+											end: end,
+											employeeId: managerId.value
+										}),
+										success: function (response) {
+											console.log('저장 성공:', response);
+										},
+										error: function (error) {
+											console.error('저장 실패:', error);
+										}
 									});
 								}
 								calendar.unselect();
+								
 								$('#eventModal').modal('hide'); // 모달 닫기
-							});
-
-							// 모달이 닫힐 때 이벤트 처리
-							$('#eventModal').on('hidden.bs.modal', function () {
-								// 모달이 닫힐 때마다 이벤트 처리를 위해 클릭 이벤트 해제
-								$('#saveEventBtn').off('click');
 							});
 						},
 
-
-
-
-
-
 					});
 					// 캘린더 랜더링
+					$(document).ready(function () {
+						// 서버에서 데이터를 가져오는 AJAX 요청
+						$.ajax({
+							url: 'http://localhost/list',
+							type: 'GET',
+							success: function (data) {
+								// 가져온 데이터를 풀캘린더에 추가
+								data.forEach(function (eventData) {
+									console.log(eventData.id+"LLLLL");
+									calendar.addEvent({
+										id: eventData.id, // 이벤트 ID
+										title: eventData.title, // 이벤트 제목
+										start: eventData.start, // 이벤트 시작 날짜
+										end: eventData.end, // 이벤트 종료 날짜
+										// 기타 이벤트 속성 등을 추가할 수 있습니다.
+									});
+								});
+							},
+							error: function (error) {
+								console.error('데이터를 가져오는 데 실패했습니다:', error);
+							}
+						});
+					});
 					calendar.render();
 				});
 			})();
