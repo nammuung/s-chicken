@@ -164,9 +164,9 @@ public class ChatService {
 
         chattingData.setChatMessages(chatMessageData);
 
-//        if(!chattingData.isLastReaded()){
-//            chatDAO.updateLastRead(chattingData.getLastMessage().getId(), chatroomId, employeeId);
-//        }
+        if(!chattingData.isLastReaded()){
+            chatDAO.updateLastRead(chattingData.getLastMessage().getId(), chatroomId, employeeId);
+        }
 
         return chattingData;
     }
