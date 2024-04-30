@@ -21,8 +21,22 @@ public class HeadOrderAPI {
     @GetMapping("orders")
     public ResponseEntity<?> getOrderList(HeadOrderVO headOrderVO) throws Exception {
         try {
-            System.out.println(headOrderService.getOrderList(headOrderVO));
+            List<HeadOrderVO> result = headOrderService.getOrderList(headOrderVO);
+            System.out.println("headOrderService.getOrderList(headOrderVO) = " + result + "길이"+ result.size());
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), headOrderService.getOrderList(headOrderVO)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+    @GetMapping("orders/sups")
+    public ResponseEntity<?> getOrderSupList(HeadOrderVO headOrderVO) throws Exception {
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@Suppppppp");
+        try {
+            List<HeadOrderVO> result = headOrderService.getOrderSupList(headOrderVO);
+            System.out.println("headOrderService.getOrderSupList(headOrderVO) = " + result + "길이"+ result.size());
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), headOrderService.getOrderSupList(headOrderVO)));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

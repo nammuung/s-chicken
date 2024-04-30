@@ -20,6 +20,9 @@ public class HeadOrderService {
     public List<HeadOrderVO> getOrderList(HeadOrderVO headOrderVO) throws Exception {
         return headOrderMapper.getOrderList(headOrderVO);
     }
+    public List<HeadOrderVO> getOrderSupList(HeadOrderVO headOrderVO) throws Exception {
+        return headOrderMapper.getOrderSupList(headOrderVO);
+    }
 
     public HeadOrderVO getOrder(HeadOrderVO headOrderVO) throws Exception {
         return headOrderMapper.getOrder(headOrderVO);

@@ -14,6 +14,20 @@ export const getOrderList = async (formData) => {
     }
 }
 
+export const getOrderSupList = async (formData) => {
+    const params = new URLSearchParams();
+    for(const [key, value] of formData.entries()){
+        if(value)
+            params.append(key, value);
+    }
+    try {
+        const response = await defaultInstance.get('orders/sups', {params});
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export const getOrder = async (orderId,supplierId = null) => {
     try {
         let url = ""

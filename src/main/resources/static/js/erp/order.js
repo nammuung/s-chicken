@@ -2,7 +2,7 @@ import {checkboxRenderer, handsontable, scaleArrayToSum} from "../lib/handsontab
 import {addItem, getItemList, updateItem, getItem} from "../api/item.js";
 import {getProduct, getProductList} from "../api/product.js";
 import {getSupplierList} from "../api/supplier.js";
-import {addOrder, getOrder, getOrderList, updateOrder} from "../api/order.js";
+import {addOrder, getOrder, getOrderList, getOrderSupList, updateOrder} from "../api/order.js";
 import {orderStatusToKR, itemStatus, itemStatusToKR} from "../util/orderStatus.js";
 
 const orderPreviewButton = document.getElementById("orderPreviewButton")
@@ -122,6 +122,7 @@ async function searchOrder(){
     const formData = new FormData(searchForm);
     const result = await getOrderList(formData);
     const datas = result.data;
+    console.log(datas)
     orderHot.loadData(datas);
     supplierHot.loadData([]);
     itemHot.loadData([]);
@@ -140,8 +141,9 @@ let detailItems = [];
 async function searchDetail(id){
     const formData = new FormData();
     formData.append("id", id);
-    const result = await getOrderList(formData);
+    const result = await getOrderSupList(formData);
     const datas = result.data;
+    console.log(datas);
     detailItems = [];
     datas.forEach((data,index) => {
         data.id = data.supplier.id;

@@ -10,6 +10,9 @@ public interface HeadOrderMapper {
     HeadOrderVO getOrder(HeadOrderVO headOrderVO) throws Exception;
 
     List<HeadOrderVO> getOrderList(HeadOrderVO headOrderVO) throws Exception;
+    List<HeadOrderVO> getOrderSupList(HeadOrderVO headOrderVO) throws Exception;
+    
+
 
     HeadOrderDetailVO getOrderDetail(HeadOrderDetailVO orderDetail) throws Exception;
 

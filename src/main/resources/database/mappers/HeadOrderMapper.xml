@@ -117,7 +117,6 @@
     </select>
     <resultMap id="getOrderMap" type="HeadOrderVO" autoMapping="true">
         <id column="id" property="id"/>
-        <id column="supplier_id" property="supplier.id"/>
         <association property="supplier" javaType="SupplierVO" columnPrefix="supplier_" autoMapping="true"/>
         <association property="employee" javaType="EmployeeVO" columnPrefix="employee_" autoMapping="true">
             <association property="position" javaType="CodeVO" columnPrefix="position_" autoMapping="true"/>
@@ -134,7 +133,29 @@
             </association>
         </collection>
     </resultMap>
+    <resultMap id="getOrderSupMap" type="HeadOrderVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <id column="supplier_id" property="supplier.id"/>
+        <association property="supplier" javaType="SupplierVO" columnPrefix="supplier_" autoMapping="true"/>
+        <association property="employee" javaType="EmployeeVO" columnPrefix="employee_" autoMapping="true">
+            <association property="position" javaType="CodeVO" columnPrefix="position_" autoMapping="true"/>
+            <association property="department" javaType="DepartmentVO" columnPrefix="department_" autoMapping="true"/>
+        </association>
+        <collection property="orderDetails" javaType="List" ofType="HeadOrderDetailVO" columnPrefix="order_detail_" autoMapping="true">
+            <id column="id" property="id"/>
+            <id column="supplier" property="supplier.id"/>
+            <association property="item" javaType="ItemVO" columnPrefix="item_" autoMapping="true">
+                <association property="product" javaType="ProductVO" columnPrefix="product_" autoMapping="true">
+                    <association property="unit" javaType="CodeVO" columnPrefix="unit_" autoMapping="true"/>
+                    <association property="category" javaType="CodeVO" columnPrefix="category_" autoMapping="true"/>
+                </association>
+            </association>
+        </collection>
+    </resultMap>
     <select id="getOrder" resultMap="getOrderMap">
+        <include refid="getOrderSQL"/>
+    </select>
+    <select id="getOrderSupList" resultMap="getOrderSupMap">
         <include refid="getOrderSQL"/>
     </select>
     <insert id="addOrder">
