@@ -54,21 +54,26 @@
                             </thead>
                             <tbody>
                             	
-	                            	<c:forEach items="${list}" var="vo">
-	                            		<c:if test="${vo.sort eq 1}">
+	                            	<c:forEach items="${list}" var="vo" varStatus="status">
+	                            		
 				                            <tr id="important">
                                                 <input type="hidden" id="important_val" value="${vo.important}">
                                                 
 				                                <td>${vo.id}</td>
-				                                <td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a></td>
+				                                <td class="text-start"><a href="./detail?id=${vo.id}">
+				                                <c:if test="${status.index < 3 }">
+                                                	<span style="background:gray; color:white; padding:2px; border-radius:6px; font-size:12px;">중요</span>
+                                                </c:if>
+				                                	${vo.title}
+				                                	</a></td>
 				                                <td>${vo.writeDate}</td>
 				                                <td>${vo.employeeVO.name}</td>
 				                                <td>${vo.hit}</td>
 				                            </tr>
-			                            </c:if>
+			                            
 		                            </c:forEach>
 		                            
-		                            <c:forEach items="${list}" var="vo">
+<%-- 		                            <c:forEach items="${list}" var="vo">
 	                            		<c:if test="${vo.sort eq 0}">
 				                            <tr id="important">
                                                 <input type="hidden" id="important_val" value="${vo.important}">
@@ -81,7 +86,7 @@
 				                                <td>${vo.hit}</td>
 				                            </tr>
 			                            </c:if>
-		                            </c:forEach>
+		                            </c:forEach> --%>
 	                           
                             </tbody>
                         </table>
