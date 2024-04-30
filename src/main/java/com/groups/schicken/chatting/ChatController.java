@@ -42,12 +42,6 @@ public class ChatController {
     @GetMapping("getData/one/{targetId}")
     public ResponseEntity<ChattingVO> getChattingDataOne(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String targetId){
         ChatroomVO chatroom = chatService.getOneChatrooms(employee.getId(), targetId);
-        System.out.println("chatroom = " + chatroom);
-        System.out.println("chatroom = " + chatroom);
-        System.out.println("chatroom = " + chatroom);
-        System.out.println("chatroom = " + chatroom);
-        System.out.println("chatroom = " + chatroom);
-        System.out.println("chatroom = " + chatroom);
 
         if(chatroom == null){
             chatroom = chatService.createOneChatroom(employee.getId(), targetId);

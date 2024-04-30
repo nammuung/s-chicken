@@ -12,11 +12,12 @@ let nowPageType = "";
 let upEnd;
 let downEnd;
 
-
 let options = {
     threshold: 0,
 };
-const callback = (entries, observer) => {
+
+const infinityScrollObserver = new IntersectionObserver(scrollPagingObserveCallback, options);
+function scrollPagingObserveCallback(entries, observer) {
     entries.forEach(async (entry) => {
         if (entry.isIntersecting) {
             observer.unobserve(entry.target);
@@ -30,9 +31,6 @@ const callback = (entries, observer) => {
         }
     });
 };
-
-const observer = new IntersectionObserver(callback, options);
-
 
 document.getElementById("search-input").addEventListener("keyup", event => {
     let searchName = event.target.value;
@@ -93,6 +91,7 @@ async function setChatroom(targetId) {
     upEnd = false;
     downEnd = false;
 
+    document.getElementById("chatroom-name").innerText = chattingData.chatroomName;
     chattingData.members.forEach(member => memberData[member.id] = member);
     chattingData.chatMessages.forEach(chatMessage => {
         const created = appendChatting(chatMessage);
@@ -112,12 +111,12 @@ function observeUpAndDown(opt) {
         chattings[chattings.length - 1].dataset.direction = "down";
 
         if ((opt == null) || (opt.direction === 'up' && !opt.isEnd)) {
-            observer.observe(chattings[0]);
+            infinityScrollObserver.observe(chattings[0]);
         } else {
             upEnd = true;
         }
         if ((opt == null) || (opt.direction === 'down' && !opt.isEnd)) {
-            observer.observe(chattings[chattings.length - 1]);
+            infinityScrollObserver.observe(chattings[chattings.length - 1]);
             downEnd = true;
         }
     }
@@ -219,7 +218,7 @@ function chatDateFormat(date) {
 
 function createChattingMessage(data, sendDate) {
     let div = makeElement("div", {className: ["mt-1", "p-2", "rounded-3", "text-break", "bg-schicken-light", "d-inline-block"]})
-    div.innerText = data;
+    div.innerHTML = data;
 
     let div2 = makeElement("div", {dataset: {"sendMessage": "", "sendDate": sendDate}});
     div2.append(div);
@@ -244,7 +243,7 @@ function makeElement(tagName, {className, option, dataset} = {}) {
 }
 
 function pageChange(to) {
-    observer.disconnect();
+    infinityScrollObserver.disconnect();
     [...document.getElementsByClassName("now-page")].forEach(e => e.classList.remove("now-page"));
 
     if (to == null) return;
