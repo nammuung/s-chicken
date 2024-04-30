@@ -95,9 +95,9 @@
                 data-bs-parent="#sidebar-nav">
                 <li><a href="/employee/list"> <i class="bi bi-circle"></i><span>직원목록</span>
                 </a></li>
-                <li><a href="/employee/isuserList"> <i class="bi bi-circle"></i><span>퇴사자
-							목록</span>
-                </a></li>
+                <li><a href="/employee/isuserList"> <i class="bi bi-circle"></i><span>퇴사자목록</span></a></li>
+                
+                <li><a href="/employee/role"> <i class="bi bi-circle"></i><span>권한</span></a></li>
 
             </ul></li>
         <!-- End Charts Nav -->

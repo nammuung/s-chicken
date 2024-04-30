@@ -16,17 +16,17 @@
 		#{start},
 		#{end},
 		#{title},
-		#{userYn},
 		#{content},
 		#{share}
 		)
 	</insert>
 
 	<insert id="insertuser" parameterType="CalendarVO">
-		insert into calendar_emp (calendar_id, employee_id)
+		insert into calendar_emp (calendar_id, employee_id,user_yn)
 		values
 		(#{calendarId},
-		#{employeeId}
+		#{employeeId},
+		#{userYn}
 		)
 	</insert>
 <insert id="insertAllUser" parameterType="list">
@@ -47,7 +47,7 @@
 		calendar.`start` ,
 		calendar.`end` ,
 		calendar.title ,
-		calendar.use_yn ,
+		ce.user_yn,
 		calendar.content ,
 		calendar.share,
 		ce.employee_id,
@@ -59,7 +59,6 @@
 		on ce.employee_id = e.id
 		inner join department d
 		on e.department_id = d.id
-		where use_yn = 1
 	</select>
 
 
@@ -84,9 +83,19 @@ where e.id != #{share}
 	</select>
 
 
-<delete id="depDelete" parameterType="CalendarVO">
-DELETE from calendar_emp where employee_id = #{employeeId}
+<delete id="depDelte" parameterType="CalendarVO">
+    DELETE FROM calendar_emp
+    WHERE employee_id = #{employeeId}
 </delete>
+
+
+	<update id="update" parameterType="CalendarVO">
+		update calendar set
+		start = #{start},
+		end = #{end}
+		where id = #{id}
+	</update>
+
 
 
 </mapper>

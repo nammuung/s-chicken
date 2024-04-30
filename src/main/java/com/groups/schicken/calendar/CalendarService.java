@@ -67,14 +67,22 @@ public class CalendarService {
 	    } else {
 	        calendarVO.setCalendarId(calendarVO.getId());
 	        calendarDAO.insertAllUser(a);   
-	        calendarDAO.depList(calendarVO);
-	        calendarDAO.depDelte(calendarVO);
+	        List<CalendarVO> az = calendarDAO.depList(calendarVO);
+	        for (CalendarVO item : az) {
+	        calendarDAO.depDelte(item.getEmployeeId());
+	        }
 	    }
 	   // calendarDAO.depDelte(calendarVO);
 	    return result;
 	}
 
 
+	public int update (CalendarVO calendarVO)throws Exception{
+		
+		System.out.println(calendarVO.getEnd());
+		System.out.println(calendarVO.getStart());
+		return calendarDAO.update(calendarVO);
+	}
 
 
 	  

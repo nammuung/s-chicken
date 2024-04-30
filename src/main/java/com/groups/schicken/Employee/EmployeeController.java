@@ -62,6 +62,11 @@ public class EmployeeController {
 		 // 로그인할때 세션에 프로필 넣기
 		    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		    EmployeeVO a = (EmployeeVO)authentication.getPrincipal();
+		    
+
+		    
+		    
+		    
 		    session.setAttribute("detail", a);
 		    model.addAttribute("id",id);
 		    return "redirect:/";

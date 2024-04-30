@@ -26,6 +26,8 @@ import com.groups.schicken.board.represent.RepresentService;
 import com.groups.schicken.calendar.CalendarService;
 import com.groups.schicken.calendar.CalendarVO;
 import com.groups.schicken.common.vo.Pager;
+import com.groups.schicken.notification.Noticer;
+import com.groups.schicken.notification.NotificationType;
 import com.groups.schicken.organization.ChattingEmployeeListVO;
 import com.groups.schicken.organization.OrganizationService;
 import com.nimbusds.jose.shaded.gson.JsonObject;
@@ -41,6 +43,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.Notification;
+
 @Controller
 @RequestMapping("/")
 @Slf4j
@@ -52,7 +56,8 @@ public class MainController {
 	  @Autowired private RepresentService representService;
 	  @Autowired private EmployeeService employeeService;
 	  @Autowired private OrganizationService organizationService;
-	
+	  @Autowired private Noticer noticer;
+	  
 	/*
 	 * @GetMapping("/") public String test(@RequestParam("path")String path){ return
 	 * path; }
@@ -102,11 +107,16 @@ public class MainController {
     		String id = authentication.getName();
     		calendarVO.setShare(id);
             int result = calendarService.insert(calendarVO);
-        String  a= "일정이 성공적으로 추가되었습니다.";
+            //noticer.sendNotice(id+"일정이 등록되었습니다.", /, NotificationType.Calendar, List<String>);
                 return "일정이 성공적으로 추가되었습니다.";
 
     }
-
+    @PostMapping("update")
+    @ResponseBody
+    public String update(@RequestBody CalendarVO calendarVO)throws Exception{
+    	calendarService.update(calendarVO);
+    	return "업데이트 성공";
+    } 
 
 
  

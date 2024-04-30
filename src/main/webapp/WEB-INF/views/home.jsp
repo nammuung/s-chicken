@@ -236,6 +236,7 @@
 			const managerNameInput = document.getElementById("managerName");
 			const employeeId = document.getElementById("emid").value;
 			const title = document.getElementById("title").value;
+			const share = document.getElementById("share").value;
 
 			let selectedEmployees = []; // 배열에 선택된 직원을 저장
 			let uniqueids = [];
@@ -437,12 +438,42 @@
 						
 						eventAdd: function (obj) { // 이벤트가 추가되면 발생하는 이벤트
 							console.log(obj);
+							console.log("추가임");
 						},
 						eventChange: function (obj) { // 이벤트가 수정되면 발생하는 이벤트
 							console.log(obj);
+							console.log("수정임");
+							console.log(obj.event.start);
+							console.log(obj.event.end);
+							console.log(obj.event.content);
+							console.log(obj.event.title);
+							console.log(obj.event.id);
+							$.ajax({
+										url: '/update',
+										type: 'POST',
+										contentType: 'application/json',
+										data: JSON.stringify({
+											title: obj.event.title,
+											content: obj.event.content,
+											start: obj.event.start,
+											end: obj.event.end,
+											id: obj.event.id
+										}),
+										success: function (response) {
+											console.log('수정 성공:', response);
+										},
+										error: function (error) {
+											console.error('수정 실패:', error);
+										}
+									});
 						},
 						eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
 							console.log(obj);
+							console.log("삭제임");
+						},
+						eventClick : function(obj){
+							console.log(obj)
+							console.log("클릭임");
 						},
 						select: function (arg) {
 							$('#eventModal').modal('show');
@@ -488,6 +519,7 @@
 										start: arg.start,
 										end: arg.end,
 										allDay: arg.allDay
+
 									});
 
 									// 저장 버튼 클릭 시 AJAX를 통해 데이터를 서버에 전송
@@ -502,7 +534,6 @@
 											content: content,
 											start: start,
 											end: end,
-											allDay: arg.allDay,
 											employeeId: managerId.value
 										}),
 										success: function (response) {
@@ -529,6 +560,7 @@
 							success: function (data) {
 								// 가져온 데이터를 풀캘린더에 추가
 								data.forEach(function (eventData) {
+									console.log(eventData.id+"LLLLL");
 									calendar.addEvent({
 										id: eventData.id, // 이벤트 ID
 										title: eventData.title, // 이벤트 제목
