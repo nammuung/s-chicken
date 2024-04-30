@@ -86,13 +86,13 @@
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                      <img src="/fileDown?id=${detail.file.id}" alt="Profile" onerror="this.onerror=null; this.src='/img/기본.jpg';" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">${profile.departmentName}</span>
+                    <span class="d-none d-md-block dropdown-toggle ps-2">${detail.department.name}/${detail.position.name}</span>
                 </a><!-- End Profile Iamge Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6><sec:authentication property="Principal.name"/></h6>
-                        <span>${profile.name}</span>
+                        <span>${detail.name}</span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
