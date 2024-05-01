@@ -125,6 +125,11 @@ public class DocumentService {
 		return result;
 	}
 	
+	public int tempBonus(BonusVO bonusVO)throws Exception{
+		System.out.println(bonusVO);
+		return documentDAO.tempBonus(bonusVO);
+	}
+	
 	public int tempToSangApp(ApprovalVO approvalVO)throws Exception{
 		int result = documentDAO.tempToappAdd(approvalVO);
 		

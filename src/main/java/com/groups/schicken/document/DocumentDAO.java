@@ -32,6 +32,7 @@ public interface DocumentDAO {
 	int tempTosang(DocumentVO documentVO)throws Exception;
 	
 	int tempToappAdd(ApprovalVO approvalVO)throws Exception;
+	int tempBonus(BonusVO bonusVO)throws Exception;
 	
 	int tempToappDel(ApprovalVO approvalVO)throws Exception;
 

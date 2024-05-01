@@ -6,18 +6,27 @@ console.log("임시저장함")
 	
 	const me = document.getElementById("me");
 	
+	
 	const add_btn = document.getElementById("addbtn")
 	const approval_List = document.getElementById("approval_List");
+	const approve = document.querySelectorAll(".sign_member_wrap");	
 	const del_btn = document.getElementById("delbtn");
 	const register = document.getElementById("register");
 	const modal_show = document.getElementById("modal_show");
 	const sangsin = document.getElementById("sangsin");
-	const updateSave = document.getElementById("updateSave");
+	const tempSave = document.getElementById("tempSave");
 	const frm= document.querySelector("form");
-	const approve = document.querySelectorAll(".sign_member_wrap");		
+	const bonus_btn = document.getElementById("bonus_btn");
+	
+	const bonus =document.getElementById("bonus");
+	const bonuspeo = document.getElementById("bonuspeo");
+	
+	const getSave = document.getElementById("getSave");
+	
 	const cancel = document.getElementById("cancel");
 	
-		
+	const save_btn = document.getElementById("save_btn");
+	
 	let employeeArr =[];
 	let rankArr=[];
 	let resultArr=[];
@@ -32,6 +41,7 @@ console.log("임시저장함")
 		rankArr=[0];
 		employeeArr=[approve[0].querySelector(".sign_date").getAttribute("data-id")];
 		resultArr=[1];
+		console.log(approve.length)
     for (let i = 1; i < approve.length; i++) {
         const id = approve[i].querySelector(".sign_date").getAttribute("data-id");
         const get_level = approve[i].querySelector(".sign_date").getAttribute("data-level");
@@ -124,8 +134,8 @@ console.log("임시저장함")
 			
 			return
 		}
-		
-		if(bonuspeo.value == ""){
+		console.log(bonuspeo.dataset.id)
+		if(bonuspeo.dataset.id == ""){
 			alert("대상자를 입력하세요")
 			return
 		}

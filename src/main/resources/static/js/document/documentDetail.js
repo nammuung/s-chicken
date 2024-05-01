@@ -9,6 +9,7 @@ import oc from "/js/orgChart/orgChart.js";
 	
 	const add_btn = document.getElementById("addbtn")
 	const approval_List = document.getElementById("approval_List");
+	
 	const del_btn = document.getElementById("delbtn");
 	const register = document.getElementById("register");
 	const modal_show = document.getElementById("modal_show");

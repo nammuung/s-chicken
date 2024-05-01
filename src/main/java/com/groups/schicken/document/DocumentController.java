@@ -299,16 +299,7 @@ public class DocumentController {
 		return ResponseEntity.ok(documentVO);
 	}
 	
-	@PostMapping("document/tansferSave")
-	@ResponseBody
-	public ResponseEntity<?> tansferSave(@RequestBody SaveAppVO saveAppVO)throws Exception{
-		
-		List<SaveAppVO> ar=documentService.getApp(saveAppVO);
-		
-		System.out.println(ar);
-		
-		return ResponseEntity.ok(ar);
-	}
+
 	
 	
 	@PostMapping("tempTotemp")
@@ -330,17 +321,19 @@ public class DocumentController {
 		
 		approvalVO.setDocumentId(documentVO.getId());
 		int result = documentService.tempToSang(documentVO, approvalVO);
+		bonusVO.setDocumentId(documentVO.getId());
 		
 		String bonus = (String)map.get("bonus");
 		String bonusEmployeeId = (String)map.get("bunusEmployeeId");
 		
 		if(!bonus.isEmpty()) {
 			bonusVO.setBonus(Long.parseLong(bonus));
-			bonusVO.setEmployeeId(Long.parseLong(bonusEmployeeId));
-			bonusVO.setDocumentId(documentVO.getId());
-			result = documentService.bonusAdd(bonusVO);
+			result = documentService.tempBonus(bonusVO);
 		}
-				
+		if(!bonusEmployeeId.isEmpty()) {
+			bonusVO.setEmployeeId(Long.parseLong(bonusEmployeeId));
+			result = documentService.tempBonus(bonusVO);
+		}				
 		
 		Long[] longRankArray = new Long[rankArray.length];
 		Long[] longIdsArray = new Long[idsArray.length]; 
@@ -380,14 +373,15 @@ public class DocumentController {
 		
 		approvalVO.setDocumentId(documentVO.getId());
 		int result = documentService.tempToSang(documentVO,approvalVO);
+		bonusVO.setDocumentId(documentVO.getId());
 		
 		String bonus = (String)map.get("bonus");
 		String bonusEmployeeId = (String)map.get("bunusEmployeeId");
 		
 		bonusVO.setBonus(Long.parseLong(bonus));
 		bonusVO.setEmployeeId(Long.parseLong(bonusEmployeeId));
-		bonusVO.setDocumentId(documentVO.getId());
-		result = documentService.bonusAdd(bonusVO);
+		
+		result = documentService.tempBonus(bonusVO);
 		
 				
 		
@@ -462,6 +456,17 @@ public class DocumentController {
 		
 
 		return ResponseEntity.ok(documentVO);
+	}
+	
+	@PostMapping("document/tansferSave")
+	@ResponseBody
+	public ResponseEntity<?> tansferSave(@RequestBody SaveAppVO saveAppVO)throws Exception{
+		
+		List<SaveAppVO> ar=documentService.getApp(saveAppVO);
+		
+		System.out.println(ar);
+		
+		return ResponseEntity.ok(ar);
 	}
 	
 }

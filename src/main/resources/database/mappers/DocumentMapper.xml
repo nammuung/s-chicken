@@ -89,8 +89,8 @@
 		c.name code_name
 		
 		FROM document doc
-		left JOIN template tem ON doc.template_id = tem.temp_id
-		left JOIN approval app ON app.document_id = doc.id		
+		inner JOIN template tem ON doc.template_id = tem.temp_id
+		inner JOIN approval app ON app.document_id = doc.id		
 		left JOIN employee e ON e.id=app.employee_id 
 		
 		left JOIN bonus b ON b.document_id = doc.id
@@ -236,7 +236,11 @@
 		VALUES(#{documentId},#{employeeId},#{rank},#{result},#{date},#{comment})		
 	</insert>
 
-
+	<update id="tempBonus">
+		UPDATE bonus
+		SET employee_id=#{employeeId},document_id=#{documentId},bonus=#{bonus},date=#{date}
+		WHERE document_id=#{documentId}
+	</update>
 	
 
 	
