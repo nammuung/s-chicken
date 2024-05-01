@@ -19,9 +19,11 @@ import {
     getFranchiseOrderList,
     updateFranchiseOrder,
 } from "../api/franchiseOrder.js";
+import {getReleaseHistoryList} from "../api/history.js";
 
 let isChanged = {};
 const orderPreviewButton = document.getElementById("orderPreviewButton")
+const history = document.getElementById("history");
 const modifyButtons = document.getElementById("modifyButtons")
 
 
@@ -44,6 +46,7 @@ const orderContainer = document.getElementById('orderListContainer')
 const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
     if(checked){
         orderPreviewButton.classList.remove("d-none")
+        history.classList.remove("d-none")
         selectedOrder = instance.getDataAtCell(row,1)
         searchDetail(selectedOrder)
         if(instance.getDataAtCell(row,5) == "미발주" ) {
@@ -53,6 +56,7 @@ const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col
         }
     } else {
         selectedOrder = null;
+        history.classList.add("d-none")
         orderPreviewButton.classList.add("d-none")
         modifyButtons.classList.add("d-none")
     }
@@ -272,6 +276,27 @@ searchEndDate.addEventListener("change", function (e) {
         alert("시작일 앞의 날짜는 설정할 수 없습니다.")
         e.target.value=dayjs(searchStartDate.value).format("YYYY-MM-DD")
     }
+})
+
+
+//내역 모달
+const historyModalEl = document.getElementById("history-modal");
+const historyModal = new bootstrap.Modal(historyModalEl)
+history.addEventListener("click", async function(){
+    const historyListContainer = document.getElementById("historyListContainer");
+    const result = await getReleaseHistoryList(selectedOrder);
+    const data = result.data;
+    let tableHtml = "";
+    data.forEach(item => {
+        tableHtml += `
+            <tr>
+                <td>${item.content} 입고</td>
+                <td>${item.writeDate}</td>
+            </tr>
+        `
+    })
+    historyListContainer.innerHTML = tableHtml;
+    historyModal.show();
 })
 
 // function addIdChangeEventListener(){
