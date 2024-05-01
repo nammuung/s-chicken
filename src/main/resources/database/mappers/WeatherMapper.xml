@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.weather.WeatherMapper">
+    <insert id="insertWeather">
+        INSERT INTO
+            weather
+            (
+            weather_id, weather_main, weather_description, weather_icon, base,
+            temp, feels_like, temp_min, temp_max, pressure, humidity,
+            sea_level, grnd_level, wind_speed, wind_deg, wind_gust,
+            clouds_all, rain_1h, rain_3h, snow_1h, snow_3h,
+            visibility, dt, timezone, city_id, city_name, cod
+            )
+        VALUES (
+                   #{weather[0].id}, #{weather[0].main}, #{weather[0].description}, #{weather[0].icon}, #{base},
+                   #{main.temp}, #{main.feels_like}, #{main.temp_min}, #{main.temp_max}, #{main.pressure}, #{main.humidity},
+                   #{main.sea_level}, #{main.grnd_level}, #{wind.speed}, #{wind.deg}, #{wind.gust},
+                   #{clouds.all}, #{rain.rain1h}, #{rain.rain3h}, #{snow.snow1h}, #{snow.snow3h},
+                   #{visibility}, #{dt}, #{timezone}, #{id}, #{name}, #{cod}
+               )
+    </insert>
+</mapper>
