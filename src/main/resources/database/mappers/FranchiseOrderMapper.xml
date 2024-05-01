@@ -91,9 +91,7 @@
             ON prd.category_id = cat.id
         <include refid="search"/>
         GROUP BY
-            prd.id,
-            cat.name,
-            unit.name
+            order_detail.id
         ORDER BY
             ord.write_date desc
     </sql>
