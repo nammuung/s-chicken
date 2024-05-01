@@ -73,16 +73,16 @@ public class FranchiseOrderService {
             FranchiseOrderDetailVO prevOrderDetail = franchiseOrderMapper.getOrderDetail(orderDetail);
             Integer prevQuantity = prevOrderDetail.getDeliverQuantity();
             if(!Objects.equals(prevQuantity, orderDetail.getDeliverQuantity())){
-                Long difQuantity = (long) (orderDetail.getDeliverQuantity() - prevQuantity);
+                Long difQuantity = (long) (prevQuantity - orderDetail.getDeliverQuantity() );
                 StockVO stockVO = new StockVO();
                 stockVO.setCreateDate(DateManager.getTodayDateTime());
                 stockVO.setProduct(prevOrderDetail.getProduct());
                 stockVO.setQuantity(difQuantity);
-                stockVO.setHistory("입고에 따른 재고 추가");
+                stockVO.setHistory("출고에 따른 재고 삭감");
                 int result = stockMapper.updateStock(stockVO);
-                if(result == 0) throw new Exception("재고 추가 실패");
+                if(result == 0) throw new Exception("재고 삭감 실패");
             }
-            if(orderDetail.getStatus() == 0){
+            if(orderDetail.getStatus() == 2){
                 statusTemp = true;
                 break;
             }
@@ -90,7 +90,7 @@ public class FranchiseOrderService {
         if(statusTemp == null){
             FranchiseOrderVO order = new FranchiseOrderVO();
             order.setId(franchiseOrderDetailVOList.get(0).getOrder().getId());
-            order.setStatus(2);
+            order.setStatus(3);
             int result = franchiseOrderMapper.updateOrder(order);
             if(result == 0) throw new Exception("발주서 상태 변경 실패");
         }

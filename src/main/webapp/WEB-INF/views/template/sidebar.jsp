@@ -166,7 +166,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/order/sell">
+                    <a href="/order/release">
                         <i class="bi bi-circle"></i><span>출고</span>
                     </a>
                 </li>
