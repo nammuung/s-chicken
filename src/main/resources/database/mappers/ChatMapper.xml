@@ -46,6 +46,7 @@
             INNER JOIN code c ON c.id = e.pos_id AND c.type_id='300'
             LEFT JOIN attach a ON a.parent_id = e.id AND a.tbl_id=1077
         WHERE cr.id=#{chatroomId}
+        ORDER BY IF(employee_id = #{employeeId}, 1, 2)
     </select>
 
     <resultMap id="chatroomDataResult" type="ChattingVO" autoMapping="true">
