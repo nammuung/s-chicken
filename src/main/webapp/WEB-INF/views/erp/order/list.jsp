@@ -67,11 +67,11 @@
             </div>
             <div class="modal-body" style="height: 400px">
                 <div class="row overflow-auto" style="max-height: 400px">
-                    <table class="table">
+                    <table class="table text-center">
                         <thead>
                             <tr>
-                                <th scope="col">날짜</th>
                                 <th scope="col">내용</th>
+                                <th scope="col">날짜</th>
                             </tr>
                         </thead>
                         <tbody id="historyListContainer">
