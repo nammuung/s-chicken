@@ -144,7 +144,7 @@ function prependChatting(data) {
     }
 
     const messageSpace = beginChatting.querySelector(".chatting-message-space");
-    const created = createChattingMessage(data.content, data.sendDate);
+    const created = createChattingMessage(data.content, data.sendDate, data.senderId);
     messageSpace.prepend(created);
 
     return created
@@ -157,7 +157,7 @@ function appendChatting(data) {
     }
 
     const messageSpace = lastChatting.querySelector(".chatting-message-space");
-    const created = createChattingMessage(data.content, data.sendDate);
+    const created = createChattingMessage(data.content, data.sendDate, data.senderId);
     messageSpace.append(created);
 
     return created;
@@ -216,8 +216,10 @@ function chatDateFormat(date) {
     return year + "-" + month + "-" + day + " " + afternoon + " " + hour + ":" + minute;
 }
 
-function createChattingMessage(data, sendDate) {
-    let div = makeElement("div", {className: ["mt-1", "p-2", "rounded-3", "text-break", "bg-schicken-light", "d-inline-block"]})
+function createChattingMessage(data, sendDate, senderId) {
+    let classNames =  ["mt-1", "p-2", "rounded-3", "text-break", "d-inline-block"];
+    classNames.push(senderId === document.querySelector("[data-logined-id]")?.dataset.loginedId ? "bg-schicken-light-reverse" : "bg-schicken-light")
+    let div = makeElement("div", {className:classNames})
     div.innerHTML = data;
 
     let div2 = makeElement("div", {dataset: {"sendMessage": "", "sendDate": sendDate}});

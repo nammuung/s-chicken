@@ -94,3 +94,7 @@ button:active{
     width: 55px !important;
     height: 55px !important;
 }
+
+.bg-schicken-light-reverse{
+    background-color: #F7FF6655 !important;
+}
