@@ -9,7 +9,6 @@ let lastChatting;
 let beginChatting;
 let nowOpenPage = "";
 let nowPageType = "";
-let upEnd;
 let downEnd;
 
 let options = {
@@ -31,6 +30,13 @@ function scrollPagingObserveCallback(entries, observer) {
         }
     });
 };
+
+const downEndObserver = new IntersectionObserver(checkNowDownEnd, options);
+function checkNowDownEnd(entries, observer){
+    entries.forEach((entry) => {
+        downEnd = entry.isIntersecting
+    })
+}
 
 document.getElementById("search-input").addEventListener("keyup", event => {
     let searchName = event.target.value;
@@ -88,7 +94,6 @@ async function setChatroom(targetId) {
     chattingArea.value = "";
     lastChatting = null;
     beginChatting = null;
-    upEnd = false;
     downEnd = false;
 
     document.getElementById("chatroom-name").innerText = chattingData.chatroomName;
@@ -112,12 +117,11 @@ function observeUpAndDown(opt) {
 
         if ((opt == null) || (opt.direction === 'up' && !opt.isEnd)) {
             infinityScrollObserver.observe(chattings[0]);
-        } else {
-            upEnd = true;
         }
         if ((opt == null) || (opt.direction === 'down' && !opt.isEnd)) {
             infinityScrollObserver.observe(chattings[chattings.length - 1]);
-            downEnd = true;
+        } else {
+            downEndObserver.observe(chattings[chattings.length - 1]);
         }
     }
 }
@@ -160,6 +164,7 @@ function appendChatting(data) {
     const created = createChattingMessage(data.content, data.sendDate, data.senderId);
     messageSpace.append(created);
 
+    if(downEnd) chattingSpace.scrollTop = chattingSpace.scrollHeight;
     return created;
 }
 
