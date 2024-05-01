@@ -31,7 +31,6 @@ public class FranchiseOrderService {
 
     public int addOrder(FranchiseOrderVO franchiseOrderVO) throws Exception {
         franchiseOrderVO.setWriteDate(DateManager.getTodayDate());
-        franchiseOrderVO.setComment("");
         List<Long> detailPrice = new ArrayList<Long>();
         Long totalPrice = 0L;
         for(FranchiseOrderDetailVO detail : franchiseOrderVO.getOrderDetails()) {

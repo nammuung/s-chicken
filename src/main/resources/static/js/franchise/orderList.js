@@ -162,21 +162,6 @@ async function searchDetail(id){
     productHot.loadData(
         detailProducts
     );
-    //상태 진행인 로우만 입력가능하게 풀어줌
-    productHot.updateSettings({
-        cells(row, col) {
-            const cellProperties = {};
-            try{
-                if (productHot.getData()[row][col+1] === '진행') {
-                    cellProperties.readOnly = false;
-                }
-            } catch (e){
-                console.log(e)
-            }
-            return cellProperties;
-        }
-    });
-
 }
 
 // //디테일 아이템

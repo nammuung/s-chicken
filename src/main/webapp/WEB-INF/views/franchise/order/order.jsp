@@ -51,10 +51,14 @@
                                 <div class="mb-3" style="box-shadow: 0 0 0 1px #ccc inset;" >
                                     <div id="orderListContainer"></div>
                                 </div>
-                                <div class="d-flex justify-content-end">
-                                    <div class="d-none" id="visibleContainer">
-                                        <button class="btn btn-primary" id="orderButton">저장</button>
+                                <div class="d-flex justify-content-end d-none" id="visibleContainer">
+                                    <div class="row  me-1">
+                                        <label for="comment" class="form-label text-nowrap text-end col-2 m-0 align-self-center">내용</label>
+                                        <div class="col-10">
+                                            <input type="text" id="comment" class="form-control" placeholder="발주내용">
+                                        </div>
                                     </div>
+                                    <button class="btn btn-primary" id="orderButton">저장</button>
                                 </div>
                             </div>
                         </div>
