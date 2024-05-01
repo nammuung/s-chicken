@@ -23,10 +23,11 @@ public interface DocumentDAO {
 	List<DocumentVO> getDetail(DocumentVO documentVO)throws Exception;
 	
 	
-	
-	int add(DocumentVO documentVO)throws Exception;
-	
+	//상신
+	int add(DocumentVO documentVO)throws Exception;	
 	int appAdd(ApprovalVO approvalVO)throws Exception;
+	int bonusAdd(BonusVO bonusVO)throws Exception;
+	
 	
 	int tempTosang(DocumentVO documentVO)throws Exception;
 	
@@ -40,10 +41,10 @@ public interface DocumentDAO {
 	
 	
 	
+	
+	
+	
 	List<DocumentVO> approvalList(Map<String,Object> map)throws Exception;
-	
-	
-	
 	List<DocumentVO> allList(Map<String,Object> map)throws Exception;
 	List<DocumentVO> tempList(Map<String,Object> map)throws Exception;
 	

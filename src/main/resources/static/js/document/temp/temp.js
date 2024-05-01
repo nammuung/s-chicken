@@ -2,6 +2,7 @@
 import oc from "/js/orgChart/orgChart.js";
 console.log("임시저장함")
 	const myModal = new bootstrap.Modal(document.getElementById("myModal"))
+	const bonusModal = new bootstrap.Modal(document.getElementById("bonusModal"))
 	
 	const me = document.getElementById("me");
 	
@@ -84,6 +85,7 @@ console.log("임시저장함")
 	formData.append("employeeId",employeeArr)
 	formData.append("rank",rankArr)
 	formData.append("result",resultArr)
+	formData.append("bunusEmployeeId",bonuspeo.dataset.id)
 	
 	if(updateSave.dataset.temp ==1){
 		
@@ -92,8 +94,7 @@ console.log("임시저장함")
 			body:formData,
 		}).then(r=>console.log(r))
 		.then(r=>{
-			alert("임시저장 되었습니다")
-	
+			alert("임시저장 되었습니다")	
 		})
 	}
 	
@@ -118,19 +119,36 @@ console.log("임시저장함")
 			const formData = new FormData(frm);
 			formData.append("content", editor.getData())		
 			
-			if(editor.getData()==""){
-				alert("사유를 입력하세요")
-				return
-			}		
+		if(bonus.value == ""){
+			alert("금액을 입력하세요")
 			
-			if(employeeArr[1]===undefined){
-				alert("결재자는 1명이상 입니다")
-				return
-			}		
+			return
+		}
+		
+		if(bonuspeo.value == ""){
+			alert("대상자를 입력하세요")
+			return
+		}
+		
+		if(title.value ==""){
+			alert("제목을 입력하세요")
+			return
+		}
+		
+		if(editor.getData()==""){
+			alert("사유를 입력하세요")
+			return
+		}		
+		
+		if(employeeArr[1]===undefined){
+			alert("결재자는 1명이상 입니다")
+			return
+		}
 			
 			formData.append("employeeId",employeeArr)
 			formData.append("rank",rankArr)
 			formData.append("result",resultArr)
+			formData.append("bunusEmployeeId",bonuspeo.dataset.id)
 		
 		//임시저장 상신하기
 		if(sangsin.dataset.temp == 1){
@@ -182,7 +200,7 @@ function hyuga(){
     function adjustSize() {
       var windowHeight = $(window).height();
       var windowWidth = $(window).width();
-      var modalWidth = windowWidth * 1; // 화면 너비의 50%
+      var modalWidth = windowWidth * 0.8; // 화면 너비의 50%
       var modalHeight = windowHeight * 0.8; // 화면 높이의 80%
       
       $('#modalContent').css('width', modalWidth);
@@ -202,12 +220,27 @@ function hyuga(){
   });
   
   oc.init("note-message-org-chart", onSelectOrgChart, 'person', false);
+  oc.init("note-message-org-chart2", onSelectOrgChart, 'person', false);
   
 
   //내가 직접 선택한 콜백함수
-  function onSelectOrgChart(data){
-	getData=data;
-  }
+	  function onSelectOrgChart(data){
+		getData=data;
+	  }
+  	
+	  
+   	bonuspeo.addEventListener("click",(e)=>{
+		bonusModal.show();		
+	})
+	
+	bonus_btn.addEventListener("click",(e)=>{
+		console.log(getData)
+		bonuspeo.value = getData.name;
+		bonuspeo.dataset.id=getData.id;
+		bonusModal.hide();
+		
+	})
+  
 	  add_btn.addEventListener("click",(e)=>{
 		
 		let fullName = getData.name.split(" ");

@@ -2,8 +2,10 @@
 import oc from "/js/orgChart/orgChart.js";
 
 	const myModal = new bootstrap.Modal(document.getElementById("myModal"))
+	const bonusModal = new bootstrap.Modal(document.getElementById("bonusModal"))
 	
 	const me = document.getElementById("me");
+	
 	
 	const add_btn = document.getElementById("addbtn")
 	const approval_List = document.getElementById("approval_List");
@@ -13,21 +15,24 @@ import oc from "/js/orgChart/orgChart.js";
 	const sangsin = document.getElementById("sangsin");
 	const tempSave = document.getElementById("tempSave");
 	const frm= document.querySelector("form");
+	const bonus_btn = document.getElementById("bonus_btn");
+	
+	const bonus =document.getElementById("bonus");
+	const bonuspeo = document.getElementById("bonuspeo");
 	
 	const getSave = document.getElementById("getSave");
 	
 	const cancel = document.getElementById("cancel");
 	
 	const save_btn = document.getElementById("save_btn");
-	
-	const save_del = document.querySelectorAll(".list-group-item");
-	
-	
+		
 	let arr =[];
 	let employeeArr =[];
 	let rankArr=[];
 	let resultArr=[];
  	let relativePath = '/document/pay/pay';
+ 	
+
  	
 	 getSave.addEventListener("click",(e)=>{
 		 
@@ -46,6 +51,7 @@ import oc from "/js/orgChart/orgChart.js";
 				console.log(data)
 				console.log(JSON.stringify(data))
 				
+				
 				if(isConfirmed){
 					fetch("/document/saveDel",{
 						method:'post',
@@ -58,10 +64,9 @@ import oc from "/js/orgChart/orgChart.js";
 						console.log(e.target)
 						e.target.parentElement.parentElement.remove();
 					})
-				}			 
-			 return			 
-		 }
-		 
+			 	return			 
+				}
+		 }		 
 		 	
 		 	console.log(e.target.dataset)
 			let data = {
@@ -79,6 +84,7 @@ import oc from "/js/orgChart/orgChart.js";
 			.then(r => {
 				console.log(r);
 				r.forEach(reply=>{
+					
 					approval_List.innerHTML +=
 					`<li class="list-group-item" data-id="${reply.appId}" data-name="${reply.employee.name}" data-level="${reply.code.name}">
 					<i class="bi bi-arrow-down-up handle"></i>
@@ -123,6 +129,7 @@ import oc from "/js/orgChart/orgChart.js";
 		formData.append("employeeId",employeeArr)
 		formData.append("rank",rankArr)
 		formData.append("result",resultArr)
+		formData.append("bunusEmployeeId",bonuspeo.dataset.id)
 		fetch('/document/temp',{
 			method:"post",
 			body:formData,
@@ -136,18 +143,34 @@ import oc from "/js/orgChart/orgChart.js";
 	sangsin.addEventListener("click",(e)=>{
 		e.preventDefault();		
 		
+		const title = document.getElementById("title");
+		
+		
 		const formData = new FormData(frm);
 		formData.append("content", editor.getData())
 		
+		if(bonus.value == ""){
+			alert("금액을 입력하세요")
+			
+			return
+		}
+		
+		if(bonuspeo.value == ""){
+			alert("대상자를 입력하세요")
+			return
+		}
+		
+		if(title.value ==""){
+			alert("제목을 입력하세요")
+			return
+		}
 		
 		if(editor.getData()==""){
 			alert("사유를 입력하세요")
 			return
-		}
+		}		
 		
-		
-		
-		if(employeeArr[1]===undefined){
+		if(employeeArr[1]===""){
 			alert("결재자는 1명이상 입니다")
 			return
 		}
@@ -156,13 +179,14 @@ import oc from "/js/orgChart/orgChart.js";
 		formData.append("employeeId",employeeArr)
 		formData.append("rank",rankArr)
 		formData.append("result",resultArr)
+		formData.append("bunusEmployeeId",bonuspeo.dataset.id)
 		fetch('/document/add',{
 			method:"post",
 			body:formData,
 		}).then(r=>console.log(r))
 		.then(r=>{
 			alert("상신 되었습니다")
-			window.close(relativePath);
+			//window.close(relativePath);
 		})
 	})
 	
@@ -212,13 +236,26 @@ function hyuga(){
   });
   
   oc.init("note-message-org-chart", onSelectOrgChart, 'person', false);
-  
+   oc.init("note-message-org-chart2", onSelectOrgChart, 'person', false);
   
   let getData;
   //내가 직접 선택한 콜백함수
 	  function onSelectOrgChart(data){
 		getData=data;
+		console.log(data)
 	  }
+	  
+   	bonuspeo.addEventListener("click",(e)=>{
+		bonusModal.show();		
+	})
+	
+	bonus_btn.addEventListener("click",(e)=>{
+		console.log(getData)
+		bonuspeo.value = getData.name;
+		bonuspeo.dataset.id=getData.id;
+		bonusModal.hide();
+		
+	})
 	  
 	  add_btn.addEventListener("click",(e)=>{
 		
@@ -287,38 +324,43 @@ function hyuga(){
 		
 		const active = document.querySelectorAll('#right-top .list-group-item');
 		const strDate = document.getElementById("strDate");
-		getSave.innerHTML="";
+		
 		console.log("세이브를 해보자")
 		console.log(arr)
 		let title = prompt("제목을 입력하세요")
-		let data = [];
-		for(let i = 0 ; i < arr.length ; i++){		
-			 data.push({
-				employeeId : me.value ,
-				appId : active[i].dataset.id,
-				title : title,
-				rank : i ,
-				date :	strDate.value				
-			})
-		}
-		console.log(data);		
-		
-		fetch("/document/saveApp",{
-			method:'post',
-			body:JSON.stringify(data),			
-			headers:{
-				"Content-Type" : "application/json"
-			}
-		}).then(r=>r.json())
-		.then(r=>{
-			console.log(r)
-			r.forEach(reply=>{
-					getSave.innerHTML +=
-						`<li class="list-group-item" data-title="${reply.title}">								    	 
-										   		<span style="line-height: 38px;">${reply.title}</span><button class="btn saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${reply.title}" ></i></button>									 
-								    </li>`
+		if(title != ""){
+				getSave.innerHTML="";
+			let data = [];
+			for(let i = 0 ; i < arr.length ; i++){		
+				 data.push({
+					employeeId : me.value ,
+					appId : active[i].dataset.id,
+					title : title,
+					rank : i ,
+					date :	strDate.value				
 				})
-		})
+			}
+			console.log(data);		
+			
+			fetch("/document/saveApp",{
+				method:'post',
+				body:JSON.stringify(data),			
+				headers:{
+					"Content-Type" : "application/json"
+				}
+			}).then(r=>r.json())
+			.then(r=>{
+				console.log(r)
+				r.forEach(reply=>{
+						getSave.innerHTML +=
+							`<li class="list-group-item" data-title="${reply.title}">								    	 
+											   		<span style="line-height: 38px;">${reply.title}</span><button class="btn saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${reply.title}" ></i></button>									 
+									    </li>`
+					})
+			})
+		}else{
+			alert("제목을 입력하세요")
+		}
 		
 		
 	})
@@ -347,6 +389,7 @@ function hyuga(){
 			rankArr=[zeroRank];
 			employeeArr=[zeroId];
 			resultArr=[zeroResult];
+			
 		register.addEventListener("click",()=>{
 			
 			
@@ -436,10 +479,8 @@ ClassicEditor
 
 //불러오기 모달 내용 jsp
 $("#call .modal-body").load("/document/callList");
-    
-		
-		
-		
-		
+
+
+
 		
 		

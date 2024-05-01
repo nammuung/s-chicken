@@ -48,10 +48,10 @@ public class DocumentService {
 		return documentDAO.approvalDetail(documentVO);
 	}
 	
-	public int appSave(SaveAppVO saveAppVO)throws Exception{
-		
+	public int appSave(SaveAppVO saveAppVO)throws Exception{		
 		return documentDAO.appSave(saveAppVO);
-	}
+	}	
+	
 	
 	
 	
@@ -73,12 +73,13 @@ public class DocumentService {
 		return ar;
 		
 	}
-	public List<DocumentVO> list(DocumentVO documentVO,TemplateVO templateVO,Pager pager,String cate)throws Exception{
+	public List<DocumentVO> list(EmployeeVO employeeVO,DocumentVO documentVO,TemplateVO templateVO,Pager pager,String cate)throws Exception{
 		Map<String, Object> map = new HashMap<String,Object>();
 
 		map.put("documentVO", documentVO);
 		map.put("pager", pager);
 		map.put("category", cate);
+		map.put("employeeVO", employeeVO);
 		
 		pager.makeIndex();
 		pager.makeNum(documentDAO.allTotalCount(map));
@@ -88,7 +89,7 @@ public class DocumentService {
 		return documentDAO.allList(map);
 	}
 	
-	public List<DocumentVO> tempList(DocumentVO documentVO,TemplateVO templateVO,Pager pager)throws Exception{
+	public List<DocumentVO> tempList(EmployeeVO employeeVO,DocumentVO documentVO,TemplateVO templateVO,Pager pager)throws Exception{
 		Map<String, Object> map = new HashMap<String,Object>();
 
 		map.put("documentVO", documentVO);
@@ -101,20 +102,19 @@ public class DocumentService {
 		return documentDAO.tempList(map);
 	}
 	
-	public int add(DocumentVO documentVO)throws Exception{
-		System.out.println("들어옴");
-		int result =documentDAO.add(documentVO);
-				
-		return result;
+	
+	//상신
+	public int add(DocumentVO documentVO)throws Exception{				
+		return documentDAO.add(documentVO);
+	}	
+	public int appAdd(ApprovalVO approvalVO)throws Exception{			
+			return documentDAO.appAdd(approvalVO);		
+	}	
+	public int bonusAdd(BonusVO bonusVO)throws Exception{
+		return documentDAO.bonusAdd(bonusVO);
 	}
 	
-	public int appAdd(ApprovalVO approvalVO)throws Exception{
-			
-			int result = documentDAO.appAdd(approvalVO);
-			
-			return result;
-		
-	}
+	
 	
 	public int tempToSang(DocumentVO documentVO,ApprovalVO approvalVO)throws Exception{
 			

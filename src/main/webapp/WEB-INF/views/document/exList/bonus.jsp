@@ -64,7 +64,7 @@
                     <tr>
 
                         <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
-                            colspan="2" class=""> 급여신청서
+                            colspan="2" class=""> 상여금신청서
                             <div style="text-align: right;">
 
                                 <!-- Button to Open the Modal -->
@@ -92,7 +92,7 @@
                                 </colgroup>
 
                                 <tbody>
-                                    <tr>
+                                    <!-- <tr>
                                         <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
                                             문서번호
                                         </td>
@@ -101,7 +101,7 @@
                                                 <input type="text" id="strDate" class="form-control" value="<%=strDate %>" style="text-align: center;">
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                     <tr>
                                         <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
                                             문서종류
@@ -118,7 +118,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" name="writeDate" value="<%=strDate %>" readonly  style="text-align: center;">
+                                                <input type="text" class="form-control" id="strDate" name="writeDate" value="<%=strDate %>" readonly  style="text-align: center;">
                                             </div>
                                         </td>
                                     </tr>
@@ -254,6 +254,28 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            대상자 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
+
+                            <input readonly type="text" class="form-control" data-id="" id="bonuspeo" style="width: 100%;">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            금액 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
+
+                            <input type="text" class="form-control" id="bonus" name="bonus" style="width: 100%;">
+                        </td>
+                    </tr>
+
 
                 </tbody>
             </table>
@@ -301,6 +323,7 @@
 	                </div>
 
 	            </div>
+                
 	            <div class="col-md-2 mmdd d-flex justify-content-center align-items-center flex-column">
                     <div class="text-center">
 				        <button class="btn btn-primary btn-sm mb-3" id="addbtn"> >> </button>
@@ -331,6 +354,7 @@
                           </div>
                       </div>
                   </div>
+                  
 	              <div id="right-bottom" class="row ssdd">
                       <div class="card">
                           <div class="card-body">
@@ -357,6 +381,7 @@
 	            </div>
 	          </div>
 	        </div>
+            </div>
 	        <!-- 모달 내용 끝 -->
 	      </div>
 	      <!-- Modal footer -->
@@ -380,6 +405,25 @@
                 </div>
                 <!-- 모달 footer (선택적) -->
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="bonusModal" tabindex="-1" aria-labelledby="bonusModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- 모달 내용 -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bonusModalLabel">대상자</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="note-message-org-chart2"></div>
+                <!-- 모달 footer (선택적) -->
+                <div class="modal-footer">
+                    <button type="button" id="bonus_btn" class="btn btn-primary">지정하기</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     
                 </div>

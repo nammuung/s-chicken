@@ -1,6 +1,12 @@
 
-	const call = new bootstrap.Modal(document.getElementById("call"))
 
+
+$(document).ready(function(){
+	$(".page-item a").on("click",function(){
+	console.log(this)
+		$("#call .modal-body").load("/document/callList?page="+this.dataset.page);
+	})
+})
 
 function screen(){
     // 현재 화면의 너비와 높이를 가져옵니다.
@@ -23,6 +29,7 @@ function screen(){
 
 function openbonus(id) {
 	let options = screen();
+	const call = new bootstrap.Modal(document.getElementById("call"))
     let relativePath = '/document/call?id='+id; // 문서의 상대 경로를 설정합니다.
     call.hide();    
     window.close('.document/exList/bous');
@@ -31,23 +38,5 @@ function openbonus(id) {
     window.open(relativePath, '_blank', options);
 }
 
-const categori_sel = document.querySelectorAll(".BOARDCATEGORY");
-
-const cateList = document.getElementById("cateList");
-
-const params = new URLSearchParams(window.location.search);
-const category = params.get("category");
-console.log(category);
-
-console.log(categori_sel[0].dataset)
-
-for(let i = 0 ; i < categori_sel.length ; i++){
-	categori_sel[i].classList.remove("active")
-	if(categori_sel[i].dataset.category == category){
-			categori_sel[i].classList.add("active")
-	}
-}
-
-const close = document.querySelector(".text-start")
 
 

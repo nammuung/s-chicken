@@ -258,17 +258,7 @@
                     <col width="300" />
 
                 </colgroup>
-                <tbody>
-                    <tr>
-                        <td
-                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
-                            대상자 </td>
-                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
-                            colspan="5">
-
-                            값넣기
-                        </td>
-                    </tr>
+                <tbody>               
                    
                     <tr>
                         <td
@@ -278,6 +268,28 @@
                             colspan="5">
 
                             ${list[0].title}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            대상자 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
+                            ${list[0].bonusVO.codeVO.name} ${list[0].bonusVO.employeeVO.name}
+                            
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            금액 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
+
+                            ${list[0].bonusVO.bonus}
                         </td>
                     </tr>
 

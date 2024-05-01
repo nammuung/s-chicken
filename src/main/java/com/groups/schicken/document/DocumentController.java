@@ -97,11 +97,12 @@ public class DocumentController {
 	public void documentList(String cate,@AuthenticationPrincipal EmployeeVO employeeVO,@RequestParam Map<String, Object> map,Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
 		System.out.println(map);
 		System.out.println(cate);
+		System.out.println(employeeVO);
 		cate=(String)map.get("category");		
 		
 		documentVO.setWriterId(employeeVO.getId());
 		
-		List<DocumentVO> ar = documentService.list(documentVO, templateVO, pager,cate);
+		List<DocumentVO> ar = documentService.list(employeeVO,documentVO, templateVO, pager,cate);
 		
 		System.out.println(ar);
 		
@@ -114,11 +115,12 @@ public class DocumentController {
 	public void callList(String cate,@AuthenticationPrincipal EmployeeVO employeeVO,@RequestParam Map<String, Object> map,Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
 		System.out.println(map);
 		System.out.println(cate);
+		System.out.println(employeeVO);
 		cate=(String)map.get("category");		
 		
 		documentVO.setWriterId(employeeVO.getId());
 		
-		List<DocumentVO> ar = documentService.list(documentVO, templateVO, pager,cate);
+		List<DocumentVO> ar = documentService.list(employeeVO,documentVO, templateVO, pager,cate);
 		
 		System.out.println(ar);
 		
@@ -136,7 +138,7 @@ public class DocumentController {
 		
 		documentVO.setWriterId(employeeVO.getId());
 		
-		List<DocumentVO> ar = documentService.tempList(documentVO, templateVO, pager);
+		List<DocumentVO> ar = documentService.tempList(employeeVO,documentVO, templateVO, pager);
 		
 		System.out.println(ar);
 		
@@ -166,6 +168,7 @@ public class DocumentController {
 		
 		
 		model.addAttribute("list", ar);
+		System.out.println(ar);
 	}
 	
 	@GetMapping("call")
@@ -243,6 +246,7 @@ public class DocumentController {
 	@PostMapping("temp")
 	public ResponseEntity<?> addTemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
+		BonusVO bonusVO =new BonusVO();
 		
 		String ranks = (String) map.get("rank");
 		String ids = (String)map.get("employeeId");
@@ -258,6 +262,19 @@ public class DocumentController {
 		documentVO.setTemp(1);
 		
 		int result = documentService.add(documentVO);
+		String bonus = (String)map.get("bonus");
+		String bonusEmployeeId = (String)map.get("bunusEmployeeId");
+		
+		if(!bonus.isEmpty()) {
+			bonusVO.setBonus(Long.parseLong(bonus));
+		}
+		if(!bonusEmployeeId.isEmpty()) {			
+			bonusVO.setEmployeeId(Long.parseLong(bonusEmployeeId));
+		}
+		
+		bonusVO.setDocumentId(documentVO.getId());
+		result = documentService.bonusAdd(bonusVO);
+		
 		approvalVO.setDocumentId(documentVO.getId());
 				
 		
@@ -297,6 +314,8 @@ public class DocumentController {
 	@PostMapping("tempTotemp")
 	public ResponseEntity<?> tempTotemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
+		BonusVO bonusVO = new BonusVO();
+		
 		System.out.println(map);
 		String ranks = (String) map.get("rank");
 		String ids = (String)map.get("employeeId");
@@ -311,6 +330,16 @@ public class DocumentController {
 		
 		approvalVO.setDocumentId(documentVO.getId());
 		int result = documentService.tempToSang(documentVO, approvalVO);
+		
+		String bonus = (String)map.get("bonus");
+		String bonusEmployeeId = (String)map.get("bunusEmployeeId");
+		
+		if(!bonus.isEmpty()) {
+			bonusVO.setBonus(Long.parseLong(bonus));
+			bonusVO.setEmployeeId(Long.parseLong(bonusEmployeeId));
+			bonusVO.setDocumentId(documentVO.getId());
+			result = documentService.bonusAdd(bonusVO);
+		}
 				
 		
 		Long[] longRankArray = new Long[rankArray.length];
@@ -336,6 +365,7 @@ public class DocumentController {
 	@PostMapping("tempToSang")
 	public ResponseEntity<?> tempToSang(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
+		BonusVO bonusVO = new BonusVO();
 		
 		String ranks = (String) map.get("rank");
 		String ids = (String)map.get("employeeId");
@@ -350,6 +380,15 @@ public class DocumentController {
 		
 		approvalVO.setDocumentId(documentVO.getId());
 		int result = documentService.tempToSang(documentVO,approvalVO);
+		
+		String bonus = (String)map.get("bonus");
+		String bonusEmployeeId = (String)map.get("bunusEmployeeId");
+		
+		bonusVO.setBonus(Long.parseLong(bonus));
+		bonusVO.setEmployeeId(Long.parseLong(bonusEmployeeId));
+		bonusVO.setDocumentId(documentVO.getId());
+		result = documentService.bonusAdd(bonusVO);
+		
 				
 		
 		Long[] longRankArray = new Long[rankArray.length];
@@ -375,6 +414,8 @@ public class DocumentController {
 
 	public ResponseEntity<?> add(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
+		BonusVO bonusVO = new BonusVO();
+		
 		
 		String ranks = (String) map.get("rank");
 		String ids = (String)map.get("employeeId");
@@ -388,6 +429,17 @@ public class DocumentController {
 		documentVO.setCount(rankArray.length);
 		
 		int result = documentService.add(documentVO);
+		String bonus = (String)map.get("bonus");
+		String bonusEmployeeId = (String)map.get("bunusEmployeeId");
+				
+		bonusVO.setBonus(Long.parseLong(bonus));
+		bonusVO.setEmployeeId(Long.parseLong(bonusEmployeeId));
+		bonusVO.setDocumentId(documentVO.getId());
+		result = documentService.bonusAdd(bonusVO);
+		
+		
+		
+		
 		approvalVO.setDocumentId(documentVO.getId());
 				
 		

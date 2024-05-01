@@ -30,6 +30,7 @@ public class DocumentVO {
 	private CodeVO codeVO;
 	private EmployeeVO employeeVO;
 	private DepartmentVO department;
+	private BonusVO bonusVO;
 	
 	
 	private FileVO fileVO;
