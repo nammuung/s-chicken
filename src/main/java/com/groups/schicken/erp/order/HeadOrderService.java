@@ -3,6 +3,8 @@ package com.groups.schicken.erp.order;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.erp.item.ItemMapper;
+import com.groups.schicken.erp.order.history.HistoryMapper;
+import com.groups.schicken.erp.order.history.HistoryVO;
 import com.groups.schicken.erp.product.StockMapper;
 import com.groups.schicken.erp.product.StockVO;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +16,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class HeadOrderService {
     private final HeadOrderMapper headOrderMapper;
-    private final ItemMapper itemMapper;
     private final StockMapper stockMapper;
+    private final HistoryMapper historyMapper;
 
     public List<HeadOrderVO> getOrderList(HeadOrderVO headOrderVO) throws Exception {
         return headOrderMapper.getOrderList(headOrderVO);
@@ -60,7 +62,6 @@ public class HeadOrderService {
             headOrderVO2.setComment(headOrderVO.getComment());
             headOrderMapper.addOrder(headOrderVO2);
             for(HeadOrderDetailVO orderDetail : headOrderVO2.getOrderDetails()){
-                System.out.println("orderDetail = " + orderDetail);
                 orderDetail.setOrder(headOrderVO2);
                 orderDetail.setStatus(0);
                 if(headOrderMapper.addOrderDetail(orderDetail)!=1) throw new Exception();
@@ -90,6 +91,13 @@ public class HeadOrderService {
                 stockVO.setHistory("입고에 따른 재고 추가");
                 int result = stockMapper.updateStock(stockVO);
                 if(result == 0) throw new Exception("재고 추가 실패");
+                HistoryVO historyVO = new HistoryVO();
+                historyVO.setOrder(orderDetail.getOrder());
+                historyVO.setSupplier(orderDetail.getSupplier());
+                historyVO.setWriteDate(DateManager.getTodayDateTime());
+                historyVO.setContent(prevOrderDetail.getItem().getProduct().getName()+" "+difQuantity+"개 입고");
+                result = historyMapper.addReceiveHistory(historyVO);
+                if(result == 0) throw new Exception("내역 추가 실패");
             }
             if(orderDetail.getStatus() == 0){
                 statusTemp = true;

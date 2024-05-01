@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.erp.order.history.HistoryMapper">
+    <select id="getReceiveHistoryList">
+        SELECT
+            *
+        FROM
+            receive_history
+        WHERE
+            order_id = #{id} AND supplier_id = #{supplier.id}
+        ORDER BY
+            write_date DESC
+    </select>
+    <select id="getReleaseHistoryList">
+        SELECT
+            *
+        FROM
+            release_history
+        WHERE
+            order_id = #{id}
+        ORDER BY
+            write_date DESC
+    </select>
+
+    <insert id="addReceiveHistory">
+        INSERT INTO
+            receive_history
+            (order_id, supplier_id, write_date, content)
+        VALUES
+            (#{order.id},#{supplier.id}, #{writeDate}, #{content})
+    </insert>
+    <insert id="addReleaseHistory">
+        INSERT INTO
+            release_history
+            (order_id, write_date, content)
+        VALUES
+            (#{order.id}, #{writeDate}, #{content})
+    </insert>
+</mapper>

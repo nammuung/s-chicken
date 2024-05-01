@@ -223,11 +223,15 @@
         SELECT
             oi.*
             , i.product_id item_product_id
+            , prd.name item_product_name
         FROM
             head_order_detail oi
         LEFT JOIN
             item i
             ON oi.item_id = i.id
+        LEFT JOIN
+            product prd
+            ON i.product_id = prd.id
         WHERE
             oi.id = #{id}
     </select>
