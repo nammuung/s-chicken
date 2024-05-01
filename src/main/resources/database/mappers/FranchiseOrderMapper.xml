@@ -192,6 +192,7 @@
         SELECT
             od.*
             , prd.id product_id
+            , prd.name product_name
         FROM
             franchise_order_detail od
         LEFT JOIN

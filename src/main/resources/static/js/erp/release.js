@@ -10,10 +10,12 @@ import {
     updateFranchiseOrder,
     updateFranchiseOrderDetail
 } from "../api/franchiseOrder.js";
+import { getReleaseHistoryList} from "../api/history.js";
 
 let isChanged = {};
 const orderPreviewButton = document.getElementById("orderPreviewButton")
 const allCompleteButton = document.getElementById("allCompleteButton");
+const history = document.getElementById("history");
 const modifyButtons = document.getElementById("modifyButtons")
 
 
@@ -37,6 +39,7 @@ const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col
     if(checked){
         orderPreviewButton.classList.remove("d-none")
         selectedOrder = instance.getDataAtCell(row,1)
+        history.classList.remove("d-none")
         searchDetail(selectedOrder)
         if(instance.getDataAtCell(row,5) == "진행" ) {
             allCompleteButton.classList.remove("d-none")
@@ -46,6 +49,7 @@ const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col
     } else {
         selectedOrder = null;
         orderPreviewButton.classList.add("d-none")
+        history.classList.add("d-none")
         allCompleteButton.classList.add("d-none")
     }
 })
@@ -298,6 +302,26 @@ searchEndDate.addEventListener("change", function (e) {
     }
 })
 
+
+//내역 모달
+const historyModalEl = document.getElementById("history-modal");
+const historyModal = new bootstrap.Modal(historyModalEl)
+history.addEventListener("click", async function(){
+    const historyListContainer = document.getElementById("historyListContainer");
+    const result = await getReleaseHistoryList(selectedOrder);
+    const data = result.data;
+    let tableHtml = "";
+    data.forEach(item => {
+        tableHtml += `
+            <tr>
+                <td>${item.content} 출고</td>
+                <td>${item.writeDate}</td>
+            </tr>
+        `
+    })
+    historyListContainer.innerHTML = tableHtml;
+    historyModal.show();
+})
 
 //
 // const exportPlugin = hot.getPlugin('exportFile');

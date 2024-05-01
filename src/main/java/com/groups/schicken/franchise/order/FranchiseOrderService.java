@@ -4,6 +4,8 @@ import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.common.vo.OrderDetailVO;
 import com.groups.schicken.erp.item.ItemMapper;
+import com.groups.schicken.erp.order.history.HistoryMapper;
+import com.groups.schicken.erp.order.history.HistoryVO;
 import com.groups.schicken.erp.product.ProductMapper;
 import com.groups.schicken.erp.product.ProductVO;
 import com.groups.schicken.erp.product.StockMapper;
@@ -20,6 +22,7 @@ public class FranchiseOrderService {
     private final FranchiseOrderMapper franchiseOrderMapper;
     private final StockMapper stockMapper;
     private final ProductMapper productMapper;
+    private final HistoryMapper historyMapper;
 
     public List<FranchiseOrderVO> getOrderList(FranchiseOrderVO franchiseOrderVO) throws Exception {
         return franchiseOrderMapper.getOrderList(franchiseOrderVO);
@@ -81,6 +84,12 @@ public class FranchiseOrderService {
                 stockVO.setHistory("출고에 따른 재고 삭감");
                 int result = stockMapper.updateStock(stockVO);
                 if(result == 0) throw new Exception("재고 삭감 실패");
+                HistoryVO historyVO = new HistoryVO();
+                historyVO.setOrder(orderDetail.getOrder());
+                historyVO.setWriteDate(DateManager.getTodayDateTime());
+                historyVO.setContent(prevOrderDetail.getProduct().getName()+" "+difQuantity*-1+"개");
+                result = historyMapper.addReleaseHistory(historyVO);
+                if(result == 0) throw new Exception("내역 추가 실패");
             }
             if(orderDetail.getStatus() == 2){
                 statusTemp = true;
