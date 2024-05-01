@@ -11,7 +11,7 @@
             , cr.type
             , room_name AS "name"
             , max(cms.send_date) AS "last_chatting"
-            , last_read_id
+            , last_read_time
             , join_date
         FROM chatroom cr
             INNER JOIN chat_member cm ON cr.id = cm.chatroom_id
@@ -38,7 +38,7 @@
             , concat(c.name, ' ' , e.name) AS "name"
             , a.url AS "profile_img"
             , d.name AS "department_name"
-            , cm.last_read_id
+            , cm.last_read_time
         FROM chatroom cr
             INNER JOIN chat_member cm ON cr.id = cm.chatroom_id
             INNER JOIN employee e ON e.id = cm.employee_id
@@ -72,7 +72,7 @@
                 , ROW_NUMBER() over (partition by 1 ORDER BY send_date) AS rn
             FROM chat_message
             WHERE chatroom_id=#{chatroomId}) cm
-        <if test="lastReadId != null">
+        <if test="lastReadTime != null">
             WHERE rn &lt;=<include refid="getLastReadRowNum"/>
         </if>
         ORDER BY send_date DESC
@@ -116,7 +116,7 @@
 
     <update id="updateLastRead">
         UPDATE chat_member
-        SET last_read_id=#{chattingId}
+        SET last_read_time=#{sendDate}
         WHERE chatroom_id=#{chatroomId} AND employee_id=#{employeeId}
     </update>
 
@@ -124,10 +124,10 @@
         (SELECT (sub.r + 13)
         FROM (
             SELECT
-                  id
+                  send_date
                 , ROW_NUMBER() over (partition by 1 ORDER BY send_date) AS r
             FROM chat_message
             WHERE chatroom_id=#{chatroomId} ) sub
-        WHERE id=#{lastReadId})
+        WHERE send_date=#{lastReadTime})
     </sql>
 </mapper>

@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -159,13 +157,13 @@ public class ChatService {
 
         if(page == null) page = "0";
 
-        List<ChatMessage> chatMessageData = chatDAO.getChatMessageDataFirst(chatroomId, chattingData.getLastReadId(), page);
+        List<ChatMessage> chatMessageData = chatDAO.getChatMessageDataFirst(chatroomId, chattingData.getLastReadTime(), page);
         Collections.reverse(chatMessageData);
 
         chattingData.setChatMessages(chatMessageData);
 
         if(!chattingData.isLastReaded()){
-            chatDAO.updateLastRead(chattingData.getLastMessage().getId(), chatroomId, employeeId);
+            chatDAO.updateLastRead(chattingData.getLastMessage().getSendDate(), chatroomId, employeeId);
         }
 
         return chattingData;
@@ -175,7 +173,7 @@ public class ChatService {
         List<ChatMessage> chatMessageData = chatDAO.getChatMessageData(chatroomId, from, direction);
 
         if(!chatMessageData.isEmpty() && direction.equals("down")){
-            chatDAO.updateLastRead(chatMessageData.get(chatMessageData.size()-1).getId(), chatroomId, employeeId);
+            chatDAO.updateLastRead(chatMessageData.get(chatMessageData.size()-1).getSendDate(), chatroomId, employeeId);
         }
 
         return chatMessageData;

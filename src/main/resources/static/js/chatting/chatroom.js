@@ -96,7 +96,7 @@ async function setChatroom(targetId) {
     chattingData.chatMessages.forEach(chatMessage => {
         const created = appendChatting(chatMessage);
 
-        if (chattingData.lastReadId === chatMessage.id) {
+        if (chattingData.lastReadTime === chatMessage.sendDate) {
             created.dataset.lastRead = "";
         }
     });
