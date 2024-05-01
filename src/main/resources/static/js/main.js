@@ -8,6 +8,7 @@
 
 const namecardModal = new bootstrap.Modal(document.getElementById("namecard-modal"));
 function onProfileClick(empId){
+  if(empId == '-1') return;
   fetch('/employee/getProfile?id=' + empId)
       .then(res=>res.json())
       .then(info=>{
@@ -18,11 +19,13 @@ function onProfileClick(empId){
               console.log(e.dataset, profileType)
               switch (profileType){
                 case 'img':
-                  e.setAttribute("src", info.profileImg == null ? '/img/기본.jpg' : info.profileImg);
+                  e.setAttribute("src", info.profileImg);
                   break;
                 case 'noteMessage':
+                  openSendNoteMessagePage(info.id);
                   break;
                 case 'chatting':
+                  openChattingPopup(info.id);
                   break;
                 default:
                   e.innerText = info[profileType];
@@ -30,7 +33,13 @@ function onProfileClick(empId){
             })
         namecardModal.show();
       })
+}
 
+function openSendNoteMessagePage(employeeId){
+
+}
+
+function openChattingPopup(employeeId){
 
 }
 
