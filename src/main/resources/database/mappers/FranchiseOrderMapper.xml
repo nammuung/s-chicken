@@ -42,6 +42,9 @@
             <if test="true">
                 AND ord.status != 7
             </if>
+            <if test="comment != null">
+                AND ord.comment LIKE CONCAT('%',#{comment},'%')
+            </if>
         </where>
     </sql>
     <sql id="getOrderSQL">

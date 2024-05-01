@@ -29,7 +29,7 @@
                 AND sup.name LIKE CONCAT('%',#{supplier.name},'%')
             </if>
             <if test="employee != null and employee.name != null">
-                AND emp.name LIKE CONCAT('%',#{employee.name},'%')
+                AND emp.employee_name LIKE CONCAT('%',#{employee.name},'%')
             </if>
             <if test="orderDetails != null and orderDetails[0].item != null">
                 AND (ord.id, sup.id) IN
@@ -51,6 +51,9 @@
             </if>
             <if test="orderDetails != null and orderDetails[0].id != null">
                  AND order_detail.id = orderDetails[0].id
+            </if>
+            <if test="comment != null">
+                AND ord.comment LIKE CONCAT('%',#{comment},'%')
             </if>
         </where>
     </sql>

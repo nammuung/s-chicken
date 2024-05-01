@@ -48,6 +48,10 @@
                 </div>
             </div>
             <div class="row col">
+                <label for="searchComment" class="col-3 col-form-label text-nowrap">내용</label>
+                <div class="col-9">
+                    <input type="text" class="form-control" id="searchComment" name="comment">
+                </div>
             </div>
         </div>
         <div class="d-flex justify-content-center">
