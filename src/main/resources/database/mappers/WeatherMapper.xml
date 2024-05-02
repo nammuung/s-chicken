@@ -22,4 +22,69 @@
                    #{visibility}, #{dt}, #{timezone}, #{id}, #{name}, #{cod}
                )
     </insert>
+
+    <resultMap id="OpenWeatherMap" type="OpenWeather">
+        <id property="id" column="id" />
+        <result property="base" column="base" />
+        <result property="visibility" column="visibility" />
+        <result property="dt" column="dt" />
+        <result property="timezone" column="timezone" />
+        <result property="name" column="city_name" />
+        <result property="cod" column="cod" />
+        <association property="main" javaType="com.groups.schicken.weather.OpenWeather$Main">
+            <result property="temp" column="temp" />
+            <result property="feels_like" column="feels_like" />
+            <result property="temp_min" column="temp_min" />
+            <result property="temp_max" column="temp_max" />
+            <result property="pressure" column="pressure" />
+            <result property="humidity" column="humidity" />
+            <result property="sea_level" column="sea_level" />
+            <result property="grnd_level" column="grnd_level" />
+        </association>
+        <association property="wind" javaType="com.groups.schicken.weather.OpenWeather$Wind">
+            <result property="speed" column="wind_speed" />
+            <result property="deg" column="wind_deg" />
+            <result property="gust" column="wind_gust" />
+        </association>
+        <association property="clouds" javaType="com.groups.schicken.weather.OpenWeather$Clouds">
+            <result property="all" column="clouds_all" />
+        </association>
+        <association property="rain" javaType="com.groups.schicken.weather.OpenWeather$Rain">
+            <result property="rain1h" column="rain_1h" />
+            <result property="rain3h" column="rain_3h" />
+        </association>
+        <association property="snow" javaType="com.groups.schicken.weather.OpenWeather$Snow">
+            <result property="snow1h" column="snow_1h" />
+            <result property="snow3h" column="snow_3h" />
+        </association>
+        <collection property="weather" ofType="com.groups.schicken.weather.OpenWeather$Weather">
+            <id property="id" column="weather_id" />
+            <result property="main" column="weather_main" />
+            <result property="description" column="weather_description" />
+            <result property="icon" column="weather_icon" />
+        </collection>
+    </resultMap>
+
+    <select id="getWeatherList" resultMap="OpenWeatherMap">
+        SELECT
+            *
+        FROM
+            weather
+        WHERE
+            dt <![CDATA[>=]]> ${dt}
+        GROUP BY
+            dt
+        ORDER BY id DESC
+    </select>
+
+    <select id="getWeather" resultMap="OpenWeatherMap">
+        SELECT
+            *
+        FROM
+            weather
+        WHERE
+            dt <![CDATA[<=]]> ${dt}
+        ORDER BY dt desc
+        LIMIT 0,1
+    </select>
 </mapper>
