@@ -11,10 +11,18 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-        <a href="/" class="logo d-flex align-items-center">
-            <img src="/img/logo.png" alt="">
-            <span class="d-none d-lg-block"> Chicken </span>
-        </a>
+        <sec:authorize access="hasRole('ROLE_FRANCHISE')">
+            <a href="/franchise/home" class="logo d-flex align-items-center">
+                <img src="/img/logo.png" alt="">
+                <span class="d-none d-lg-block"> Chicken </span>
+            </a>
+        </sec:authorize>
+        <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="/img/logo.png" alt="">
+                <span class="d-none d-lg-block"> Chicken </span>
+            </a>
+        </sec:authorize>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
