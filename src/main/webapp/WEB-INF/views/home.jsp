@@ -37,7 +37,7 @@
 				}
 
 				#calendar {
-					height: 380px;
+					height: 480px;
 					/* 원하는 높이로 조정 */
 				}
 			</style>
@@ -56,97 +56,93 @@
 					<div class="pagetitle">
 						<h1>메인 화면</h1>
 					</div>
-					<div class="row justify-content-center">
-						<div class="col">
-							<div class="card" style="width: 800px;">
-								<div class="card-body">
-									<div id='calendar-container' class="mt-3">
-										<div id='calendar'></div>
+					<div id="widget" class="justify-content-center">
+						<div class="row nested-sortable">
+							<div class="col-8">
+								<div class="card" style="">
+									<div class="card-body">
+										<div id='calendar-container' class="mt-3">
+											<div id='calendar'></div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-4">
+								<c:import url="./template/weather.jsp"/>
+							</div>
+						</div>
+						<div class="row nested-sortable">
+							<div class="col pagetitle  ">
+								<div class="card h-100" >
+									<div class="card-body mt-3">
+									<h1>공지사항</h1>
+									<table class="table text-center text-nowrap m-0">
+										<thead>
+										<tr>
+											<th style="width: 5%">no</th>
+											<th style="width: 65%">제목</th>
+											<th style="width: 10%">작성일</th>
+											<th style="width: 10%">등록자</th>
+											<th style="width: 10%">조회수</th>
+										</tr>
+										</thead>
+										<tbody>
+											<c:forEach items="${list}" var="vo" end="5">
+												<c:if test="${vo.sort eq 0}">
+													<tr id="important">
+														<input type="hidden" id="important_val" value="${vo.important}">
+														<td>${vo.id}</td>
+														<td class="text-start"><a
+																href="./all/detail?id=${vo.id}">${vo.title}</a></td>
+														<td>${vo.writeDate}</td>
+														<td>${vo.employeeVO.name}</td>
+														<td>${vo.hit}</td>
+													</tr>
+												</c:if>
+											</c:forEach>
+										</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div class="col pagetitle  ">
+								<div class="card h-100" >
+									<div class="card-body mt-3">
+										<h1>결재목록</h1>
+										<table class="table text-center text-nowrap m-0">
+											<thead>
+											<tr>
+												<th style="width: 5%">no</th>
+												<th style="width: 65%">제목</th>
+												<th style="width: 10%">작성일</th>
+												<th style="width: 10%">등록자</th>
+												<th style="width: 10%">조회수</th>
+											</tr>
+											</thead>
+											<tbody>
+											<c:forEach items="${list}" var="vo" end="5">
+												<c:if test="${vo.sort eq 0}">
+													<tr id="important">
+														<input type="hidden" id="important_val" value="${vo.important}">
+														<td>${vo.id}</td>
+														<td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a>
+														</td>
+														<td>${vo.writeDate}</td>
+
+														<td>${vo.employeeVO.name}</td>
+
+														<td>${vo.hit}</td>
+													</tr>
+												</c:if>
+											</c:forEach>
+
+											</tbody>
+										</table>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col">
-							<c:import url="./template/weather.jsp"/>
-						</div>
 					</div>
-					<div class="row justify-content-start d-flex">
-						<div class="col-3 pagetitle" style="margin-left: 18.5%; margin-bottom: 15px">
-							<h1>공지사항</h1>
-						</div>
-						<div class="col-3 pagetitle" style="margin-left: 25.5%; margin-bottom: 15px">
-							<h1>결재목록</h1>
-						</div>
-					</div>
-					<!-- border -->
-					<div class="row justify-content-center d-flex">
-
-						<div class=" col">
-							<table class="table text-center text-nowrap">
-								<thead>
-									<tr>
-										<th style="width: 5%">no</th>
-										<th style="width: 65%">제목</th>
-										<th style="width: 10%">작성일</th>
-										<th style="width: 10%">등록자</th>
-										<th style="width: 10%">조회수</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach items="${list}" var="vo" end="5">
-										<c:if test="${vo.sort eq 0}">
-											<tr id="important">
-												<input type="hidden" id="important_val" value="${vo.important}">
-												<td>${vo.id}</td>
-												<td class="text-start"><a
-														href="./all/detail?id=${vo.id}">${vo.title}</a></td>
-												<td>${vo.writeDate}</td>
-												<td>${vo.employeeVO.name}</td>
-												<td>${vo.hit}</td>
-											</tr>
-										</c:if>
-									</c:forEach>
-
-								</tbody>
-							</table>
-						</div>
-						<!-- 전자결재 -->
-
-						<div class=" col">
-							<table class="table text-center text-nowrap">
-								<thead>
-									<tr>
-										<th style="width: 5%">no</th>
-										<th style="width: 65%">제목</th>
-										<th style="width: 10%">작성일</th>
-										<th style="width: 10%">등록자</th>
-										<th style="width: 10%">조회수</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach items="${list}" var="vo" end="5">
-										<c:if test="${vo.sort eq 0}">
-											<tr id="important">
-												<input type="hidden" id="important_val" value="${vo.important}">
-												<td>${vo.id}</td>
-												<td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a>
-												</td>
-												<td>${vo.writeDate}</td>
-
-												<td>${vo.employeeVO.name}</td>
-
-												<td>${vo.hit}</td>
-											</tr>
-										</c:if>
-									</c:forEach>
-
-								</tbody>
-							</table>
-						</div>
-
-					</div>
-
-
 				</section>
 			</main>
 			<!-- End #main -->
@@ -413,7 +409,7 @@
 				$(function () {
 					var calendarEl = document.getElementById('calendar');
 					var calendar = new FullCalendar.Calendar(calendarEl, {
-						height: '50vh', // calendar 높이 설정
+						height: '480px', // calendar 높이 설정
 						expandRows: true, // 화면에 맞게 높이 재설정
 						slotMinTime: '08:00', // Day 캘린더에서 시작 시간
 						slotMaxTime: '20:00', // Day 캘린더에서 종료 시간
@@ -607,4 +603,5 @@
 
 		</script>
 		<script type="module" src="/js/weather/script.js"></script>
-		</html>
+		<script src="/js/home/sortable.js"></script>
+</html>

@@ -55,4 +55,4 @@
   
   <%-- Tagify --%>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
-  
+

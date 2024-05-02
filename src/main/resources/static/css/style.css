@@ -64,15 +64,24 @@
   color: white;
 }
 .weather-container {
-  height: 500px;
+  margin: 20px;
+  height: 480px;
   color: white;
   border-radius: 30px;
 }
-.weather-container.d01 {
+.weather-container.day {
   background: linear-gradient(
           180deg,
           rgba(0, 117, 255, 1) 0%,
           rgba(149, 204, 255, 1) 100%
+  );
+  position: relative;
+}
+.weather-container.night {
+  background: linear-gradient(
+          180deg,
+          rgb(171, 134, 255) 0%,
+          rgb(55, 31, 169) 100%
   );
   position: relative;
 }

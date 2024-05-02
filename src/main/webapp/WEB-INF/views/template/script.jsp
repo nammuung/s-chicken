@@ -55,3 +55,7 @@
 
 <%--chart--%>
 <script src="https://code.jscharting.com/latest/jscharting.js"></script>
+
+<%--sortable--%>
+<script src="https://fastly.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="https://fastly.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>

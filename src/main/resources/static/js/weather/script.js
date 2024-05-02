@@ -19,8 +19,10 @@ async function loadWeather(){
     const now = timeWeather.querySelector("div.now")
     now.addEventListener("click",function (){
         renderDetail(result)
+        changeBackground(result.weather[0].icon.indexOf("d") == -1);
     })
     renderDetail(result)
+    changeBackground(result.weather[0].icon.indexOf("d") == -1);
 }
 const timeWeather = document.getElementById("timeWeather");
 async function loadWeatherList(){
@@ -76,3 +78,13 @@ function unixTo24Hour(unixTimestamp) {
     return hours+"시"
 }
 
+function changeBackground(night){
+    const weatherContainer = document.querySelector(".weather-container");
+    if(night === true){
+        weatherContainer.classList.add("night");
+        weatherContainer.classList.remove("day");
+    } else {
+        weatherContainer.classList.remove("night");
+        weatherContainer.classList.add("day");
+    }
+}

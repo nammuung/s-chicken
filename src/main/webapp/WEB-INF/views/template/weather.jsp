@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="weather-container position-relative d01 p-3">
+<div class="weather-container position-relative day p-3">
     <div class="d-flex justify-content-center align-items-center" style="height: 100%" id="weatherLoading">
         <div class="spinner-border" role="status">
             <span class="sr-only">Loading...</span>
