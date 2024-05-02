@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.common.vo.Pager;
 
 @Service
@@ -138,9 +139,14 @@ public class DocumentService {
 	
 	
 
-	public int resultUpdate(ApprovalVO approvalVO)throws Exception{
+	public int resultUpdate(ApprovalVO approvalVO,BonusVO bonusVO)throws Exception{
 		int result = documentDAO.resultUpdate(approvalVO);		
 		result = documentDAO.statusUpdate(approvalVO);
+		
+		bonusVO.setDocumentId(approvalVO.getDocumentId());
+		bonusVO.setDate(DateManager.getTodayDate());
+		
+		result = documentDAO.bonusResultUpdate(bonusVO);
 		
 		return result;
 	}

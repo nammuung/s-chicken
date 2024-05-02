@@ -39,11 +39,10 @@ import oc from "/js/orgChart/orgChart.js";
 		 
 		 	approval_List.innerHTML =""
 		 	console.log(e.target)
+		 	arr = [];
 		 	
 			 if(e.target.tagName=='I'){
-				 arr = [];
-				 rankArr=[];
-				 employeeArr=[];
+
 				 const isConfirmed = confirm("정말로 삭제하시겠습니까?");
 				let data ={
 						employeeId:me.value,
@@ -67,7 +66,7 @@ import oc from "/js/orgChart/orgChart.js";
 					})
 			 	return			 
 				}
-		 }		 
+		 }
 		 	
 		 	console.log(e.target.dataset)
 			let data = {
@@ -89,13 +88,13 @@ import oc from "/js/orgChart/orgChart.js";
 					approval_List.innerHTML +=
 					`<li class="list-group-item" data-id="${reply.appId}" data-name="${reply.employee.name}" data-level="${reply.code.name}">
 					<i class="bi bi-arrow-down-up handle"></i>
-						${reply.employee.name } ${reply.code.name}
+						${reply.code.name} ${reply.employee.name} 
 					</li>
 					`
 					let arr_id = `${reply.appId}`
 					
 					arr.push(arr_id);
-					
+					console.log(arr);
 				})
 			})
 	 })
@@ -123,6 +122,12 @@ import oc from "/js/orgChart/orgChart.js";
 	
 		tempSave.addEventListener("click",(e)=>{
 		e.preventDefault();
+		const title = document.getElementById("title");
+		
+		if(title.value == ""){
+			alert("제목은 필수입니다")
+			return;
+		}
 		
 		const formData = new FormData(frm);
 		formData.append("content", editor.getData())
@@ -328,8 +333,13 @@ function hyuga(){
 		
 		console.log("세이브를 해보자")
 		console.log(arr)
+		
 		let title = prompt("제목을 입력하세요")
-		if(title != ""){
+		if(getSave.querySelectorAll("li").length ==3){
+			alert("나의 결재목록은 3개까지입니다")
+			return;
+		}
+		if(title != null && arr.length != 0){
 				getSave.innerHTML="";
 			let data = [];
 			for(let i = 0 ; i < arr.length ; i++){		
@@ -338,7 +348,7 @@ function hyuga(){
 					appId : active[i].dataset.id,
 					title : title,
 					rank : i ,
-					date :	strDate.value				
+					date :strDate.value				
 				})
 			}
 			console.log(data);		
@@ -360,7 +370,7 @@ function hyuga(){
 					})
 			})
 		}else{
-			alert("제목을 입력하세요")
+			alert("제목 및 결재선라인을 확인하세요")
 		}
 		
 		

@@ -82,6 +82,7 @@
 		app.*,	
 		e.name employee_name,
 		e.id employee_id,
+		b.employee_id bonus_employee_id,
 		b.bonus bonus_bonus,
 		emp.name bonus_emp_name,
 		code.name bonus_code_name,
@@ -121,6 +122,13 @@
 		INNER JOIN <include refid="totalResult"/> ON sub.document_id=d.id
 		SET status=1
 		WHERE sub.total = d.count		
+	</update>
+	<update id="bonusResultUpdate">
+		UPDATE bonus
+		INNER JOIN document d ON d.id = bonus.document_id
+		set date=#{date}
+		
+		WHERE d.status=1
 	</update>
 	
 	<update id="refuseUpdate">

@@ -97,7 +97,7 @@
 						<input type="hidden" value="${list[0].id}" name="id">						
 					</c:if>
 					
-					<input type="hidden" value="<%=strDate %>" name="date">
+					<input type="hidden" value="<%=strDate %>" id="strDate" name="date">
                     <input type="hidden" value="<%=strDate %>" name="WriteDate">
                     <input type="hidden" name="status" value="0">
                     <input type="hidden" name="templateId" value="1">
@@ -312,7 +312,7 @@
                         <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
                             colspan="5">
                             
-                            <input type="text" readonly class="form-control" value ="${list[0].bonusVO.codeVO.name} ${list[0].bonusVO.employeeVO.name}" data-id="" id="bonuspeo" style="width: 100%;">
+                            <input type="text" readonly class="form-control" value ="${list[0].bonusVO.codeVO.name} ${list[0].bonusVO.employeeVO.name}" data-id="${list[0].bonusVO.employeeId}" id="bonuspeo" style="width: 100%;">
                         </td>
                     </tr>
 
@@ -326,8 +326,6 @@
                             
                         </td>
                     </tr>
-
-
                 </tbody>
             </table>
             <table
@@ -410,7 +408,7 @@
                                     <div class="position-absolute end-0 bottom-0">
                                         <div class="col-auto">
                                             <div class="mb-2">
-                                                <button class="btn btn-outline-primary btn-sm" id="save_btn">결제선 저장</button>
+                                                <button class="btn btn-outline-primary btn-sm" id="save_btn">결재선 저장</button>
                                                 <button class="btn btn-primary btn-sm" id="register">등록하기</button>
                                             </div>
                                         </div>

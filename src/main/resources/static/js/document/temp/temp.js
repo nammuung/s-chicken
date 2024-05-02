@@ -35,6 +35,70 @@ console.log("임시저장함")
 	let getData;
 	let del_app;
 	
+	getSave.addEventListener("click",(e)=>{
+		 
+		 	approval_List.innerHTML =""
+		 	console.log(e.target)
+		 	arr = [];
+		 	
+			 if(e.target.tagName=='I'){
+				
+				 const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+				let data ={
+						employeeId:me.value,
+						title:e.target.dataset.title
+					}
+				console.log(data)
+				console.log(JSON.stringify(data))
+				
+				
+				if(isConfirmed){
+					fetch("/document/saveDel",{
+						method:'post',
+						body:JSON.stringify(data),
+						headers:{
+						"Content-Type" : "application/json"
+						}
+					}).then(r=>console.log(r))
+					.then(r=>{
+						console.log(e.target)
+						e.target.parentElement.parentElement.remove();
+					})
+			 	return			 
+				}
+		 }		 
+		 	
+		 	console.log(e.target.dataset)
+			let data = {
+				employeeId:me.value,			
+				title:e.target.dataset.title
+			}
+			console.log(data)
+			fetch("/document/tansferSave",{
+				method:'post',
+				body:JSON.stringify(data),
+				headers:{
+					"Content-Type" : "application/json"
+				}
+			}).then(r=>r.json())
+			.then(r => {
+				console.log(r);
+				r.forEach(reply=>{
+					
+					approval_List.innerHTML +=
+					`<li class="list-group-item" data-id="${reply.appId}" data-name="${reply.employee.name}" data-level="${reply.code.name}">
+					<i class="bi bi-arrow-down-up handle"></i>
+						${reply.code.name} ${reply.employee.name} 
+					</li>
+					`
+					let arr_id = `${reply.appId}`
+					
+					arr.push(arr_id);
+				})
+					console.log(arr)
+			})
+	 })
+	
 	
 	
 	window.onload = function() {
@@ -252,11 +316,12 @@ function hyuga(){
 	})
   
 	  add_btn.addEventListener("click",(e)=>{
+		console.log(getData)
+		console.log(arr)
 		
 		let fullName = getData.name.split(" ");
 		let level = fullName[0];
 		let selName = fullName[1];
-
 		
 		if(arr.length ==3){
 			alert("결제자는 3명까지 입니다")
@@ -307,6 +372,55 @@ function hyuga(){
 		
 		console.log(e.target.getAttribute("data-id"))
 		
+	})
+	
+	save_btn.addEventListener("click",()=>{
+		
+		const active = document.querySelectorAll('#right-top .list-group-item');
+		const strDate = document.getElementById("strDate");
+		
+		console.log("세이브를 해보자")
+		console.log(arr.length)
+		let title = prompt("제목을 입력하세요")
+		console.log(title)
+		console.log(getSave.querySelectorAll("li").length)
+		if(getSave.querySelectorAll("li").length ==3){
+			alert("나의 결재목록은 3개까지입니다")
+			return;
+		}
+		if(title != null && arr.length != 0){
+				getSave.innerHTML="";
+			let data = [];
+			for(let i = 0 ; i < arr.length ; i++){		
+				 data.push({
+					employeeId : me.value ,
+					appId : active[i].dataset.id,
+					title : title,
+					rank : i ,
+					date :strDate.value				
+				})
+			}
+			console.log(data);		
+			
+			fetch("/document/saveApp",{
+				method:'post',
+				body:JSON.stringify(data),			
+				headers:{
+					"Content-Type" : "application/json"
+				}
+			}).then(r=>r.json())
+			.then(r=>{
+				console.log(r)
+				r.forEach(reply=>{
+						getSave.innerHTML +=
+							`<li class="list-group-item" data-title="${reply.title}">								    	 
+											   		<span style="line-height: 38px;">${reply.title}</span><button class="btn saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${reply.title}" ></i></button>									 
+									    </li>`
+					})
+			})
+		}else{
+			alert("제목 및 결재선라인을 확인하세요")
+		}		
 	})
 	
 	del_btn.addEventListener("click",()=>{

@@ -11,7 +11,7 @@ public class BonusVO {
 	private Long employeeId;
 	private Long documentId;
 	private Long bonus;
-	private Long date;
+	private String date;
 	
 	private EmployeeVO employeeVO;
 	private CodeVO codeVO;

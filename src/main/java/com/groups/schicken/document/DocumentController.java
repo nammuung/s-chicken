@@ -68,9 +68,11 @@ public class DocumentController {
 		return ResponseEntity.ok(br);
 	}
 	
+	//최종결재 확인후 상태 업데이트
 	@PostMapping("document/approvalUpdate")
 	public ResponseEntity<Integer> approvalUpdate(ApprovalVO approvalVO)throws Exception{
-		int result = documentService.resultUpdate(approvalVO);
+		BonusVO bonusVO = new BonusVO();
+		int result = documentService.resultUpdate(approvalVO,bonusVO);
 		
 		return ResponseEntity.ok(result);
 	}
@@ -81,7 +83,7 @@ public class DocumentController {
 		
 		return ResponseEntity.ok(result);
 	}
-	
+	//결재함 리스트
 	@GetMapping("approvalList")
 	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO,Model model,Pager pager)throws Exception{
 		
@@ -92,7 +94,7 @@ public class DocumentController {
 	}
 
 	
-	
+	//상신함 열람하기
 	@GetMapping("document")
 	public void documentList(String cate,@AuthenticationPrincipal EmployeeVO employeeVO,@RequestParam Map<String, Object> map,Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
 		System.out.println(map);
@@ -110,7 +112,7 @@ public class DocumentController {
 		model.addAttribute("pager", pager);
 		System.out.println(pager);
 	}
-	
+	//불러올 목록 리스트
 	@GetMapping("callList")
 	public void callList(String cate,@AuthenticationPrincipal EmployeeVO employeeVO,@RequestParam Map<String, Object> map,Pager pager,DocumentVO documentVO,TemplateVO templateVO,Model model) throws Exception {
 		System.out.println(map);
@@ -161,35 +163,27 @@ public class DocumentController {
 		
 	}
 	
-	
+	//임시저장 문서 열기
 	@GetMapping("temp/temp")
-	public void tempBonus(DocumentVO documentVO,Model model)throws Exception{
+	public void tempBonus(@AuthenticationPrincipal EmployeeVO employeeVO,DocumentVO documentVO,Model model)throws Exception{
 		List<DocumentVO> ar=documentService.getDetail(documentVO);
 		
 		
 		model.addAttribute("list", ar);
 		System.out.println(ar);
+		
+		List<SaveAppVO> br = documentService.getTitle(employeeVO);
+		
+		model.addAttribute("title", br);	
 	}
 	
+	//불러오기
 	@GetMapping("call")
-	public String  call(DocumentVO documentVO,Model model)throws Exception{
+	public String  call(@AuthenticationPrincipal EmployeeVO employeeVO,DocumentVO documentVO,Model model)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
 		List<DocumentVO> ar = documentService.getDetail(documentVO);
 		System.out.println(ar);	
 		
-//			documentVO.setId(null);
-//			documentVO.setTitle(ar.get(0).getTitle()); 
-//			documentVO.setContent(ar.get(0).getContent());
-//			documentVO.setTemplateId(ar.get(0).getTemplateId());
-//			documentVO.setEmployeeVO(ar.get(0).getEmployeeVO());
-//			documentVO.setWriterId(ar.get(0).getWriterId());
-//			documentVO.setWriteDate(DateManager.getTodayDate());
-//			documentVO.setStatus("0");
-//			documentVO.setTemp(2);
-//			documentService.add(documentVO);
-//			approvalVO.setDate(null);
-//			approvalVO.setDocumentId(documentVO.getId());
-//			System.out.println(approvalVO.getEmployeeId());
 		for(int i =0 ; i <ar.size() ; i++ ) {
 			ar.get(i).setId(null);
 			for(int j =0 ; j <ar.get(i).getApprovalVOs().size();j++) {			
@@ -202,9 +196,13 @@ public class DocumentController {
 			}			
 		}
 		
-		System.out.println(ar);
+		System.out.println("123"+ar);
 		
 		model.addAttribute("list", ar);
+		
+		List<SaveAppVO> br = documentService.getTitle(employeeVO);
+		
+		model.addAttribute("title", br);	
 		
 		return "document/temp/temp";
 		
@@ -232,17 +230,14 @@ public class DocumentController {
 		model.addAttribute("nowCount", result);
 		model.addAttribute("list", ar);
 	}
-	
-
-
-	
+	//상여금 신청서 문서 오픈
 	@GetMapping("exList/pay")
 	public void pay() {
 		
 	}
 	
 
-	
+	//첫 임시저장하기
 	@PostMapping("temp")
 	public ResponseEntity<?> addTemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
@@ -301,7 +296,7 @@ public class DocumentController {
 	
 
 	
-	
+	//임시저장 된 문서 다시 임시저장하기
 	@PostMapping("tempTotemp")
 	public ResponseEntity<?> tempTotemp(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
@@ -354,7 +349,7 @@ public class DocumentController {
 		return ResponseEntity.ok(documentVO);
 	}
 	
- 
+	//임시저장 상신하기
 	@PostMapping("tempToSang")
 	public ResponseEntity<?> tempToSang(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
 		ApprovalVO approvalVO = new ApprovalVO();
@@ -403,7 +398,7 @@ public class DocumentController {
 		}
 		return ResponseEntity.ok(documentVO);
 	}
-	
+	//상여금신청서 첫 상신하기
 	@PostMapping("add")
 
 	public ResponseEntity<?> add(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
@@ -457,7 +452,7 @@ public class DocumentController {
 
 		return ResponseEntity.ok(documentVO);
 	}
-	
+	//나의 결재선 라인 저장하기
 	@PostMapping("document/tansferSave")
 	@ResponseBody
 	public ResponseEntity<?> tansferSave(@RequestBody SaveAppVO saveAppVO)throws Exception{
