@@ -67,18 +67,16 @@
                     <div class="weather-container position-relative d01 mt-3 p-3">
                         <img id="weatherIcon" class="weatherImage" src="/img/weather/01d.png" width="150" alt="icon"/>
                         <div class="d-flex flex-column align-items-center nowInfo">
-                            <span class="nowTemp">
-                                <span class="">20°</span>
-                            </span>
-                            <div class="div2">
+                            <span id="nowTemp" class="nowTemp">20°</span>
+                            <div class="mb-3">
                                 <span id="weatherDescription">맑음</span>
                             </div>
-                            <span>
-                                <span class="">체감: 18°</span>
-                            </span>
+<%--                            <span>--%>
+<%--                                <span class="">체감: 18°</span>--%>
+<%--                            </span>--%>
                         </div>
                         <div class="">시간별</div>
-                        <div class="weatherBox w-100 d-flex justify-content-around ">
+                        <div id="timeWeather" class="weatherBox w-100 d-flex justify-content-around ">
                             <div class="d-flex flex-column text-nowrap align-items-center">
                                 <span>지금</span>
                                 <img src="/img/weather/01d.png" width="30" alt="icon"/>
@@ -135,8 +133,6 @@
 <c:import url="../template/footer.jsp" />
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp" />
-<script>
-
-</script>
+<script type="module" src="/js/weather/script.js"></script>
 </body>
 </html>

@@ -71,10 +71,11 @@
         FROM
             weather
         WHERE
-            dt <![CDATA[>=]]> ${dt}
+            dt <![CDATA[>]]> ${dt}
         GROUP BY
             dt
-        ORDER BY id DESC
+        ORDER BY id ASC
+        LIMIT 0,6
     </select>
 
     <select id="getWeather" resultMap="OpenWeatherMap">
