@@ -34,6 +34,7 @@ import com.nimbusds.jose.shaded.gson.JsonObject;
 
 import io.micrometer.observation.Observation.Event;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -128,6 +129,17 @@ public class MainController {
     	return ar;
     }
     
+    @GetMapping("detail")
+    @ResponseBody
+    public CalendarVO detail(CalendarVO calendarVO, Model model, HttpSession session,Long id)throws Exception{
+    	
+    	calendarVO.setId(id);
+    	 calendarService.detail(calendarVO);
+    	
+    	model.addAttribute("detailMain", calendarVO);
+
+    	return calendarService.detail(calendarVO);
+    }
     
     
 

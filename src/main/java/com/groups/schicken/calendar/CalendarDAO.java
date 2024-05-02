@@ -3,6 +3,7 @@ package com.groups.schicken.calendar;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.eclipse.tags.shaded.org.apache.bcel.generic.CALOAD;
 
 
 
@@ -19,6 +20,6 @@ public interface CalendarDAO {
 	public List<CalendarVO> departmentList (CalendarVO calendarVO)throws Exception;
 	public List<CalendarVO> depList(CalendarVO calendarVO)throws Exception;
 	public void depDelte(String employeeId);
-	
+	public CalendarVO detail(CalendarVO calendarVO)throws Exception;
 	
 }

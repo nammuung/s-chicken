@@ -52,13 +52,17 @@ public class CalendarService {
 	    List<Map<String, String>> employeeIdList = gson.fromJson(employeeIdJson, new TypeToken<List<Map<String, String>>>() {}.getType());
 
 	    // 배열의 각 요소를 추출하여 인서트
+	    if(employeeIdList==null) {
+	    	calendarVO.setEmployeeId(calendarVO.getShare());
+	    	int result = calendarDAO.insertuser(calendarVO);
+	    }else {
 	    for (Map<String, String> employeeIdMap : employeeIdList) {
 	        String employeeIdValue = employeeIdMap.get("value");
 	        calendarVO.setEmployeeId(employeeIdValue);
 	        System.out.println(calendarVO.getCalendarId());
 	        int result = calendarDAO.insertuser(calendarVO);
 	    }
-	    
+	    }
 		
 		  // 부서 리스트를 조회하여 CalendarVO에 설정하고 인서트 
 	    List<CalendarVO> a = calendarDAO.departmentList(calendarVO);
@@ -91,5 +95,9 @@ public class CalendarService {
 	 }
 	 
 	
+	 public CalendarVO detail (CalendarVO calendarVO)throws Exception{
+		 return calendarDAO.detail(calendarVO);
+	 }
+	 
 	
 }

@@ -37,11 +37,15 @@
 </insert>
 
 
+<select id="detail"  parameterType="CalendarVO" resultType="CalendarVO">
+    select * from calendar where calendar.id =#{id}
+</select>
 
 
 
-	<select id="calList" parameterType="CalendarVO"
-		resultType="CalendarVO">
+
+
+	<select id="calList" parameterType="CalendarVO" resultType="CalendarVO">
 		select
 		calendar.id ,
 		calendar.`start` ,
@@ -62,7 +66,7 @@
 	</select>
 
 
-<select id="departmentList" parameterType="CalendarVO" resultType="CalendarVO">
+<select id="departmentList" resultType="CalendarVO">
 select 
 c.id AS calendar_id ,  
 e.id AS employee_id 

@@ -4,7 +4,7 @@
 		<html lang="kr">
 
 		<head>
-			<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+			<script src="https://fastly.jsdelivr.net/npm/@yaireo/tagify"></script>
 			<meta charset="utf-8">
 			<meta content="width=device-width, initial-scale=1.0" name="viewport">
 			<title>S치킨-그룹웨어</title>
@@ -153,6 +153,7 @@
 			<!-- ======= Script ======= -->
 			<c:import url="template/script.jsp" />
 
+
 			<!-- 모달 추가 -->
 			<div class="modal fade modal" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
 				aria-hidden="true">
@@ -166,23 +167,24 @@
 							<div class="d-flex">
 								<div class="col-5 me-2">
 									<label for="start" class="form-label"><b>시작</b></label>
-									<input id="start" name="start" type="datetime-local" class="form-control mb-3">
+									<input id="start" name="start" type="datetime-local" class="form-control mb-3" value="obj.event.start">
 								</div>
 								<div class="col-5 ms-2 me-2">
 									<label for="end" class="form-label"><b>종료</b></label>
-									<input id="end" name="end" type="datetime-local" class="form-control mb-3 col-2">
+									<input id="end" name="end" type="datetime-local" class="form-control mb-3 col-2" >
 								</div>
 								<input type="checkbox" value="" class="mt-3 me-1" id="alltime"><span
 									style="margin-top: 40px;">종일</span>
 							</div>
 							<label for="title" class="form-label"><b>제목</b></label>
-							<input type="text" id="title" class="form-control mb-3" placeholder="제목을 입력해주세요.">
+							<input type="text" id="title" class="form-control mb-3" placeholder="제목을 입력해주세요." >
 							<label for="content" class="form-label"><b>내용</b></label>
 							<input type="text" id="content" class="form-control mb-3" placeholder="내용을 입력해주세요.">
 							<label for="share" class="form-label"><b>공유자</b></label>
 							<input type="text" id="share" nanem="share" class="form-control mb-3" disabled
-								value="${profile.name}">
+ value="${profile.name}">
 							<input type="hidden" name="share" value="${profile.id}" id="emid" />
+
 
 
 							<!--  -->
@@ -225,6 +227,44 @@
 				</div>
 			</div>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">일정</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="d-flex">
+			<div class="col-5 me-2">
+				<label for="start2" class="form-label"><b>시작</b></label>
+				<input id="start2" name="start" type="datetime-local" class="form-control mb-3" value="${detailMain.start}">
+			</div>
+			<div class="col-5 ms-2 me-2">
+				<label for="end2" class="form-label"><b>종료</b></label>
+				<input id="end2" name="end" type="datetime-local" class="form-control mb-3 col-2" value="${detailMain.end}">
+			</div>
+				<input type="checkbox" value="" class="mt-3 me-1" id="alltime"><span style="margin-top: 40px;">종일</span>
+		</div>
+			<label for="title2" class="form-label"><b>제목</b></label>
+			<input type="text" id="title2" name="title" class="form-control mb-3" value="${detailMain.title}" >
+			<label for="content2" class="form-label"><b>내용</b></label>
+			<input type="text" id="content2" class="form-control mb-3" value="${detailMain.content}">
+			<label for="share2" class="form-label"><b>공유자</b></label>
+			<input type="text" id="share2" name="share" class="form-control mb-3" disabled value="${detailMain.share}">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button type="button" class="btn btn-primary">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+			
 		</body>
 
 		<script type="module">
@@ -244,7 +284,7 @@
 
 			orgChart.init("orgChart", (data) => {
 
-				if (selectedEmployees.includes(data.id) || uniqueids.includes(data.id)){
+				if (selectedEmployees.includes(data.id) || uniqueids.includes(data.id)) {
 					alert('이미 선택 되었습니다.');
 					return;
 				}
@@ -300,7 +340,7 @@
 				}
 			}
 			const ids = [];
-			
+
 			const idName = [];
 
 
@@ -368,30 +408,30 @@
 					callbacks: {
 						add: function (e) {
 							const tagName = e.detail.data.value; // 추가된 태그의 이름 가져오기
-    console.log("태그 추가됨: ", e.detail.data);
-    console.log("dlq" + tagName);
-    // 태그의 이름을 기반으로 해당하는 ID를 찾기
-    const foundIds = idName.filter(item => item.name === tagName).map(item => item.id);
-    console.log(foundIds);
-    // 찾은 ID를 uniqueids 배열에 추가
-    uniqueids.push(...foundIds);
-    console.log(uniqueids);
-    // uniqueids 배열에 있는 ID들을 managerIdInput에 추가
-    managerIdInput.value = JSON.stringify(uniqueids.map(id => ({ value: id }))); // ID만 추가
-    console.log(managerIdInput.value); // managerIdInput의 값 확
+							console.log("태그 추가됨: ", e.detail.data);
+							console.log("dlq" + tagName);
+							// 태그의 이름을 기반으로 해당하는 ID를 찾기
+							const foundIds = idName.filter(item => item.name === tagName).map(item => item.id);
+							console.log(foundIds);
+							// 찾은 ID를 uniqueids 배열에 추가
+							uniqueids.push(...foundIds);
+							console.log(uniqueids);
+							// uniqueids 배열에 있는 ID들을 managerIdInput에 추가
+							managerIdInput.value = JSON.stringify(uniqueids.map(id => ({ value: id }))); // ID만 추가
+							console.log(managerIdInput.value); // managerIdInput의 값 확
 
 
 						},
 						remove: function (e) {
 							console.log("태그 제거됨: ", e.detail.data);
-                const removedItem = e.detail.data.value;
-                console.log(removedItem);
-                // 제거된 태그에 해당하는 ID를 uniqueids 배열에서 제거
-                uniqueids = uniqueids.filter(id => !idName.some(item => item.name === removedItem && id === item.id));
-                console.log(uniqueids);
-                // uniqueids 배열에 있는 ID들을 managerIdInput에 추가
-                managerIdInput.value = JSON.stringify(uniqueids.map(id => ({ value: id }))); // 변경된 ID 배열을 다시 할당
-                console.log(managerIdInput.value); // managerIdInput의 값 확인
+							const removedItem = e.detail.data.value;
+							console.log(removedItem);
+							// 제거된 태그에 해당하는 ID를 uniqueids 배열에서 제거
+							uniqueids = uniqueids.filter(id => !idName.some(item => item.name === removedItem && id === item.id));
+							console.log(uniqueids);
+							// uniqueids 배열에 있는 ID들을 managerIdInput에 추가
+							managerIdInput.value = JSON.stringify(uniqueids.map(id => ({ value: id }))); // 변경된 ID 배열을 다시 할당
+							console.log(managerIdInput.value); // managerIdInput의 값 확인
 							const index = selectedEmployees.findIndex(employee => employee.name === removedItem);
 							if (index !== -1) {
 								selectedEmployees.splice(index, 1);
@@ -435,7 +475,7 @@
 								, textColor: 'red' // an option!
 							}
 						],
-						
+
 						eventAdd: function (obj) { // 이벤트가 추가되면 발생하는 이벤트
 							console.log(obj);
 							console.log("추가임");
@@ -448,48 +488,73 @@
 							console.log(obj.event.content);
 							console.log(obj.event.title);
 							console.log(obj.event.id);
+							let startday =dayjs(obj.event.start).format('YYYY-MM-DDTHH:mm:ss');
+							let endday =dayjs(obj.event.end).format('YYYY-MM-DDTHH:mm:ss');
+							console.log(startday);
+							console.log(endday);
 							$.ajax({
-										url: '/update',
-										type: 'POST',
-										contentType: 'application/json',
-										data: JSON.stringify({
-											title: obj.event.title,
-											content: obj.event.content,
-											start: obj.event.start,
-											end: obj.event.end,
-											id: obj.event.id
-										}),
-										success: function (response) {
-											console.log('수정 성공:', response);
-										},
-										error: function (error) {
-											console.error('수정 실패:', error);
-										}
-									});
+								url: '/update',
+								type: 'POST',
+								contentType: 'application/json',
+								data: JSON.stringify({
+									title: obj.event.title,
+									content: obj.event.content,
+									start: startday,
+									end: endday,
+									id: obj.event.id
+								}),
+								success: function (response) {
+									console.log('수정 성공:', response);
+								},
+								error: function (error) {
+									console.error('수정 실패:', error);
+								}
+							});
 						},
 						eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
 							console.log(obj);
 							console.log("삭제임");
 						},
-						eventClick : function(obj){
+						eventClick: function (obj) {
 							console.log(obj)
 							console.log("클릭임");
+							console.log(obj.event.start);
+							console.log(obj.event.end);
+							$.ajax({
+								url: '/detail',
+								type: 'GET',
+								contentType: 'application/text',
+								data: {
+									id: obj.event.id
+
+								},
+								success: function (response) {
+									console.log('수정 성공:', response);
+								},
+								error: function (error) {
+									console.error('수정 실패:', error);
+								}
+							});
+
+							$('#exampleModal').modal('show');
+							calendar.unselect();
 						},
 						select: function (arg) {
+							$('form').each(function() {this.reset();});
 							$('#eventModal').modal('show');
 							// 부트스트랩 모달 열기
-							
+
 							var startDate = arg.start.toISOString().slice(0, 10); // 선택된 날짜의 날짜 부분만 추출
 							var endDate = arg.end ? arg.end.toISOString().slice(0, 10) : startDate; // 종료 날짜가 있으면 그 날짜를 선택, 없으면 시작 날짜와 같은 날짜 선택
-							
+
 							// 시작 날짜에 하루를 더하여 설정
 							var nextDay = new Date(arg.start);
 							nextDay.setDate(nextDay.getDate() + 1);
 							var nextDayISO = nextDay.toISOString().slice(0, 10);
-							
+
 							$('#start').val(nextDayISO + 'T' + getCurrentTime()); // 시작 날짜 입력란에 선택된 날짜와 현재 시간 값 설정
 							$('#end').val(endDate + 'T18:00'); // 종료 날짜 입력란에 선택된 날짜 값 설정
-							
+
 							// 현재 시간을 HH:mm 형식으로 반환하는 함수
 							function getCurrentTime() {
 								var now = new Date();
@@ -497,8 +562,8 @@
 								var minute = now.getMinutes().toString().padStart(2, '0'); // 분을 두 자리로 변환하고 앞에 0을 채움
 								return hour + ':' + minute; // 시간과 분을 합쳐서 반환
 							}
-							
-							
+
+
 							// 모달에서 이벤트 제목 입력 후 저장 버튼 클릭 시
 							$('#saveEventBtn').off('click').click(function () {
 								var employeeId = $('#emid').val();
@@ -525,6 +590,19 @@
 									// 저장 버튼 클릭 시 AJAX를 통해 데이터를 서버에 전송
 									let start = document.getElementById("start").value;
 									let end = document.getElementById("end").value;
+									const employeeId = document.getElementById("emid").value;
+									console.log(employeeId + "로그임");
+									/* if (managerId && !managerId.value) {
+										console.log("managerId.value가 비어있습니다.");
+										managerId.value = employeeId; // managerId.value를 employeeId로 설정
+									} */
+
+									// 결과를 콘솔에 출력
+
+
+									let startday =dayjs(start).format('YYYY-MM-DDTHH:mm:ss');
+									let endday =dayjs(end).format('YYYY-MM-DDTHH:mm:ss');
+									console.log(managerId.value + " 매니저");
 									$.ajax({
 										url: '/insert',
 										type: 'POST',
@@ -532,8 +610,8 @@
 										data: JSON.stringify({
 											title: title,
 											content: content,
-											start: start,
-											end: end,
+											start: startday,
+											end: endday,
 											employeeId: managerId.value
 										}),
 										success: function (response) {
@@ -545,7 +623,7 @@
 									});
 								}
 								calendar.unselect();
-								
+
 								$('#eventModal').modal('hide'); // 모달 닫기
 							});
 						},
@@ -560,7 +638,7 @@
 							success: function (data) {
 								// 가져온 데이터를 풀캘린더에 추가
 								data.forEach(function (eventData) {
-									console.log(eventData.id+"LLLLL");
+									console.log(eventData.id + "LLLLL");
 									calendar.addEvent({
 										id: eventData.id, // 이벤트 ID
 										title: eventData.title, // 이벤트 제목
