@@ -21,8 +21,14 @@ function onProfileClick(empId){
                 case 'img':
                   e.setAttribute("src", info.profileImg);
                   break;
-                case 'noteMessage':
                 case 'chatting':
+                  console.log(info.id, document.querySelector("[data-logined-id]")?.dataset.loginedId, info.id === document.querySelector("[data-logined-id]")?.dataset.loginedId)
+                  if(info.id === document.querySelector("[data-logined-id]")?.dataset.loginedId) {
+                    e.classList.add("d-none");
+                  } else {
+                    e.classList.remove("d-none");
+                  }
+                case 'noteMessage':
                   e.dataset.targetEmployeeId = info.id;
                   break;
                 default:

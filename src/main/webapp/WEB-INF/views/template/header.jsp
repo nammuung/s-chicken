@@ -10,6 +10,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <header id="header" class="header fixed-top d-flex align-items-center">
 
+    <sec:authorize access="isAuthenticated()">
+        <sec:authentication property="principal" var="logined"/>
+        <div data-logined-id="${logined.id}"></div>
+    </sec:authorize>
+
     <div class="d-flex align-items-center justify-content-between">
         <a href="/" class="logo d-flex align-items-center">
             <img src="/img/logo.png" alt="">
@@ -85,18 +90,18 @@
                     <span class="d-none d-md-block dropdown-toggle ps-2">
                     ${details.name}</span>
                 </a><!-- End Profile Iamge Icon -->
-					
+
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                
+
                     <li class="dropdown-header">
                         <img width="50" height="50" src="/fileDown?id=${details.file.id}" alt="Profile"
 									class="rounded-circle"
 									onerror="this.onerror=null; this.src='/img/기본.jpg';">
                        <h6>부서 : ${details.department.name}</h6>
                        <h6>직급 : ${details.position.name}</h6>
-                       
+
                     </li>
-                    
+
                     <li>
                         <hr class="dropdown-divider">
                     </li>

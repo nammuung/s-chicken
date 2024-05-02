@@ -3,6 +3,7 @@ import {setWhenReceiveMessage, sendMessage} from '/js/chatting/chatting.js';
 const chattingSpace = document.getElementById("chatting-space");
 const chattingArea = document.getElementById("chatting-area");
 const sendMessageBtn = document.getElementById("send-message-btn");
+const loginedId = document.querySelector("[data-logined-id]")?.dataset.loginedId;
 
 let memberData = {};
 let lastChatting;
@@ -65,6 +66,10 @@ document.getElementById("search-input").addEventListener("keyup", event => {
 
 function openChatting(event, type) {
     const targetId = event.target.dataset.targetId;
+    if(loginedId === targetId) {
+        alert("자기자신과는 채팅 할 수 없습니다.")
+        return;
+    }
 
     pageChange();
     namecardModal.hide();
@@ -82,6 +87,7 @@ function openChatting(event, type) {
 }
 
 async function setChatroom(targetId) {
+
     let option = {
         'one': `/one/${targetId}`,
         'many': `/many/${targetId}`
@@ -132,7 +138,7 @@ function observeUpAndDown(opt) {
 }
 
 async function getChatting(from, direction) {
-    let option = nowPageType === 'one' ? [document.querySelector("[data-logined-id]")?.dataset.loginedId, nowOpenPage].sort().join("") : nowOpenPage
+    let option = nowPageType === 'one' ? [loginedId, nowOpenPage].sort().join("") : nowOpenPage
 
     return fetch(`/chatrooms/chattings/${option}?from=${from}&direction=${direction}`)
         .then(res => res.json())
@@ -241,7 +247,7 @@ function chatDateFormat(date) {
 
 function createChattingMessage(data, sendDate, senderId) {
     let classNames =  ["mt-1", "p-2", "rounded-3", "text-break", "d-inline-block"];
-    classNames.push(senderId === document.querySelector("[data-logined-id]")?.dataset.loginedId ? "bg-schicken-light-reverse" : "bg-schicken-light")
+    classNames.push(senderId === loginedId ? "bg-schicken-light-reverse" : "bg-schicken-light")
     let div = makeElement("div", {className:classNames})
     div.innerHTML = data;
 
