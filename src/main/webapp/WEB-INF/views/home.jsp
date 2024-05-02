@@ -66,7 +66,9 @@
 								</div>
 							</div>
 						</div>
-						<div class="col"></div>
+						<div class="col">
+							<c:import url="./template/weather.jsp"/>
+						</div>
 					</div>
 					<div class="row justify-content-start d-flex">
 						<div class="col-3 pagetitle" style="margin-left: 18.5%; margin-bottom: 15px">
@@ -604,5 +606,5 @@
 			});
 
 		</script>
-
+		<script type="module" src="/js/weather/script.js"></script>
 		</html>

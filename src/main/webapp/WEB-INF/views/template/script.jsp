@@ -39,7 +39,7 @@
 <script src="/js/lib/switch.js"></script>
 
 <%--axios--%>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
 <%--filepreview--%>
@@ -50,5 +50,8 @@
 <script type="module" src="/js/annual/annual.js"> </script>
 
 <%--DayJs--%>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="https://fastly.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 <script src="/js/notification/notification.js" type="module"></script>
+
+<%--chart--%>
+<script src="https://code.jscharting.com/latest/jscharting.js"></script>

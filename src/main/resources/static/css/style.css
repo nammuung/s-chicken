@@ -63,6 +63,58 @@
   background-color: #7749f8;
   color: white;
 }
+.weather-container {
+  height: 500px;
+  color: white;
+  border-radius: 30px;
+}
+.weather-container.d01 {
+  background: linear-gradient(
+          180deg,
+          rgba(0, 117, 255, 1) 0%,
+          rgba(149, 204, 255, 1) 100%
+  );
+  position: relative;
+}
+
+.weather-container .weatherImage {
+  position: absolute;
+  left: 60px;
+  top: 20px;
+  z-index: 0;
+}
+.weather-container .nowInfo {
+  position: relative;
+  margin-top: 80px;
+  z-index: 55;
+}
+.weather-container .nowTemp {
+  font-size: 100px;
+  font-weight: 700;
+  line-height: 100px;
+}
+.weather-container .weatherBox {
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 23px;
+  height: 85px;
+}
+.weather-container .weatherBoxDetail {
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 23px;
+  height: 85px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+.weather-container .detailTitle{
+  font-size: 14px;
+}
+.weather-container #timeWeather > div:hover{
+  cursor: pointer;
+}
 /*--------------------------------------------------------------
 # Nmg
 --------------------------------------------------------------*/
