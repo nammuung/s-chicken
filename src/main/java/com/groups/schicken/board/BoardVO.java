@@ -19,9 +19,15 @@ public class BoardVO {
 	private int sort;
 	private String writerId;
 	private Boolean important;
-	
+
 
 	private List<FileVO> fileVO;
 	private EmployeeVO employeeVO;
-	
+
+	public boolean getImportant(){
+		if(important == null)
+			return false;
+
+		return important;
+	}
 }

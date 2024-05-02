@@ -31,7 +31,8 @@ function appendNotificationList(noti) {
 
 /* 알림 클릭시 함수 매핑 */
 let notificationByType = {
-    NoteMessage : openNoteMessageByLink
+    NoteMessage : openNoteMessageByLink,
+    Notice : openNoticePage,
 }
 
 function onNotificationClick(event, isNoti){
@@ -70,6 +71,10 @@ function readNotification(id, type, link){
  */
 function openNoteMessageByLink(link){
     openNoteMessage(link)
+}
+
+function openNoticePage(link){
+    location.href="/all/detail?id=" + link;
 }
 
 
