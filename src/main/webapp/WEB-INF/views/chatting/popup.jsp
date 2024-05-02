@@ -172,6 +172,16 @@
             })
         namecardModal.show();
     }
+
+    window.addEventListener("DOMContentLoaded", ()=>{
+        let targetId = (new URLSearchParams(window.location.search)).get("target");
+        if(targetId == null) return;
+        if(document.querySelector("[data-logined-id]").dataset.loginedId === targetId) return;
+
+        let chatStartBtn = document.querySelector("a[data-profile-type=chatting]");
+        chatStartBtn.dataset.targetId = targetId;
+        chatStartBtn.click();
+    })
 </script>
 </body>
 

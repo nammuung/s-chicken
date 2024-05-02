@@ -22,10 +22,8 @@ function onProfileClick(empId){
                   e.setAttribute("src", info.profileImg);
                   break;
                 case 'noteMessage':
-                  openSendNoteMessagePage(info.id);
-                  break;
                 case 'chatting':
-                  openChattingPopup(info.id);
+                  e.dataset.targetEmployeeId = info.id;
                   break;
                 default:
                   e.innerText = info[profileType];
@@ -33,14 +31,6 @@ function onProfileClick(empId){
             })
         namecardModal.show();
       })
-}
-
-function openSendNoteMessagePage(employeeId){
-
-}
-
-function openChattingPopup(employeeId){
-
 }
 
 //김경모

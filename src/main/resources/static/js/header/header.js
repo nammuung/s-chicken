@@ -13,6 +13,9 @@ let noteMessageSaveBoxBtn = document.getElementById("note-message-save-box-btn")
 let noteMessageSendBoxBtn = document.getElementById("note-message-send-box-btn");
 let noteMessageDeleteBoxBtn = document.getElementById("note-message-delete-box-btn");
 
+let profileModalNoteMessageBtn = document.querySelector("[data-profile-type=noteMessage]");
+let profileModalChattingBtn = document.querySelector("[data-profile-type=chatting]");
+
 window.onload=()=>{
     fetch("/html/noteMessage/noteMessageTemplate.html")
         .then(res=>res.text())
@@ -25,8 +28,7 @@ window.onload=()=>{
         })
 }
 
-document.getElementById("chatting-popup-btn").addEventListener("click",()=>{
-    let url = "/chatrooms/popup";
+function popupChattingPage(url){
     let attr = "_blank"
     let opt = {
         width : 500,
@@ -47,7 +49,22 @@ document.getElementById("chatting-popup-btn").addEventListener("click",()=>{
 
     let popup = window.open(url, attr, optStr);
     console.log(popup);
-})
+}
+
+
+function onProfileSendBtnClick(event){
+    let receiverId = event.target.dataset.targetEmployeeId;
+    sendForm.reply(receiverId);
+    bsNoteMessageModal.show();
+    namecardModal.hide();
+}
+
+function onProfileChattingBtnClick(event){
+    let receiverId = event.target.dataset.targetEmployeeId;
+    popupChattingPage("/chatrooms/popup?target="+receiverId);
+    namecardModal.hide();
+}
+
 //========================================== 이벤트 리스너 등록 ==========================================================
 noteMessageSendFormBtn.addEventListener("click", sendForm.open);
 noteMessageReceiveBoxBtn.addEventListener("click", ()=>listForm.open(1, 'receive'));
@@ -58,6 +75,11 @@ noteMessageNav.addEventListener("click", () => {
     listForm.open(1,'receive');
     bsNoteMessageModal.show();
 });
+
+document.getElementById("chatting-popup-btn").addEventListener("click",()=>popupChattingPage("/chatrooms/popup"));
+profileModalNoteMessageBtn.addEventListener("click", onProfileSendBtnClick);
+profileModalChattingBtn.addEventListener("click", onProfileChattingBtnClick);
+
 
 export const openNoteMessage = (link) => {
     readForm.openRead(link, 1, 'receive');
