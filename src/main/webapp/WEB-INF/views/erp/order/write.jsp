@@ -17,8 +17,16 @@
 <c:import url="../../template/sidebar.jsp"/>
 <main id="main" class="main">
     <section class="section erp ms-auto me-auto">
-        <div class="pagetitle">
-            <h1>발주서 작성</h1>
+        <div class="pagetitle d-flex justify-content-between">
+            <div class="d-flex justify-content-center">
+                <h1>발주서 작성</h1>
+                <nav class="ms-3">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/order">발주서 목록</a></li>
+                        <li class="breadcrumb-item active">발주서 작성</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
         <div class="row">
             <div class="col">

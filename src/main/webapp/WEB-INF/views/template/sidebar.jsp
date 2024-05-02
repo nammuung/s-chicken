@@ -136,30 +136,32 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link <c:if test="${cookie.navToggle.value ne '#erp-nav'}">collapsed</c:if>" data-bs-target="#erp-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-box-seam"></i><span>ERP</span><i class="bi bi-chevron-down ms-auto"></i>
+            <a class="nav-link <c:if test="${cookie.navToggle.value ne '#erp-nav'}">collapsed</c:if>" data-bs-target="#sell-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-receipt"></i><span>구매 및 판매</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="erp-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#erp-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="/order/franchise">
-                        <i class="bi bi-circle"></i><span>주문</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/order/write">
-                        <i class="bi bi-circle"></i><span>발주서작성</span>
-                    </a>
-                </li>
+            <ul id="sell-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#sell-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/order">
-                        <i class="bi bi-circle"></i><span>발주내역</span>
+                        <i class="bi bi-circle"></i><span>구매</span>
                     </a>
                 </li>
                 <li>
                     <a href="/order/sell">
-                        <i class="bi bi-circle"></i><span>구매요청</span>
+                        <i class="bi bi-circle"></i><span>판매</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/sales">
+                        <i class="bi bi-circle"></i><span>매출 관리</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Icons Nav -->
+        <li class="nav-item">
+            <a class="nav-link <c:if test="${cookie.navToggle.value ne '#erp-nav'}">collapsed</c:if>" data-bs-target="#warehouse-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-arrow-down-up"></i><span>입·출고</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="warehouse-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#warehouse-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/order/list">
                         <i class="bi bi-circle"></i><span>입고</span>
@@ -171,32 +173,36 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/products">
-                        <i class="bi bi-circle"></i><span>품목 관리</span>
-                    </a>
-                </li>
-                <li>
                     <a href="/products/stock">
                         <i class="bi bi-circle"></i><span>재고 관리</span>
                     </a>
                 </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link <c:if test="${cookie.navToggle.value ne '#erp-nav'}">collapsed</c:if>" data-bs-target="#item-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-box-seam"></i><span>상품관리</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="item-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#item-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/items">
-                        <i class="bi bi-circle"></i><span>계약품목 관리</span>
+                        <i class="bi bi-circle"></i><span>상품 관리</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/products">
+                        <i class="bi bi-circle"></i><span>품목 관리</span>
+                    </a>
+                </li>
+
                 <li>
                     <a href="/supplier">
                         <i class="bi bi-circle"></i><span>납품처 관리</span>
                     </a>
                 </li>
-                <li>
-                    <a href="/sales">
-                        <i class="bi bi-circle"></i><span>매출 관리</span>
-                    </a>
-                </li>
             </ul>
-        </li><!-- End Icons Nav -->
+        </li>
+
 
 		<li class="nav-heading">Pages</li>
 
