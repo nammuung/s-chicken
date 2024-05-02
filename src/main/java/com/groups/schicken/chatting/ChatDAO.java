@@ -3,6 +3,7 @@ package com.groups.schicken.chatting;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ChatDAO {
@@ -27,4 +28,6 @@ public interface ChatDAO {
     List<ChatMessage> getChatMessageDataFirst(String chatroomId, String lastReadTime, String page);
 
     List<ChatMessage> getChatMessageData(String chatroomId, String from, String direction);
+
+    List<ChatMessage> getLastChatData(List<String> list);
 }

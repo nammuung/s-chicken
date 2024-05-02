@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -106,7 +107,20 @@ public class ChatService {
      * employeeId로 해당 employee가 들어가 있는 채팅방 리스트를 가져온다
      */
     public List<ChatroomVO> getChatroomList(String employeeId) {
-        return chatDAO.getChatroomList(employeeId);
+        List<ChatroomVO> chatroomList = chatDAO.getChatroomList(employeeId);
+
+        List<ChatMessage> lastChatByChatrooms = chatDAO.getLastChatData(chatroomList.stream().map(ChatroomVO::getId).toList());
+
+        for (ChatroomVO chatroomVO : chatroomList) {
+            chatroomVO.setLastMessage(
+                    lastChatByChatrooms.stream()
+                            .filter(e->chatroomVO.getId().equals(e.getChatroomId()))
+                            .findAny()
+                            .orElse(ChatMessage.EMPTY_MESSAGE)
+            );
+        }
+
+        return chatroomList;
     }
 
     /*

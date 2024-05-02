@@ -27,9 +27,6 @@ public class ChatController {
 
     @GetMapping("popup")
     public String getListPage(@AuthenticationPrincipal EmployeeVO employee, Model model){
-        List<ChatroomVO> chatroomList = chatService.getChatroomList(employee.getId());
-        model.addAttribute("chatroomList", chatroomList);
-
         List<ChattingEmployeeListVO> orgList = organizationService.getChattingEmployeeList(employee.getId());
         model.addAttribute("orgList", orgList);
 

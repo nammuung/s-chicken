@@ -54,10 +54,10 @@
                     </button>
                 </div>
                 <div>
-                    <input id="search-input" type="text" class="form-control" placeholder="직책, 이름으로 검색">
+                    <input data-element-id="search-input" data-target="[data-employee-search]" type="text" class="form-control" placeholder="직책, 이름으로 검색">
                 </div>
 
-                <div id="chat-employee-list" class="p-3 pt-0 accordion" style="height : 91%;overflow: auto">
+                <div id="chat-employee-list" class="p-3 pt-0 accordion" style="height:calc(100vh - 68px);overflow: auto">
                     <div class="d-flex gap-3 p-1 my-3">
                         <div>
                             <img class="rounded-circle" src="${myProfile.profileImg}" alt="" width="55px" height="55px">
@@ -84,12 +84,12 @@
                             <div id="collapse-${dept.id}" class="accordion-collapse collapse show">
                                 <div class="accordion-body" style="padding: 0;">
                                     <c:forEach items="${dept.employees}" var="emp">
-                                        <div class="d-flex gap-3 p-2 aaa" onclick="onProfileClick(${emp.id})" data-parent-id="accordion-${dept.id}" data-search-name="${emp.name}">
+                                        <div class="d-flex gap-3 p-2 aaa" onclick="onProfileClick(${emp.id})" data-employee-search data-parent-id="accordion-${dept.id}" data-search-name="${emp.name}">
                                             <div>
                                                 <img class="rounded-circle" src="${emp.profileImg}" alt="" width="50px" height="50px">
                                             </div>
                                             <div class="p-2">
-                                                <h4 style="font-family: 'Pretendard-Regular'">${emp.name}</h4>
+                                                <h4>${emp.name}</h4>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -100,7 +100,14 @@
                 </div>
             </section>
 
-            <section class="carousel-item"></section>
+            <section class="carousel-item">
+                <div>
+                    <input data-element-id="search-input" data-target="[data-chatroom-search]" type="text" class="form-control" placeholder="직책, 이름으로 검색">
+                </div>
+                <div id="chatroom-list-space" class="py-2" style="height: calc(100vh - 38px); overflow-y: auto">
+
+                </div>
+            </section>
 
             <section class="carousel-item" data-now-open>
                 <div class="row justify-content-center chatroom-title">

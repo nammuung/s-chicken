@@ -3,6 +3,7 @@ import {setWhenReceiveMessage, sendMessage} from '/js/chatting/chatting.js';
 const chattingSpace = document.getElementById("chatting-space");
 const chattingArea = document.getElementById("chatting-area");
 const sendMessageBtn = document.getElementById("send-message-btn");
+const chatroomListBtn = document.getElementById("chatroom-list-btn");
 const loginedId = document.querySelector("[data-logined-id]")?.dataset.loginedId;
 
 let memberData = {};
@@ -17,6 +18,7 @@ let options = {
 };
 
 const infinityScrollObserver = new IntersectionObserver(scrollPagingObserveCallback, options);
+
 function scrollPagingObserveCallback(entries, observer) {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -26,7 +28,7 @@ function scrollPagingObserveCallback(entries, observer) {
             let tempHeight = chattingSpace.scrollHeight + 1;
 
             getChatting(entry.target.dataset.sendDate, direction).then(chattings => {
-                    if(direction === 'up') chattingSpace.scrollTop = chattingSpace.scrollHeight - tempHeight;
+                    if (direction === 'up') chattingSpace.scrollTop = chattingSpace.scrollHeight - tempHeight;
                     observeUpAndDown({direction, isEnd: chattings.length < 10});
                 }
             );
@@ -35,38 +37,41 @@ function scrollPagingObserveCallback(entries, observer) {
 };
 
 const downEndObserver = new IntersectionObserver(checkNowDownEnd, options);
-function checkNowDownEnd(entries, observer){
+
+function checkNowDownEnd(entries, observer) {
     entries.forEach((entry) => {
         downEnd = entry.isIntersecting
     })
 }
 
-document.getElementById("search-input").addEventListener("keyup", event => {
-    let searchName = event.target.value;
-    const regex = new RegExp(searchName);
+document.querySelectorAll("[data-element-id=search-input]").forEach(el => el.addEventListener("keyup", event => {
+        let searchName = event.target.value;
+        let target = event.target.dataset.target;
+        const regex = new RegExp(searchName);
 
-    document.querySelectorAll("[data-search-name]").forEach(e => {
-        let name = e.dataset.searchName;
-        if (regex.test(name)) {
-            e.classList.remove("d-none");
-            document.getElementById(e.dataset.parentId).classList.remove("d-none");
-        } else {
-            e.classList.add("d-none");
-            let elements = document.querySelectorAll(`[data-parent-id=${e.dataset.parentId}]`);
-            for (let ele of elements) {
-                if (!ele.classList.contains("d-none")) {
-                    return;
+        document.querySelectorAll(target).forEach(e => {
+            let name = e.dataset.searchName;
+            if (regex.test(name)) {
+                e.classList.remove("d-none");
+                document.getElementById(e.dataset.parentId)?.classList.remove("d-none");
+            } else {
+                e.classList.add("d-none");
+                let elements = document.querySelectorAll(`[data-parent-id=${e.dataset.parentId}]`);
+                for (let ele of elements) {
+                    if (!ele.classList.contains("d-none")) {
+                        return;
+                    }
                 }
-            }
 
-            document.getElementById(e.dataset.parentId).classList.add("d-none");
-        }
+                document.getElementById(e.dataset.parentId)?.classList.add("d-none");
+            }
+        })
     })
-})
+)
 
 function openChatting(event, type) {
     const targetId = event.target.dataset.targetId;
-    if(loginedId === targetId) {
+    if (loginedId === targetId) {
         alert("자기자신과는 채팅 할 수 없습니다.")
         return;
     }
@@ -78,8 +83,8 @@ function openChatting(event, type) {
     nowPageType = type;
 
 
-    setChatroom(targetId).then(()=>{
-        setTimeout(()=>{
+    setChatroom(targetId).then(() => {
+        setTimeout(() => {
             document.querySelector("[data-last-read]")?.scrollIntoView({block: "center"})
         }, 500)
     })
@@ -178,14 +183,14 @@ function appendChatting(data) {
     return created;
 }
 
-function isDiffMinute(date1, date2){
+function isDiffMinute(date1, date2) {
     return date1.substring(0, 12) !== date2.substring(0, 12);
 }
 
-function onGetChatting(data){
+function onGetChatting(data) {
     const created = appendChatting(data);
 
-    if(downEnd) {
+    if (downEnd) {
         chattingSpace.scrollTop = chattingSpace.scrollHeight;
         downEndObserver.disconnect();
         downEndObserver.observe(created);
@@ -194,7 +199,10 @@ function onGetChatting(data){
 
 function createChattingProfile(data, sendDate) {
     console.log("data : ", data);
-    let div = makeElement("div", {className: ["chatting", "d-flex", "mt-2", "ms-1"], dataset: {"senderId": data.id, "sendProfileDate" : sendDate, "chattingProfile":""}});
+    let div = makeElement("div", {
+        className: ["chatting", "d-flex", "mt-2", "ms-1"],
+        dataset: {"senderId": data.id, "sendProfileDate": sendDate, "chattingProfile": ""}
+    });
     let div2 = makeElement("div", {className: ["chatting-profile-img"]});
 
     let imgOption = {
@@ -246,9 +254,9 @@ function chatDateFormat(date) {
 }
 
 function createChattingMessage(data, sendDate, senderId) {
-    let classNames =  ["mt-1", "p-2", "rounded-3", "text-break", "d-inline-block"];
+    let classNames = ["mt-1", "p-2", "rounded-3", "text-break", "d-inline-block"];
     classNames.push(senderId === loginedId ? "bg-schicken-light-reverse" : "bg-schicken-light")
-    let div = makeElement("div", {className:classNames})
+    let div = makeElement("div", {className: classNames})
     div.innerHTML = data;
 
     let div2 = makeElement("div", {dataset: {"sendMessage": "", "sendDate": sendDate}});
@@ -271,6 +279,48 @@ function makeElement(tagName, {className, option, dataset} = {}) {
     }
 
     return element;
+}
+
+function drawChatroomList(data){
+    if(data.lastMessage == null){
+        data.lastMessage = {
+            content : "",
+            sendDate : "",
+            isEmpty : true
+        }
+    }
+
+    let div = makeElement("div", {className : ["d-flex","p-2","aaa"], dataset : {"chatroomId": data.id}});
+    let imgDiv = makeElement("div");
+    let img = makeElement("img", {option : {"width" :"50", "height" : "50", "style" : "border-radius: 20%", "src" : data.profileURL}})
+
+    imgDiv.append(img);
+
+    let chatroomDiv = makeElement("div", {className : ["ms-2"]});
+    let titleH5 = makeElement("h5");
+    titleH5.innerText = data.name;
+    let recentMessageDiv = makeElement("div");
+    recentMessageDiv.innerText = data.lastMessage.content;
+
+    chatroomDiv.append(titleH5, recentMessageDiv);
+
+    let infoDiv = makeElement("div", {className: ["ms-auto", "pe-2"]});
+    let timeDiv = makeElement("div", {className: ["small"]});
+    timeDiv.innerText = data.lastMessage.sendDate;
+
+    infoDiv.append(timeDiv);
+
+    if(!data.lastMessage.isEmpty) {
+        let counterEndDiv = makeElement("div", {className:["text-end"]});
+        let counterDiv = makeElement("div", {className: ["small", "bg-danger", "text-white", "d-inline-block", "recent-message-counter"]})
+
+        counterEndDiv.append(counterDiv);
+        infoDiv.append(counterEndDiv);
+    }
+
+    div.append(imgDiv, chatroomDiv, infoDiv);
+
+    return div;
 }
 
 function pageChange(to) {
@@ -298,9 +348,16 @@ function onSendMessageBtnClick() {
     chattingArea.value = "";
 }
 
+function getChatroomList(){
+    fetch('/chatrooms/list')
+        .then(res=>res.json())
+        .then(r=>console.log(r));
+}
+
 setWhenReceiveMessage(onGetChatting);
 
 sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
+chatroomListBtn.addEventListener("click", getChatroomList);
 document.querySelector("a[data-profile-type=chatting]").addEventListener("click", event => openChatting(event, 'one'))
 document.getElementById("employee-list-btn").addEventListener("click", event => pageChange(event.target))
 document.getElementById("chatroom-list-btn").addEventListener("click", event => pageChange(event.target))
