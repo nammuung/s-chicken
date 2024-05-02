@@ -87,7 +87,7 @@
 		emp.name bonus_emp_name,
 		code.name bonus_code_name,
 		d.name department_name,
-		c.name code_name		
+		c.name code_name	
 		FROM document doc
 		inner JOIN template tem ON doc.template_id = tem.temp_id
 		inner JOIN approval app ON app.document_id = doc.id		
@@ -122,8 +122,7 @@
 	<update id="bonusResultUpdate">
 		UPDATE bonus
 		INNER JOIN document d ON d.id = bonus.document_id
-		set date=#{date}
-		
+		set date=#{date}		
 		WHERE d.status=1
 	</update>
 	
@@ -150,11 +149,13 @@
 	
 		<sql id="countCheck">
 		(SELECT 
-			COUNT(*) AS "count",document_id
+			COUNT(*) AS "count123",document_id
 			FROM approval
 			WHERE result =1
 			GROUP BY document_id) sub
 	</sql>
+	
+
 	
 
 	<select id="approvalList" resultMap="allListResult">
@@ -164,7 +165,7 @@
 			doc.write_date,
 			doc.status,
 			a.*,
-			sub.count,
+			sub.count123,
 			tem.*,
 			emp.name employee_name,
 			emp.id employee_id
@@ -173,7 +174,7 @@
 		LEFT JOIN employee emp ON doc.writer_id=emp.id
 		LEFT JOIN template tem ON tem.temp_id=doc.template_id
 		INNER JOIN <include refid="countCheck"/> ON sub.document_id=doc.id
-		WHERE a.employee_id=#{employeeVO.id} AND a.rank BETWEEN 0 and sub.count <include refid="search"/>
+		WHERE a.employee_id=#{employeeVO.id} AND a.rank BETWEEN 0 and sub.count123 <include refid="search"/>
 		ORDER BY doc.id DESC
 		LIMIT #{pager.startIndex},#{pager.perPage}
 	</select>

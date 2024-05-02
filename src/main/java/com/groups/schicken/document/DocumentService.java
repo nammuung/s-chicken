@@ -4,15 +4,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Case;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.common.vo.Pager;
+import com.groups.schicken.notification.Noticer;
+import com.groups.schicken.notification.NotificationType;
 
 @Service
 public class DocumentService {
+	@Autowired
+	private Noticer noticer;
 	@Autowired
 	private DocumentDAO documentDAO;
 	
@@ -105,10 +111,12 @@ public class DocumentService {
 	
 	
 	//상신
-	public int add(DocumentVO documentVO)throws Exception{				
+	public int add(DocumentVO documentVO)throws Exception{
+		
 		return documentDAO.add(documentVO);
 	}	
-	public int appAdd(ApprovalVO approvalVO)throws Exception{			
+	public int appAdd(ApprovalVO approvalVO)throws Exception{
+			
 			return documentDAO.appAdd(approvalVO);		
 	}	
 	public int bonusAdd(BonusVO bonusVO)throws Exception{
@@ -139,21 +147,41 @@ public class DocumentService {
 	
 	
 
-	public int resultUpdate(ApprovalVO approvalVO,BonusVO bonusVO)throws Exception{
+	public int resultUpdate(ApprovalVO approvalVO,BonusVO bonusVO,DocumentVO documentVO)throws Exception{
 		int result = documentDAO.resultUpdate(approvalVO);		
 		result = documentDAO.statusUpdate(approvalVO);
+		
+		System.out.println(result+"뭐가나오나 ?");
+		
 		
 		bonusVO.setDocumentId(approvalVO.getDocumentId());
 		bonusVO.setDate(DateManager.getTodayDate());
 		
 		result = documentDAO.bonusResultUpdate(bonusVO);
+		documentVO.setId(bonusVO.getDocumentId());
+		
+		List<DocumentVO> ar = documentDAO.getDetail(documentVO);
+		
+		
+		
+		
+		if(documentVO.getStatus()=="1") {
+		noticer.sendNotice("완료", approvalVO.getDocumentId()+"", NotificationType.Document,List.of(ar.get(0).getWriterId()));
+		}	
 		
 		return result;
 	}
 	
-	public int refuseUpdate(ApprovalVO approvalVO)throws Exception{
+	public int refuseUpdate(ApprovalVO approvalVO,DocumentVO documentVO)throws Exception{
 		int result = documentDAO.refuseUpdate(approvalVO);
 			result = documentDAO.statusRefuse(approvalVO);
+			
+			documentVO.setId(approvalVO.getDocumentId());
+			
+			List<DocumentVO> ar = documentDAO.getDetail(documentVO);
+			
+			noticer.sendNotice("반려", approvalVO.getDocumentId()+"", NotificationType.Document,List.of(ar.get(0).getWriterId()));
+			
 		return result;
 	}
 }

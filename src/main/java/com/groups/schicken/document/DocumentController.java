@@ -25,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.common.vo.Pager;
+import com.groups.schicken.notification.Noticer;
+import com.groups.schicken.notification.NotificationType;
 
 
 
@@ -32,7 +34,8 @@ import com.groups.schicken.common.vo.Pager;
 @RequestMapping("/document/*")
 @Slf4j
 public class DocumentController {
-	
+	@Autowired
+	private Noticer noticer;
 	@Autowired
 	private DocumentService documentService;
 	
@@ -72,14 +75,16 @@ public class DocumentController {
 	@PostMapping("document/approvalUpdate")
 	public ResponseEntity<Integer> approvalUpdate(ApprovalVO approvalVO)throws Exception{
 		BonusVO bonusVO = new BonusVO();
-		int result = documentService.resultUpdate(approvalVO,bonusVO);
+		DocumentVO documentVO = new DocumentVO();
+		int result = documentService.resultUpdate(approvalVO,bonusVO,documentVO);
 		
 		return ResponseEntity.ok(result);
 	}
 	
 	@PostMapping("document/refuseUpdate")
 	public ResponseEntity<Integer> refuseUpdate(ApprovalVO approvalVO)throws Exception{
-		int result = documentService.refuseUpdate(approvalVO);
+		DocumentVO documentVO = new DocumentVO();
+		int result = documentService.refuseUpdate(approvalVO,documentVO);
 		
 		return ResponseEntity.ok(result);
 	}
@@ -88,6 +93,7 @@ public class DocumentController {
 	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO,Model model,Pager pager)throws Exception{
 		
 		List<DocumentVO> ar = documentService.approvalList(employeeVO,pager);
+		System.out.println(ar.get(0)+"123");
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
 		System.out.println(pager);
@@ -231,13 +237,16 @@ public class DocumentController {
 			for(int j = 0 ; j < ar.get(i).getApprovalVOs().size() ; j++) {
 				if(ar.get(i).getApprovalVOs().get(j).getResult() !=2) {
 					
-			result +=ar.get(i).getApprovalVOs().get(j).getResult();
+				result +=ar.get(i).getApprovalVOs().get(j).getResult();
 				}else {
 				result +=ar.get(i).getApprovalVOs().get(j).getResult()-1;
 				}
 			}
 		}
 		System.out.println(result);
+		if(ar.get(result) != null) {
+			noticer.sendNotice("결재바람", ar.get(0).getId()+"", NotificationType.Document, List.of(ar.get(result).getApprovalVOs().get(0).getEmployeeId()+""));
+		}
 		System.out.println(ar.get(0));
 		System.out.println(ar.get(1));
 		model.addAttribute("nowCount", result);
@@ -477,14 +486,14 @@ public class DocumentController {
 		    longRankArray[i] = Long.parseLong(rankArray[i]);
 		    longIdsArray[i] = Long.parseLong(idsArray[i]);
 		    longResultArray[i] = Integer.parseInt(resultArray[i]);
-		    
 		    approvalVO.setRank(longRankArray[i]);
 		    approvalVO.setEmployeeId(longIdsArray[i]);
 		    approvalVO.setResult(longResultArray[i]);		    
 		    
+		    
 		    result = documentService.appAdd(approvalVO);
 		}
-		
+		noticer.sendNotice("빨리해 임마",approvalVO.getDocumentId()+"",NotificationType.Document,List.of(idsArray[1]));
 
 		return ResponseEntity.ok(documentVO);
 	}

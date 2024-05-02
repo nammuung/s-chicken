@@ -107,7 +107,6 @@ public class RepresentService implements BoardService {
 				
 	}
 
-
 	@Override
 	public List<BoardVO> pastPage(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
@@ -146,8 +145,7 @@ public class RepresentService implements BoardService {
 		if(result1) {
 			int intresult=1;
 			result = intresult;
-		}
-		
+		}	
 		
 		return result;
 	}
