@@ -17,14 +17,16 @@ let options = {
 
 const infinityScrollObserver = new IntersectionObserver(scrollPagingObserveCallback, options);
 function scrollPagingObserveCallback(entries, observer) {
-    entries.forEach(async (entry) => {
+    entries.forEach((entry) => {
         if (entry.isIntersecting) {
             observer.unobserve(entry.target);
+
             let direction = entry.target.dataset.direction;
             let tempHeight = chattingSpace.scrollHeight + 1;
 
-            getChatting(entry.target.dataset.sendDate, direction).then(() => {
-                if(direction === 'up') chattingSpace.scrollTop = chattingSpace.scrollHeight - tempHeight;
+            getChatting(entry.target.dataset.sendDate, direction).then(chattings => {
+                    if(direction === 'up') chattingSpace.scrollTop = chattingSpace.scrollHeight - tempHeight;
+                    observeUpAndDown({direction, isEnd: chattings.length < 10});
                 }
             );
         }
@@ -106,6 +108,8 @@ async function setChatroom(targetId) {
         }
     });
 
+    beginChatting = document.querySelector("[data-chatting-profile]");
+
     observeUpAndDown();
 }
 
@@ -118,6 +122,7 @@ function observeUpAndDown(opt) {
         if ((opt == null) || (opt.direction === 'up' && !opt.isEnd)) {
             infinityScrollObserver.observe(chattings[0]);
         }
+
         if ((opt == null) || (opt.direction === 'down' && !opt.isEnd)) {
             infinityScrollObserver.observe(chattings[chattings.length - 1]);
         } else {
@@ -137,12 +142,12 @@ async function getChatting(from, direction) {
             } else if (direction === 'down') {
                 chattings.forEach(chatting => appendChatting(chatting));
             }
-            observeUpAndDown({direction, isEnd: chattings.length < 10});
+            return chattings;
         });
 }
 
 function prependChatting(data) {
-    if (beginChatting == null || beginChatting.dataset.senderId !== data.senderId) {
+    if (beginChatting == null || beginChatting.dataset.senderId !== data.senderId || (beginChatting.dataset.senderId === data.senderId && isDiffMinute(beginChatting.dataset.sendProfileDate, data.sendDate))) {
         beginChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
         chattingSpace.prepend(beginChatting);
     }
@@ -155,7 +160,7 @@ function prependChatting(data) {
 }
 
 function appendChatting(data) {
-    if (lastChatting == null || lastChatting.dataset.senderId !== data.senderId) {
+    if (lastChatting == null || lastChatting.dataset.senderId !== data.senderId || (lastChatting.dataset.senderId === data.senderId && isDiffMinute(lastChatting.dataset.sendProfileDate, data.sendDate))) {
         lastChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
         chattingSpace.append(lastChatting);
     }
@@ -164,13 +169,26 @@ function appendChatting(data) {
     const created = createChattingMessage(data.content, data.sendDate, data.senderId);
     messageSpace.append(created);
 
-    if(downEnd) chattingSpace.scrollTop = chattingSpace.scrollHeight;
     return created;
+}
+
+function isDiffMinute(date1, date2){
+    return date1.substring(0, 12) !== date2.substring(0, 12);
+}
+
+function onGetChatting(data){
+    const created = appendChatting(data);
+
+    if(downEnd) {
+        chattingSpace.scrollTop = chattingSpace.scrollHeight;
+        downEndObserver.disconnect();
+        downEndObserver.observe(created);
+    }
 }
 
 function createChattingProfile(data, sendDate) {
     console.log("data : ", data);
-    let div = makeElement("div", {className: ["chatting", "d-flex", "mt-2", "ms-1"], dataset: {"senderId": data.id}});
+    let div = makeElement("div", {className: ["chatting", "d-flex", "mt-2", "ms-1"], dataset: {"senderId": data.id, "sendProfileDate" : sendDate, "chattingProfile":""}});
     let div2 = makeElement("div", {className: ["chatting-profile-img"]});
 
     let imgOption = {
@@ -274,7 +292,7 @@ function onSendMessageBtnClick() {
     chattingArea.value = "";
 }
 
-setWhenReceiveMessage(appendChatting);
+setWhenReceiveMessage(onGetChatting);
 
 sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
 document.querySelector("a[data-profile-type=chatting]").addEventListener("click", event => openChatting(event, 'one'))
