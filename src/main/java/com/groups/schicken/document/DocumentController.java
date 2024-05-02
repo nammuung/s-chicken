@@ -149,7 +149,7 @@ public class DocumentController {
 	}
 	
 	
-	
+	//상여금 신청서
 	@GetMapping("exList/bonus")
 	public void sang(@AuthenticationPrincipal EmployeeVO employeeVO,Model model,SaveAppVO saveAppVO) throws Exception {
 		
@@ -162,6 +162,19 @@ public class DocumentController {
 		model.addAttribute("title", ar);		
 		
 	}
+	//휴가계획서
+	@GetMapping("exList/vacation")
+	public void vacation(@AuthenticationPrincipal EmployeeVO employeeVO,Model model,SaveAppVO saveAppVO)throws Exception{
+		employeeVO = documentService.getEx(employeeVO);
+		
+		model.addAttribute("list", employeeVO);
+		
+		List<SaveAppVO> ar = documentService.getTitle(employeeVO);
+		
+		model.addAttribute("title", ar);
+		
+	}
+	
 	
 	//임시저장 문서 열기
 	@GetMapping("temp/temp")
@@ -210,6 +223,29 @@ public class DocumentController {
 	
 	@GetMapping("writenList/writenBonus")
 	public void writenBonus(DocumentVO documentVO,Model model)throws Exception{
+		List<DocumentVO> ar=documentService.getDetail(documentVO);
+		
+		int result = 0;
+		for(int i =0 ; i<ar.size(); i++) {
+			
+			for(int j = 0 ; j < ar.get(i).getApprovalVOs().size() ; j++) {
+				if(ar.get(i).getApprovalVOs().get(j).getResult() !=2) {
+					
+			result +=ar.get(i).getApprovalVOs().get(j).getResult();
+				}else {
+				result +=ar.get(i).getApprovalVOs().get(j).getResult()-1;
+				}
+			}
+		}
+		System.out.println(result);
+		System.out.println(ar.get(0));
+		System.out.println(ar.get(1));
+		model.addAttribute("nowCount", result);
+		model.addAttribute("list", ar);
+	}
+	
+	@GetMapping("writenList/writenVacation")
+	public void writenVacation(DocumentVO documentVO,Model model)throws Exception{
 		List<DocumentVO> ar=documentService.getDetail(documentVO);
 		
 		int result = 0;
@@ -418,16 +454,16 @@ public class DocumentController {
 		documentVO.setCount(rankArray.length);
 		
 		int result = documentService.add(documentVO);
+		
 		String bonus = (String)map.get("bonus");
 		String bonusEmployeeId = (String)map.get("bunusEmployeeId");
-				
+		
+		if(bonus != null) {
 		bonusVO.setBonus(Long.parseLong(bonus));
 		bonusVO.setEmployeeId(Long.parseLong(bonusEmployeeId));
 		bonusVO.setDocumentId(documentVO.getId());
-		result = documentService.bonusAdd(bonusVO);
-		
-		
-		
+		result = documentService.bonusAdd(bonusVO);		
+		}
 		
 		approvalVO.setDocumentId(documentVO.getId());
 				

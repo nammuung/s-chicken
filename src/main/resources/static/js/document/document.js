@@ -34,7 +34,7 @@ function openretire() {
 }
 function openvaca() {
 	let options = screen();
-    let relativePath = '/js/document/vacation/휴가계획서.html'; // 문서의 상대 경로를 설정합니다.
+    let relativePath = '/document/exList/vacation'; // 문서의 상대 경로를 설정합니다.
 
     window.open(relativePath, '_blank', options);
 }

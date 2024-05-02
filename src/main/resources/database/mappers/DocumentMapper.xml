@@ -87,20 +87,16 @@
 		emp.name bonus_emp_name,
 		code.name bonus_code_name,
 		d.name department_name,
-		c.name code_name
-		
+		c.name code_name		
 		FROM document doc
 		inner JOIN template tem ON doc.template_id = tem.temp_id
 		inner JOIN approval app ON app.document_id = doc.id		
-		left JOIN employee e ON e.id=app.employee_id 
-		
+		left JOIN employee e ON e.id=app.employee_id 		
 		left JOIN bonus b ON b.document_id = doc.id
 		left JOIN employee emp ON b.employee_id = emp.id
-		left JOIN code code ON code.id=emp.pos_id and code.type_id=300
-		
+		left JOIN code code ON code.id=emp.pos_id and code.type_id=300		
 		LEFT JOIN department d on d.id=e.department_id 
-		LEFT JOIN code c on c.id=e.pos_id and c.type_id =300
-		
+		LEFT JOIN code c on c.id=e.pos_id and c.type_id =300		
 		WHERE doc.id=#{id} 
 		ORDER BY app.rank
 	</select>
@@ -214,7 +210,7 @@
 			SELECT nextval(seq3)
 		</selectKey>
 		INSERT INTO document
-		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writerId},#{temp},#{count})
+		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writerId},#{temp},#{count},#{vacSort})
 	</insert>
 	
 	<insert id="bonusAdd">

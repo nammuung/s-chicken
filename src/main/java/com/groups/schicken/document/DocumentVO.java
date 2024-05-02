@@ -24,6 +24,7 @@ public class DocumentVO {
 	private String writerId;
 	private int temp;
 	private int count;
+	private String vacSort;
 	
 	private TemplateVO templateVO;
 	private List<ApprovalVO> approvalVOs;
