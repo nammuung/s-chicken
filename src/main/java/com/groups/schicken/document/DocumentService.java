@@ -63,12 +63,13 @@ public class DocumentService {
 	
 	
 	
-	public List<DocumentVO> approvalList(EmployeeVO employeeVO,Pager pager)throws Exception{
+	public List<DocumentVO> approvalList(EmployeeVO employeeVO,Pager pager,DocumentVO documentVO)throws Exception{
 		
 		Map<String, Object> map = new HashMap<String,Object>();		
 				
 		map.put("employeeVO", employeeVO);
 		map.put("pager", pager);
+		map.put("documentVO", documentVO);
 		
 		pager.makeIndex();
 		pager.makeNum(documentDAO.allTotalCount(map)); 
@@ -98,9 +99,10 @@ public class DocumentService {
 	
 	public List<DocumentVO> tempList(EmployeeVO employeeVO,DocumentVO documentVO,TemplateVO templateVO,Pager pager)throws Exception{
 		Map<String, Object> map = new HashMap<String,Object>();
-
+		documentVO.setTemp(1);
 		map.put("documentVO", documentVO);
 		map.put("pager", pager);
+		
 		
 		pager.makeIndex();
 		pager.makeNum(documentDAO.allTotalCount(map));
@@ -166,7 +168,7 @@ public class DocumentService {
 		
 		List<DocumentVO> ar = documentDAO.getDetail(documentVO);		
 		
-		noticer.sendNotice("결재완료", approvalVO.getDocumentId()+"", NotificationType.Document,List.of(ar.get(0).getWriterId()));
+		noticer.sendNotice("결재완료", approvalVO.getDocumentId()+"", NotificationType.DocumentAccept,List.of(ar.get(0).getWriterId()));
 		}
 		
 		return result;
@@ -180,7 +182,7 @@ public class DocumentService {
 			
 			List<DocumentVO> ar = documentDAO.getDetail(documentVO);
 			
-			noticer.sendNotice("반려", approvalVO.getDocumentId()+"", NotificationType.Document,List.of(ar.get(0).getWriterId()));
+			noticer.sendNotice("반려", approvalVO.getDocumentId()+"", NotificationType.DocumentReject,List.of(ar.get(0).getWriterId()));
 			
 		return result;
 	}

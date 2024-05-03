@@ -91,8 +91,8 @@ public class DocumentController {
 	//결재함 리스트
 	@GetMapping("approvalList")
 	public void approval(@AuthenticationPrincipal EmployeeVO employeeVO,Model model,Pager pager)throws Exception{
-		
-		List<DocumentVO> ar = documentService.approvalList(employeeVO,pager);
+		DocumentVO documentVO = new DocumentVO();
+		List<DocumentVO> ar = documentService.approvalList(employeeVO,pager,documentVO);
 		System.out.println(ar.get(0)+"123");
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
@@ -438,7 +438,7 @@ public class DocumentController {
 		    result = documentService.tempToSangApp(approvalVO);
 		}
 		
-		noticer.sendNotice("빨리해 임마",approvalVO.getDocumentId()+"",NotificationType.Document,List.of(idsArray[1]));
+		noticer.sendNotice("결재 요망",approvalVO.getDocumentId()+"",NotificationType.Document,List.of(idsArray[1]));
 		
 		return ResponseEntity.ok(documentVO);
 	}
@@ -446,55 +446,63 @@ public class DocumentController {
 	@PostMapping("add")
 
 	public ResponseEntity<?> add(DocumentVO documentVO,@RequestParam HashMap<String,Object> map,TemplateVO templateVO)throws Exception{
-		ApprovalVO approvalVO = new ApprovalVO();
-		BonusVO bonusVO = new BonusVO();
 		
-		
-		String ranks = (String) map.get("rank");
-		String ids = (String)map.get("employeeId");
-		String results = (String)map.get("result");
-		String[] rankArray = ranks.split(",");
-		String[] idsArray = ids.split(",");
-		String[] resultArray= results.split(",");
-		String[] date = documentVO.getWriteDate().split(" ");
-		
-		
-		documentVO.setCount(rankArray.length);
-		
-		int result = documentService.add(documentVO);
-		
-		String bonus = (String)map.get("bonus");
-		String bonusEmployeeId = (String)map.get("bunusEmployeeId");
-		
-		if(bonus != null) {
-		bonusVO.setBonus(Long.parseLong(bonus));
-		bonusVO.setEmployeeId(Long.parseLong(bonusEmployeeId));
-		bonusVO.setDocumentId(documentVO.getId());
-		result = documentService.bonusAdd(bonusVO);		
+		try {
+			ApprovalVO approvalVO = new ApprovalVO();
+			BonusVO bonusVO = new BonusVO();
+			
+			
+			String ranks = (String) map.get("rank");
+			String ids = (String)map.get("employeeId");
+			String results = (String)map.get("result");
+			String[] rankArray = ranks.split(",");
+			String[] idsArray = ids.split(",");
+			String[] resultArray= results.split(",");
+			String[] date = documentVO.getWriteDate().split(" ");
+			
+			
+			documentVO.setCount(rankArray.length);
+			
+			int result = documentService.add(documentVO);
+			
+			String bonus = (String)map.get("bonus");
+			String bonusEmployeeId = (String)map.get("bunusEmployeeId");
+			
+			if(bonus != null) {
+			bonusVO.setBonus(Long.parseLong(bonus));
+			bonusVO.setEmployeeId(Long.parseLong(bonusEmployeeId));
+			bonusVO.setDocumentId(documentVO.getId());
+			result = documentService.bonusAdd(bonusVO);		
+			}
+			
+			approvalVO.setDocumentId(documentVO.getId());
+					
+			
+			Long[] longRankArray = new Long[rankArray.length];
+			Long[] longIdsArray = new Long[idsArray.length]; 
+			int[] longResultArray = new int[resultArray.length];
+
+			// 문자열 배열의 각 요소를 롱타입으로 변환하여 새롭게 생성한 롱타입 배열에 저장합니다.
+			for (int i = 0; i < rankArray.length; i++) {
+			    longRankArray[i] = Long.parseLong(rankArray[i]);
+			    longIdsArray[i] = Long.parseLong(idsArray[i]);
+			    longResultArray[i] = Integer.parseInt(resultArray[i]);
+			    approvalVO.setRank(longRankArray[i]);
+			    approvalVO.setEmployeeId(longIdsArray[i]);
+			    approvalVO.setResult(longResultArray[i]);		    
+			    
+			    
+			    result = documentService.appAdd(approvalVO);
+			}
+			noticer.sendNotice("결재 요망",approvalVO.getDocumentId()+"",NotificationType.Document,List.of(idsArray[1]));
+			return ResponseEntity.ok(documentVO);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().build();
 		}
 		
-		approvalVO.setDocumentId(documentVO.getId());
-				
+
 		
-		Long[] longRankArray = new Long[rankArray.length];
-		Long[] longIdsArray = new Long[idsArray.length]; 
-		int[] longResultArray = new int[resultArray.length];
-
-		// 문자열 배열의 각 요소를 롱타입으로 변환하여 새롭게 생성한 롱타입 배열에 저장합니다.
-		for (int i = 0; i < rankArray.length; i++) {
-		    longRankArray[i] = Long.parseLong(rankArray[i]);
-		    longIdsArray[i] = Long.parseLong(idsArray[i]);
-		    longResultArray[i] = Integer.parseInt(resultArray[i]);
-		    approvalVO.setRank(longRankArray[i]);
-		    approvalVO.setEmployeeId(longIdsArray[i]);
-		    approvalVO.setResult(longResultArray[i]);		    
-		    
-		    
-		    result = documentService.appAdd(approvalVO);
-		}
-		noticer.sendNotice("빨리해 임마",approvalVO.getDocumentId()+"",NotificationType.Document,List.of(idsArray[1]));
-
-		return ResponseEntity.ok(documentVO);
 	}
 	//나의 결재선 라인 저장하기
 	@PostMapping("document/tansferSave")

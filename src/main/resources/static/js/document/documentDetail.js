@@ -191,9 +191,13 @@ import oc from "/js/orgChart/orgChart.js";
 			method:"post",
 			body:formData,
 		}).then(r=>console.log(r))
-		.then(r=>{
-			alert("상신 되었습니다")
-			//window.close(relativePath);
+		.then((res)=>{
+			console.log(res)
+			if(res.status ==200) {
+				alert("상신 되었습니다")
+				window.close(relativePath);	
+			}
+			
 		})
 	})
 	

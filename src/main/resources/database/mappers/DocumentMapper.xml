@@ -104,7 +104,7 @@
 	<select id="nextRank">
 		select employee_id,document_id from approval a
 		WHERE document_id = #{documentId} and rank &gt; #{rank}
-		order by rank limit 1	
+		order by rank limit 1
 	</select>
 	
 	<!-- DepartmentVO department;
@@ -182,10 +182,20 @@
 		LIMIT #{pager.startIndex},#{pager.perPage}
 	</select>
 	
+		<sql id="tempCount">
+			<choose>
+				<when test="documentVO.temp !=null and documentVO.temp =1">
+					AND doc.temp=1
+				</when>
+			</choose>
+		</sql>
+	
 	<select id="allTotalCount" parameterType="Map" resultType="Long">
 		SELECT COUNT(id) FROM document doc
-		WHERE doc.writer_id=#{documentVO.writerId}	
+		WHERE doc.writer_id=#{documentVO.writerId} <include refid="tempCount"/>
 	</select>
+
+
 	
 	<select id="allList" resultMap="allListResult">
 		SELECT doc.*,

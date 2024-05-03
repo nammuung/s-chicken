@@ -39,6 +39,7 @@ public interface DocumentDAO {
 	int appSave(SaveAppVO appVO)throws Exception;
 	
 	Long allTotalCount(Map<String, Object> map)throws Exception;
+	Long tempTotalCount(Map<String, Object>map)throws Exception;
 	
 	
 	
