@@ -38,7 +38,21 @@
 
 
 <select id="detail"  parameterType="CalendarVO" resultType="CalendarVO">
-    select * from calendar where calendar.id =#{id}
+select  
+calendar.id,
+calendar.start,
+calendar.`end`,
+calendar.title,
+calendar.content,
+calendar.share,
+e.name ,
+d.name AS depname,
+c.name AS cname
+from calendar
+inner join employee e on calendar.share  = e.id 
+inner join department d on e.department_id = d.id 
+inner join code c on e.pos_id = c.id AND c.type_id = 300
+where calendar.id = #{id}
 </select>
 
 
@@ -99,6 +113,18 @@ where e.id != #{share}
 		end = #{end}
 		where id = #{id}
 	</update>
+
+
+<update id="calendarDelete" parameterType="CalendarVO">
+update calendar_emp SET 
+user_yn = #{userYn}
+where calendar_id =#{calendarId} and employee_id =#{employeeId}
+ </update>
+
+
+<delete id="deleteEmp" parameterType="CalendarVO">
+delete from calendar_emp where calendar_id= #{calendarId} and employee_id = #{employeeId}
+</delete>
 
 
 

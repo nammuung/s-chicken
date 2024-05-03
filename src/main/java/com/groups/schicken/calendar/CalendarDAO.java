@@ -21,5 +21,5 @@ public interface CalendarDAO {
 	public List<CalendarVO> depList(CalendarVO calendarVO)throws Exception;
 	public void depDelte(String employeeId);
 	public CalendarVO detail(CalendarVO calendarVO)throws Exception;
-	
+	public int calendarDelete(CalendarVO calendarVO)throws Exception;
 }

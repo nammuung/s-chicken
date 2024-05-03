@@ -142,6 +142,13 @@ public class MainController {
     }
     
     
+    @PostMapping("calendarDelete")
+    @ResponseBody
+    public String calendarDelete (@RequestBody CalendarVO calendarVO)throws Exception{
+    	calendarService.calendarDelete(calendarVO);
+    	return "성공";
+    }
+    
 
 
     

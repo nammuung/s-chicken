@@ -99,5 +99,10 @@ public class CalendarService {
 		 return calendarDAO.detail(calendarVO);
 	 }
 	 
-	
+	public int calendarDelete (CalendarVO calendarVO)throws Exception{
+		return calendarDAO.calendarDelete(calendarVO);
+	}
+	 
+	 
+	 
 }
