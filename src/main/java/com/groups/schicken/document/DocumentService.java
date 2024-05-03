@@ -148,26 +148,26 @@ public class DocumentService {
 	
 
 	public int resultUpdate(ApprovalVO approvalVO,BonusVO bonusVO,DocumentVO documentVO)throws Exception{
-		int result = documentDAO.resultUpdate(approvalVO);		
+		int result = documentDAO.resultUpdate(approvalVO);
+		if(result == 1) {
+			ApprovalVO app2 = new ApprovalVO();
+			app2 = documentDAO.nextRank(approvalVO);
+			if(app2 !=null) {
+			noticer.sendNotice("결재요망",app2.getDocumentId()+"",NotificationType.Document,List.of(app2.getEmployeeId()+""));
+			}
+		}
 		result = documentDAO.statusUpdate(approvalVO);
-		
-		System.out.println(result+"뭐가나오나 ?");
-		
-		
+		System.out.println(DateManager.getTodayDate());
+		if(result == 1) {
 		bonusVO.setDocumentId(approvalVO.getDocumentId());
 		bonusVO.setDate(DateManager.getTodayDate());
-		
 		result = documentDAO.bonusResultUpdate(bonusVO);
 		documentVO.setId(bonusVO.getDocumentId());
 		
-		List<DocumentVO> ar = documentDAO.getDetail(documentVO);
+		List<DocumentVO> ar = documentDAO.getDetail(documentVO);		
 		
-		
-		
-		
-		if(documentVO.getStatus()=="1") {
-		noticer.sendNotice("완료", approvalVO.getDocumentId()+"", NotificationType.Document,List.of(ar.get(0).getWriterId()));
-		}	
+		noticer.sendNotice("결재완료", approvalVO.getDocumentId()+"", NotificationType.Document,List.of(ar.get(0).getWriterId()));
+		}
 		
 		return result;
 	}

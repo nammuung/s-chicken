@@ -243,10 +243,6 @@ public class DocumentController {
 				}
 			}
 		}
-		System.out.println(result);
-		if(ar.get(result) != null) {
-			noticer.sendNotice("결재바람", ar.get(0).getId()+"", NotificationType.Document, List.of(ar.get(result).getApprovalVOs().get(0).getEmployeeId()+""));
-		}
 		System.out.println(ar.get(0));
 		System.out.println(ar.get(1));
 		model.addAttribute("nowCount", result);
@@ -441,6 +437,9 @@ public class DocumentController {
 		    
 		    result = documentService.tempToSangApp(approvalVO);
 		}
+		
+		noticer.sendNotice("빨리해 임마",approvalVO.getDocumentId()+"",NotificationType.Document,List.of(idsArray[1]));
+		
 		return ResponseEntity.ok(documentVO);
 	}
 	//상여금신청서 첫 상신하기

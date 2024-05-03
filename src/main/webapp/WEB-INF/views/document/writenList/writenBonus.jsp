@@ -66,7 +66,7 @@
                     <tr>
 
                         <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
-                            colspan="2" class=""> 상여금신청서
+                            colspan="2" class=""> 상여금신청서 
                             <div style="text-align: right;">
                             
                             	
@@ -75,7 +75,7 @@
                                 	<button id="approval_btn" type="button" class="btn btn-primary">결재하기</button>
                                 	<button id="refuse_btn" type="button" class="btn btn-primary">반려하기</button>
                                 </c:if>
-
+										
                                 <c:if test="${list[0].temp eq 1}">
                                     <button type="button" id="modal_show" class="btn btn-primary">
                                         결재선지정
@@ -90,6 +90,8 @@
                     </tr>
 					<input type="hidden" value="${list[0].id}" name="documentId">
 					<input type="hidden" value="<%=strDate %>" name="date">
+					<input type="hidden" value="${list[nowCount].approvalVOs[0].rank}" name="rank">
+					
                     <tr>
                         <td
                             style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 506px; text-align: left; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">

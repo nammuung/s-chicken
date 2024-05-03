@@ -101,8 +101,11 @@
 		ORDER BY app.rank
 	</select>
 	
-	
-	
+	<select id="nextRank">
+		select employee_id,document_id from approval a
+		WHERE document_id = #{documentId} and rank &gt; #{rank}
+		order by rank limit 1	
+	</select>
 	
 	<!-- DepartmentVO department;
 		CodeVO position; -->
@@ -123,7 +126,7 @@
 		UPDATE bonus
 		INNER JOIN document d ON d.id = bonus.document_id
 		set date=#{date}		
-		WHERE d.status=1
+		WHERE d.status=1 AND d.id=#{documentId}
 	</update>
 	
 	<update id="refuseUpdate">

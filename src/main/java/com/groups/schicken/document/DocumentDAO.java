@@ -51,9 +51,11 @@ public interface DocumentDAO {
 	
 	List<DocumentVO> approvalDetail(DocumentVO documentVO)throws Exception;
 	
+	//상신 결재 업데이트
 	int resultUpdate(ApprovalVO approvalVO)throws Exception;
 	int statusUpdate(ApprovalVO approvalVO)throws Exception;
 	int bonusResultUpdate(BonusVO bonusVO)throws Exception;
+	ApprovalVO nextRank(ApprovalVO approvalVO)throws Exception;
 	
 	//반려 업데이트
 	int refuseUpdate(ApprovalVO approvalVO)throws Exception;

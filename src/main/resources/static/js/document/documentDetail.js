@@ -176,7 +176,8 @@ import oc from "/js/orgChart/orgChart.js";
 			return
 		}		
 		
-		if(employeeArr[1]===""){
+		
+		if(employeeArr[1]==undefined){
 			alert("결재자는 1명이상 입니다")
 			return
 		}
