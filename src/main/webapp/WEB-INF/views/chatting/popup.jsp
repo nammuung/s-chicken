@@ -131,6 +131,7 @@
 
                 <div class="input-group" style="height: 83px">
                     <textarea id="chatting-area" class="form-control" style="height: 100%;" maxlength="300"></textarea>
+                    <div class="d-none" id="hidden-chatting-area"></div>
                     <button id="send-message-btn" class="btn btn-primary"><i class="far fa-paper-plane"></i></button>
                 </div>
             </section>

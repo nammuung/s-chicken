@@ -2,6 +2,7 @@ import {setWhenReceiveMessage, sendMessage} from '/js/chatting/chatting.js';
 
 const chattingSpace = document.getElementById("chatting-space");
 const chattingArea = document.getElementById("chatting-area");
+const hiddenChattingArea = document.getElementById("hidden-chatting-area");
 const sendMessageBtn = document.getElementById("send-message-btn");
 const chatroomListBtn = document.getElementById("chatroom-list-btn");
 const chatroomListSpace = document.getElementById("chatroom-list-space");
@@ -395,12 +396,13 @@ function onSendMessageBtnClick() {
         chatroomId: nowOpenPage,
         type: "Message",
         pageType: nowPageType,
-        content: chatMsg
+        content: chatMsg.trim()
     };
 
     sendMessage(data);
 
     chattingArea.value = "";
+    chattingArea.focus();
 }
 
 function getChatroomList(){
@@ -413,11 +415,22 @@ function getChatroomList(){
         });
 }
 
+function getInputKey(event){
+    if(event.key === 'Enter') {
+        if (!event.shiftKey) {
+            if(event.target.value.trim() === '') return;
+            onSendMessageBtnClick();
+        }
+    }
+}
+
+
 setWhenReceiveMessage(onGetChatting);
 
 sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
 chatroomListBtn.addEventListener("click", getChatroomList);
 chatroomListSpace.addEventListener("click", (event) => openChatting(event))
+chattingArea.addEventListener("keyup", getInputKey);
 document.querySelector("a[data-profile-type=chatting]").addEventListener("click", event => openChatting(event, 'One'))
 document.getElementById("employee-list-btn").addEventListener("click", event => pageChange(event.target))
 document.getElementById("chatroom-list-btn").addEventListener("click", event => pageChange(event.target))
