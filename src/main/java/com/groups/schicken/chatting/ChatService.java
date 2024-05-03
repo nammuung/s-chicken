@@ -145,11 +145,17 @@ public class ChatService {
     }
 
     /**
-     * 메세지를 DB에 Insert
+     * 메세지를 DB에 Insert 후 해당 채팅을 읽음으로 표시
      */
+    @Transactional
     public Boolean insertMessage(ChatMessage message) {
         int result = chatDAO.insertChat(message);
-        return result == 1;
+
+        if (result == 1){
+            result += chatDAO.updateLastRead(message.getSendDate(), message.getChatroomId(), message.getSenderId());
+        }
+
+        return result >= 1;
     }
 
     private String makeOneChatroomId(List<String> list) {

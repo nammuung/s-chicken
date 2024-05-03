@@ -23,7 +23,7 @@ public interface ChatDAO {
 
     ChattingVO getChatroomData(String employeeId, String chatroomId);
 
-    void updateLastRead(String sendDate, String chatroomId, String employeeId);
+    int updateLastRead(String sendDate, String chatroomId, String employeeId);
 
     List<ChatMessage> getChatMessageDataFirst(String chatroomId, String lastReadTime, String page);
 
