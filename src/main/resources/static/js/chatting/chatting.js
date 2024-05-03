@@ -6,13 +6,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     const chatrooms = await fetch('/chatrooms/list').then(res => res.json());
     mapping('chat/' + loginedId, data => getMessage(data));
     chatrooms.forEach(chatroom => {
-        if (chatroom.type === 'many') mapping('chat/' + chatroom.id, data => getMessage(data));
+        if (chatroom.type === 'Many') mapping('chat/' + chatroom.id, data => getMessage(data));
     });
 })
 
 export function sendMessage(data) {
     data.senderId = loginedId;
-    send(`chat/${data.pageType}/${data.chatroomId}`, data);
+    send(`chat/${data.pageType.toLowerCase()}/${data.chatroomId}`, data);
 }
 
 export function setWhenReceiveMessage(callback) {

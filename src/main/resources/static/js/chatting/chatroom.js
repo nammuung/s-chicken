@@ -4,6 +4,7 @@ const chattingSpace = document.getElementById("chatting-space");
 const chattingArea = document.getElementById("chatting-area");
 const sendMessageBtn = document.getElementById("send-message-btn");
 const chatroomListBtn = document.getElementById("chatroom-list-btn");
+const chatroomListSpace = document.getElementById("chatroom-list-space");
 const loginedId = document.querySelector("[data-logined-id]")?.dataset.loginedId;
 
 let memberData = {};
@@ -70,11 +71,25 @@ document.querySelectorAll("[data-element-id=search-input]").forEach(el => el.add
 )
 
 function openChatting(event, type) {
+    const info = event.target.dataset.chatroomInfo;
+    if(info == null){
+        event.target.parentElement.click();
+    }
+
     const targetId = event.target.dataset.targetId;
     if (loginedId === targetId) {
         alert("자기자신과는 채팅 할 수 없습니다.")
         return;
     }
+
+    if(type == null){
+        type = event.target.dataset.chatroomType;
+        if(type == null){
+            return;
+        }
+    }
+
+    console.log(targetId, type);
 
     pageChange();
     namecardModal.hide();
@@ -94,8 +109,8 @@ function openChatting(event, type) {
 async function setChatroom(targetId) {
 
     let option = {
-        'one': `/one/${targetId}`,
-        'many': `/many/${targetId}`
+        'One': `/one/${targetId}`,
+        'Many': `/many/${targetId}`
     }[nowPageType];
 
     if (option == null) return;
@@ -143,7 +158,7 @@ function observeUpAndDown(opt) {
 }
 
 async function getChatting(from, direction) {
-    let option = nowPageType === 'one' ? [loginedId, nowOpenPage].sort().join("") : nowOpenPage
+    let option = nowPageType === 'One' ? [loginedId, nowOpenPage].sort().join("") : nowOpenPage
 
     return fetch(`/chatrooms/chattings/${option}?from=${from}&direction=${direction}`)
         .then(res => res.json())
@@ -236,6 +251,10 @@ function createChattingProfile(data, sendDate) {
 }
 
 function chatDateFormat(date) {
+    if(date == null || date == ""){
+        return "";
+    }
+
     let year = date.substring(0, 4);
     let month = date.substring(4, 6);
     let day = date.substring(6, 8);
@@ -245,7 +264,7 @@ function chatDateFormat(date) {
 
     if (Number(hour) >= 12) {
         afternoon = "오후";
-        hour = Number(hour) % 12 + 1;
+        hour = Number(hour) % 13 + 1;
     } else {
         afternoon = "오전";
     }
@@ -282,17 +301,19 @@ function makeElement(tagName, {className, option, dataset} = {}) {
 }
 
 function drawChatroomList(data){
-    if(data.lastMessage == null){
-        data.lastMessage = {
-            content : "",
-            sendDate : "",
-            isEmpty : true
-        }
-    }
-
-    let div = makeElement("div", {className : ["d-flex","p-2","aaa"], dataset : {"chatroomId": data.id}});
+    let div = makeElement("div", {
+        className : ["d-flex","p-2","aaa"],
+        dataset : {"targetId": getTargetIdByMembers(data.members, data.id, data.type), "chatroomInfo" : "", "chatroomType" : data.type}
+    });
     let imgDiv = makeElement("div");
-    let img = makeElement("img", {option : {"width" :"50", "height" : "50", "style" : "border-radius: 20%", "src" : data.profileURL}})
+    let img = makeElement("img", {
+        option : {
+            "width" :"50",
+            "height" : "50",
+            "style" : "border-radius: 20%",
+            "src" : getProfileImgByMembers(data.members, data.type)
+        }
+    })
 
     imgDiv.append(img);
 
@@ -300,19 +321,21 @@ function drawChatroomList(data){
     let titleH5 = makeElement("h5");
     titleH5.innerText = data.name;
     let recentMessageDiv = makeElement("div");
-    recentMessageDiv.innerText = data.lastMessage.content;
+    recentMessageDiv.innerText = reduceChatroomListContent(data.lastMessage.content);
 
     chatroomDiv.append(titleH5, recentMessageDiv);
 
     let infoDiv = makeElement("div", {className: ["ms-auto", "pe-2"]});
     let timeDiv = makeElement("div", {className: ["small"]});
-    timeDiv.innerText = data.lastMessage.sendDate;
+    timeDiv.innerText = chatDateFormat(data.lastMessage.sendDate);
 
     infoDiv.append(timeDiv);
 
-    if(!data.lastMessage.isEmpty) {
+    if(data.noReadCount != null && data.noReadCount > 0) {
         let counterEndDiv = makeElement("div", {className:["text-end"]});
         let counterDiv = makeElement("div", {className: ["small", "bg-danger", "text-white", "d-inline-block", "recent-message-counter"]})
+
+        counterDiv.innerText = data.noReadCount;
 
         counterEndDiv.append(counterDiv);
         infoDiv.append(counterEndDiv);
@@ -321,6 +344,38 @@ function drawChatroomList(data){
     div.append(imgDiv, chatroomDiv, infoDiv);
 
     return div;
+}
+
+function getTargetIdByMembers(members, chatroomId, type){
+    if(type === 'Many') return chatroomId;
+
+    for (let member of members) {
+        if(member.id !== loginedId){
+            return member.id;
+        }
+    }
+
+    return null;
+}
+
+function getProfileImgByMembers(members, type){
+    if(type === 'One'){
+        for (let member of members) {
+            if(member.id !== loginedId){
+                return member.profileImg;
+            }
+        }
+    }
+
+    return "/img/기본.jpg"
+}
+
+function reduceChatroomListContent(content){
+    if(content.length < 14){
+        return content;
+    }
+
+    return content.substring(0, 14) + "...";
 }
 
 function pageChange(to) {
@@ -351,13 +406,18 @@ function onSendMessageBtnClick() {
 function getChatroomList(){
     fetch('/chatrooms/list')
         .then(res=>res.json())
-        .then(r=>console.log(r));
+        .then(r=>{
+            chatroomListSpace.innerHTML = "";
+            let elements = r.map(el=>drawChatroomList(el));
+            chatroomListSpace.append(...elements);
+        });
 }
 
 setWhenReceiveMessage(onGetChatting);
 
 sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
 chatroomListBtn.addEventListener("click", getChatroomList);
-document.querySelector("a[data-profile-type=chatting]").addEventListener("click", event => openChatting(event, 'one'))
+chatroomListSpace.addEventListener("click", (event) => openChatting(event))
+document.querySelector("a[data-profile-type=chatting]").addEventListener("click", event => openChatting(event, 'One'))
 document.getElementById("employee-list-btn").addEventListener("click", event => pageChange(event.target))
 document.getElementById("chatroom-list-btn").addEventListener("click", event => pageChange(event.target))

@@ -147,7 +147,7 @@
                         <h4 data-profile-type="departmentName" class="card-subtitle mb-2 text-muted"></h4>
                         <h2 data-profile-type="name" class="card-title"></h2>
                         <h4 data-profile-type="phoneNumber" class="card-text"></h4>
-                        <a data-profile-type="chatting" href="#" class="btn btn-primary w-50">채팅하기</a>
+                        <a data-chatroom-info data-profile-type="chatting" href="#" class="btn btn-primary w-50">채팅하기</a>
                     </div>
                 </div>
             </div>

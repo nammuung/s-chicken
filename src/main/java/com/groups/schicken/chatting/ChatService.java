@@ -82,6 +82,7 @@ public class ChatService {
      * @return DB에 insert가 성공시 true 그렇지 않으면 false
      */
     public Boolean joinChatroom(String id, ChatroomVO chatroom) {
+        chatroom.setJoinDate(DateManager.getTodayDateTime("yyyyMMddHHmmssSSS"));
         int result = chatDAO.joinChatroom(id, chatroom);
         return result == 1;
     }

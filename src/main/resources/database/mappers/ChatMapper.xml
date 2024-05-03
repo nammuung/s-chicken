@@ -25,7 +25,14 @@
             , NVL(cm.room_name, cr.default_name) AS "name"
             , cr.type
             , e.id AS "employee_id"
-            , IF(cr.type='One', a.url , '/img/단체.png')  AS "profileURL"
+            , e.name AS "employee_name"
+            , a.url  AS "profile_img"
+            , ( SELECT count(cmg.id)
+                FROM chat_message cmg
+                WHERE
+                         cr.id = chatroom_id
+                    AND (cm.employee_id=#{id} AND NVL(cm.last_read_time,cm.join_date)&lt;cmg.send_date)
+                ) AS "no_read_count"
         FROM chatroom cr
             INNER JOIN chat_member cm ON cr.id = cm.chatroom_id
             INNER JOIN employee e ON e.id = cm.employee_id
@@ -35,12 +42,15 @@
             FROM chatroom
                 INNER JOIN chat_member ON id=chatroom_id
             WHERE employee_id=#{id})
+        ORDER BY IF(cm.employee_id = #{id} , 1 , 2)
     </select>
 
     <resultMap id="chatroomListResult" type="ChatroomVO" autoMapping="true">
         <id column="id" property="id"/>
         <collection property="members" javaType="List" ofType="EmployeeProfileVO">
             <id column="employee_id" property="id"/>
+            <result column="employee_name" property="name"/>
+            <result column="profile_img" property="profileImg"/>
         </collection>
     </resultMap>
 
@@ -107,7 +117,10 @@
             FROM chat_message
             WHERE chatroom_id=#{chatroomId}) cm
         <if test="lastReadTime != null">
-            WHERE rn &lt;=<include refid="getLastReadRowNum"/>
+        WHERE rn &lt;=<include refid="getLastReadRowNum"/>
+        </if>
+        <if test="lastReadTime == null">
+        WHERE rn &lt;=20
         </if>
         ORDER BY send_date DESC
         LIMIT 20
@@ -133,8 +146,8 @@
     </insert>
 
     <insert id="joinChatroom">
-        INSERT INTO chat_member(chatroom_id, employee_id, room_name)
-        VALUES (#{chatroom.id}, #{id}, #{chatroom.name})
+        INSERT INTO chat_member(chatroom_id, employee_id, room_name, join_date)
+        VALUES (#{chatroom.id}, #{id}, #{chatroom.name}, #{chatroom.joinDate})
     </insert>
 
     <insert id="insertChat">
