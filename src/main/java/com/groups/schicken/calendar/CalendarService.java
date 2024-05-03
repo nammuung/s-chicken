@@ -93,6 +93,9 @@ public class CalendarService {
 	 public List<CalendarVO> getList(CalendarVO calendarVO)throws Exception{
 		 return calendarDAO.calList(calendarVO);
 	 }
+	 public List<CalendarVO> share(CalendarVO calendarVO)throws Exception{
+		 return calendarDAO.share(calendarVO);
+	 } 
 	 
 	
 	 public CalendarVO detail (CalendarVO calendarVO)throws Exception{

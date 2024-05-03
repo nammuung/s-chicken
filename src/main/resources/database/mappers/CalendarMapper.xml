@@ -60,23 +60,14 @@ where calendar.id = #{id}
 
 
 	<select id="calList" parameterType="CalendarVO" resultType="CalendarVO">
-		select
-		calendar.id ,
-		calendar.`start` ,
-		calendar.`end` ,
-		calendar.title ,
-		ce.user_yn,
-		calendar.content ,
-		calendar.share,
-		ce.employee_id,
-		e.name
-		from calendar
-		inner join calendar_emp ce
-		on calendar.id = ce.calendar_id
-		inner join employee e
-		on ce.employee_id = e.id
-		inner join department d
-		on e.department_id = d.id
+		select * from calendar c 
+		inner join calendar_emp ce on c.id = ce.calendar_id 
+		where ce.employee_id =#{employeeId} and ce.user_yn =  1 and share = #{share}
+	</select>
+	<select id="share" parameterType="CalendarVO" resultType="CalendarVO">
+		select * from calendar c 
+		inner join calendar_emp ce on c.id = ce.calendar_id 
+		where ce.employee_id =#{employeeId} and ce.user_yn =  1 and share != #{share}
 	</select>
 
 

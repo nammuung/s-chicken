@@ -70,7 +70,17 @@
                 console.log(obj)
                 console.log("클릭임");
                 console.log(obj.event.start);
-                console.log(obj.event.end);
+
+                // 이벤트가 공휴일이면 처리 중지
+                if (obj.event.id.toString().length > 10) {
+                obj.jsEvent.preventDefault();
+                    console.log("공휴일 클릭: 이벤트 처리 중지");
+					return;
+                    
+                    
+                    
+                }
+                
                 $.ajax({
                     url: '/detail',
                     type: 'GET',
@@ -222,7 +232,33 @@
             });
         });
         calendar.render();
+        $(document).ready(function () {
+            // 서버에서 데이터를 가져오는 AJAX 요청
+            $.ajax({
+                url: 'http://localhost/share',
+                type: 'GET',
+                success: function (data) {
+                    // 가져온 데이터를 풀캘린더에 추가
+                    data.forEach(function (eventData) {
+                        console.log(eventData.id + "LLLLL123123123");
+                        calendar.addEvent({
+                            id: eventData.id, // 이벤트 ID
+                            title: eventData.title, // 이벤트 제목
+                            start: eventData.start, // 이벤트 시작 날짜
+                            end: eventData.end,
+                            color: 'yellow'  // 이벤트 종료 날짜
+                            // 기타 이벤트 속성 등을 추가할 수 있습니다.
+                        });
+                    });
+                },
+                error: function (error) {
+                    console.error('데이터를 가져오는 데 실패했습니다:', error);
+                }
+            });
+        });
+        calendar.render();
     });
+    
 })();
 $(document).ready(function () {
     // 종일 체크박스 클릭 이벤트 처리

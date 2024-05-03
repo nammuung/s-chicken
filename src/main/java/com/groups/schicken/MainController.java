@@ -1,5 +1,6 @@
 package com.groups.schicken;
 
+import org.eclipse.tags.shaded.org.apache.bcel.generic.CALOAD;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -125,9 +126,25 @@ public class MainController {
     @GetMapping("list")
     @ResponseBody
     public List<CalendarVO> list (CalendarVO calendarVO)throws Exception{
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String id = authentication.getName();
+    	calendarVO.setEmployeeId(id);
+    	calendarVO.setShare(id);
     	List<CalendarVO> ar = calendarService.getList(calendarVO);
     	return ar;
     }
+    @GetMapping("share")
+    @ResponseBody
+    public List<CalendarVO> share (CalendarVO calendarVO)throws Exception{
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String id = authentication.getName();
+    	calendarVO.setEmployeeId(id);
+    	calendarVO.setShare(id);
+    	List<CalendarVO> ar = calendarService.share(calendarVO);
+    	return ar;
+    }
+    
+    
     
     @GetMapping("detail")
     @ResponseBody
