@@ -243,6 +243,37 @@
   cursor: pointer !important;
 }
 
+/*캘린더*/
+/* 일요일 날짜 빨간색 */
+.fc-day-sun a {
+  color: red;
+  text-decoration: none;
+  /* 밑줄 제거 */
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none;
+  /* 밑줄 제거 */
+}
+
+/* 월요일부터 금요일까지의 날짜 검정색 */
+.fc-day-mon a,
+.fc-day-tue a,
+.fc-day-wed a,
+.fc-day-thu a,
+.fc-day-fri a {
+  color: black;
+  text-decoration: none;
+  /* 밑줄 제거 */
+}
+
+#calendar {
+  height: 480px;
+  /* 원하는 높이로 조정 */
+}
+
 /* 쪽지관련 */
 
 .note-message-content .note-message-list > .list-group-item{

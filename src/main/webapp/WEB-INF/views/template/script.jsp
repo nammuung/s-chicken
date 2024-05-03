@@ -59,3 +59,9 @@
 <%--sortable--%>
 <script src="https://fastly.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script src="https://fastly.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
+
+<%--tagify--%>
+<script src="https://fastly.jsdelivr.net/npm/@yaireo/tagify"></script>
+
+<%--캘린더--%>
+<script src="fullcalendar/packages/google-calendar/index.global.js"></script>
