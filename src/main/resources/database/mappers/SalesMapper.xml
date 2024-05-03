@@ -5,14 +5,14 @@
 
 <mapper namespace="com.groups.schicken.franchise.sales.SalesMapper">
     <insert id="addSales">
-        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
-            SELECT nextval(seq1)
-        </selectKey>
-        INSERT INTO
+<!--        <selectKey keyProperty="id" order="BEFORE" resultType="Long">-->
+<!--            SELECT nextval(seq1)-->
+<!--        </selectKey>-->
+        INSERT IGNORE
             franchise_sales
-            (id, franchise_id, quantity, price)
+            (id, franchise_id, sales_date, price)
         VALUES
-            (#{id}, #{franchise.id}, #{quantity}, #{price})
+            (#{id}, #{franchise.id}, #{salesDate}, #{price})
     </insert>
     <insert id="addSalesDetail">
         INSERT INTO
@@ -20,6 +20,24 @@
             (sales_id, menu_id, quantity, price)
         VALUES
             (#{sales.id}, #{menu.id}, #{quantity}, #{price})
+    </insert>
+    <insert id="addListSalesDetail">
+        INSERT INTO
+            sales_detail
+            (sales_id, menu_id, quantity, price)
+        VALUES
+        <foreach item="detail" collection="list" separator=",">
+            (#{detail.sales.id}, #{detail.menu.id}, #{detail.quantity}, #{detail.price})
+        </foreach>
+    </insert>
+    <insert id="addListSales">
+        INSERT IGNORE
+            franchise_sales
+            (id, franchise_id, sales_date, price)
+        VALUES
+        <foreach item="item" collection="list" separator=",">
+            (#{item.id}, #{item.franchise.id}, #{item.salesDate}, #{item.price})
+        </foreach>
     </insert>
     <sql id="getSalesSQL">
         SELECT
@@ -41,6 +59,39 @@
             menu
             ON detail.menu_id = menu.id
     </sql>
+    <select id="getPerMonth">
+        SELECT
+        fs.id, SUM(fs.price) as price, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m') salesDate
+        FROM
+        franchise_sales fs
+        WHERE
+        fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
+        GROUP BY fs.franchise_id, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m')
+        ORDER BY fs.sales_date DESC
+        LIMIT 0, 10
+    </select>
+    <select id="getPerWeeks">
+        SELECT
+        fs.id, SUM(fs.price) as price, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d') salesDate
+        FROM
+        franchise_sales fs
+        WHERE
+        fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
+        GROUP BY fs.franchise_id, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d')
+        ORDER BY fs.sales_date DESC
+        LIMIT 0, 10
+    </select>
+    <select id="getPerDays">
+        SELECT
+        fs.id, SUM(fs.price) as price, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d') salesDate
+        FROM
+        franchise_sales fs
+        WHERE
+        fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
+        GROUP BY fs.franchise_id, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d')
+        ORDER BY fs.sales_date DESC
+        LIMIT 0, 10
+    </select>
     <select id="getSalesList" resultMap="getSalesMap">
         <include refid="getSalesSQL"/>
         WHERE
@@ -51,8 +102,9 @@
         WHERE
         franchise_id = #{franchise.id} AND id = #{id}
     </select>
-    <resultMap id="getSalesMap" type="Sales">
+    <resultMap id="getSalesMap" type="Sales" autoMapping="true">
         <id property="id" column="id"/>
+        <association property="franchise" javaType="FranchiseVO" autoMapping="true" columnPrefix="franchise_"/>
         <collection property="details" ofType="com.groups.schicken.franchise.sales.Sales$Detail" autoMapping="true" columnPrefix="detail_">
             <id property="sales.id" column="sales_id"/>
             <id property="menu.id" column="menu_id"/>

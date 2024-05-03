@@ -19,7 +19,7 @@ public class Sales {
         private Sales sales;
         private Menu menu;
         private Integer quantity;
-        private Integer deliverQuantity;
+        private Integer price;
     }
 
 }

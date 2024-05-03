@@ -17,4 +17,14 @@ public class SalesService {
     public Sales getSales(Sales sales) throws Exception {
         return salesMapper.getSales(sales);
     }
+
+    public List<Sales> getPerMonth(Sales sales) throws Exception {
+        return salesMapper.getPerMonth(sales);
+    }
+    public List<Sales> getPerWeeks(Sales sales) throws Exception {
+        return salesMapper.getPerWeak(sales);
+    }
+    public List<Sales> getPerDays(Sales sales) throws Exception {
+        return salesMapper.getPerDays(sales);
+    }
 }
