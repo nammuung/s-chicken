@@ -43,7 +43,7 @@ function onNotificationClick(event, isNoti){
     if(link != null && type != null && notiId != null) {
         if(isNoti) event.target.remove();
         let noNotification = document.querySelectorAll("[data-no-notification]");
-        if(noNotification.length > 0) {
+        if(noNotification.length > 0 && schickenNotificationList.querySelectorAll("[data-noti-id]").length === 0) {
             noNotification.forEach(e => e.classList.remove("d-none"));
         }
         readNotification(notiId, type, link)
