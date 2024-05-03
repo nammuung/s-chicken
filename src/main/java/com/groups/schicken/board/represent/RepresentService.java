@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.groups.schicken.notification.Noticer;
+import com.groups.schicken.notification.NotificationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -21,57 +23,59 @@ public class RepresentService implements BoardService {
 	private RepresentDAO representDAO;
 	@Autowired
 	private FileManager fileManager;
+	@Autowired
+	private Noticer noticer;
 	@Value("app.upload.board.qna")
 	private String uploadPath;
 
-	
+
 	@Override
 	public List<BoardVO> getList(Pager pager,BoardVO boardVO) throws Exception {
 		Map<String, Object> map = new HashMap<String,Object>();
-		
+
 		map.put("pager", pager);
 		map.put("boadVO",boardVO);
-		
+
 		pager.makeIndex();
-		pager.makeNum(representDAO.getTotalCount(map));	
+		pager.makeNum(representDAO.getTotalCount(map));
 		System.out.println(pager.getStartIndex());
 		System.out.println(pager.getPerPage());
 		System.out.println(pager.getTotalPage());
 		System.out.println(pager.getLastNum());
-		
+
 		return representDAO.getList(map);
 	}
-	
+
 	@Override
 	public List<BoardVO> cacList(Pager pager, BoardVO boardVO) throws Exception {
 		Map<String, Object> map = new HashMap<String,Object>();
-		
+
 		map.put("pager", pager);
 		map.put("boadVO",boardVO);
-		
+
 		pager.makeIndex();
-		pager.makeNum(representDAO.cacTotalCount(map));	
+		pager.makeNum(representDAO.cacTotalCount(map));
 		System.out.println(pager.getStartIndex());
 		System.out.println(pager.getPerPage());
 		System.out.println(pager.getTotalPage());
 		System.out.println(pager.getLastNum());
-		
+
 		return representDAO.cacgetList(map);
 
 	}
-	
+
 	@Override
 	public List<BoardVO> allgetList(Pager pager, BoardVO boardVO) throws Exception {
 		Map<String, Object> map = new HashMap<String,Object>();
-		
+
 		map.put("pager", pager);
 		map.put("boardVO", boardVO);
-		
+
 		pager.makeIndex();
 		pager.makeNum(representDAO.allTotalCount(map));
-		
+
 		System.out.println(representDAO.allTotalCount(map));
-		
+
 		return representDAO.allList(map);
 	}
 
@@ -79,32 +83,45 @@ public class RepresentService implements BoardService {
 	@Override
 	public int add(BoardVO boardVO,MultipartFile attach) throws Exception {
 			int result=representDAO.add(boardVO);
-		
+
+			if(boardVO.getImportant()){
+				noticer.sendNoticeWhole(getNoticeContent(boardVO.getTitle()), boardVO.getId() + "" , NotificationType.Notice);
+			}
 			if(attach.isEmpty()) {
 				return result;
 			}
-			
+
 			FileVO fileVO = new FileVO();
-			
-			
+
+
 			fileVO.setParentId(boardVO.getId());
 			fileVO.setTblId("102");
-			
+
 			boolean result1 = fileManager.uploadFile(attach, fileVO);
-			
-			
+
+
 			if(result1) {
 				int intresult = 1;
 				result=intresult;
 			}
+
+
 			return result;
+	}
+
+	private String getNoticeContent(String title){
+		if(title.length() < 20){
+			return title;
+		}
+
+		return title.substring(0, 20) + "...";
 	}
 
 	@Override
 	public BoardVO getDetail(BoardVO boardVO) throws Exception {
-		
+
 		 return representDAO.getDetail(boardVO);
-				
+
 	}
 
 	@Override
@@ -112,7 +129,7 @@ public class RepresentService implements BoardService {
 		// TODO Auto-generated method stub
 		return representDAO.pastPage(boardVO);
 	}
-	
+
 	@Override
 	public List<BoardVO> nextPage(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
@@ -121,45 +138,46 @@ public class RepresentService implements BoardService {
 
 	@Override
 	public int hit(BoardVO boardVO) throws Exception {
-		
+
 		return representDAO.hit(boardVO);
 	}
 
 	@Override
 	public int update(BoardVO boardVO,MultipartFile file) throws Exception {
-		int result = representDAO.update(boardVO);		
-		
+		int result = representDAO.update(boardVO);
+
 		if(file.isEmpty()) {
 			return result;
 		}
-		
+
 		FileVO fileVO = new FileVO();
-		fileVO.setParentId(boardVO.getId());	
-		
+		fileVO.setParentId(boardVO.getId());
+
 		boolean result1 = fileManager.deleteFile(fileVO);
-		
+
 		fileVO.setParentId(boardVO.getId());
 		fileVO.setTblId("102");
 		result1= fileManager.uploadFile(file, fileVO);
-		
+
 		if(result1) {
 			int intresult=1;
 			result = intresult;
-		}	
-		
+		}
+
+
 		return result;
 	}
 
 	@Override
 	public int delete(BoardVO boardVO) throws Exception {
 		int result = representDAO.delete(boardVO);
-		
+
 		return result;
 	}
 
 
 
 
-	
-	
+
+
 }

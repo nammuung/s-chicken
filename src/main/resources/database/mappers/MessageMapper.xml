@@ -47,6 +47,7 @@
     <select id="getSendList">
         SELECT
               nm.id
+            , IF(nr.count = 0 , nr.receiver_id , -1) AS "sender_id"
             , nm.content
             , nm.date
             , concat(nr.name , ' ' , IF(nr.count = 0 , '' , concat('외 ', nr.count, '명'))) AS "sender_name"
@@ -55,6 +56,7 @@
             INNER JOIN (
                 SELECT
                       nr.note_id
+                    , nr.receiver_id
                     , max(concat(d.name , ' ' , c.name , ' ' , e.name)) AS "name"
                     , count(*)-1 AS "count"
                 FROM employee e

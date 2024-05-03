@@ -1,6 +1,6 @@
 package com.groups.schicken.chatting;
 
-import com.groups.schicken.Employee.EmployeeVO;
+import com.groups.schicken.Employee.EmployeeProfileVO;
 import lombok.Data;
 
 import java.util.List;
@@ -10,10 +10,9 @@ public class ChatroomVO {
     private String id;
     private String name;
     private ChatroomType type;
-    private List<EmployeeVO> members;
+    private List<EmployeeProfileVO> members;
     private String notice;
-    private String lastChatting;
-    private String lastConnect;
+    private Long noReadCount;
     private String joinDate;
     private ChatMessage lastMessage;
 }

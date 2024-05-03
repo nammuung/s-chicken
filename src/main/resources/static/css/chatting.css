@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Pretendard-Regular';
-    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
     font-weight: 400;
     font-style: normal;
 }
@@ -15,8 +15,8 @@ main{
     background-color: #F8F8FD;
 }
 
-main *{
-    font-family: 'Pretendard-Regular';
+main *:not(i){
+    font-family: 'Pretendard-Regular' !important;
 }
 
 nav{
@@ -93,4 +93,24 @@ button:active{
 .chatting-profile-img > img{
     width: 55px !important;
     height: 55px !important;
+}
+
+.bg-schicken-light-reverse{
+    background-color: #F7FF6655 !important;
+}
+
+.recent-message-counter{
+    border-radius: 10px !important;
+    padding: 1px 0.25rem 1px 0.25rem !important;
+    margin-top: 8px !important;
+}
+
+.message-dot{
+    position: absolute;
+    inset: 11px 7px auto auto;
+    display: none;
+}
+
+.get-message > .message-dot{
+    display: block;
 }

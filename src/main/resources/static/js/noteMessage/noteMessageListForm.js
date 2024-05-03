@@ -50,14 +50,14 @@ function dateFormatting(date){
     return hour + ':' + minute;
 }
 
-function senderNameSetting(senderName){
+function senderNameSetting(senderName, isMany){
     let names = senderName.split(" ");
     let name = "";
     for (let i = 1; i < names.length; i++) {
         name += names[i] + " ";
     }
 
-    return `<small class="linkable">${names[0]}</small><div>${name}</div>`
+    return `<small class="${isMany? "" : "linkable"}">${names[0]}</small><div>${name}</div>`
 }
 
 function contentSetForList(text){
@@ -65,12 +65,13 @@ function contentSetForList(text){
 }
 
 function drawNoteMessageTr(data, type){
+    let isMany = data.senderId == '-1';
     return `
         <div class="d-flex border-1 border-bottom mt-2">
             <div class="col-1 px-3 text-center form-check">
                 <input data-id="note-message-select" data-content="${data.id}" type="checkbox" class="form-check-input ${type === 'send' ? "d-none" : ""}" style="margin-left: 1em; margin-top: 0.5em">
             </div>
-            <div onclick="onProfileClick('${data.senderId}')" data-sender-id="${data.senderId}" class="col-3 px-3 text-center linkable text-black hovercursor">${senderNameSetting(data.senderName)}</div>
+            <div onclick="onProfileClick('${data.senderId}')" data-sender-id="${data.senderId}" class="col-3 px-3 text-center ${isMany ? "" : "linkable hovercursor"} text-black">${senderNameSetting(data.senderName, isMany)}</div>
             <div data-content="${data.id}" class="col-5 px-3 text-center text-truncate linkable text-black hovercursor">${contentSetForList(data.content)}</div>
             <div class="col-1 px-3 text-center">
                 ${data.file == null ? "" : `<a href='/fileDown?id=${data.file}'><i class='fas fa-save fa-lg anchorable' style='color: #7749F8;margin-top: 0.5em'></i></a>`}

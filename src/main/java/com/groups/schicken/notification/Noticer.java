@@ -1,6 +1,7 @@
 package com.groups.schicken.notification;
 
 
+import com.groups.schicken.Employee.EmployeeDAO;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class Noticer {
     private final SimpMessagingTemplate messagingTemplate;
     private final NotificationDAO notificationDAO;
+    private final EmployeeDAO employeeDAO;
 
     /**
      * 알림을 보냄
@@ -62,16 +64,31 @@ public class Noticer {
      * @param receivers id(String)의 리스트
      */
     public void sendNotice(NotificationVO notification, List<String> receivers) {
+        insertNotification(notification, receivers);
+
+        for (String receiver : receivers) {
+            System.out.println("받는 주소 : /sub/noti/" + receiver);
+            messagingTemplate.convertAndSend("/sub/noti/" + receiver, notification);
+        }
+    }
+
+    public void sendNoticeWhole(String content, String link, NotificationType type){
+        sendNoticeWhole(NotificationVO.of(content, type, link));
+    }
+
+    public void sendNoticeWhole(NotificationVO notification){
+        List<String> wholeEmployeeIds = employeeDAO.getWholeIds();
+        insertNotification(notification, wholeEmployeeIds);
+
+        messagingTemplate.convertAndSend("/sub/noti/whole", notification);
+    }
+
+    private void insertNotification(NotificationVO notification, List<String> receivers){
         notification.setTime(DateManager.getTodayDateTime("yyyyMMddHHmmss"));
         int result = notificationDAO.insertNotification(notification, receivers);
         System.out.println("notification = " + notification);
 
         notification.setTitle(NotificationType.getTitleByType(notification.getType()));
         notification.setTime(DateManager.dateParsing(notification.getTime(),"yyyyMMddHHmmss", "yyyy-MM-dd HH:mm"));
-
-        for (String receiver : receivers) {
-            System.out.println("받는 주소 : /sub/noti/" + receiver);
-            messagingTemplate.convertAndSend("/sub/noti/" + receiver, notification);
-        }
     }
 }

@@ -17,6 +17,15 @@ public class ChatMessage {
     private String sendDate;
     private String content;
 
+    public static final ChatMessage EMPTY_MESSAGE = ChatMessage.builder()
+            .id("")
+            .chatroomId("")
+            .type(ChattingType.Empty)
+            .content("")
+            .sendDate("")
+            .senderId("")
+            .build();
+
     public static ChatMessage getCancelMessage(String id){
         return ChatMessage.builder()
                 .id(id)

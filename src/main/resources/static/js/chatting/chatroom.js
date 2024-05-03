@@ -2,14 +2,17 @@ import {setWhenReceiveMessage, sendMessage} from '/js/chatting/chatting.js';
 
 const chattingSpace = document.getElementById("chatting-space");
 const chattingArea = document.getElementById("chatting-area");
+const hiddenChattingArea = document.getElementById("hidden-chatting-area");
 const sendMessageBtn = document.getElementById("send-message-btn");
+const chatroomListBtn = document.getElementById("chatroom-list-btn");
+const chatroomListSpace = document.getElementById("chatroom-list-space");
+const loginedId = document.querySelector("[data-logined-id]")?.dataset.loginedId;
 
 let memberData = {};
 let lastChatting;
 let beginChatting;
 let nowOpenPage = "";
 let nowPageType = "";
-let upEnd;
 let downEnd;
 
 let options = {
@@ -17,46 +20,77 @@ let options = {
 };
 
 const infinityScrollObserver = new IntersectionObserver(scrollPagingObserveCallback, options);
+
 function scrollPagingObserveCallback(entries, observer) {
-    entries.forEach(async (entry) => {
+    entries.forEach((entry) => {
         if (entry.isIntersecting) {
             observer.unobserve(entry.target);
+
             let direction = entry.target.dataset.direction;
             let tempHeight = chattingSpace.scrollHeight + 1;
 
-            getChatting(entry.target.dataset.sendDate, direction).then(() => {
-                if(direction === 'up') chattingSpace.scrollTop = chattingSpace.scrollHeight - tempHeight;
+            getChatting(entry.target.dataset.sendDate, direction).then(chattings => {
+                    if (direction === 'up') chattingSpace.scrollTop = chattingSpace.scrollHeight - tempHeight;
+                    observeUpAndDown({direction, isEnd: chattings.length < 10});
                 }
             );
         }
     });
 };
 
-document.getElementById("search-input").addEventListener("keyup", event => {
-    let searchName = event.target.value;
-    const regex = new RegExp(searchName);
+const downEndObserver = new IntersectionObserver(checkNowDownEnd, options);
 
-    document.querySelectorAll("[data-search-name]").forEach(e => {
-        let name = e.dataset.searchName;
-        if (regex.test(name)) {
-            e.classList.remove("d-none");
-            document.getElementById(e.dataset.parentId).classList.remove("d-none");
-        } else {
-            e.classList.add("d-none");
-            let elements = document.querySelectorAll(`[data-parent-id=${e.dataset.parentId}]`);
-            for (let ele of elements) {
-                if (!ele.classList.contains("d-none")) {
-                    return;
-                }
-            }
-
-            document.getElementById(e.dataset.parentId).classList.add("d-none");
-        }
+function checkNowDownEnd(entries, observer) {
+    entries.forEach((entry) => {
+        downEnd = entry.isIntersecting
     })
-})
+}
+
+document.querySelectorAll("[data-element-id=search-input]").forEach(el => el.addEventListener("keyup", event => {
+        let searchName = event.target.value;
+        let target = event.target.dataset.target;
+        const regex = new RegExp(searchName);
+
+        document.querySelectorAll(target).forEach(e => {
+            let name = e.dataset.searchName;
+            if (regex.test(name)) {
+                e.classList.remove("d-none");
+                document.getElementById(e.dataset.parentId)?.classList.remove("d-none");
+            } else {
+                e.classList.add("d-none");
+                let elements = document.querySelectorAll(`[data-parent-id=${e.dataset.parentId}]`);
+                for (let ele of elements) {
+                    if (!ele.classList.contains("d-none")) {
+                        return;
+                    }
+                }
+
+                document.getElementById(e.dataset.parentId)?.classList.add("d-none");
+            }
+        })
+    })
+)
 
 function openChatting(event, type) {
+    const info = event.target.dataset.chatroomInfo;
+    if(info == null){
+        event.target.parentElement.click();
+    }
+
     const targetId = event.target.dataset.targetId;
+    if (loginedId === targetId) {
+        alert("자기자신과는 채팅 할 수 없습니다.")
+        return;
+    }
+
+    if(type == null){
+        type = event.target.dataset.chatroomType;
+        if(type == null){
+            return;
+        }
+    }
+
+    console.log(targetId, type);
 
     pageChange();
     namecardModal.hide();
@@ -65,8 +99,8 @@ function openChatting(event, type) {
     nowPageType = type;
 
 
-    setChatroom(targetId).then(()=>{
-        setTimeout(()=>{
+    setChatroom(targetId).then(() => {
+        setTimeout(() => {
             document.querySelector("[data-last-read]")?.scrollIntoView({block: "center"})
         }, 500)
     })
@@ -74,9 +108,10 @@ function openChatting(event, type) {
 }
 
 async function setChatroom(targetId) {
+
     let option = {
-        'one': `/one/${targetId}`,
-        'many': `/many/${targetId}`
+        'One': `/one/${targetId}`,
+        'Many': `/many/${targetId}`
     }[nowPageType];
 
     if (option == null) return;
@@ -88,7 +123,6 @@ async function setChatroom(targetId) {
     chattingArea.value = "";
     lastChatting = null;
     beginChatting = null;
-    upEnd = false;
     downEnd = false;
 
     document.getElementById("chatroom-name").innerText = chattingData.chatroomName;
@@ -96,10 +130,12 @@ async function setChatroom(targetId) {
     chattingData.chatMessages.forEach(chatMessage => {
         const created = appendChatting(chatMessage);
 
-        if (chattingData.lastReadId === chatMessage.id) {
+        if (chattingData.lastReadTime === chatMessage.sendDate) {
             created.dataset.lastRead = "";
         }
     });
+
+    beginChatting = document.querySelector("[data-chatting-profile]");
 
     observeUpAndDown();
 }
@@ -112,18 +148,18 @@ function observeUpAndDown(opt) {
 
         if ((opt == null) || (opt.direction === 'up' && !opt.isEnd)) {
             infinityScrollObserver.observe(chattings[0]);
-        } else {
-            upEnd = true;
         }
+
         if ((opt == null) || (opt.direction === 'down' && !opt.isEnd)) {
             infinityScrollObserver.observe(chattings[chattings.length - 1]);
-            downEnd = true;
+        } else {
+            downEndObserver.observe(chattings[chattings.length - 1]);
         }
     }
 }
 
 async function getChatting(from, direction) {
-    let option = nowPageType === 'one' ? [document.querySelector("[data-logined-id]")?.dataset.loginedId, nowOpenPage].sort().join("") : nowOpenPage
+    let option = nowPageType === 'One' ? [loginedId, nowOpenPage].sort().join("") : nowOpenPage
 
     return fetch(`/chatrooms/chattings/${option}?from=${from}&direction=${direction}`)
         .then(res => res.json())
@@ -133,39 +169,85 @@ async function getChatting(from, direction) {
             } else if (direction === 'down') {
                 chattings.forEach(chatting => appendChatting(chatting));
             }
-            observeUpAndDown({direction, isEnd: chattings.length < 10});
+            return chattings;
         });
 }
 
 function prependChatting(data) {
-    if (beginChatting == null || beginChatting.dataset.senderId !== data.senderId) {
+    if (beginChatting == null || beginChatting.dataset.senderId !== data.senderId || (beginChatting.dataset.senderId === data.senderId && isDiffMinute(beginChatting.dataset.sendProfileDate, data.sendDate))) {
         beginChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
         chattingSpace.prepend(beginChatting);
     }
 
     const messageSpace = beginChatting.querySelector(".chatting-message-space");
-    const created = createChattingMessage(data.content, data.sendDate);
+    const created = createChattingMessage(data.content, data.sendDate, data.senderId);
     messageSpace.prepend(created);
 
     return created
 }
 
 function appendChatting(data) {
-    if (lastChatting == null || lastChatting.dataset.senderId !== data.senderId) {
+    if (lastChatting == null || lastChatting.dataset.senderId !== data.senderId || (lastChatting.dataset.senderId === data.senderId && isDiffMinute(lastChatting.dataset.sendProfileDate, data.sendDate))) {
         lastChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
         chattingSpace.append(lastChatting);
     }
 
     const messageSpace = lastChatting.querySelector(".chatting-message-space");
-    const created = createChattingMessage(data.content, data.sendDate);
+    const created = createChattingMessage(data.content, data.sendDate, data.senderId);
     messageSpace.append(created);
 
     return created;
 }
 
+function isDiffMinute(date1, date2) {
+    return date1.substring(0, 12) !== date2.substring(0, 12);
+}
+
+function onGetChattingOne(data){
+    onGetMessage(data, [loginedId, nowOpenPage].sort().join(""));
+}
+
+function onGetMessage(data, nowpage=null){
+    if(nowpage == null? nowOpenPage : nowpage === data.chatroomId){
+        getChattingInChatroom(data);
+        return;
+    }
+
+    if(nowOpenPage === 'chatroom'){
+        return;
+    }
+
+    chatroomListBtn.classList.add("get-message");
+}
+
+function getChattingInChatroom(data) {
+    const created = appendChatting(data);
+
+    if (downEnd) {
+        chattingSpace.scrollTop = chattingSpace.scrollHeight;
+        downEndObserver.disconnect();
+        downEndObserver.observe(created);
+    }
+
+    if(data.senderId !== loginedId) {
+        fetch('/chatrooms/readChatting', {
+            method : "put",
+            headers : {"Content-Type" : "application/json;charset=utf-8"},
+            body : JSON.stringify({
+                chatroomId : data.chatroomId,
+                id:data.id
+            })
+        }).then(res => res.text())
+            .then(r => console.log(r));
+    }
+}
+
 function createChattingProfile(data, sendDate) {
     console.log("data : ", data);
-    let div = makeElement("div", {className: ["chatting", "d-flex", "mt-2", "ms-1"], dataset: {"senderId": data.id}});
+    let div = makeElement("div", {
+        className: ["chatting", "d-flex", "mt-2", "ms-1"],
+        dataset: {"senderId": data.id, "sendProfileDate": sendDate, "chattingProfile": ""}
+    });
     let div2 = makeElement("div", {className: ["chatting-profile-img"]});
 
     let imgOption = {
@@ -199,6 +281,10 @@ function createChattingProfile(data, sendDate) {
 }
 
 function chatDateFormat(date) {
+    if(date == null || date == ""){
+        return "";
+    }
+
     let year = date.substring(0, 4);
     let month = date.substring(4, 6);
     let day = date.substring(6, 8);
@@ -208,7 +294,7 @@ function chatDateFormat(date) {
 
     if (Number(hour) >= 12) {
         afternoon = "오후";
-        hour = Number(hour) % 12 + 1;
+        hour = Number(hour) % 13 + 1;
     } else {
         afternoon = "오전";
     }
@@ -216,8 +302,10 @@ function chatDateFormat(date) {
     return year + "-" + month + "-" + day + " " + afternoon + " " + hour + ":" + minute;
 }
 
-function createChattingMessage(data, sendDate) {
-    let div = makeElement("div", {className: ["mt-1", "p-2", "rounded-3", "text-break", "bg-schicken-light", "d-inline-block"]})
+function createChattingMessage(data, sendDate, senderId) {
+    let classNames = ["mt-1", "p-2", "rounded-3", "text-break", "d-inline-block"];
+    classNames.push(senderId === loginedId ? "bg-schicken-light-reverse" : "bg-schicken-light")
+    let div = makeElement("div", {className: classNames})
     div.innerHTML = data;
 
     let div2 = makeElement("div", {dataset: {"sendMessage": "", "sendDate": sendDate}});
@@ -242,13 +330,102 @@ function makeElement(tagName, {className, option, dataset} = {}) {
     return element;
 }
 
+function drawChatroomList(data){
+    let div = makeElement("div", {
+        className : ["d-flex","p-2","aaa"],
+        dataset : {
+            "targetId": getTargetIdByMembers(data.members, data.id, data.type),
+            "chatroomInfo" : "",
+            "chatroomType" : data.type,
+            "chatroomSearch" : "",
+            "searchName" : data.name}
+    });
+    let imgDiv = makeElement("div");
+    let img = makeElement("img", {
+        option : {
+            "width" :"50",
+            "height" : "50",
+            "style" : "border-radius: 20%",
+            "src" : getProfileImgByMembers(data.members, data.type)
+        }
+    })
+
+    imgDiv.append(img);
+
+    let chatroomDiv = makeElement("div", {className : ["ms-2"]});
+    let titleH5 = makeElement("h5");
+    titleH5.innerText = data.name;
+    let recentMessageDiv = makeElement("div");
+    recentMessageDiv.innerText = reduceChatroomListContent(data.lastMessage.content);
+
+    chatroomDiv.append(titleH5, recentMessageDiv);
+
+    let infoDiv = makeElement("div", {className: ["ms-auto", "pe-2"]});
+    let timeDiv = makeElement("div", {className: ["small"]});
+    timeDiv.innerText = chatDateFormat(data.lastMessage.sendDate);
+
+    infoDiv.append(timeDiv);
+
+    if(data.noReadCount != null && data.noReadCount > 0) {
+        let counterEndDiv = makeElement("div", {className:["text-end"]});
+        let counterDiv = makeElement("div", {className: ["small", "bg-danger", "text-white", "d-inline-block", "recent-message-counter"]})
+
+        counterDiv.innerText = data.noReadCount;
+
+        counterEndDiv.append(counterDiv);
+        infoDiv.append(counterEndDiv);
+    }
+
+    div.append(imgDiv, chatroomDiv, infoDiv);
+
+    return div;
+}
+
+function getTargetIdByMembers(members, chatroomId, type){
+    if(type === 'Many') return chatroomId;
+
+    for (let member of members) {
+        if(member.id !== loginedId){
+            return member.id;
+        }
+    }
+
+    return null;
+}
+
+function getProfileImgByMembers(members, type){
+    if(type === 'One'){
+        for (let member of members) {
+            if(member.id !== loginedId){
+                return member.profileImg;
+            }
+        }
+    }
+
+    return "/img/기본.jpg"
+}
+
+function reduceChatroomListContent(content){
+    if(content.length < 14){
+        return content;
+    }
+
+    return content.substring(0, 14) + "...";
+}
+
 function pageChange(to) {
     infinityScrollObserver.disconnect();
+    downEndObserver.disconnect();
     [...document.getElementsByClassName("now-page")].forEach(e => e.classList.remove("now-page"));
 
     if (to == null) return;
 
+    nowOpenPage=to.dataset.pageName;
     to.classList.add("now-page");
+
+    if(nowOpenPage === 'chatroom'){
+        to.classList.remove("get-message");
+    }
 }
 
 function onSendMessageBtnClick() {
@@ -259,17 +436,41 @@ function onSendMessageBtnClick() {
         chatroomId: nowOpenPage,
         type: "Message",
         pageType: nowPageType,
-        content: chatMsg
+        content: chatMsg.trim()
     };
 
     sendMessage(data);
 
     chattingArea.value = "";
+    chattingArea.focus();
 }
 
-setWhenReceiveMessage(appendChatting);
+function getChatroomList(){
+    fetch('/chatrooms/list')
+        .then(res=>res.json())
+        .then(r=>{
+            chatroomListSpace.innerHTML = "";
+            let elements = r.map(el=>drawChatroomList(el));
+            chatroomListSpace.append(...elements);
+        });
+}
+
+function getInputKey(event){
+    if(event.key === 'Enter') {
+        if (!event.shiftKey) {
+            if(event.target.value.trim() === '') return;
+            onSendMessageBtnClick();
+        }
+    }
+}
+
+
+setWhenReceiveMessage(onGetChattingOne, onGetMessage);
 
 sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
-document.querySelector("a[data-profile-type=chatting]").addEventListener("click", event => openChatting(event, 'one'))
+chatroomListBtn.addEventListener("click", getChatroomList);
+chatroomListSpace.addEventListener("click", (event) => openChatting(event))
+chattingArea.addEventListener("keyup", getInputKey);
+document.querySelector("a[data-profile-type=chatting]").addEventListener("click", event => openChatting(event, 'One'))
 document.getElementById("employee-list-btn").addEventListener("click", event => pageChange(event.target))
 document.getElementById("chatroom-list-btn").addEventListener("click", event => pageChange(event.target))
