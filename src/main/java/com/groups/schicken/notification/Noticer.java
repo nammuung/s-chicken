@@ -25,7 +25,7 @@ public class Noticer {
      * @param type 알림의 타입
      * @param receivers 알림을 받는 사람의 리스트
      */
-    public void sendNotice(String content, String link, NotificationType type ,List<String> receivers) {
+    public void sendNotice(String content, String link, NotificationType type ,List<String> receivers) throws Exception {
         System.out.println("content = " + content);
         sendNotice(NotificationVO.of(content, type, link), receivers);
     }
@@ -34,7 +34,7 @@ public class Noticer {
      * notificationVO로 알림을 보냄
      * @param notification content, link, type, receiver가 있어야함
      */
-    public void sendNotice(NotificationVO notification) {
+    public void sendNotice(NotificationVO notification) throws Exception  {
         List<String> receivers = List.of(notification.getReceiverId());
         sendNotice(notification, receivers);
     }
@@ -44,7 +44,7 @@ public class Noticer {
      * @param notification content, link, type가 있어야함
      * @param receiver id가 있어야함
      */
-    public void sendNoticeByEmployeeVO(NotificationVO notification, EmployeeVO receiver) {
+    public void sendNoticeByEmployeeVO(NotificationVO notification, EmployeeVO receiver) throws Exception  {
         notification.setId(receiver.getId());
         sendNotice(notification);
     }
@@ -54,7 +54,7 @@ public class Noticer {
      * @param notification content, link, type가 있어야함
      * @param receivers id가 있는 EmployeeVO의 리스트
      */
-    public void sendNoticeByEmployeeVO(NotificationVO notification, List<EmployeeVO> receivers) {
+    public void sendNoticeByEmployeeVO(NotificationVO notification, List<EmployeeVO> receivers) throws Exception  {
         sendNotice(notification, receivers.stream().map(EmployeeVO::getId).toList());
     }
 
@@ -63,7 +63,7 @@ public class Noticer {
      * @param notification content, link, type가 있어야함
      * @param receivers id(String)의 리스트
      */
-    public void sendNotice(NotificationVO notification, List<String> receivers) {
+    public void sendNotice(NotificationVO notification, List<String> receivers) throws Exception  {
         insertNotification(notification, receivers);
 
         for (String receiver : receivers) {
@@ -72,18 +72,18 @@ public class Noticer {
         }
     }
 
-    public void sendNoticeWhole(String content, String link, NotificationType type){
+    public void sendNoticeWhole(String content, String link, NotificationType type) throws Exception {
         sendNoticeWhole(NotificationVO.of(content, type, link));
     }
 
-    public void sendNoticeWhole(NotificationVO notification){
+    public void sendNoticeWhole(NotificationVO notification) throws Exception {
         List<String> wholeEmployeeIds = employeeDAO.getWholeIds();
         insertNotification(notification, wholeEmployeeIds);
 
         messagingTemplate.convertAndSend("/sub/noti/whole", notification);
     }
 
-    private void insertNotification(NotificationVO notification, List<String> receivers){
+    private void insertNotification(NotificationVO notification, List<String> receivers) throws Exception {
         notification.setTime(DateManager.getTodayDateTime("yyyyMMddHHmmss"));
         int result = notificationDAO.insertNotification(notification, receivers);
         System.out.println("notification = " + notification);
