@@ -15,6 +15,8 @@ let nowOpenPage = "";
 let nowPageType = "";
 let downEnd;
 
+let chatroomList = {};
+
 let options = {
     threshold: 0,
 };
@@ -214,10 +216,35 @@ function onGetMessage(data, nowpage=null){
     }
 
     if(nowOpenPage === 'chatroom'){
+        const target = chatroomList[data.chatroomId];
+        updateChatroomListElement(target, data);
+        chatroomListSpace.prepend(target);
         return;
     }
 
     chatroomListBtn.classList.add("get-message");
+}
+
+function updateChatroomListElement(target, data){
+    if(target.querySelector("[data-read-counter]") == null) {
+        let counterEndDiv = makeElement("div", {className:["text-end"], dataset:{"readCounter": ""}});
+        let counterDiv = makeElement("div", {className: ["small", "bg-danger", "text-white", "d-inline-block", "recent-message-counter"], dataset:{"readCountNum":""}})
+
+        counterDiv.innerText = 0;
+
+        counterEndDiv.append(counterDiv);
+
+        target.querySelector("[data-chatroom-list-info]").append(counterEndDiv);
+    }
+
+    target.querySelector("[data-chat-list-time]").innerText = chatDateFormat(data.sendDate);
+
+    const countNumDiv = target.querySelector("[data-read-count-num]");
+    countNumDiv.innerText = Number(countNumDiv.innerText) + 1;
+
+    const filteredEmp = [...document.querySelectorAll("[data-employee-search]")].filter(emp => emp.dataset.employeeSearch === data.senderId)[0];
+
+    target.querySelector("[data-chat-recent-message]").innerText = reduceChatroomListContent(filteredEmp.dataset.searchName + " : " + data.content);
 }
 
 function getChattingInChatroom(data) {
@@ -355,20 +382,20 @@ function drawChatroomList(data){
     let chatroomDiv = makeElement("div", {className : ["ms-2"]});
     let titleH5 = makeElement("h5");
     titleH5.innerText = data.name;
-    let recentMessageDiv = makeElement("div");
+    let recentMessageDiv = makeElement("div", {dataset : {"chatRecentMessage": ""}});
     recentMessageDiv.innerText = reduceChatroomListContent(data.lastMessage.content);
 
     chatroomDiv.append(titleH5, recentMessageDiv);
 
-    let infoDiv = makeElement("div", {className: ["ms-auto", "pe-2"]});
-    let timeDiv = makeElement("div", {className: ["small"]});
+    let infoDiv = makeElement("div", {className: ["ms-auto", "pe-2"], dataset:{"chatroomListInfo":""}});
+    let timeDiv = makeElement("div", {className: ["small"], dataset: {"chatListTime":""}});
     timeDiv.innerText = chatDateFormat(data.lastMessage.sendDate);
 
     infoDiv.append(timeDiv);
 
     if(data.noReadCount != null && data.noReadCount > 0) {
-        let counterEndDiv = makeElement("div", {className:["text-end"]});
-        let counterDiv = makeElement("div", {className: ["small", "bg-danger", "text-white", "d-inline-block", "recent-message-counter"]})
+        let counterEndDiv = makeElement("div", {className:["text-end"], dataset:{"readCounter": ""}});
+        let counterDiv = makeElement("div", {className: ["small", "bg-danger", "text-white", "d-inline-block", "recent-message-counter"], dataset:{"readCountNum":""}})
 
         counterDiv.innerText = data.noReadCount;
 
@@ -450,7 +477,11 @@ function getChatroomList(){
         .then(res=>res.json())
         .then(r=>{
             chatroomListSpace.innerHTML = "";
-            let elements = r.map(el=>drawChatroomList(el));
+            let elements = r.map(el=>{
+                const created = drawChatroomList(el);
+                chatroomList[el.id] = created;
+                return created;
+            });
             chatroomListSpace.append(...elements);
         });
 }

@@ -84,7 +84,7 @@
                             <div id="collapse-${dept.id}" class="accordion-collapse collapse show">
                                 <div class="accordion-body" style="padding: 0;">
                                     <c:forEach items="${dept.employees}" var="emp">
-                                        <div class="d-flex gap-3 p-2 aaa" onclick="onProfileClick(${emp.id})" data-employee-search data-parent-id="accordion-${dept.id}" data-search-name="${emp.name}">
+                                        <div class="d-flex gap-3 p-2 aaa" onclick="onProfileClick(${emp.id})" data-employee-search="${emp.id}" data-parent-id="accordion-${dept.id}" data-search-name="${emp.name}">
                                             <div>
                                                 <img class="rounded-circle" src="${emp.profileImg}" alt="" width="50px" height="50px">
                                             </div>
