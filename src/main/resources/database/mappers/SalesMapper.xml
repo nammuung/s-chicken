@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.franchise.sales.SalesMapper">
+    <insert id="addSales">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO
+            franchise_sales
+            (id, franchise_id, quantity, price)
+        VALUES
+            (#{id}, #{franchise.id}, #{quantity}, #{price})
+    </insert>
+    <insert id="addSalesDetail">
+        INSERT INTO
+            sales_detail
+            (sales_id, menu_id, quantity, price)
+        VALUES
+            (#{sales.id}, #{menu.id}, #{quantity}, #{price})
+    </insert>
+    <sql id="getSalesSQL">
+        SELECT
+            sales.id
+            , sales.price
+            , sales.sales_date
+            , sales.franchise_id
+            , detail.quantity detail_quantity
+            , detail.price detail_price
+            , detail.menu_id detail_menu_id
+            , menu.menu detail_menu_menu
+            , menu.price detail_menu_price
+        FROM
+            franchise_sales sales
+        LEFT JOIN
+            sales_detail detail
+            ON sales.id = detail.sales_id
+        LEFT JOIN
+            menu
+            ON detail.menu_id = menu.id
+    </sql>
+    <select id="getSalesList" resultMap="getSalesMap">
+        <include refid="getSalesSQL"/>
+        WHERE
+            franchise_id = #{franchise.id}
+    </select>
+    <select id="getSales" resultMap="getSalesMap">
+        <include refid="getSalesSQL"/>
+        WHERE
+        franchise_id = #{franchise.id} AND id = #{id}
+    </select>
+    <resultMap id="getSalesMap" type="Sales">
+        <id property="id" column="id"/>
+        <collection property="details" ofType="com.groups.schicken.franchise.sales.Sales$Detail" autoMapping="true" columnPrefix="detail_">
+            <id property="sales.id" column="sales_id"/>
+            <id property="menu.id" column="menu_id"/>
+            <association property="menu" javaType="Menu" autoMapping="true" columnPrefix="menu_"/>
+        </collection>
+    </resultMap>
+</mapper>
