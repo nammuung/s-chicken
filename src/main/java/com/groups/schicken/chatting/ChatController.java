@@ -10,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -77,5 +74,10 @@ public class ChatController {
         List<ChatMessage> list = chatService.getChattingDataNext(employee.getId(), chatroomId, from,direction);
 
         return ResponseEntity.ok(list);
+    }
+
+    @PutMapping("readChatting")
+    public ResponseEntity<Boolean> readChatting(@AuthenticationPrincipal EmployeeVO employee, @RequestBody ChatMessage message){
+        return ResponseEntity.ok(chatService.readChatting(employee.getId(), message.getChatroomId(), message.getId()));
     }
 }

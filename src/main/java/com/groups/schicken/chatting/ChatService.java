@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -121,6 +118,12 @@ public class ChatService {
             );
         }
 
+        chatroomList.sort(
+                Comparator
+                        .comparing(chatroomVO -> ((ChatroomVO)chatroomVO).getLastMessage().getSendDate())
+                        .reversed()
+        );
+
         return chatroomList;
     }
 
@@ -199,5 +202,10 @@ public class ChatService {
         }
 
         return chatMessageData;
+    }
+
+    public Boolean readChatting(String employeeId, String chatroomId, String chatId) {
+        int result = chatDAO.updateLastReadById(employeeId, chatroomId, chatId);
+        return result == 1;
     }
 }

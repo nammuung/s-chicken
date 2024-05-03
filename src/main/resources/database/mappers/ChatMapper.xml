@@ -167,6 +167,16 @@
         WHERE chatroom_id=#{chatroomId} AND employee_id=#{employeeId}
     </update>
 
+    <update id="updateLastReadById">
+        UPDATE chat_member
+        SET last_read_time=(
+            SELECT send_date
+            FROM chat_message cm
+            WHERE cm.id=#{chatId}
+        )
+        WHERE chatroom_id=#{chatroomId} AND employee_id=#{employeeId}
+    </update>
+
     <sql id="getLastReadRowNum">
         (SELECT (sub.r + 13)
         FROM (

@@ -30,4 +30,6 @@ public interface ChatDAO {
     List<ChatMessage> getChatMessageData(String chatroomId, String from, String direction);
 
     List<ChatMessage> getLastChatData(List<String> list);
+
+    int updateLastReadById(String employeeId, String chatroomId, String chatId);
 }

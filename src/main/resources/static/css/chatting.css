@@ -15,7 +15,7 @@ main{
     background-color: #F8F8FD;
 }
 
-main *{
+main *:not(i){
     font-family: 'Pretendard-Regular' !important;
 }
 
@@ -103,4 +103,14 @@ button:active{
     border-radius: 10px !important;
     padding: 1px 0.25rem 1px 0.25rem !important;
     margin-top: 8px !important;
+}
+
+.message-dot{
+    position: absolute;
+    inset: 11px 7px auto auto;
+    display: none;
+}
+
+.get-message > .message-dot{
+    display: block;
 }

@@ -34,11 +34,11 @@
                 <li class="list-group-item">
                     <img class="mb-2" src="/img/logo.png" alt="" height="30px">
                 </li>
-                <li id="employee-list-btn" class="list-group-item text-nowrap now-page" data-bs-target="#main" data-bs-slide-to="0">
+                <li id="employee-list-btn" data-page-name="employee" class="list-group-item text-nowrap now-page" data-bs-target="#main" data-bs-slide-to="0">
                     직원목록
                 </li>
-                <li id="chatroom-list-btn" class="list-group-item text-nowrap" data-bs-target="#main" data-bs-slide-to="1">
-                    채팅방
+                <li id="chatroom-list-btn" data-page-name="chatroom" class="list-group-item text-nowrap" data-bs-target="#main" data-bs-slide-to="1">
+                    채팅방<span class="badge bg-danger message-dot" style="padding: 6px;"> </span>
                 </li>
                 <li id="chatting-page-btn" class="d-none" data-bs-target="#main" data-bs-slide-to="2"></li>
             </ul>
@@ -102,7 +102,7 @@
 
             <section class="carousel-item">
                 <div>
-                    <input data-element-id="search-input" data-target="[data-chatroom-search]" type="text" class="form-control" placeholder="직책, 이름으로 검색">
+                    <input data-element-id="search-input" data-target="[data-chatroom-search]" type="text" class="form-control" placeholder="채팅방 이름으로 검색">
                 </div>
                 <div id="chatroom-list-space" class="py-2" style="height: calc(100vh - 38px); overflow-y: auto">
 

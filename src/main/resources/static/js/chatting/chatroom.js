@@ -203,13 +203,42 @@ function isDiffMinute(date1, date2) {
     return date1.substring(0, 12) !== date2.substring(0, 12);
 }
 
-function onGetChatting(data) {
+function onGetChattingOne(data){
+    onGetMessage(data, [loginedId, nowOpenPage].sort().join(""));
+}
+
+function onGetMessage(data, nowpage=null){
+    if(nowpage == null? nowOpenPage : nowpage === data.chatroomId){
+        getChattingInChatroom(data);
+        return;
+    }
+
+    if(nowOpenPage === 'chatroom'){
+        return;
+    }
+
+    chatroomListBtn.classList.add("get-message");
+}
+
+function getChattingInChatroom(data) {
     const created = appendChatting(data);
 
     if (downEnd) {
         chattingSpace.scrollTop = chattingSpace.scrollHeight;
         downEndObserver.disconnect();
         downEndObserver.observe(created);
+    }
+
+    if(data.senderId !== loginedId) {
+        fetch('/chatrooms/readChatting', {
+            method : "put",
+            headers : {"Content-Type" : "application/json;charset=utf-8"},
+            body : JSON.stringify({
+                chatroomId : data.chatroomId,
+                id:data.id
+            })
+        }).then(res => res.text())
+            .then(r => console.log(r));
     }
 }
 
@@ -304,7 +333,12 @@ function makeElement(tagName, {className, option, dataset} = {}) {
 function drawChatroomList(data){
     let div = makeElement("div", {
         className : ["d-flex","p-2","aaa"],
-        dataset : {"targetId": getTargetIdByMembers(data.members, data.id, data.type), "chatroomInfo" : "", "chatroomType" : data.type}
+        dataset : {
+            "targetId": getTargetIdByMembers(data.members, data.id, data.type),
+            "chatroomInfo" : "",
+            "chatroomType" : data.type,
+            "chatroomSearch" : "",
+            "searchName" : data.name}
     });
     let imgDiv = makeElement("div");
     let img = makeElement("img", {
@@ -381,11 +415,17 @@ function reduceChatroomListContent(content){
 
 function pageChange(to) {
     infinityScrollObserver.disconnect();
+    downEndObserver.disconnect();
     [...document.getElementsByClassName("now-page")].forEach(e => e.classList.remove("now-page"));
 
     if (to == null) return;
 
+    nowOpenPage=to.dataset.pageName;
     to.classList.add("now-page");
+
+    if(nowOpenPage === 'chatroom'){
+        to.classList.remove("get-message");
+    }
 }
 
 function onSendMessageBtnClick() {
@@ -425,7 +465,7 @@ function getInputKey(event){
 }
 
 
-setWhenReceiveMessage(onGetChatting);
+setWhenReceiveMessage(onGetChattingOne, onGetMessage);
 
 sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
 chatroomListBtn.addEventListener("click", getChatroomList);
