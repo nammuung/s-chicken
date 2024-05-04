@@ -1,3 +1,4 @@
+
 (function () {
     $(function () {
         var calendarEl = document.getElementById('calendar');
@@ -65,7 +66,22 @@
             eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
                 console.log(obj);
                 console.log("삭제임");
+               $.ajax({
+                    url: '/calendarDelete',  // 서버 엔드포인트
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ calendarId: obj.event.id }), // 삭제할 이벤트의 ID를 JSON 형태로 전송
+                    success: function(response) {
+                        console.log('삭제 성공:', response);
+                        $('#exampleModal').modal('hide'); // 성공 시 모달 숨김
+                    },
+                    error: function(error) {
+                        console.error('삭제 실패:', error);
+                    }
+                });
+                
             },
+            
             eventClick: function (obj) {
                 console.log(obj)
                 console.log("클릭임");
@@ -113,7 +129,16 @@
                         console.error('수정 실패:', error);
                     }
                 });
-
+                $('#deleteButton').click(function () {
+                    console.log("click");
+                    var selectedEvent = calendar.getEventById(obj.event.id);
+                    if (selectedEvent) {
+                        selectedEvent.remove();
+                    } else {
+                        console.error('선택된 이벤트가 존재하지 않습니다.');
+                    }
+                });
+                
                 $('#exampleModal').modal('show');
                 calendar.unselect();
             },
@@ -140,7 +165,6 @@
                     var minute = now.getMinutes().toString().padStart(2, '0'); // 분을 두 자리로 변환하고 앞에 0을 채움
                     return hour + ':' + minute; // 시간과 분을 합쳐서 반환
                 }
-
 
                 // 모달에서 이벤트 제목 입력 후 저장 버튼 클릭 시
                 $('#saveEventBtn').off('click').click(function () {
@@ -246,7 +270,8 @@
                             title: eventData.title, // 이벤트 제목
                             start: eventData.start, // 이벤트 시작 날짜
                             end: eventData.end,
-                            color: 'yellow'  // 이벤트 종료 날짜
+                            color: 'purple',
+                            backgroundColor: 'purple'
                             // 기타 이벤트 속성 등을 추가할 수 있습니다.
                         });
                     });
@@ -258,8 +283,9 @@
         });
         calendar.render();
     });
-    
+
 })();
+
 $(document).ready(function () {
     // 종일 체크박스 클릭 이벤트 처리
     $('#alltime').change(function () {
@@ -283,4 +309,6 @@ $(document).ready(function () {
         var endDate = $('#start').val().slice(0, 10); // 시작 날짜를 가져와서 ISO 형식으로 변환
         return endDate + 'T18:00'; // 기존의 종료 시간(18:00)으로 설정하여 반환
     }
+
+    
 });

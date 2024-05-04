@@ -161,10 +161,17 @@ public class MainController {
     
     @PostMapping("calendarDelete")
     @ResponseBody
-    public String calendarDelete (@RequestBody CalendarVO calendarVO)throws Exception{
-    	calendarService.calendarDelete(calendarVO);
-    	return "성공";
+    public String calendarDelete (@RequestBody CalendarVO calendarVO) throws Exception {
+        Long calendar_id = calendarVO.getCalendarId(); // CalendarVO에서 calendar_id 값을 가져옴
+        calendarVO.setCalendarId(calendar_id);
+        System.out.println(calendarVO.getCalendarId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        calendarVO.setEmployeeId(id);
+        calendarService.calendarDelete(calendarVO);
+        return "성공";
     }
+
     
 
 

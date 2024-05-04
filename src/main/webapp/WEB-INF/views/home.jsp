@@ -215,7 +215,7 @@ value="${profile.name}">
 					<input type="text" id="share2" name="share" class="form-control mb-3" disabled value="${detailMain.share}">
 					<div class="d-flex justify-content-end">
 					<button type="button" class="btn btn-primary" style="margin-right: 10px">저장</button>
-					<button type="button" class="btn btn-danger">삭제</button>
+					<button type="button" id="deleteButton" class="btn btn-danger">삭제</button>
 					</div>
 				</form>
 			  </div>

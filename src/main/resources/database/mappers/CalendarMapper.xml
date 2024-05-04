@@ -108,7 +108,7 @@ where e.id != #{share}
 
 <update id="calendarDelete" parameterType="CalendarVO">
 update calendar_emp SET 
-user_yn = #{userYn}
+user_yn = 0
 where calendar_id =#{calendarId} and employee_id =#{employeeId}
  </update>
 
