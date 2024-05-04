@@ -190,8 +190,7 @@ import oc from "/js/orgChart/orgChart.js";
 		fetch('/document/add',{
 			method:"post",
 			body:formData,
-		}).then(r=>console.log(r))
-		.then((res)=>{
+		}).then((res)=>{
 			console.log(res)
 			if(res.status ==200) {
 				alert("상신 되었습니다")

@@ -22,6 +22,9 @@ public interface BoardDAO {
 	
 	public List<BoardVO> allList(Map<String, Object> map)throws Exception;
 	
+	public int impUpdate(BoardVO boardVO)throws Exception;
+	public List<BoardVO> impList(BoardVO boardVO)throws Exception;
+	
 	
 	
 	

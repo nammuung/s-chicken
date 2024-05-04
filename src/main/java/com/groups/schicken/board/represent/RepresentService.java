@@ -27,6 +27,12 @@ public class RepresentService implements BoardService {
 	private Noticer noticer;
 	@Value("app.upload.board.qna")
 	private String uploadPath;
+	
+	public List<BoardVO> impList(BoardVO boardVO) throws Exception{
+		List<BoardVO> ar = representDAO.impList(boardVO);		
+		
+		return ar;
+	}
 
 
 	@Override

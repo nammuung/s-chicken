@@ -12,6 +12,21 @@
 			</choose>
 	</sql>
 	
+	<update id="impUpdate">
+		UPDATE represernt
+		set rank = 0
+		WHERE id=#{id}		
+	</update>
+	
+	<select id="impList">
+		SELECT r.*,
+			emp.name
+			FROM represent r
+			LEFT JOIN employee emp ON emp.id =r.writer_id
+			WHERE r.is_deleted !=1 AND important = 1
+			ORDER BY rank
+	</select>
+	
 	<select id="allTotalCount" parameterType="Map" resultType="Long">
 		SELECT COUNT(id) FROM represent r
 		WHERE is_deleted !=1
@@ -103,7 +118,7 @@
 		</selectKey>
 		INSERT INTO represent
 		VALUES
-		(#{id},#{writeDate},#{content},0,#{writerId},0,#{sort},#{title},#{important})
+		(#{id},#{writeDate},#{content},0,#{writerId},0,#{sort},#{title},#{important},#{rank})
 	</insert>
 	
 	<insert id="fileAdd" parameterType="FileVO" keyProperty="id">
