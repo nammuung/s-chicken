@@ -11,6 +11,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     });
 })
 
+export function connectChatroom(chatroomId){
+    mapping('chat/' + chatroomId, data => getMessageMany(data));
+}
+
 export function sendMessage(data) {
     data.senderId = loginedId;
     send(`chat/${data.pageType.toLowerCase()}/${data.chatroomId}`, data);

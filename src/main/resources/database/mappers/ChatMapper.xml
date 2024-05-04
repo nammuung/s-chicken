@@ -145,6 +145,14 @@
         VALUES (#{id}, #{type})
     </insert>
 
+    <insert id="createChatroom">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO chatroom (id, type, default_name)
+        VALUES (#{id}, #{type}, #{name})
+    </insert>
+
     <insert id="joinChatroom">
         INSERT INTO chat_member(chatroom_id, employee_id, room_name, join_date)
         VALUES (#{chatroom.id}, #{id}, #{chatroom.name}, #{chatroom.joinDate})

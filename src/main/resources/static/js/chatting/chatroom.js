@@ -1,4 +1,4 @@
-import {setWhenReceiveMessage, sendMessage} from '/js/chatting/chatting.js';
+import {setWhenReceiveMessage, sendMessage, connectChatroom} from '/js/chatting/chatting.js';
 
 const chattingSpace = document.getElementById("chatting-space");
 const chattingArea = document.getElementById("chatting-area");
@@ -7,6 +7,9 @@ const sendMessageBtn = document.getElementById("send-message-btn");
 const chatroomListBtn = document.getElementById("chatroom-list-btn");
 const chatroomListSpace = document.getElementById("chatroom-list-space");
 const loginedId = document.querySelector("[data-logined-id]")?.dataset.loginedId;
+const namecardModal = new bootstrap.Modal(document.getElementById("namecard-modal"));
+const chatEmployeeList = document.getElementById("chat-employee-list");
+const selectedEmployeeDiv = document.getElementById("selected-employee");
 
 let memberData = {};
 let lastChatting;
@@ -15,7 +18,10 @@ let nowOpenPage = "";
 let nowPageType = "";
 let downEnd;
 
+let isCreateState = false;
+
 let chatroomList = {};
+let selectedEmployees = {};
 
 let options = {
     threshold: 0,
@@ -120,6 +126,10 @@ async function setChatroom(targetId) {
 
     let chattingData = await fetch('/chatrooms/getData' + option).then(res => res.json());
 
+    chatroomRenderByData(chattingData)
+}
+
+async function chatroomRenderByData(chattingData){
     memberData = {};
     chattingSpace.innerHTML = "";
     chattingArea.value = "";
@@ -209,8 +219,8 @@ function onGetChattingOne(data){
     onGetMessage(data, [loginedId, nowOpenPage].sort().join(""));
 }
 
-function onGetMessage(data, nowpage=null){
-    if(nowpage == null? nowOpenPage : nowpage === data.chatroomId){
+function onGetMessage(data, nowpage=nowOpenPage){
+    if(nowpage === data.chatroomId){
         getChattingInChatroom(data);
         return;
     }
@@ -441,6 +451,10 @@ function reduceChatroomListContent(content){
 }
 
 function pageChange(to) {
+    if(isCreateState){
+        document.getElementById("chatroom-list-create-cancel-btn").click();
+    }
+
     infinityScrollObserver.disconnect();
     downEndObserver.disconnect();
     [...document.getElementsByClassName("now-page")].forEach(e => e.classList.remove("now-page"));
@@ -495,6 +509,143 @@ function getInputKey(event){
     }
 }
 
+function employeeSelectForm(){
+    let selected = $("#selected-employee");
+    if(selected.is(":hidden")){
+        isCreateState = true;
+        selected.slideDown("fast", ()=>{
+            selected.parent().removeClass("hide-list");
+            selected.addClass("d-flex");
+            $(".employee-list").addClass("short-list");
+        })
+    } else {
+        isCreateState = false;
+        selected.parent().addClass("hide-list");
+        selected.removeClass("d-flex");
+        selected.hide("fast");
+        $(".employee-list").removeClass("short-list");
+        clearSelectElement();
+    }
+}
+
+async function onProfileClick(event){
+    const target = event.target;
+    const empId = target.dataset.employeeSearch;
+
+    if(empId == null){
+        target.parentElement.click();
+        return;
+    }
+
+    if(isCreateState){
+        let empName = target.dataset.searchName;
+        let src = target.querySelector("img.rounded-circle").src;
+        addSelectedEmployeeList(empId, empName, src);
+        return;
+    }
+
+    openProfileModal(empId);
+}
+
+function addSelectedEmployeeList(id, name, src){
+    if(selectedEmployees[id] != null){
+        unSelectEmployee(id);
+        return;
+    }
+
+    selectEmployee(id, selectedDiv(id, name, src));
+}
+
+function selectEmployee(id, element){
+    selectedEmployees[id] = element;
+    selectedEmployeeDiv.prepend(selectedEmployees[id]);
+
+    if(Object.keys(selectedEmployees).length > 0){
+        $("#chatroom-create-btn").removeClass("disabled");
+    }
+}
+
+function unSelectEmployee(id){
+    selectedEmployees[id].remove();
+    delete selectedEmployees[id];
+    if(Object.keys(selectedEmployees).length === 0){
+        $("#chatroom-create-btn").addClass("disabled");
+    }
+}
+
+function clearSelectElement(){
+    for (let key in selectedEmployees) {
+        selectedEmployees[key].remove();
+        delete selectedEmployees[key];
+    }
+}
+
+function selectedDiv(id, name, src){
+    const div = makeElement("div", {className : ["selected-member-item", "text-center"]});
+    const img = makeElement("img", {className:["rounded-circle"], option:{src : src , width: "55px", height : "55px"}});
+    const span = makeElement("span", {className:["ms-2"]});
+    span.innerText = name;
+
+    const indicator = makeElement("span", {className:["indicator"], dataset:{"employeeId" : id}});
+    indicator.innerText = 'x';
+
+    div.append(img, span, indicator);
+
+    return div;
+}
+
+async function openProfileModal(empId){
+    let info= await fetch('/employee/getProfile?id=' + empId).then(res=>res.json())
+
+    document.querySelectorAll("[data-profile-type]")
+        .forEach(e => {
+            let profileType = e.dataset.profileType;
+            switch (profileType){
+                case 'img':
+                    e.setAttribute("src", info.profileImg == null ? '/img/기본.jpg' : info.profileImg);
+                    break;
+                case 'chatting':
+                    e.dataset.targetId = empId;
+                    break;
+                default:
+                    e.innerText = info[profileType];
+            }
+        })
+    namecardModal.show();
+}
+
+function onIndicatorClick(event){
+    let empId = event.target.dataset.employeeId;
+    if(empId == null){
+        event.target.parentElement.click();
+        return;
+    }
+
+    unSelectEmployee(empId);
+}
+
+function createChatroom(){
+    const members = Object.keys(selectedEmployees);
+
+    fetch('/chatrooms/create', {
+        method : "post",
+        headers : {"Content-Type" : "application/json;charset=utf-8"},
+        body : JSON.stringify(members)
+    }).then(res => res.json())
+        .then(r=>{
+            connectChatroom(r.chatroomId);
+            pageChange();
+            nowOpenPage = r.chatroomId;
+            nowPageType = 'Many';
+            document.getElementById("chatting-page-btn").click();
+
+            chatroomRenderByData(r).then(() => {
+                setTimeout(() => {
+                    document.querySelector("[data-last-read]")?.scrollIntoView({block: "center"})
+                }, 500)
+            })
+        })
+}
 
 setWhenReceiveMessage(onGetChattingOne, onGetMessage);
 
@@ -502,6 +653,11 @@ sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
 chatroomListBtn.addEventListener("click", getChatroomList);
 chatroomListSpace.addEventListener("click", (event) => openChatting(event))
 chattingArea.addEventListener("keyup", getInputKey);
+chatEmployeeList.addEventListener("click", onProfileClick);
+selectedEmployeeDiv.addEventListener("click", onIndicatorClick);
+document.getElementById("chatroom-list-create").addEventListener("click", employeeSelectForm);
+document.getElementById("chatroom-list-create-cancel-btn").addEventListener("click", employeeSelectForm);
+document.getElementById("chatroom-create-btn").addEventListener("click", createChatroom);
 document.querySelector("a[data-profile-type=chatting]").addEventListener("click", event => openChatting(event, 'One'))
 document.getElementById("employee-list-btn").addEventListener("click", event => pageChange(event.target))
 document.getElementById("chatroom-list-btn").addEventListener("click", event => pageChange(event.target))

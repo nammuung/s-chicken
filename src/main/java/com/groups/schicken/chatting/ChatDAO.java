@@ -9,7 +9,7 @@ import java.util.Map;
 public interface ChatDAO {
     ChatroomVO getChatroomByChatroomId(String chatroomId, String reqId);
 
-    ChatroomVO createChatroom(ChatroomVO chatroom);
+    int createChatroom(ChatroomVO chatroom);
 
     int joinChatroom(String id, ChatroomVO chatroom);
 

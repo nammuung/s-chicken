@@ -114,3 +114,52 @@ button:active{
 .get-message > .message-dot{
     display: block;
 }
+
+.selected-member-item {
+    position: relative;
+    margin: 0.25rem;
+    border: 1px #7749F8 solid;
+    border-radius: 0.375rem;
+    min-width: 167px;
+    padding-top: 5px;
+}
+
+.select-type-btn{
+    display: block;
+}
+
+.hide-list .selected-member-item,.hide-list .select-type-btn{
+    display: none;
+}
+
+.unselect-type-btn{
+    display: none;
+}
+
+.hide-list .unselect-type-btn{
+    display: block !important;
+}
+
+.indicator {
+    position: relative;
+    bottom: 100%;
+    left: 89%;
+    background-color: red;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    color:whitesmoke;
+    cursor: pointer;
+}
+
+.employee-list{
+    height:calc(100vh - 68px);
+    overflow-y: auto;
+}
+
+.employee-list.short-list{
+    height:calc(100vh - 146px);
+}

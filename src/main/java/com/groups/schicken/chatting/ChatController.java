@@ -53,6 +53,19 @@ public class ChatController {
         return ResponseEntity.ok(chattingVO);
     }
 
+    @PostMapping("create")
+    public ResponseEntity<ChattingVO> createChatroom(@AuthenticationPrincipal EmployeeVO employee, @RequestBody String[] members){
+        ChattingVO chattingVO;
+        try {
+            ChatroomVO chatroomVO = chatService.createManyChatroom(employee.getId(), members);
+            chattingVO = chatService.getChattingDataFirst(employee.getId(), chatroomVO.getId());
+        } catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(chattingVO);
+    }
+
     @GetMapping("list")
     public ResponseEntity<List<ChatroomVO>> getChatroomsList(@AuthenticationPrincipal EmployeeVO employee){
 

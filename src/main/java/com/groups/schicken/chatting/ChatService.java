@@ -127,6 +127,59 @@ public class ChatService {
         return chatroomList;
     }
 
+    /**
+     * 채팅방에 참여할 멤버 정보를 받아 채팅방을 생성
+     * @return 만들어진 채팅방으로 들어갈 수 있는 정보
+     */
+    @Transactional
+    public ChatroomVO createManyChatroom(String empId, String[] members) {
+        ChatroomVO created = new ChatroomVO();
+        created.setType(ChatroomType.Many);
+        created.setJoinDate(DateManager.getTodayDateTime("yyyyMMddhhmmssSSS"));
+
+        List<EmployeeVO> names = employeeDAO.getNamesByIds(List.of(empId));
+        if(names.isEmpty()){
+            throw new RuntimeException("접속한 아이디가 유효하지 않습니다.");
+        }
+
+        created.setName(names.get(0).getName() + "님의 채팅방");
+        int result = chatDAO.createChatroom(created);
+
+        if(result < 1){
+            throw new RuntimeException("채팅방 생성실패");
+        }
+
+        boolean joinResult =true;
+        joinResult &= joinChatroom(empId, created);
+
+        for (String member : members) {
+            joinResult &= joinChatroom(member, created);
+        }
+
+        if(!joinResult){
+            throw new RuntimeException("채팅방 입장 실패");
+        }
+
+        return created;
+    }
+
+    /**
+     * 1 : 1 채팅방 아이디를 두 사람의 id를 합하여 생성
+     * @param list 채팅하려는 두 사람의 id를 담은 List
+     * @return 두 id를 정렬하여 합친 문자열
+     */
+    private String makeOneChatroomId(List<String> list) {
+        return list.stream().sorted().collect(Collectors.joining());
+    }
+
+    /**
+     * 채팅방의 이름을 채팅방의 id를 이용하여 가져옴
+     */
+    private String getChatroomName(String chatroomId) {
+        return chatDAO.getChatroomName(chatroomId);
+    }
+
+
     /*
 
         채팅 관련
@@ -161,17 +214,16 @@ public class ChatService {
         return result >= 1;
     }
 
-    private String makeOneChatroomId(List<String> list) {
-        return list.stream().sorted().collect(Collectors.joining());
-    }
-    private String getChatroomName(String chatroomId) {
-        return chatDAO.getChatroomName(chatroomId);
-    }
-
+    /**
+     * 채팅방을 처음 열 때 데이터를 가져옴
+     */
     public ChattingVO getChattingDataFirst(String id, String chatroomId) {
         return getChattingDataFirst(id, chatroomId, null);
     }
 
+    /**
+     * 채팅방을 처음 열 때 데이터를 가져옴
+     */
     @Transactional
     public ChattingVO getChattingDataFirst(String employeeId, String chatroomId, String page){
         ChattingVO chattingData = chatDAO.getChatroomData(employeeId, chatroomId);
@@ -194,6 +246,14 @@ public class ChatService {
         return chattingData;
     }
 
+    /**
+     * 채팅방에서 다음 채팅을 불러와줌
+     * @param employeeId 접속한 아이디
+     * @param chatroomId 채팅방 아이디
+     * @param from 마지막 채팅의 번호
+     * @param direction 아래방향인지 윗방향인지
+     * @return
+     */
     public List<ChatMessage> getChattingDataNext(String employeeId, String chatroomId, String from, String direction){
         List<ChatMessage> chatMessageData = chatDAO.getChatMessageData(chatroomId, from, direction);
 
@@ -204,8 +264,12 @@ public class ChatService {
         return chatMessageData;
     }
 
+    /**
+     * 채팅을 읽음 처리함
+     */
     public Boolean readChatting(String employeeId, String chatroomId, String chatId) {
         int result = chatDAO.updateLastReadById(employeeId, chatroomId, chatId);
         return result == 1;
     }
+
 }
