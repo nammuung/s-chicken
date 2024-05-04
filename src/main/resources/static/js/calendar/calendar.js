@@ -149,15 +149,22 @@
 
                 var startDate = arg.start.toISOString().slice(0, 10); // 선택된 날짜의 날짜 부분만 추출
                 var endDate = arg.end ? arg.end.toISOString().slice(0, 10) : startDate; // 종료 날짜가 있으면 그 날짜를 선택, 없으면 시작 날짜와 같은 날짜 선택
+                
+                
 
                 // 시작 날짜에 하루를 더하여 설정
                 var nextDay = new Date(arg.start);
                 nextDay.setDate(nextDay.getDate() + 1);
                 var nextDayISO = nextDay.toISOString().slice(0, 10);
+                
 
-                $('#start').val(nextDayISO + 'T' + getCurrentTime()); // 시작 날짜 입력란에 선택된 날짜와 현재 시간 값 설정
-                $('#end').val(endDate + 'T18:00'); // 종료 날짜 입력란에 선택된 날짜 값 설정
+                $('#start').val(nextDayISO + 'T' + getCurrentTime()); 
+                
 
+                var startDate = new Date($('#start').val());
+var endDate = new Date(startDate.getTime() + 10 * 60 * 60 * 1000); // 시작 시간에서 10시간을 더합니다.
+var endISOString = endDate.toISOString().slice(0, 16); // ISO 문자열을 생성하고 시간 부분만 가져옵니다.
+$('#end').val(endISOString); // end 입력 필드에 값을 설정합니다.
                 // 현재 시간을 HH:mm 형식으로 반환하는 함수
                 function getCurrentTime() {
                     var now = new Date();
@@ -304,10 +311,11 @@ $(document).ready(function () {
         return endDate + 'T23:59:59'; // 종료 시간을 23:59:59로 설정하여 반환
     }
 
-    // 종일 옵션 해제 시 종료 시간을 18:00으로 반환하는 함수
+    // 종일 옵션 해제 시 종료 시간을 시작 시간 + 1시간으로 반환하는 함수
     function getEndDateNormal() {
-        var endDate = $('#start').val().slice(0, 10); // 시작 날짜를 가져와서 ISO 형식으로 변환
-        return endDate + 'T18:00'; // 기존의 종료 시간(18:00)으로 설정하여 반환
+        var startDate = new Date($('#start').val());
+        var endDate = new Date(startDate.getTime() + 10 * 60 * 60 * 1000); // 시작일에 10시간(10 * 60분 * 60초 * 1000밀리초)을 더하여 종료일 계산
+        return endDate.toISOString().slice(0, 16); // 종료 시간을 ISO 형식으로 변환하여 반환
     }
 
     
