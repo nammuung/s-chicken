@@ -12,9 +12,15 @@
 			</choose>
 	</sql>
 	
+	<update id="impRank">
+		UPDATE represent
+		set rank =#{rank}
+		WHERE id=#{id}
+	</update>
+	
 	<update id="impUpdate">
-		UPDATE represernt
-		set rank = 0
+		UPDATE represent
+		set rank = 0 , important = 0
 		WHERE id=#{id}		
 	</update>
 	
@@ -118,7 +124,7 @@
 		</selectKey>
 		INSERT INTO represent
 		VALUES
-		(#{id},#{writeDate},#{content},0,#{writerId},0,#{sort},#{title},#{important},#{rank})
+		(#{id},#{writeDate},#{content},0,#{writerId},0,#{sort},#{title},#{important},0)
 	</insert>
 	
 	<insert id="fileAdd" parameterType="FileVO" keyProperty="id">
@@ -173,7 +179,7 @@
 
 	<update id="delete" parameterType="BoardVO">
 		UPDATE represent SET
-		is_deleted=1,title=#{title}
+		is_deleted=1,title=#{title},important = 0
 		WHERE id=#{id}
 	</update>
 

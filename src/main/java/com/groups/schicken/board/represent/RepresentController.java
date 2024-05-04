@@ -112,7 +112,7 @@ public class RepresentController {
 		int result = representService.update(boardVO,file);
 		System.out.println("로직 들어오기");
 
-		return "redirect:./impList";
+		return "redirect:./list";
 	}
 
 	@PostMapping("delete")
