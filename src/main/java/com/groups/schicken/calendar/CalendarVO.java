@@ -3,6 +3,7 @@ package com.groups.schicken.calendar;
 import java.security.Timestamp;
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.apache.poi.ss.formula.functions.Code;
 
@@ -30,6 +31,7 @@ public class CalendarVO {
 	public String cname;
 	public String name;
 	
+	 private List<String> idList;  //알림 보내는 용도
 	
 	public EmployeeVO employeeVO;
 	

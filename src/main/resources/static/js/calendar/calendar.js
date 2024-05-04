@@ -318,5 +318,15 @@ $(document).ready(function () {
         return endDate.toISOString().slice(0, 16); // 종료 시간을 ISO 형식으로 변환하여 반환
     }
 
+    $(document).ready(function () {
+        // 모달이 닫힐 때 입력 폼 초기화
+        $('#eventModal').on('hidden.bs.modal', function () {
+            $('#title').val('');
+            $('#content').val('');
+            $('#start').val('');
+            $('#end').val('');
+            $('#managerName').val('');
+        });
+    });
     
 });
