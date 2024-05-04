@@ -73,32 +73,50 @@
 									<h1>결재목록</h1>
 									<table class="table text-center text-nowrap m-0">
 										<thead>
-										<tr>
-											<th style="width: 5%">no</th>
-											<th style="width: 65%">제목</th>
-											<th style="width: 10%">작성일</th>
-											<th style="width: 10%">등록자</th>
-											<th style="width: 10%">조회수</th>
-										</tr>
+									<tr>
+                                    <th style="width: 15%">문서번호</th>                                    
+                                    <th style="width: 40%">제목</th>
+                                    <th style="width: 10%">기안자</th>
+                                    <th style="width: 10%">문서종류</th>
+                                    <th style="width: 10%">상신일</th>
+                                    <th style="width: 5%">상태</th>
+                                </tr>
 										</thead>
 										<tbody>
-										<c:forEach items="${list}" var="vo" end="5">
-											<c:if test="${vo.sort eq 0}">
-												<tr id="important">
-													<input type="hidden" id="important_val" value="${vo.important}">
-													<td>${vo.id}</td>
-													<td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a>
-													</td>
-													<td>${vo.writeDate}</td>
-
-													<td>${vo.employeeVO.name}</td>
-
-													<td>${vo.hit}</td>
-												</tr>
-											</c:if>
-										</c:forEach>
-
-										</tbody>
+    <c:choose>
+        <c:when test="${empty dlist}">
+            <tr>
+                <td colspan="6">현재 진행중인 결재 내역이 존재 하지 않습니다.</td>
+            </tr>
+        </c:when>
+        <c:otherwise>
+            <c:forEach items="${dlist}" var="vo" end="5">
+                <c:if test="${vo.approvalVOs[0].rank ne 0}">                       		
+                    <tr>
+                        <td>${vo.id}</td>
+                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> 
+                            <td class="text-start"><a href="./document/writenList/writenBonus?id=${vo.id}" onclick="openbonus(${vo.id})">${vo.title}</a></td>
+                        </c:if>
+                        <td>${vo.employeeVO.name}</td>
+                        <td>${vo.templateVO.tempName}</td>
+                        <td>${vo.writeDate}</td>
+                        <c:choose>
+                            <c:when test="${vo.status eq 0}">
+                                <td>진행중</td>
+                            </c:when>
+                            <c:when test="${vo.status eq 1}">
+                                <td>결재완료</td>
+                            </c:when>
+                            <c:when test="${vo.status eq 2}">
+                                <td>반려</td>
+                            </c:when>
+                        </c:choose>	                                    
+                    </tr>
+                </c:if>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
+</tbody>
 									</table>
 								</div>
 							</div>

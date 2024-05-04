@@ -27,6 +27,8 @@ import com.groups.schicken.board.represent.RepresentService;
 import com.groups.schicken.calendar.CalendarService;
 import com.groups.schicken.calendar.CalendarVO;
 import com.groups.schicken.common.vo.Pager;
+import com.groups.schicken.document.DocumentService;
+import com.groups.schicken.document.DocumentVO;
 import com.groups.schicken.notification.Noticer;
 import com.groups.schicken.notification.NotificationType;
 import com.groups.schicken.organization.ChattingEmployeeListVO;
@@ -59,6 +61,7 @@ public class MainController {
 	  @Autowired private EmployeeService employeeService;
 	  @Autowired private OrganizationService organizationService;
 	  @Autowired private Noticer noticer;
+	  @Autowired private DocumentService documentService;
 	  
 	/*
 	 * @GetMapping("/") public String test(@RequestParam("path")String path){ return
@@ -86,6 +89,9 @@ public class MainController {
 		model.addAttribute("profile", profile);
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
+		employeeVO.setId(id);
+		List<DocumentVO> dir = documentService.approvalList(employeeVO,pager);
+		model.addAttribute("dlist", dir);
         return "home";
     }
 
@@ -109,7 +115,7 @@ public class MainController {
     		String id = authentication.getName();
     		calendarVO.setShare(id);
             int result = calendarService.insert(calendarVO);
-            //noticer.sendNotice(id+"일정이 등록되었습니다.", "/", NotificationType.Calendar, List<String>);
+           // noticer.sendNotice(id+"일정이 등록되었습니다.", "/", NotificationType.Calendar, List<String>);
                 return "일정이 성공적으로 추가되었습니다.";
 
     }
