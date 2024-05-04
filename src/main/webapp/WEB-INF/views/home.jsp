@@ -140,8 +140,8 @@
 						<input type="text" id="title" class="form-control mb-3" placeholder="제목을 입력해주세요." >
 						<label for="content" class="form-label"><b>내용</b></label>
 						<input type="text" id="content" class="form-control mb-3" placeholder="내용을 입력해주세요.">
-						<label for="share" class="form-label"><b>공유자</b></label>
-						<input type="text" id="share" nanem="share" class="form-control mb-3" disabled
+						
+						<input type="hidden" id="share" nanem="share" class="form-control mb-3" disabled
 value="${profile.name}">
 						<input type="hidden" name="share" value="${profile.id}" id="emid" />
 
@@ -205,7 +205,6 @@ value="${profile.name}">
 						<label for="end2" class="form-label"><b>종료</b></label>
 						<input id="end2" name="end" type="datetime-local" class="form-control mb-3 col-2" value="${detailMain.end}">
 					</div>
-						<input type="checkbox" value="" class="mt-3 me-1" id="alltime"><span style="margin-top: 40px;">종일</span>
 				</div>
 					<label for="title2" class="form-label"><b>제목</b></label>
 					<input type="text" id="title2" name="title" class="form-control mb-3" value="${detailMain.title}" >
