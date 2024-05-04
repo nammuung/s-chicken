@@ -143,28 +143,20 @@
                 calendar.unselect();
             },
             select: function (arg) {
-                $('form').each(function() {this.reset();});
+                
                 $('#eventModal').modal('show');
                 // 부트스트랩 모달 열기
-
                 var startDate = arg.start.toISOString().slice(0, 10); // 선택된 날짜의 날짜 부분만 추출
                 var endDate = arg.end ? arg.end.toISOString().slice(0, 10) : startDate; // 종료 날짜가 있으면 그 날짜를 선택, 없으면 시작 날짜와 같은 날짜 선택
-                
-                
 
                 // 시작 날짜에 하루를 더하여 설정
                 var nextDay = new Date(arg.start);
                 nextDay.setDate(nextDay.getDate() + 1);
                 var nextDayISO = nextDay.toISOString().slice(0, 10);
-                
 
-                $('#start').val(nextDayISO + 'T' + getCurrentTime()); 
-                
+                $('#start').val(nextDayISO + 'T' + getCurrentTime()); // 시작 날짜 입력란에 선택된 날짜와 현재 시간 값 설정
+                $('#end').val(endDate + 'T' + getCurrentTime2()); // 종료 날짜 입력란에 선택된 날짜 값 설정
 
-                var startDate = new Date($('#start').val());
-var endDate = new Date(startDate.getTime() + 10 * 60 * 60 * 1000); // 시작 시간에서 10시간을 더합니다.
-var endISOString = endDate.toISOString().slice(0, 16); // ISO 문자열을 생성하고 시간 부분만 가져옵니다.
-$('#end').val(endISOString); // end 입력 필드에 값을 설정합니다.
                 // 현재 시간을 HH:mm 형식으로 반환하는 함수
                 function getCurrentTime() {
                     var now = new Date();
@@ -172,6 +164,19 @@ $('#end').val(endISOString); // end 입력 필드에 값을 설정합니다.
                     var minute = now.getMinutes().toString().padStart(2, '0'); // 분을 두 자리로 변환하고 앞에 0을 채움
                     return hour + ':' + minute; // 시간과 분을 합쳐서 반환
                 }
+                function getCurrentTime2() {
+                    var now = new Date();
+                    now.setHours(now.getHours() + 1); // 현재 시간에서 1시간 추가
+                    var hour = now.getHours().toString().padStart(2, '0'); // 시간을 두 자리로 변환하고 앞에 0을 채움
+                    var minute = now.getMinutes().toString().padStart(2, '0'); // 분을 두 자리로 변환하고 앞에 0을 채움
+                    return hour + ':' + minute; // 시간과 분을 합쳐서 반환
+                }
+                
+
+                
+
+                
+
 
                 // 모달에서 이벤트 제목 입력 후 저장 버튼 클릭 시
                 $('#saveEventBtn').off('click').click(function () {
@@ -294,6 +299,8 @@ $('#end').val(endISOString); // end 입력 필드에 값을 설정합니다.
 })();
 
 $(document).ready(function () {
+    var originalEndDate = $('#end').val(); // 원본 종료 날짜 저장
+
     // 종일 체크박스 클릭 이벤트 처리
     $('#alltime').change(function () {
         if (this.checked) {
@@ -301,23 +308,24 @@ $(document).ready(function () {
             $('#end').val(getEndDateAllDay()); // 종료 시간을 23:59:59로 설정
         } else {
             // 종일 옵션이 해제되었을 때
-            $('#end').val(getEndDateNormal()); // 종료 시간을 기존의 18:00으로 설정
+            var endDate = $('#end').val().slice(0, 10); 
+            return  $('#end').val(endDate + 'T' + getCurrentTime2());             
         }
     });
 
     // 종일 옵션 체크 시 종료 시간을 23:59:59로 반환하는 함수
     function getEndDateAllDay() {
-        var endDate = $('#start').val().slice(0, 10); // 시작 날짜를 가져와서 ISO 형식으로 변환
+        var endDate = $('#end').val().slice(0, 10); // 시작 날짜를 가져와서 ISO 형식으로 변환
         return endDate + 'T23:59:59'; // 종료 시간을 23:59:59로 설정하여 반환
     }
-
-    // 종일 옵션 해제 시 종료 시간을 시작 시간 + 1시간으로 반환하는 함수
-    function getEndDateNormal() {
-        var startDate = new Date($('#start').val());
-        var endDate = new Date(startDate.getTime() + 10 * 60 * 60 * 1000); // 시작일에 10시간(10 * 60분 * 60초 * 1000밀리초)을 더하여 종료일 계산
-        return endDate.toISOString().slice(0, 16); // 종료 시간을 ISO 형식으로 변환하여 반환
+    function getCurrentTime2() {
+        var now = new Date();
+        now.setHours(now.getHours() + 1); // 현재 시간에서 1시간 추가
+        var hour = now.getHours().toString().padStart(2, '0'); // 시간을 두 자리로 변환하고 앞에 0을 채움
+        var minute = now.getMinutes().toString().padStart(2, '0'); // 분을 두 자리로 변환하고 앞에 0을 채움
+        return hour + ':' + minute; // 시간과 분을 합쳐서 반환
     }
-
+    
     $(document).ready(function () {
         // 모달이 닫힐 때 입력 폼 초기화
         $('#eventModal').on('hidden.bs.modal', function () {
