@@ -39,4 +39,6 @@ public interface ChatDAO {
     int insertMember(String chatroomId,String name, String joinDate, String[] members);
 
     List<EmployeeProfileVO> getMembersByChatroomId(String chatroomId);
+
+    int outChatroom(String empId, String chatroomId);
 }

@@ -17,6 +17,7 @@ const chatroomMembers = document.getElementById("chatroom-members");
 const memberInviteBtn = document.getElementById("member-invite-btn");
 const memberInviteCancelBtn = document.getElementById("member-invite-cancel-btn");
 const memberInviteSubmitBtn = document.getElementById("member-invite-submit-btn");
+const chatroomOutBtn = document.getElementById("chatroom-out-btn");
 
 let memberData = {};
 let lastChatting;
@@ -114,8 +115,6 @@ function openChatting(event, type) {
         chatroomInfoModalBtn.classList.remove("d-none");
     }
 
-    console.log(targetId, type);
-
     pageChange();
     namecardModal.hide();
     document.getElementById("chatting-page-btn").click();
@@ -157,11 +156,8 @@ async function chatroomRenderByData(chattingData) {
     chattingData.members.forEach(member => memberData[member.id] = member);
     chattingData.chatMessages.forEach(chatMessage => {
         let created;
-        console.log("in chatroomRender : ", chatMessage);
         if(chatMessage.type === 'Message') created = appendChatting(chatMessage);
         else if(chatMessage.type === 'Notice') created = appendNotice(chatMessage);
-
-        console.log("in chatroomRender created : ", created)
 
         if (chattingData.lastReadTime === chatMessage.sendDate) {
             created.dataset.lastRead = "";
@@ -197,8 +193,6 @@ async function getChatting(from, direction) {
     return fetch(`/chatrooms/chattings/${option}?from=${from}&direction=${direction}`)
         .then(res => res.json())
         .then(chattings => {
-            console.log("in getChatting : " , chattings);
-
             if (direction === 'up') {
                 chattings.forEach(chatting => {
                     if(chatting.type === 'Message') prependChatting(chatting);
@@ -333,12 +327,19 @@ function getChattingInChatroom(data) {
                 id: data.id
             })
         }).then(res => res.text())
-            .then(r => console.log(r));
+            .then(r => console.log("readChat : ", r));
     }
 }
 
 function createChattingProfile(data, sendDate) {
-    console.log("data : ", data);
+    if(data == null){
+        data = {
+            id : -1,
+            profileImg : '/img/기본.jpg',
+            name : '(알 수 없음)'
+        }
+    }
+
     let div = makeElement("div", {
         className: ["chatting", "d-flex", "mt-2", "ms-1"],
         dataset: {"senderId": data.id, "sendProfileDate": sendDate, "chattingProfile": ""}
@@ -633,6 +634,8 @@ async function onProfileClick(event) {
     if(target != null) empId = target.dataset.employeeSearch;
     else empId = event;
 
+    if(empId == -1) return;
+
     if (empId == null) {
         target.parentElement.click();
         return;
@@ -892,6 +895,21 @@ function submitInviteMember(){
         })
 }
 
+function outChatroom(){
+
+    if(!confirm("채팅방을 나가시겠습니까?")) return;
+
+    fetch('/chatrooms/out/' + nowOpenPage,{
+        method : 'delete'
+    }).then(res => {
+        if(res.ok){
+            console.log("ok!");
+            chatroomInfoModal.hide();
+            document.getElementById("chatroom-list-btn").click();
+        }
+    })
+}
+
 setWhenReceiveMessage(onGetChattingOne, onGetMessage);
 
 sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
@@ -907,6 +925,7 @@ chatroomMembers.addEventListener("click", onProfileClick);
 memberInviteBtn.addEventListener("click", onMemberInvite);
 memberInviteCancelBtn.addEventListener("click", finishMemberInvite);
 memberInviteSubmitBtn.addEventListener("click", submitInviteMember);
+chatroomOutBtn.addEventListener("click", outChatroom);
 document.getElementById("chatroom-list-create").addEventListener("click", employeeSelectForm);
 document.getElementById("chatroom-list-create-cancel-btn").addEventListener("click", employeeSelectForm);
 document.getElementById("chatroom-create-btn").addEventListener("click", createChatroom);

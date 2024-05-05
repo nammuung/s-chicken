@@ -211,6 +211,11 @@
         WHERE cm.chatroom_id=#{chatroomId}
     </select>
 
+    <delete id="outChatroom">
+        DELETE FROM chat_member
+        WHERE employee_id=#{empId} AND chatroom_id = #{chatroomId}
+    </delete>
+
     <sql id="getLastReadRowNum">
         (SELECT (sub.r + 13)
         FROM (

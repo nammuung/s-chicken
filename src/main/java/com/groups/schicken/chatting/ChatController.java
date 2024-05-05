@@ -122,4 +122,17 @@ public class ChatController {
     public ResponseEntity<Boolean> readChatting(@AuthenticationPrincipal EmployeeVO employee, @RequestBody ChatMessage message){
         return ResponseEntity.ok(chatService.readChatting(employee.getId(), message.getChatroomId(), message.getId()));
     }
+
+    @DeleteMapping("out/{chatroomId}")
+    public ResponseEntity outChatroom(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId){
+        boolean result = chatService.outChatroom(employee.getId(), chatroomId);
+
+        if(result){
+            chatService.insertOutMessage(employee, chatroomId);
+
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
 }

@@ -196,7 +196,7 @@
                             <button class="btn btn-outline-secondary w-100" data-bs-dismiss="modal">닫기</button>
                         </div>
                         <div class="col-2 ps-0">
-                            <button class="btn btn-outline-danger w-100"><i class="fas fa-sign-out-alt"></i></button>
+                            <button id="chatroom-out-btn" class="btn btn-outline-danger w-100"><i class="fas fa-sign-out-alt"></i></button>
                         </div>
                     </div>
                 </div>

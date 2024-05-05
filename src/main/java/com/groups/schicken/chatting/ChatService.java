@@ -320,4 +320,29 @@ public class ChatService {
             template.convertAndSend("/sub/chat/" + chatroomId, noticeChat);
         }
     }
+
+    @Transactional
+    public boolean outChatroom(String id, String chatroomId) {
+        int result = chatDAO.outChatroom(id, chatroomId);
+
+        if(result != 1) throw new RuntimeException();
+
+        return true;
+    }
+
+    public void insertOutMessage(EmployeeVO employee, String chatroomId) {
+        String sendDate = DateManager.getTodayDateTime("yyyyMMddHHmmssSSS");
+
+        ChatMessage noticeChat = ChatMessage.builder()
+                .id(createChatId(chatroomId, employee.getId(), sendDate))
+                .chatroomId(chatroomId)
+                .senderId(employee.getId())
+                .type(ChattingType.Notice)
+                .sendDate(sendDate)
+                .content(employee.getName() + "님께서 채팅방을 나가셨습니다.")
+                .build();
+
+        chatDAO.insertChat(noticeChat);
+        template.convertAndSend("/sub/chat/" + chatroomId, noticeChat);
+    }
 }
