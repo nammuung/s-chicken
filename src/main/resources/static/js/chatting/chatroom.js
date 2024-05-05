@@ -257,7 +257,7 @@ function updateChatroomListElement(target, data) {
 
     const filteredEmp = [...document.querySelectorAll("[data-employee-search]")].filter(emp => emp.dataset.employeeSearch === data.senderId)[0];
 
-    target.querySelector("[data-chat-recent-message]").innerText = reduceChatroomListContent(filteredEmp.dataset.searchName + " : " + data.content);
+    target.querySelector("[data-chat-recent-message]").innerText = reduceContentLength(filteredEmp.dataset.searchName + " : " + data.content);
 }
 
 function getChattingInChatroom(data) {
@@ -320,7 +320,7 @@ function createChattingProfile(data, sendDate) {
     return div;
 }
 
-function chatDateFormat(date) {
+function chatDateFormat(date, noYear = false) {
     if (date == null || date == "") {
         return "";
     }
@@ -339,7 +339,7 @@ function chatDateFormat(date) {
         afternoon = "오전";
     }
 
-    return year + "-" + month + "-" + day + " " + afternoon + " " + hour + ":" + minute;
+    return (noYear? "" : year + "-") + month + "-" + day + " " + afternoon + " " + hour + ":" + minute;
 }
 
 function createChattingMessage(data, sendDate, senderId) {
@@ -414,15 +414,22 @@ function drawChatroomList(data) {
 
     let chatroomDiv = makeElement("div", {className: ["ms-2"]});
     let titleH5 = makeElement("h5");
-    titleH5.innerText = data.name;
+    titleH5.innerText = reduceContentLength(data.name, 10);
+
+    if(data.type === 'Many'){
+        let span = makeElement("span", {className : ["small", "text-secondary"]});
+        span.innerText = "[" + data.members.length + "]";
+        titleH5.append(span);
+    }
+
     let recentMessageDiv = makeElement("div", {dataset: {"chatRecentMessage": ""}});
-    recentMessageDiv.innerText = reduceChatroomListContent(data.lastMessage.content);
+    recentMessageDiv.innerText = reduceContentLength(data.lastMessage.content);
 
     chatroomDiv.append(titleH5, recentMessageDiv);
 
     let infoDiv = makeElement("div", {className: ["ms-auto", "pe-2"], dataset: {"chatroomListInfo": ""}});
     let timeDiv = makeElement("div", {className: ["small"], dataset: {"chatListTime": ""}});
-    timeDiv.innerText = chatDateFormat(data.lastMessage.sendDate);
+    timeDiv.innerHTML = chatDateFormat(data.lastMessage.sendDate, true);
 
     infoDiv.append(timeDiv);
 
@@ -468,12 +475,12 @@ function getProfileImgByMembers(members, type) {
     return "/img/기본.jpg"
 }
 
-function reduceChatroomListContent(content) {
-    if (content.length < 14) {
+function reduceContentLength(content, len = 14) {
+    if (content.length < len) {
         return content;
     }
 
-    return content.substring(0, 14) + "...";
+    return content.substring(0, len) + "...";
 }
 
 function pageChange(to) {
