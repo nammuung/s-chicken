@@ -86,39 +86,20 @@
 	                                <th style="width: 5%">조회수</th>
 	                            </tr>
                             </thead>
-                            <tbody>
-                            	
-	                            	<c:forEach items="${list}" var="vo">
-	                            		
-				                            <tr id="important">
-                                                <input type="hidden" id="important_val" value="${vo.important}">
-                                                
-				                                <td>${vo.id}</td>
-				                                <td class="text-start"><a href="./detail?id=${vo.id}">				                               
-				                                	${vo.title}
-				                                	</a></td>
-				                                <td>${vo.writeDate}</td>
-				                                <td>${vo.employeeVO.name}</td>
-				                                <td>${vo.hit}</td>
-				                            </tr>
-			                            
-		                            </c:forEach>
-		                            
-<%-- 		                            <c:forEach items="${list}" var="vo">
-	                            		<c:if test="${vo.sort eq 0}">
-				                            <tr id="important">
-                                                <input type="hidden" id="important_val" value="${vo.important}">
-				                                <td>${vo.id}</td>
-				                                <td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a></td>
-				                                <td>${vo.writeDate}</td>
-				                                
-				                                	<td>${vo.employeeVO.name}</td>
-				                                
-				                                <td>${vo.hit}</td>
-				                            </tr>
-			                            </c:if>
-		                            </c:forEach> --%>
-	                           
+                            <tbody>                            	
+	                            	<c:forEach items="${list}" var="vo">	                            		
+										<tr id="important">
+											<input type="hidden" id="important_val" value="${vo.important}">
+											
+											<td>${vo.id}</td>
+											<td class="text-start"><a href="./detail?id=${vo.id}">				                               
+												${vo.title}
+												</a></td>
+											<td>${vo.writeDate}</td>
+											<td>${vo.employeeVO.name}</td>
+											<td>${vo.hit}</td>
+										</tr>
+		                            </c:forEach> 
                             </tbody>
                         </table>
                     </div>
