@@ -66,7 +66,7 @@
                     <tr>
 
                         <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
-                            colspan="2" class=""> 상여금신청서
+                            colspan="2" class=""> 상여금신청서 
                             <div style="text-align: right;">
                             
                             	
@@ -75,7 +75,7 @@
                                 	<button id="approval_btn" type="button" class="btn btn-primary">결재하기</button>
                                 	<button id="refuse_btn" type="button" class="btn btn-primary">반려하기</button>
                                 </c:if>
-
+										
                                 <c:if test="${list[0].temp eq 1}">
                                     <button type="button" id="modal_show" class="btn btn-primary">
                                         결재선지정
@@ -90,6 +90,8 @@
                     </tr>
 					<input type="hidden" value="${list[0].id}" name="documentId">
 					<input type="hidden" value="<%=strDate %>" name="date">
+					<input type="hidden" value="${list[nowCount].approvalVOs[0].rank}" name="rank">
+					
                     <tr>
                         <td
                             style="background: white; padding: 0px !important; border: currentColor; border-image: none; width: 506px; text-align: left; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
@@ -258,17 +260,7 @@
                     <col width="300" />
 
                 </colgroup>
-                <tbody>
-                    <tr>
-                        <td
-                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
-                            대상자 </td>
-                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
-                            colspan="5">
-
-                            값넣기
-                        </td>
-                    </tr>
+                <tbody>               
                    
                     <tr>
                         <td
@@ -278,6 +270,28 @@
                             colspan="5">
 
                             ${list[0].title}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            대상자 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
+                            ${list[0].bonusVO.codeVO.name} ${list[0].bonusVO.employeeVO.name}
+                            
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            금액 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
+
+                            ${list[0].bonusVO.bonus}
                         </td>
                     </tr>
 

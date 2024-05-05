@@ -1,10 +1,10 @@
 function screen(){
     // 현재 화면의 너비와 높이를 가져옵니다.
-    let screenWidth = window.screen.width;
-    let screenHeight = window.screen.height;
-
+    let screenWidth = window.innerWidth;
+    let screenHeight = window.innerHeight;
+	
     // 창의 너비와 높이를 설정합니다.
-    let widthPercentage = 50; // 화면 너비의 50%
+    let widthPercentage = 60; // 화면 너비의 50%
     let heightPercentage = 100; // 화면 높이의 100%
     let width = (screenWidth * widthPercentage) / 100;
     let height = (screenHeight * heightPercentage) / 100;

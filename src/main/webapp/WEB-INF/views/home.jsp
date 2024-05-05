@@ -91,18 +91,16 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${list}" var="vo" end="5">
-										<c:if test="${vo.sort eq 0}">
+									<c:forEach items="${list}" var="vo" end="4">
 											<tr id="important">
 												<input type="hidden" id="important_val" value="${vo.important}">
 												<td>${vo.id}</td>
 												<td class="text-start"><a
-														href="./all/detail?id=${vo.id}">${vo.title}</a></td>
+														href="./전체/detail?id=${vo.id}">${vo.title}</a></td>
 												<td>${vo.writeDate}</td>
 												<td>${vo.employeeVO.name}</td>
 												<td>${vo.hit}</td>
-											</tr>
-										</c:if>
+											</tr>										
 									</c:forEach>
 
 								</tbody>

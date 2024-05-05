@@ -27,6 +27,12 @@ public class RepresentService implements BoardService {
 	private Noticer noticer;
 	@Value("app.upload.board.qna")
 	private String uploadPath;
+	
+	public List<BoardVO> impList(BoardVO boardVO) throws Exception{
+		List<BoardVO> ar = representDAO.impList(boardVO);		
+		
+		return ar;
+	}
 
 
 	@Override
@@ -83,6 +89,21 @@ public class RepresentService implements BoardService {
 	@Override
 	public int add(BoardVO boardVO,MultipartFile attach) throws Exception {
 			int result=representDAO.add(boardVO);
+			
+			if(boardVO.getImportant()) {				
+
+					List<BoardVO> ar = representDAO.impList(boardVO);
+					for(int i = 0 ; i<ar.size() ; i++) {
+						boardVO.setRank(ar.get(i).getRank()+1L);
+						boardVO.setId(ar.get(i).getId());
+						result = representDAO.impRank(boardVO);
+						if(boardVO.getRank()==4L) {
+							result = representDAO.impUpdate(boardVO);
+						}
+					}
+					
+			}
+
 
 			if(boardVO.getImportant()){
 				noticer.sendNoticeWhole(getNoticeContent(boardVO.getTitle()), boardVO.getId() + "" , NotificationType.Notice);
@@ -124,7 +145,6 @@ public class RepresentService implements BoardService {
 
 	}
 
-
 	@Override
 	public List<BoardVO> pastPage(BoardVO boardVO) throws Exception {
 		// TODO Auto-generated method stub
@@ -146,6 +166,20 @@ public class RepresentService implements BoardService {
 	@Override
 	public int update(BoardVO boardVO,MultipartFile file) throws Exception {
 		int result = representDAO.update(boardVO);
+		
+		if(boardVO.getImportant()) {				
+
+			List<BoardVO> ar = representDAO.impList(boardVO);
+			for(int i = 0 ; i<ar.size() ; i++) {
+				boardVO.setRank(ar.get(i).getRank()+1L);
+				boardVO.setId(ar.get(i).getId());
+				result = representDAO.impRank(boardVO);
+				if(boardVO.getRank()==4L) {
+					result = representDAO.impUpdate(boardVO);
+				}
+			}
+			
+		}		
 
 		if(file.isEmpty()) {
 			return result;

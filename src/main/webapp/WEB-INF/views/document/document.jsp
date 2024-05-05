@@ -81,7 +81,7 @@
 			                                        
 			                                        
 			                                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> <td class="text-start"><a href="#" onclick="openbonus(${vo.id})">${vo.title}</a></td></c:if>
-			                                        
+			                                        <c:if test="${vo.templateVO.tempName eq '휴가계획서'}"> <td class="text-start"><a href="#" onclick="openvacation(${vo.id})">${vo.title}</a></td></c:if>
 			                                        
 			                                        <td>${vo.templateVO.tempName}</td>
 			                                        <td>${vo.writeDate}</td>

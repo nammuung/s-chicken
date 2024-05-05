@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Controller
-@RequestMapping("/represent/*")
+@RequestMapping("/대표/*")
 @Slf4j
 @RequiredArgsConstructor
 public class RepresentController {
@@ -34,7 +34,7 @@ public class RepresentController {
 	@ModelAttribute("board")
 	public String board() {
 
-		return "represent";
+		return "대표";
 	}
 
 
@@ -78,6 +78,9 @@ public class RepresentController {
 	@GetMapping("list")
 	public String getImpList(@AuthenticationPrincipal EmployeeVO employeeVO ,Pager pager,Model model,BoardVO boardVO) throws Exception {
 		
+		List<BoardVO> imp = representService.impList(boardVO);
+		model.addAttribute("imp", imp);
+		
 		List<BoardVO> ar = representService.getList(pager,boardVO);
 		
 		System.out.println(boardVO.getEmployeeVO());
@@ -109,7 +112,7 @@ public class RepresentController {
 		int result = representService.update(boardVO,file);
 		System.out.println("로직 들어오기");
 
-		return "redirect:./impList";
+		return "redirect:./list";
 	}
 
 	@PostMapping("delete")

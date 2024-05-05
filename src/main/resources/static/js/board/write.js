@@ -14,23 +14,32 @@ let board = document.getElementById("board")
 	console.log(sort.value);
 	console.log(board.innerHTML);
 
-		if(board.innerHTML=="represent공지사항"){
+		if(board.innerHTML=="대표공지사항"){
 			sort.value =1;
 		}
+		
 	
 	function check1(){
-
 		
 		if(important.checked){
 			important.value=1;
 			console.log("체크됨")
 			console.log(important.value)
+			
 		}else{
 			important.value=0;
-		
+			
 		}
 	}
 	
+	sort.addEventListener("change",()=>{
+		if(sort.value ==1){
+			important.disabled = false;
+		}else{
+			important.disabled = true;
+		}
+		
+	})
 
     ClassicEditor
         .create(document.querySelector('#editor'))

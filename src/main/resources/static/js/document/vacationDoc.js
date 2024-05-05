@@ -1,48 +1,49 @@
 
 import oc from "/js/orgChart/orgChart.js";
-console.log("임시저장함")
+	console.log("휴가")
 	const myModal = new bootstrap.Modal(document.getElementById("myModal"))
-	const bonusModal = new bootstrap.Modal(document.getElementById("bonusModal"))
+	
 	
 	const me = document.getElementById("me");
 	
 	
 	const add_btn = document.getElementById("addbtn")
 	const approval_List = document.getElementById("approval_List");
-	const approve = document.querySelectorAll(".sign_member_wrap");	
+	
 	const del_btn = document.getElementById("delbtn");
 	const register = document.getElementById("register");
 	const modal_show = document.getElementById("modal_show");
 	const sangsin = document.getElementById("sangsin");
 	const tempSave = document.getElementById("tempSave");
 	const frm= document.querySelector("form");
-	const bonus_btn = document.getElementById("bonus_btn");
 	
-	const bonus =document.getElementById("bonus");
-	const bonuspeo = document.getElementById("bonuspeo");
+	const vacation = document.getElementById("vacation");
+	
+	
+
 	
 	const getSave = document.getElementById("getSave");
 	
 	const cancel = document.getElementById("cancel");
 	
 	const save_btn = document.getElementById("save_btn");
-	
+		
+	let arr =[];
 	let employeeArr =[];
 	let rankArr=[];
 	let resultArr=[];
-	let relativePath = '/document/pay/pay';
-    let arr =[];
-	let getData;
-	let del_app;
-	
-	getSave.addEventListener("click",(e)=>{
+ 	let relativePath = '/document/pay/pay';
+ 	
+
+ 	
+	 getSave.addEventListener("click",(e)=>{
 		 
 		 	approval_List.innerHTML =""
 		 	console.log(e.target)
 		 	arr = [];
 		 	
 			 if(e.target.tagName=='I'){
-				
+
 				 const isConfirmed = confirm("정말로 삭제하시겠습니까?");
 				let data ={
 						employeeId:me.value,
@@ -66,7 +67,7 @@ console.log("임시저장함")
 					})
 			 	return			 
 				}
-		 }		 
+		 }
 		 	
 		 	console.log(e.target.dataset)
 			let data = {
@@ -94,52 +95,10 @@ console.log("임시저장함")
 					let arr_id = `${reply.appId}`
 					
 					arr.push(arr_id);
+					console.log(arr);
 				})
-					console.log(arr)
 			})
 	 })
-	
-	
-	
-	window.onload = function() {
-		rankArr=[0];
-		employeeArr=[approve[0].querySelector(".sign_date").getAttribute("data-id")];
-		resultArr=[1];
-		console.log(approve.length)
-    for (let i = 1; i < approve.length; i++) {
-        const id = approve[i].querySelector(".sign_date").getAttribute("data-id");
-        const get_level = approve[i].querySelector(".sign_date").getAttribute("data-level");
-        const name = approve[i].querySelector(".sign_date").getAttribute("data-name");
-
-        console.log(id);
-
-        if (id != null) {
-            arr.push(id);
-            let str = `<li class="list-group-item" data-id="${id}" data-name="${name}" data-level="${get_level}">
-                            <i class="bi bi-arrow-down-up handle"></i>
-                                ${get_level} ${name}
-                            </li>`;
-            approval_List.innerHTML += str;
-        }
-    }
-
-    let goList = approval_List.querySelectorAll("li");
-    let approve_arr = 4 - arr.length;
-
-    for (let i = approve_arr, j = 1; i <= 3; i++, j++) {
-        approve[i].querySelector("#name").innerHTML = goList[i - approve_arr].getAttribute("data-name");
-        approve[i].querySelector(".sign_rank").innerHTML = goList[i - approve_arr].getAttribute("data-level");
-
-        rankArr.push(j);
-        employeeArr.push(goList[i - approve_arr].getAttribute("data-id"));
-        resultArr.push(0);
-
-        console.log(resultArr);
-        console.log(rankArr);
-        console.log(employeeArr);
-    }
-};
-	
 	 
 	cancel.addEventListener("click",()=>{
 		const isConfirmed = confirm("정말로 취소하시겠습니까?");
@@ -149,59 +108,68 @@ console.log("임시저장함")
 		}
 	})
 	
-	updateSave.addEventListener("click",(e)=>{
-	e.preventDefault();
-	console.log(updateSave.dataset.temp);
-	//return;
-	//임시저장 다시 임시저장하기
-	const formData = new FormData(frm);
-	formData.append("content", editor.getData())	
-	formData.append("employeeId",employeeArr)
-	formData.append("rank",rankArr)
-	formData.append("result",resultArr)
-	formData.append("bunusEmployeeId",bonuspeo.dataset.id)
-	
-	if(updateSave.dataset.temp ==1){
+	/*body:JSON.stringify(data),			
+			headers:{
+				"Content-Type" : "application/json"
+			}*/
+/*	tempSave.addEventListener("click",(e)=>{
+		e.preventDefault();
 		
-		fetch('/document/tempTotemp',{
-			method:"post",
-			body:formData,
-		}).then(r=>console.log(r))
-		.then(r=>{
-			alert("임시저장 되었습니다")	
-		})
-	}
+		const formData= new Formdata(frm);
+		
+		
+		
+	})*/
 	
-	if(updateSave.dataset.temp ==0){
+		tempSave.addEventListener("click",(e)=>{
+		e.preventDefault();
+		const title = document.getElementById("title");
+		
+		if(title.value == ""){
+			alert("제목은 필수입니다")
+			return;
+		}
+		
+		const formData = new FormData(frm);
+		formData.append("content", editor.getData())
+		
+		formData.append("employeeId",employeeArr)
+		formData.append("rank",rankArr)
+		formData.append("result",resultArr)
+		
 		fetch('/document/temp',{
 			method:"post",
 			body:formData,
 		}).then(r=>console.log(r))
 		.then(r=>{
-			alert("불러오기가 임시저장 되었습니다")
+			alert("임시저장 되었습니다")
 
 		})
-	}
-})
+	})
 	 
-	
-		
 	sangsin.addEventListener("click",(e)=>{
-		e.preventDefault();
-		console.log(sangsin.dataset.temp);
+		e.preventDefault();		
 		
-			const formData = new FormData(frm);
-			formData.append("content", editor.getData())		
-			
-		if(bonus.value == ""){
-			alert("금액을 입력하세요")
-			
+		const title = document.getElementById("title");
+		
+		
+		const formData = new FormData(frm);
+		formData.append("content", editor.getData())
+		console.log(vacation.value)
+		
+		if(vacation.value =="선택하기"){
+			alert("휴가를 선택하세요");
 			return
-		}
-		console.log(bonuspeo.dataset.id)
-		if(bonuspeo.dataset.id == ""){
-			alert("대상자를 입력하세요")
-			return
+		}else if(vacation.value =="yoen"){
+			if(vacStart.value =="" || vacLast.value ==""){
+				alert("휴가 시작일 종료일 필수")
+				return	
+			}
+		}else if(vacation.value =="ban"){
+			if(banStart.value ==""){
+				alert("반차일 선택하세요")
+				return
+			}	
 		}
 		
 		if(title.value ==""){
@@ -214,61 +182,90 @@ console.log("임시저장함")
 			return
 		}		
 		
-		if(employeeArr[1]===undefined){
+		if(employeeArr[1]===""){
 			alert("결재자는 1명이상 입니다")
 			return
 		}
-			
-			formData.append("employeeId",employeeArr)
-			formData.append("rank",rankArr)
-			formData.append("result",resultArr)
-			formData.append("bunusEmployeeId",bonuspeo.dataset.id)
 		
-		//임시저장 상신하기
-		if(sangsin.dataset.temp == 1){
-			console.log(formData);
-			fetch('/document/tempToSang',{
-				method:"post",
-				body:formData,
-			}).then(r=>console.log(r))
-			.then(r=>{
-				alert("임시저장이 상신 되었습니다")
-				
-			})
-		}
-		//불러오기 상신하기
-		if(sangsin.dataset.temp == 0){			
-			fetch('/document/add',{
-				method:"post",
-				body:formData,
-			}).then(r=>console.log(r))
-			.then(r=>{
-				alert("불러오기가 상신 되었습니다")
-				window.close(relativePath);
-			})
-			
-		}
+		
+		formData.append("employeeId",employeeArr)
+		formData.append("rank",rankArr)
+		formData.append("result",resultArr)
+
+		fetch('/document/add',{
+			method:"post",
+			body:formData,
+		}).then(r=>console.log(r))
+		.then(r=>{
+			alert("상신 되었습니다")
+			//window.close(relativePath);
+		})
 	})
 	
-function hyuga(){
+//	window.close(relativePath)
+		const yoen_sel = document.getElementById("yoen_sel");
+		const ban_sel = document.getElementById("ban_sel");	
+		
+		
+	function disable(id){
+		let target_ele = null;
+		if(id == "yoen_sel"){
+			target_ele = yoen_sel;
+		}
+		if(id == "ban_sel"){
+			target_ele = ban_sel;
+		}
+		if(target_ele !=null){
+			const disable = target_ele.getElementsByTagName("input");
+			
+			for(let i = 0 ; i <disable.length;i++){
+				disable[i].disabled=true;
+			}
+		}
+	}
+	
+	function able(id){
+		let target_ele = null;
+		if(id == "yoen_sel"){
+			target_ele = yoen_sel;
+		}
+		if(id == "ban_sel"){
+			target_ele = ban_sel;
+		}
+		if(target_ele !=null){
+			const able = target_ele.getElementsByTagName("input");
+			
+			for(let i = 0 ; i <able.length;i++){
+				able[i].disabled=false;
+			}
+		}
+	}
+
     
-    const vacation = document.getElementById("vacation");
-    const yoen_sel = document.getElementById("yoen_sel");
-    const ban_sel = document.getElementById("ban_sel");
+    
+    vacation.addEventListener("change",()=>{
+		    const yoen_sel = document.getElementById("yoen_sel");
+		    const ban_sel = document.getElementById("ban_sel");		
+		
+		    if(vacation.value == "yoen"){
+				able("yoen_sel");
+				disable("ban_sel"); 
+		        yoen_sel.style.display="table-row";
+		        ban_sel.style.display="none";
+		    }else if (vacation.value == "ban"){
+				able("ban_sel");
+				disable("yoen_sel");
+		        ban_sel.style.display="table-row";
+		        yoen_sel.style.display="none";
+		    }else{
+				disable("yoen_sel");
+				disable("ban_sel"); 
+		        yoen_sel.style.display="none";
+		        ban_sel.style.display="none"
+		    }
+	})
 
-	const submit_all= document.querySelector("form");
 
-    if(vacation.value == "yoen"){        
-        yoen_sel.style.display="table-row";
-        ban_sel.style.display="none";
-    }else if (vacation.value == "ban"){
-        ban_sel.style.display="table-row";
-        yoen_sel.style.display="none";
-    }else{
-        yoen_sel.style.display="none";
-        ban_sel.style.display="none"
-    }
-}
 
   $(document).ready(function(){
     function adjustSize() {
@@ -294,75 +291,65 @@ function hyuga(){
   });
   
   oc.init("note-message-org-chart", onSelectOrgChart, 'person', false);
-  oc.init("note-message-org-chart2", onSelectOrgChart, 'person', false);
+   oc.init("note-message-org-chart2", onSelectOrgChart, 'person', false);
   
-
+  let getData;
   //내가 직접 선택한 콜백함수
 	  function onSelectOrgChart(data){
 		getData=data;
+		console.log(data)
 	  }
-  	
 	  
-   	bonuspeo.addEventListener("click",(e)=>{
-		bonusModal.show();		
-	})
-	
-	bonus_btn.addEventListener("click",(e)=>{
-		console.log(getData)
-		bonuspeo.value = getData.name;
-		bonuspeo.dataset.id=getData.id;
-		bonusModal.hide();
-		
-	})
-  
+	  
 	  add_btn.addEventListener("click",(e)=>{
-		console.log(getData)
-		console.log(arr)
 		
 		let fullName = getData.name.split(" ");
 		let level = fullName[0];
 		let selName = fullName[1];
+
 		
 		if(arr.length ==3){
 			alert("결제자는 3명까지 입니다")
 			return;
 		}
+		let bool = false;
 		
 		if(me.value == getData.id){
 			alert("본인은 선택할수 없습니다.")
 			return;
 		}
 		
-		let bool = false;
 		for(let i =0 ; i <arr.length ; i++){
+							
 				if(arr[i] == getData.id){
 					bool = true;					
 				}					
-		}		
+		}	
 		
 		if(!bool){
 			arr.push(getData.id)
 			console.log(arr)
 			console.log("들오오기")
-			let str = `<li class="list-group-item" data-id="${getData.id}" data-name="${selName}" data-level="${level}" >
+			let str = `<li class="list-group-item" data-id="${getData.id}" data-name="${selName}" data-level="${level}">
 						<i class="bi bi-arrow-down-up handle"></i>
 							${getData.name}
 						</li>`
-			approval_List.innerHTML += str;
-		}
+				approval_List.innerHTML += str;
+				
+		}			
 	})
-
-	
+	let del_app;
 	approval_List.addEventListener("click",(e)=>{
 		del_app=e.target;
 		
-		const active = document.querySelectorAll('#right-top .list-group-item');
 		
+		const active = document.querySelectorAll('#right-top .list-group-item');
 		active.forEach(item=>{
 			item.classList.remove('active');
 		})
-		
-		console.log(active[0].dataset);
+		console.log(arr)
+		console.log(active[0].dataset.id);
+		console.log(e.target.getAttribute("data-id"));
 		for(let i =0 ; i < arr.length ; i++){		
 			
 			if(active[i].dataset.id == e.target.getAttribute("data-id")){
@@ -370,6 +357,9 @@ function hyuga(){
 			}
 		}
 		
+		
+		console.log(approval_List);
+
 		console.log(e.target.getAttribute("data-id"))
 		
 	})
@@ -380,10 +370,9 @@ function hyuga(){
 		const strDate = document.getElementById("strDate");
 		
 		console.log("세이브를 해보자")
-		console.log(arr.length)
+		console.log(arr)
+		
 		let title = prompt("제목을 입력하세요")
-		console.log(title)
-		console.log(getSave.querySelectorAll("li").length)
 		if(getSave.querySelectorAll("li").length ==3){
 			alert("나의 결재목록은 3개까지입니다")
 			return;
@@ -420,48 +409,61 @@ function hyuga(){
 			})
 		}else{
 			alert("제목 및 결재선라인을 확인하세요")
-		}		
+		}
+		
+		
 	})
 	
 	del_btn.addEventListener("click",()=>{
-			
-			let real_del = del_app.getAttribute("data-id")
-			let bool = false;
-			for(let i = 0; i<arr.length;i++){
-				if(arr[i]==real_del){
-					arr.splice(i,1);
-					bool =true;
-				}
+		
+		let real_del = del_app.getAttribute("data-id")
+		let bool = false;
+		for(let i = 0; i<arr.length;i++){
+			if(arr[i]==real_del){
+				arr.splice(i,1);
+				bool =true;
 			}
-			
-			if(bool){
-				del_app.remove()
-			}
-		console.log(arr);			
+		}
+		
+		if(bool){
+			del_app.remove()
+		}
+	console.log(arr);			
 			
 	})
+		
+			const zeroRank = document.getElementById("zeroRank").value;
+			const zeroId = document.getElementById("zeroId").value;
+			const zeroResult = document.getElementById("zeroResult").value;
+			rankArr=[zeroRank];
+			employeeArr=[zeroId];
+			resultArr=[zeroResult];
+			
+		register.addEventListener("click",()=>{
 			
 			
-		register.addEventListener("click",()=>{									
+			let goList = approval_List.querySelectorAll("li")
+
 			
-			const element_level = approve[0].querySelector("#name");			
+			const approve = document.querySelectorAll(".sign_member_wrap");			
+			const element_level = approve[0].querySelector("#name");
 			
-			console.log(element_level)	
-			    let goList = approval_List.querySelectorAll("li");
-			    let approve_arr = 4 - arr.length;		
+			console.log(element_level)
+			
 
 			for(let i = 1 ; i<3;i++){
 			
+			
 			approve[i].querySelector(".sign_rank").innerHTML ="";
 			approve[i].querySelector("#name").innerHTML ="";
-			
-			rankArr=[0];
-			employeeArr=[approve[0].querySelector(".sign_date").getAttribute("data-id")];
-			resultArr=[1];
+			rankArr=[zeroRank];
+			employeeArr=[zeroId];
+			resultArr=[zeroResult];
 			
 			}
 			
 			
+			let approve_arr = 4 - arr.length;			
 			
 			for(let i = approve_arr, j = 1 ; i <= 3;i++,j++){
 			approve[i].querySelector("#name").innerHTML = goList[i-approve_arr].getAttribute("data-name");
@@ -497,8 +499,6 @@ function hyuga(){
 	modal_show.addEventListener("click",()=>{
 		myModal.show();
 	})
-	
-	
 let editor
 ClassicEditor
 	    .create(document.querySelector('#editor'))
@@ -512,6 +512,24 @@ ClassicEditor
     console.error(error);
 });
 
+
+
+/*$('#callModalButton').click(function() {
+    $.ajax({
+        url: '/document/callList',
+        type: 'GET',
+        success: function(response) {
+			alert("불러오기")
+
+        }
+    });
+});
+*/
+
 //불러오기 모달 내용 jsp
 $("#call .modal-body").load("/document/callList");
+
+
+
+		
 		
