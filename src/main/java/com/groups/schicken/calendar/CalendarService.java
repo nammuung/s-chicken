@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.annual.AnnualService;
+import com.groups.schicken.notification.Noticer;
+import com.groups.schicken.notification.NotificationType;
 import com.nimbusds.jose.shaded.gson.Gson;
 import com.nimbusds.jose.shaded.gson.reflect.TypeToken;
 
@@ -31,7 +33,7 @@ public class CalendarService {
 	  private static final int result = 0;
 	@Autowired 
 	  private CalendarDAO calendarDAO;
-	
+	  @Autowired private Noticer noticer;
 	  
 	public int insert2(CalendarVO calendarVO) throws Exception {
 		calendarDAO.insert(calendarVO);
@@ -63,7 +65,7 @@ public class CalendarService {
 	    boolean shareExists = false;
 	    List<String> idList = new ArrayList<>(); // idList 초기화
 
-	    if (employeeIdList != null) {
+
 	        for (Map<String, String> employeeIdMap : employeeIdList) {
 	            String employeeIdValue = employeeIdMap.get("value");
 	            if (!employeeIdValue.equals(calendarVO.getShare())) { // share와 같은 값은 제외
@@ -73,13 +75,7 @@ public class CalendarService {
 	                shareExists = true;
 	            }
 	        }
-	    }
 
-	    if (!shareExists) {
-	        Map<String, String> shareMap = new HashMap<>();
-	        shareMap.put("value", calendarVO.getShare());
-	        employeeIdList.add(shareMap);
-	    }
 
 	    for (Map<String, String> employeeIdMap : employeeIdList) {
 	        String employeeIdValue = employeeIdMap.get("value");
@@ -116,6 +112,9 @@ public class CalendarService {
 	    }
 
 	   // calendarDAO.depDelte(calendarVO);
+
+	    
+
 	    return result;
 	}
 

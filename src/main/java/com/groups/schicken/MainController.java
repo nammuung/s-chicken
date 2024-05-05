@@ -33,6 +33,7 @@ import com.groups.schicken.notification.Noticer;
 import com.groups.schicken.notification.NotificationType;
 import com.groups.schicken.organization.ChattingEmployeeListVO;
 import com.groups.schicken.organization.OrganizationService;
+import com.nimbusds.jose.shaded.gson.Gson;
 import com.nimbusds.jose.shaded.gson.JsonObject;
 
 import io.micrometer.observation.Observation.Event;
@@ -109,15 +110,38 @@ public class MainController {
     @PostMapping("insert")
     @ResponseBody
     public String insert(@RequestBody CalendarVO calendarVO) throws Exception  {
-            log.info("{}", calendarVO);
-            calendarVO.setUserYn(true);
-        	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    		String id = authentication.getName();
-    		calendarVO.setShare(id);
-            int result = calendarService.insert(calendarVO);
-            noticer.sendNotice(id+"일정이 등록되었습니다.", "/", NotificationType.Calendar, calendarVO.getIdList());
-                return "일정이 성공적으로 추가되었습니다.";
+        log.info("{}", calendarVO);
+        calendarVO.setUserYn(true);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        calendarVO.setShare(id);
+        System.out.println(calendarVO.getEmployeeId()+"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+        
+        if (calendarVO.getEmployeeId() == null || calendarVO.getEmployeeId().isEmpty()) {
+            // employeeId가 null일 경우 share를 이용하여 JSON 배열 형태로 생성
+            String shareValue = calendarVO.getShare();
+            List<Map<String, String>> employeeIdList = new ArrayList<>();
+            Map<String, String> employeeIdMap = new HashMap<>();
+            employeeIdMap.put("value", shareValue);
+            employeeIdList.add(employeeIdMap);
 
+            // 생성된 JSON 배열 형태를 calendarVO의 employeeId에 설정
+            Gson gson = new Gson();
+            String employeeIdJson = gson.toJson(employeeIdList);
+            calendarVO.setEmployeeId(employeeIdJson);
+            System.out.println(calendarVO.getEmployeeId());
+          
+        }
+        
+        int result = calendarService.insert(calendarVO);
+        
+        if (calendarVO.getIdList() != null && !calendarVO.getIdList().isEmpty()) {
+        	System.out.println("여기탔어요!!!!!!!!!!");
+        	System.out.println(calendarVO.getIdList());
+            noticer.sendNotice(calendarVO.getEmployeeId() + "일정이 등록되었습니다.", "/", NotificationType.Calendar, calendarVO.getIdList());
+        }
+
+        return "일정이 성공적으로 추가되었습니다.";
     }
     @PostMapping("update")
     @ResponseBody
