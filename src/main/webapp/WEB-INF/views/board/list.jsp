@@ -88,16 +88,13 @@
                             </thead>
                             <tbody>
                             	
-	                            	<c:forEach items="${list}" var="vo" varStatus="status">
+	                            	<c:forEach items="${list}" var="vo">
 	                            		
 				                            <tr id="important">
                                                 <input type="hidden" id="important_val" value="${vo.important}">
                                                 
 				                                <td>${vo.id}</td>
-				                                <td class="text-start"><a href="./detail?id=${vo.id}">
-				                                <c:if test="${status.index < 3 }">
-                                                	<span style="background:gray; color:white; padding:2px; border-radius:6px; font-size:12px;">중요</span>
-                                                </c:if>
+				                                <td class="text-start"><a href="./detail?id=${vo.id}">				                               
 				                                	${vo.title}
 				                                	</a></td>
 				                                <td>${vo.writeDate}</td>
