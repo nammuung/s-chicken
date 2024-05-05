@@ -131,7 +131,7 @@
         <section class="carousel-item" data-now-open>
             <div class="row chatroom-title">
                 <div class="col-2"></div>
-                <h1 id="chatroom-name" class="col-8 text-center">채팅방 이름</h1>
+                <h4 id="chatroom-name" class="col-8 text-center">채팅방 이름</h4>
                 <div class="col-2">
                     <i id="chatroom-info-modal-btn" class="fas fa-bars hovercursor"></i>
                 </div>
@@ -167,7 +167,7 @@
             <div class="card pt-3 mb-0">
                 <div class="card-body text-center">
                     <div class="input-group">
-                        <input id="chatroom-title" type="text" class="form-control" value="ㅇㅇㅇ님의 채팅방">
+                        <input id="chatroom-title" type="text" class="form-control" value="" maxlength="14">
                         <button class="btn btn-outline-secondary disabled" type="button">변경</button>
                     </div>
                     <div class="text-start mt-3 d-flex justify-content-between">

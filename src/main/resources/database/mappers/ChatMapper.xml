@@ -186,6 +186,12 @@
         WHERE chatroom_id=#{chatroomId} AND employee_id=#{employeeId}
     </update>
 
+    <update id="updateTitle">
+        UPDATE chat_member
+        SET room_name = #{name}
+        WHERE chatroom_id = #{chatroomId} AND employee_id = #{empId}
+    </update>
+
     <sql id="getLastReadRowNum">
         (SELECT (sub.r + 13)
         FROM (

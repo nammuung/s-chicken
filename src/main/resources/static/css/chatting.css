@@ -75,7 +75,7 @@ button:active{
 }
 
 #chatting-space{
-    height: calc(100vh - 147px);
+    height: calc(100vh - 138px);
     overflow-y: auto;
 }
 
@@ -177,7 +177,6 @@ button:active{
 }
 
 .chatroom-members{
-    border-bottom: 1px solid #7749F8;
     border-top:1px solid #7749F8;
     max-height: 600px;
     overflow: auto;

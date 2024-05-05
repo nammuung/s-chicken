@@ -418,19 +418,22 @@ function drawChatroomList(data) {
     if (img != null) imgDiv.append(img);
 
     let chatroomDiv = makeElement("div", {className: ["ms-2"]});
-    let titleH5 = makeElement("h5");
-    titleH5.innerText = reduceContentLength(data.name, 10);
+    let titleDiv = makeElement("div", {className: ["d-flex"]});
+    let titleH5 = makeElement("h5",{className : ["text-truncate", "d-inline-block"], option:{"style" : "max-width:190px"}});
+    titleH5.innerText = data.name;
+
+    titleDiv.append(titleH5);
 
     if(data.type === 'Many'){
-        let span = makeElement("span", {className : ["small", "text-secondary"]});
+        let span = makeElement("span", {className : ["small", "text-secondary", "ms-1"]});
         span.innerText = "[" + data.members.length + "]";
-        titleH5.append(span);
+        titleDiv.append(span);
     }
 
     let recentMessageDiv = makeElement("div", {dataset: {"chatRecentMessage": ""}});
     recentMessageDiv.innerText = reduceContentLength(data.lastMessage.content);
 
-    chatroomDiv.append(titleH5, recentMessageDiv);
+    chatroomDiv.append(titleDiv, recentMessageDiv);
 
     let infoDiv = makeElement("div", {className: ["ms-auto", "pe-2"], dataset: {"chatroomListInfo": ""}});
     let timeDiv = makeElement("div", {className: ["small"], dataset: {"chatListTime": ""}});
@@ -698,13 +701,11 @@ function isTitleChanged(event){
     }
 }
 
-function getChatroomMemberDiv(data){
-
-}
-
 function onChatroomInfoModalOpen(){
     oldTitle = document.getElementById("chatroom-name").innerText;
+    chatroomTitle.value = oldTitle;
     chatroomMembers.innerHTML = "";
+    chatroomTitle.nextElementSibling.classList.add("disabled");
 
     const memberDivList = [...document.querySelectorAll("[data-employee-search]")]
         .filter(el => memberData[el.dataset.employeeSearch] != null)
@@ -713,6 +714,39 @@ function onChatroomInfoModalOpen(){
     chatroomMembers.append(...memberDivList);
 
     chatroomInfoModal.show()
+}
+
+function updateChatroomTitle(event){
+    const target = event.target.previousElementSibling;
+    if(target.value === oldTitle){
+        alert("기존이름과 같습니다.");
+        return;
+    }
+
+    if(target.value.length > 14){
+        alert("14자리 까지만 가능합니다")
+        return;
+    }
+
+    fetch('/chatrooms/updateTitle', {
+        method: "put",
+        headers : {"Content-Type" : "application/json;charset=utf-8"},
+        body : JSON.stringify({
+            id : nowOpenPage,
+            name : target.value
+        })
+    }).then(res=>res.json())
+        .then(r => {
+            if(!r) {
+                alert("변경 실패");
+                return;
+            }
+
+            alert("채팅방 이름을 변경했습니다");
+            oldTitle = target.value;
+            target.nextElementSibling.classList.add("disabled");
+            document.getElementById("chatroom-name").innerText = target.value;
+        });
 }
 
 setWhenReceiveMessage(onGetChattingOne, onGetMessage);
@@ -725,6 +759,7 @@ chatEmployeeList.addEventListener("click", onProfileClick);
 selectedEmployeeDiv.addEventListener("click", onIndicatorClick);
 chatroomInfoModalBtn.addEventListener("click", onChatroomInfoModalOpen);
 chatroomTitle.addEventListener("keyup", isTitleChanged);
+chatroomTitle.nextElementSibling.addEventListener("click", updateChatroomTitle);
 chatroomMembers.addEventListener("click", onProfileClick);
 document.getElementById("chatroom-list-create").addEventListener("click", employeeSelectForm);
 document.getElementById("chatroom-list-create-cancel-btn").addEventListener("click", employeeSelectForm);

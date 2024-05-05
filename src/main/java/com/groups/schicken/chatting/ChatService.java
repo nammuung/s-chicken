@@ -272,4 +272,9 @@ public class ChatService {
         return result == 1;
     }
 
+    public Boolean updateTitle(EmployeeVO employee, ChatroomVO chatroom) {
+        int result = chatDAO.updateTitle(employee.getId(), chatroom.getId(), chatroom.getName());
+
+        return result == 1;
+    }
 }

@@ -6,6 +6,7 @@ import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.organization.ChattingEmployeeListVO;
 import com.groups.schicken.organization.OrganizationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/chatrooms/*")
 @RequiredArgsConstructor
+@Slf4j
 public class ChatController {
     private final ChatService chatService;
     private final OrganizationService organizationService;
@@ -87,6 +89,17 @@ public class ChatController {
         List<ChatMessage> list = chatService.getChattingDataNext(employee.getId(), chatroomId, from,direction);
 
         return ResponseEntity.ok(list);
+    }
+
+    @PutMapping("updateTitle")
+    public ResponseEntity<Boolean> updateTitle(@AuthenticationPrincipal EmployeeVO employee, @RequestBody ChatroomVO chatroom){
+        try {
+            Boolean result = chatService.updateTitle(employee, chatroom);
+            return ResponseEntity.ok(result);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("readChatting")
