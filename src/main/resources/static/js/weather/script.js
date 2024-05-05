@@ -28,6 +28,7 @@ const timeWeather = document.getElementById("timeWeather");
 async function loadWeatherList(){
     const result = await getWeatherList();
     weatherDatas = result;
+    console.log(result)
     let innerHtml ="";
     result.forEach((data,index) => {
         innerHtml += `
@@ -52,13 +53,13 @@ let weatherDatas = [];
 function renderDetail(data){
     const detailWeather = document.getElementById("detailWeather")
     let innerHtml = "";
-    console.log(data)
     const detailWind = document.getElementById("detailWind");
     const detailRain = document.getElementById("detailRain");
     const detailHumidity = document.getElementById("detailHumidity");
     const realTemp = document.getElementById("realTemp");
     detailWind.innerText = data.wind.speed + "m/s";
-    detailRain.innerText = data.rain ? data.rain.rain1h : "0" + "mm";
+    detailRain.innerText = data.rain ? data.rain["1h"] ? data.rain["1h"] : data.rain["3h"] : "0";
+    detailRain.innerText += "mm"
     detailHumidity.innerText = data.main.humidity + "%";
     realTemp.innerText = Math.floor(data.main.feels_like) + "°";
 }
