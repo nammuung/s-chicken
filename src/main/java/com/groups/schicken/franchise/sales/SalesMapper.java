@@ -13,8 +13,8 @@ public interface SalesMapper {
     int addListSalesDetail(List<Sales.Detail> details) throws Exception;
     int addListSales(List<Sales> sales) throws Exception;
     Sales getSales(Sales sales) throws Exception;
-    List<Sales> getSalesList(Sales sales) throws Exception;
-
+    List<Sales> getSalesList(Map<String, Object> map) throws Exception;
+    Long getTotalSales(Map<String, Object> map) throws Exception;
     List<Sales> getPerMonth(Sales sales) throws Exception;
     List<Sales> getPerWeeks(Sales sales) throws Exception;
     List<Sales> getPerDays(Sales sales) throws Exception;

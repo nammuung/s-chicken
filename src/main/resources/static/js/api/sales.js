@@ -1,8 +1,8 @@
 import {defaultInstance} from "../util/axios.js";
 
-export const getSalesList = async () => {
+export const getSalesList = async (page) => {
     try {
-        const response = await defaultInstance.get('sales');
+        const response = await defaultInstance.get('sales?page='+page);
         return response.data;
     } catch (err) {
         console.log(err);

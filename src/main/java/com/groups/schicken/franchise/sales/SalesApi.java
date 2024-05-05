@@ -1,5 +1,6 @@
 package com.groups.schicken.franchise.sales;
 
+import com.groups.schicken.common.vo.Pager;
 import com.groups.schicken.common.vo.ResultVO;
 import com.groups.schicken.erp.order.HeadOrderVO;
 import com.groups.schicken.franchise.FranchiseVO;
@@ -27,7 +28,7 @@ public class SalesApi {
     }
 
     @GetMapping("sales")
-    public ResponseEntity<?> getSalesList(@AuthenticationPrincipal FranchiseVO franchiseVO) {
+    public ResponseEntity<?> getSalesList(@AuthenticationPrincipal FranchiseVO franchiseVO, Pager pager) {
         Sales sales = new Sales();
         if(franchiseVO == null) {
             sales.setFranchise(franchise);
@@ -35,7 +36,7 @@ public class SalesApi {
             sales.setFranchise(franchiseVO);
         }
         try {
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSalesList(sales)));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSalesList(sales, pager)));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

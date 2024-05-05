@@ -39,6 +39,13 @@
             (#{item.id}, #{item.franchise.id}, #{item.salesDate}, #{item.price})
         </foreach>
     </insert>
+    <sql id="search">
+        <where>
+            <if test="sales.franchise != null and sales.franchise.id != null">
+                sales.franchise_id = #{sales.franchise.id}
+            </if>
+        </where>
+    </sql>
     <sql id="getSalesSQL">
         SELECT
             sales.id
@@ -178,13 +185,21 @@
 
     <select id="getSalesList" resultMap="getSalesMap">
         <include refid="getSalesSQL"/>
-        WHERE
-            franchise_id = #{franchise.id}
+        <include refid="search"/>
+        ORDER BY sales.id DESC
+        LIMIT
+            ${pager.startIndex}, ${pager.perPage}
+    </select>
+    <select id="getTotalSales">
+        SELECT
+            COUNT(sales.id)
+        FROM
+            franchise_sales sales
+        <include refid="search"/>
     </select>
     <select id="getSales" resultMap="getSalesMap">
         <include refid="getSalesSQL"/>
-        WHERE
-        franchise_id = #{franchise.id} AND id = #{id}
+        <include refid="search"/>
     </select>
     <resultMap id="getSalesMap" type="Sales" autoMapping="true">
         <id property="id" column="id"/>

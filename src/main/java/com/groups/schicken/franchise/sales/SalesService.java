@@ -1,9 +1,11 @@
 package com.groups.schicken.franchise.sales;
 
+import com.groups.schicken.common.vo.Pager;
 import com.groups.schicken.franchise.FranchiseVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +14,13 @@ import java.util.Map;
 public class SalesService {
     private final SalesMapper salesMapper;
 
-    public List<Sales> getSalesList(Sales sales) throws Exception {
-        return salesMapper.getSalesList(sales);
+    public List<Sales> getSalesList(Sales sales, Pager pager) throws Exception {
+        Map<String, Object> map = new HashMap<>();
+        map.put("sales", sales);
+        map.put("pager", pager);
+        pager.setPerPage(50L);
+        pager.makeNum(salesMapper.getTotalSales(map));
+        return salesMapper.getSalesList(map);
     }
 
     public Sales getSales(Sales sales) throws Exception {
