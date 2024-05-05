@@ -10,6 +10,10 @@ const loginedId = document.querySelector("[data-logined-id]")?.dataset.loginedId
 const namecardModal = new bootstrap.Modal(document.getElementById("namecard-modal"));
 const chatEmployeeList = document.getElementById("chat-employee-list");
 const selectedEmployeeDiv = document.getElementById("selected-employee");
+const chatroomInfoModalBtn = document.getElementById("chatroom-info-modal-btn");
+const chatroomInfoModal = new bootstrap.Modal(document.getElementById("chatroom-info-modal"));
+const chatroomTitle = document.getElementById("chatroom-title");
+const chatroomMembers = document.getElementById("chatroom-members");
 
 let memberData = {};
 let lastChatting;
@@ -17,6 +21,7 @@ let beginChatting;
 let nowOpenPage = "";
 let nowPageType = "";
 let downEnd;
+let oldTitle = "";
 
 let isCreateState = false;
 
@@ -492,6 +497,10 @@ function pageChange(to) {
     downEndObserver.disconnect();
     [...document.getElementsByClassName("now-page")].forEach(e => e.classList.remove("now-page"));
 
+    if(chatroomInfoModal._isShown){
+        chatroomInfoModal.hide()
+    }
+
     if (to == null) return;
 
     nowOpenPage = to.dataset.pageName;
@@ -680,6 +689,32 @@ function createChatroom() {
         })
 }
 
+function isTitleChanged(event){
+    const target = event.target;
+    if(target.value === oldTitle){
+        target.nextElementSibling.classList.add("disabled");
+    } else {
+        target.nextElementSibling.classList.remove("disabled");
+    }
+}
+
+function getChatroomMemberDiv(data){
+
+}
+
+function onChatroomInfoModalOpen(){
+    oldTitle = document.getElementById("chatroom-name").innerText;
+    chatroomMembers.innerHTML = "";
+
+    const memberDivList = [...document.querySelectorAll("[data-employee-search]")]
+        .filter(el => memberData[el.dataset.employeeSearch] != null)
+        .map(div => div.cloneNode(true));
+
+    chatroomMembers.append(...memberDivList);
+
+    chatroomInfoModal.show()
+}
+
 setWhenReceiveMessage(onGetChattingOne, onGetMessage);
 
 sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
@@ -688,6 +723,9 @@ chatroomListSpace.addEventListener("click", (event) => openChatting(event))
 chattingArea.addEventListener("keyup", getInputKey);
 chatEmployeeList.addEventListener("click", onProfileClick);
 selectedEmployeeDiv.addEventListener("click", onIndicatorClick);
+chatroomInfoModalBtn.addEventListener("click", onChatroomInfoModalOpen);
+chatroomTitle.addEventListener("keyup", isTitleChanged);
+chatroomMembers.addEventListener("click", onProfileClick);
 document.getElementById("chatroom-list-create").addEventListener("click", employeeSelectForm);
 document.getElementById("chatroom-list-create-cancel-btn").addEventListener("click", employeeSelectForm);
 document.getElementById("chatroom-create-btn").addEventListener("click", createChatroom);

@@ -175,3 +175,10 @@ button:active{
     background-color: #7749f830;
     padding: 3px 4px
 }
+
+.chatroom-members{
+    border-bottom: 1px solid #7749F8;
+    border-top:1px solid #7749F8;
+    max-height: 600px;
+    overflow: auto;
+}

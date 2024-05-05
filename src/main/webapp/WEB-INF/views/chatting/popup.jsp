@@ -129,8 +129,12 @@
         </section>
 
         <section class="carousel-item" data-now-open>
-            <div class="row justify-content-center chatroom-title">
+            <div class="row chatroom-title">
+                <div class="col-2"></div>
                 <h1 id="chatroom-name" class="col-8 text-center">채팅방 이름</h1>
+                <div class="col-2">
+                    <i id="chatroom-info-modal-btn" class="fas fa-bars hovercursor"></i>
+                </div>
             </div>
             <%-- 채팅 공지용 --%>
             <%--                <div class="border-bottom row py-3">--%>
@@ -157,6 +161,42 @@
     </div>
 </main>
 
+<div class="modal fade" tabindex="-1" id="chatroom-info-modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered mx-auto">
+        <div class="modal-content">
+            <div class="card pt-3 mb-0">
+                <div class="card-body text-center">
+                    <div class="input-group">
+                        <input id="chatroom-title" type="text" class="form-control" value="ㅇㅇㅇ님의 채팅방">
+                        <button class="btn btn-outline-secondary disabled" type="button">변경</button>
+                    </div>
+                    <div class="text-start mt-3 d-flex justify-content-between">
+                        <div class="fs-3 fw-bold">대화상대</div>
+                        <button class="btn btn-primary">대화상대 초대</button>
+                    </div>
+                    <div id="chatroom-members" class="my-2 chatroom-members">
+                        <div class="d-flex gap-3 p-2 aaa" data-employee-search="201701211031">
+                            <div>
+                                <img class="rounded-circle" src="/img/기본.jpg" alt="" width="50px" height="50px">
+                            </div>
+                            <div class="p-2">
+                                <h4 data-employee-name="">사장 김범서</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-10 pe-0">
+                            <button class="btn btn-outline-secondary w-100" data-bs-dismiss="modal">닫기</button>
+                        </div>
+                        <div class="col-2 ps-0">
+                            <button class="btn btn-outline-danger w-100"><i class="fas fa-sign-out-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" tabindex="-1" id="namecard-modal">
     <div class="modal-dialog modal-dialog-centered mx-auto" style="max-width: 300px">
