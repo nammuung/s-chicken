@@ -143,6 +143,28 @@
 	<script src="/js/employee/address.js"></script>
 	<script src="/js/employee/department.js"> </script>
 	<c:import url="../template/script.jsp" />
+	<script>
+    // 생년월일 입력 필드를 가져옴
+    const residentNumberInput = document.getElementById("residentNumber");
+
+    // 오늘 날짜를 구함
+    const today = new Date();
+
+    // 20년 전의 날짜를 계산하여 구함
+    const maxDate = new Date(today.getFullYear() - 20, today.getMonth(), today.getDate());
+
+    // 최대 날짜를 yyyy-mm-dd 형식으로 변환
+    const maxDateString = maxDate.toISOString().split('T')[0];
+
+    // 생년월일 입력 필드에 최대 날짜를 설정
+    residentNumberInput.setAttribute("max", maxDateString);
+
+    // 초기값을 20년 전으로 설정
+    //residentNumberInput.value = maxDateString;
+    
+    
+</script>
+	
 </body>
 
 </html>
