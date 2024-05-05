@@ -31,7 +31,7 @@ public class CalendarVO {
 	public String cname;
 	public String name;
 	
-	 private List<String> idList;  //알림 보내는 용도
+	public List<String> idList;  //알림 보내는 용도
 	
 	public EmployeeVO employeeVO;
 	

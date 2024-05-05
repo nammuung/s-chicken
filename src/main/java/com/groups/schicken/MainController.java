@@ -115,7 +115,7 @@ public class MainController {
     		String id = authentication.getName();
     		calendarVO.setShare(id);
             int result = calendarService.insert(calendarVO);
-           // noticer.sendNotice(id+"일정이 등록되었습니다.", "/", NotificationType.Calendar, List<String>);
+            noticer.sendNotice(id+"일정이 등록되었습니다.", "/", NotificationType.Calendar, calendarVO.getIdList());
                 return "일정이 성공적으로 추가되었습니다.";
 
     }
