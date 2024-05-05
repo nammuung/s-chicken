@@ -122,9 +122,16 @@ public class CalendarService {
 
 	public int update (CalendarVO calendarVO)throws Exception{
 		
-		System.out.println(calendarVO.getEnd());
-		System.out.println(calendarVO.getStart());
-		return calendarDAO.update(calendarVO);
+		CalendarVO a = calendarDAO.info(calendarVO);
+		calendarVO.setContent(a.getContent());
+		calendarVO.setTitle(a.getTitle());
+		calendarVO.setEmployeeId(a.getEmployeeId());
+		calendarDAO.insert2(calendarVO);
+		calendarDAO.calUpdate(calendarVO);
+		calendarVO.setCalendarId(calendarVO.getId());
+		calendarVO.setUserYn(true);
+		calendarDAO.insertuser(calendarVO);
+		return 0;
 	}
 
 

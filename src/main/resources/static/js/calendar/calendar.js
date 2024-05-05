@@ -37,8 +37,7 @@
 
                 let startday = dayjs(obj.event.start).format('YYYY-MM-DDTHH:mm:ss');
                 let endday = dayjs(obj.event.end).format('YYYY-MM-DDTHH:mm:ss');
-                console.log(startday);
-                console.log(endday);
+                console.log(obj)
                 $.ajax({
                     url: '/update',
                     type: 'POST',

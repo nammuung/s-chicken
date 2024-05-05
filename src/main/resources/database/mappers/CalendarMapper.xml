@@ -132,6 +132,16 @@ where calendar_id =#{calendarId} and employee_id =#{employeeId}
 delete from calendar_emp where calendar_id= #{calendarId} and employee_id = #{employeeId}
 </delete>
 
-
-
+<select id="info" resultType="CalendarVO" parameterType="CalendarVO">
+select * from 
+calendar c 
+inner join 
+calendar_emp ce 
+on 
+c.id = ce.calendar_id 
+where ce.calendar_id =#{calendarId} 
+and 
+ce.employee_id = #{employeeId}
+</select>
+		
 </mapper>

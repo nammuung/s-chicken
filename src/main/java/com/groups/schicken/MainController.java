@@ -121,7 +121,12 @@ public class MainController {
     }
     @PostMapping("update")
     @ResponseBody
-    public String update(@RequestBody CalendarVO calendarVO)throws Exception{
+    public String update(@RequestBody CalendarVO calendarVO,Long id)throws Exception{
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String ida = authentication.getName();
+		calendarVO.setEmployeeId(ida);
+		calendarVO.setShare(ida);
+		calendarVO.setCalendarId(calendarVO.getId());
     	calendarService.update(calendarVO);
     	return "업데이트 성공";
     } 

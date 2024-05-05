@@ -25,4 +25,5 @@ public interface CalendarDAO {
 	public CalendarVO detail(CalendarVO calendarVO)throws Exception;
 	public int calendarDelete(CalendarVO calendarVO)throws Exception;
 	public int calUpdate(CalendarVO calendarVO)throws Exception;
+	public CalendarVO info(CalendarVO calendarVO)throws Exception;
 }
