@@ -56,8 +56,11 @@
                     <button id="chatroom-list-create" class="btn btn-primary btn-sm col-12 unselect-type-btn">
                         +
                     </button>
-                    <button id="chatroom-list-create-cancel-btn" class="btn btn-outline-secondary btn-sm col-6 select-type-btn">취소</button>
-                    <button id="chatroom-create-btn" class="btn btn-primary btn-sm col-6 select-type-btn disabled">생성</button>
+                    <button id="chatroom-list-create-cancel-btn"
+                            class="btn btn-outline-secondary btn-sm col-6 select-type-btn">취소
+                    </button>
+                    <button id="chatroom-create-btn" class="btn btn-primary btn-sm col-6 select-type-btn disabled">생성
+                    </button>
                 </div>
                 <div id="selected-employee"
                      data-selected-employee
@@ -122,7 +125,6 @@
                        class="form-control" placeholder="채팅방 이름으로 검색">
             </div>
             <div id="chatroom-list-space" class="py-2" style="height: calc(100vh - 38px); overflow-y: auto">
-
             </div>
         </section>
 

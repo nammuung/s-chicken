@@ -81,7 +81,7 @@ document.querySelectorAll("[data-element-id=search-input]").forEach(el => el.add
 
 function openChatting(event, type) {
     const info = event.target.dataset.chatroomInfo;
-    if(info == null){
+    if (info == null) {
         event.target.parentElement.click();
     }
 
@@ -91,9 +91,9 @@ function openChatting(event, type) {
         return;
     }
 
-    if(type == null){
+    if (type == null) {
         type = event.target.dataset.chatroomType;
-        if(type == null){
+        if (type == null) {
             return;
         }
     }
@@ -129,7 +129,7 @@ async function setChatroom(targetId) {
     chatroomRenderByData(chattingData)
 }
 
-async function chatroomRenderByData(chattingData){
+async function chatroomRenderByData(chattingData) {
     memberData = {};
     chattingSpace.innerHTML = "";
     chattingArea.value = "";
@@ -215,17 +215,17 @@ function isDiffMinute(date1, date2) {
     return date1.substring(0, 12) !== date2.substring(0, 12);
 }
 
-function onGetChattingOne(data){
+function onGetChattingOne(data) {
     onGetMessage(data, [loginedId, nowOpenPage].sort().join(""));
 }
 
-function onGetMessage(data, nowpage=nowOpenPage){
-    if(nowpage === data.chatroomId){
+function onGetMessage(data, nowpage = nowOpenPage) {
+    if (nowpage === data.chatroomId) {
         getChattingInChatroom(data);
         return;
     }
 
-    if(nowOpenPage === 'chatroom'){
+    if (nowOpenPage === 'chatroom') {
         const target = chatroomList[data.chatroomId];
         updateChatroomListElement(target, data);
         chatroomListSpace.prepend(target);
@@ -235,10 +235,13 @@ function onGetMessage(data, nowpage=nowOpenPage){
     chatroomListBtn.classList.add("get-message");
 }
 
-function updateChatroomListElement(target, data){
-    if(target.querySelector("[data-read-counter]") == null) {
-        let counterEndDiv = makeElement("div", {className:["text-end"], dataset:{"readCounter": ""}});
-        let counterDiv = makeElement("div", {className: ["small", "bg-danger", "text-white", "d-inline-block", "recent-message-counter"], dataset:{"readCountNum":""}})
+function updateChatroomListElement(target, data) {
+    if (target.querySelector("[data-read-counter]") == null) {
+        let counterEndDiv = makeElement("div", {className: ["text-end"], dataset: {"readCounter": ""}});
+        let counterDiv = makeElement("div", {
+            className: ["small", "bg-danger", "text-white", "d-inline-block", "recent-message-counter"],
+            dataset: {"readCountNum": ""}
+        })
 
         counterDiv.innerText = 0;
 
@@ -266,13 +269,13 @@ function getChattingInChatroom(data) {
         downEndObserver.observe(created);
     }
 
-    if(data.senderId !== loginedId) {
+    if (data.senderId !== loginedId) {
         fetch('/chatrooms/readChatting', {
-            method : "put",
-            headers : {"Content-Type" : "application/json;charset=utf-8"},
-            body : JSON.stringify({
-                chatroomId : data.chatroomId,
-                id:data.id
+            method: "put",
+            headers: {"Content-Type": "application/json;charset=utf-8"},
+            body: JSON.stringify({
+                chatroomId: data.chatroomId,
+                id: data.id
             })
         }).then(res => res.text())
             .then(r => console.log(r));
@@ -318,7 +321,7 @@ function createChattingProfile(data, sendDate) {
 }
 
 function chatDateFormat(date) {
-    if(date == null || date == ""){
+    if (date == null || date == "") {
         return "";
     }
 
@@ -367,45 +370,68 @@ function makeElement(tagName, {className, option, dataset} = {}) {
     return element;
 }
 
-function drawChatroomList(data){
+function drawChatroomList(data) {
     let div = makeElement("div", {
-        className : ["d-flex","p-2","aaa"],
-        dataset : {
+        className: ["d-flex", "p-2", "aaa"],
+        dataset: {
             "targetId": getTargetIdByMembers(data.members, data.id, data.type),
-            "chatroomInfo" : "",
-            "chatroomType" : data.type,
-            "chatroomSearch" : "",
-            "searchName" : data.name}
+            "chatroomInfo": "",
+            "chatroomType": data.type,
+            "chatroomSearch": "",
+            "searchName": data.name
+        }
     });
     let imgDiv = makeElement("div");
-    let img = makeElement("img", {
-        option : {
-            "width" :"50",
-            "height" : "50",
-            "style" : "border-radius: 20%",
-            "src" : getProfileImgByMembers(data.members, data.type)
-        }
-    })
 
-    imgDiv.append(img);
+    let img = null;
+    if (data.type === 'One') {
+        img = makeElement("img", {
+            option: {
+                "width": "50",
+                "height": "50",
+                "style": "border-radius: 20%",
+                "src": getProfileImgByMembers(data.members, data.type)
+            }
+        })
+    } else {
+        img = makeElement("div", {className: ["many-chatroom-profile"]});
 
-    let chatroomDiv = makeElement("div", {className : ["ms-2"]});
+        const imgs = data.members.filter(member=> member.id !== loginedId).slice(0,4).map(member =>
+            makeElement("img", {
+                option: {
+                    "width": "21",
+                    "height": "21",
+                    "style": "border-radius: 50%;",
+                    "src": member.profileImg
+                }
+            })
+        )
+
+        img.append(...imgs);
+    }
+
+    if (img != null) imgDiv.append(img);
+
+    let chatroomDiv = makeElement("div", {className: ["ms-2"]});
     let titleH5 = makeElement("h5");
     titleH5.innerText = data.name;
-    let recentMessageDiv = makeElement("div", {dataset : {"chatRecentMessage": ""}});
+    let recentMessageDiv = makeElement("div", {dataset: {"chatRecentMessage": ""}});
     recentMessageDiv.innerText = reduceChatroomListContent(data.lastMessage.content);
 
     chatroomDiv.append(titleH5, recentMessageDiv);
 
-    let infoDiv = makeElement("div", {className: ["ms-auto", "pe-2"], dataset:{"chatroomListInfo":""}});
-    let timeDiv = makeElement("div", {className: ["small"], dataset: {"chatListTime":""}});
+    let infoDiv = makeElement("div", {className: ["ms-auto", "pe-2"], dataset: {"chatroomListInfo": ""}});
+    let timeDiv = makeElement("div", {className: ["small"], dataset: {"chatListTime": ""}});
     timeDiv.innerText = chatDateFormat(data.lastMessage.sendDate);
 
     infoDiv.append(timeDiv);
 
-    if(data.noReadCount != null && data.noReadCount > 0) {
-        let counterEndDiv = makeElement("div", {className:["text-end"], dataset:{"readCounter": ""}});
-        let counterDiv = makeElement("div", {className: ["small", "bg-danger", "text-white", "d-inline-block", "recent-message-counter"], dataset:{"readCountNum":""}})
+    if (data.noReadCount != null && data.noReadCount > 0) {
+        let counterEndDiv = makeElement("div", {className: ["text-end"], dataset: {"readCounter": ""}});
+        let counterDiv = makeElement("div", {
+            className: ["small", "bg-danger", "text-white", "d-inline-block", "recent-message-counter"],
+            dataset: {"readCountNum": ""}
+        })
 
         counterDiv.innerText = data.noReadCount;
 
@@ -418,11 +444,11 @@ function drawChatroomList(data){
     return div;
 }
 
-function getTargetIdByMembers(members, chatroomId, type){
-    if(type === 'Many') return chatroomId;
+function getTargetIdByMembers(members, chatroomId, type) {
+    if (type === 'Many') return chatroomId;
 
     for (let member of members) {
-        if(member.id !== loginedId){
+        if (member.id !== loginedId) {
             return member.id;
         }
     }
@@ -430,10 +456,10 @@ function getTargetIdByMembers(members, chatroomId, type){
     return null;
 }
 
-function getProfileImgByMembers(members, type){
-    if(type === 'One'){
+function getProfileImgByMembers(members, type) {
+    if (type === 'One') {
         for (let member of members) {
-            if(member.id !== loginedId){
+            if (member.id !== loginedId) {
                 return member.profileImg;
             }
         }
@@ -442,8 +468,8 @@ function getProfileImgByMembers(members, type){
     return "/img/기본.jpg"
 }
 
-function reduceChatroomListContent(content){
-    if(content.length < 14){
+function reduceChatroomListContent(content) {
+    if (content.length < 14) {
         return content;
     }
 
@@ -451,7 +477,7 @@ function reduceChatroomListContent(content){
 }
 
 function pageChange(to) {
-    if(isCreateState){
+    if (isCreateState) {
         document.getElementById("chatroom-list-create-cancel-btn").click();
     }
 
@@ -461,10 +487,10 @@ function pageChange(to) {
 
     if (to == null) return;
 
-    nowOpenPage=to.dataset.pageName;
+    nowOpenPage = to.dataset.pageName;
     to.classList.add("now-page");
 
-    if(nowOpenPage === 'chatroom'){
+    if (nowOpenPage === 'chatroom') {
         to.classList.remove("get-message");
     }
 }
@@ -486,12 +512,12 @@ function onSendMessageBtnClick() {
     chattingArea.focus();
 }
 
-function getChatroomList(){
+function getChatroomList() {
     fetch('/chatrooms/list')
-        .then(res=>res.json())
-        .then(r=>{
+        .then(res => res.json())
+        .then(r => {
             chatroomListSpace.innerHTML = "";
-            let elements = r.map(el=>{
+            let elements = r.map(el => {
                 const created = drawChatroomList(el);
                 chatroomList[el.id] = created;
                 return created;
@@ -500,20 +526,20 @@ function getChatroomList(){
         });
 }
 
-function getInputKey(event){
-    if(event.key === 'Enter') {
+function getInputKey(event) {
+    if (event.key === 'Enter') {
         if (!event.shiftKey) {
-            if(event.target.value.trim() === '') return;
+            if (event.target.value.trim() === '') return;
             onSendMessageBtnClick();
         }
     }
 }
 
-function employeeSelectForm(){
+function employeeSelectForm() {
     let selected = $("#selected-employee");
-    if(selected.is(":hidden")){
+    if (selected.is(":hidden")) {
         isCreateState = true;
-        selected.slideDown("fast", ()=>{
+        selected.slideDown("fast", () => {
             selected.parent().removeClass("hide-list");
             selected.addClass("d-flex");
             $(".employee-list").addClass("short-list");
@@ -528,16 +554,16 @@ function employeeSelectForm(){
     }
 }
 
-async function onProfileClick(event){
+async function onProfileClick(event) {
     const target = event.target;
     const empId = target.dataset.employeeSearch;
 
-    if(empId == null){
+    if (empId == null) {
         target.parentElement.click();
         return;
     }
 
-    if(isCreateState){
+    if (isCreateState) {
         let empName = target.dataset.searchName;
         let src = target.querySelector("img.rounded-circle").src;
         addSelectedEmployeeList(empId, empName, src);
@@ -547,8 +573,8 @@ async function onProfileClick(event){
     openProfileModal(empId);
 }
 
-function addSelectedEmployeeList(id, name, src){
-    if(selectedEmployees[id] != null){
+function addSelectedEmployeeList(id, name, src) {
+    if (selectedEmployees[id] != null) {
         unSelectEmployee(id);
         return;
     }
@@ -556,37 +582,37 @@ function addSelectedEmployeeList(id, name, src){
     selectEmployee(id, selectedDiv(id, name, src));
 }
 
-function selectEmployee(id, element){
+function selectEmployee(id, element) {
     selectedEmployees[id] = element;
     selectedEmployeeDiv.prepend(selectedEmployees[id]);
 
-    if(Object.keys(selectedEmployees).length > 0){
+    if (Object.keys(selectedEmployees).length > 0) {
         $("#chatroom-create-btn").removeClass("disabled");
     }
 }
 
-function unSelectEmployee(id){
+function unSelectEmployee(id) {
     selectedEmployees[id].remove();
     delete selectedEmployees[id];
-    if(Object.keys(selectedEmployees).length === 0){
+    if (Object.keys(selectedEmployees).length === 0) {
         $("#chatroom-create-btn").addClass("disabled");
     }
 }
 
-function clearSelectElement(){
+function clearSelectElement() {
     for (let key in selectedEmployees) {
         selectedEmployees[key].remove();
         delete selectedEmployees[key];
     }
 }
 
-function selectedDiv(id, name, src){
-    const div = makeElement("div", {className : ["selected-member-item", "text-center"]});
-    const img = makeElement("img", {className:["rounded-circle"], option:{src : src , width: "55px", height : "55px"}});
-    const span = makeElement("span", {className:["ms-2"]});
+function selectedDiv(id, name, src) {
+    const div = makeElement("div", {className: ["selected-member-item", "text-center"]});
+    const img = makeElement("img", {className: ["rounded-circle"], option: {src: src, width: "55px", height: "55px"}});
+    const span = makeElement("span", {className: ["ms-2"]});
     span.innerText = name;
 
-    const indicator = makeElement("span", {className:["indicator"], dataset:{"employeeId" : id}});
+    const indicator = makeElement("span", {className: ["indicator"], dataset: {"employeeId": id}});
     indicator.innerText = 'x';
 
     div.append(img, span, indicator);
@@ -594,13 +620,13 @@ function selectedDiv(id, name, src){
     return div;
 }
 
-async function openProfileModal(empId){
-    let info= await fetch('/employee/getProfile?id=' + empId).then(res=>res.json())
+async function openProfileModal(empId) {
+    let info = await fetch('/employee/getProfile?id=' + empId).then(res => res.json())
 
     document.querySelectorAll("[data-profile-type]")
         .forEach(e => {
             let profileType = e.dataset.profileType;
-            switch (profileType){
+            switch (profileType) {
                 case 'img':
                     e.setAttribute("src", info.profileImg == null ? '/img/기본.jpg' : info.profileImg);
                     break;
@@ -614,9 +640,9 @@ async function openProfileModal(empId){
     namecardModal.show();
 }
 
-function onIndicatorClick(event){
+function onIndicatorClick(event) {
     let empId = event.target.dataset.employeeId;
-    if(empId == null){
+    if (empId == null) {
         event.target.parentElement.click();
         return;
     }
@@ -624,15 +650,15 @@ function onIndicatorClick(event){
     unSelectEmployee(empId);
 }
 
-function createChatroom(){
+function createChatroom() {
     const members = Object.keys(selectedEmployees);
 
     fetch('/chatrooms/create', {
-        method : "post",
-        headers : {"Content-Type" : "application/json;charset=utf-8"},
-        body : JSON.stringify(members)
+        method: "post",
+        headers: {"Content-Type": "application/json;charset=utf-8"},
+        body: JSON.stringify(members)
     }).then(res => res.json())
-        .then(r=>{
+        .then(r => {
             connectChatroom(r.chatroomId);
             pageChange();
             nowOpenPage = r.chatroomId;

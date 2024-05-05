@@ -9,6 +9,7 @@ import java.util.List;
 public class ChattingVO {
     private String chatroomId;
     private String chatroomName;
+    private ChatroomType type;
     private List<EmployeeProfileVO> members;
     private List<ChatMessage> chatMessages;
     private String lastReadTime;

@@ -77,6 +77,7 @@
         SELECT
               cr.id AS "chatroom_id"
             , cm.room_name AS "chatroom_name"
+            , cr.type
             , e.id AS "employee_id"
             , concat(c.name, ' ' , e.name) AS "name"
             , a.url AS "profile_img"

@@ -163,3 +163,15 @@ button:active{
 .employee-list.short-list{
     height:calc(100vh - 146px);
 }
+
+.many-chatroom-profile{
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    height: 55px;
+    width: 55px;
+    border-radius: 10px;
+    margin: 0;
+    background-color: #7749f830;
+    padding: 3px 4px
+}
