@@ -44,6 +44,7 @@
             <if test="sales.franchise != null and sales.franchise.id != null">
                 sales.franchise_id = #{sales.franchise.id}
             </if>
+            AND sales.sales_date <![CDATA[<=]]> CURDATE()
         </where>
     </sql>
     <sql id="getSalesSQL">

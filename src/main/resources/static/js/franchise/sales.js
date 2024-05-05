@@ -17,7 +17,7 @@ async function renderTable(data){
         innerHtml += `
                 <tr>
                     <td>${sale.id}</td>
-                    <td>${menus.join(", ")}</td>
+                    <td class="text-wrap">${menus.join(", ")}</td>
                     <td>${sale.price.toLocaleString("ko-KR")}원</td>
                     <td>${dayjs(sale.salesDate).format("YYYY-MM-DD HH:mm")}</td>
                 </tr>
@@ -47,3 +47,4 @@ const articleObserver = new IntersectionObserver(articleCallback, options);
 (async function(){
     await loadSales();
 })();
+

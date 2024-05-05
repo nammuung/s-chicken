@@ -119,11 +119,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/franchise/sales">
-                        <i class="bi bi-circle"></i><span>가맹점 매출 조회</span>
-                    </a>
-                </li>
-                <li>
                     <a href="/franchise/qna/list">
                         <i class="bi bi-circle"></i><span>가맹점 QnA</span>
                     </a>
@@ -232,7 +227,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/franchise/sells">
+            <a class="nav-link collapsed" href="/franchise/sales">
                 <i class="bi bi-bar-chart"></i><span>매출</span>
             </a>
         </li>

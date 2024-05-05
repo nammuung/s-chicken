@@ -64,4 +64,4 @@
 <script src="https://fastly.jsdelivr.net/npm/@yaireo/tagify"></script>
 
 <%--캘린더--%>
-<script src="fullcalendar/packages/google-calendar/index.global.js"></script>
+<script src="/fullcalendar/packages/google-calendar/index.global.js"></script>

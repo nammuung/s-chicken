@@ -43,6 +43,21 @@ public class SalesApi {
                     .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
         }
     }
+    @GetMapping("sales/{id}")
+    public ResponseEntity<?> getSalesList(@PathVariable String id, Pager pager) {
+        Sales sales = new Sales();
+        FranchiseVO franchiseVO = new FranchiseVO();
+        franchiseVO.setId(id);
+        sales.setFranchise(franchiseVO);
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSalesList(sales, pager)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+
 
     @GetMapping("sales/month")
     public ResponseEntity<?> getPerMonth(@AuthenticationPrincipal FranchiseVO franchiseVO) {
@@ -71,6 +86,80 @@ public class SalesApi {
         }
         try {
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getPerWeeks(sales)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+
+    @GetMapping("sales/days")
+    public ResponseEntity<?> getPerDays(@AuthenticationPrincipal FranchiseVO franchiseVO) {
+        Sales sales = new Sales();
+        if(franchiseVO == null) {
+            sales.setFranchise(franchise);
+        } else {
+            sales.setFranchise(franchiseVO);
+        }
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getPerDays(sales)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+    @GetMapping("sales/days/one/{id}")
+    public ResponseEntity<?> getPerDays(@PathVariable String id) {
+        FranchiseVO franchiseVO = new FranchiseVO();
+        franchiseVO.setId(id);
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSalesPerDays(franchiseVO)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+
+    @GetMapping("sales/month/{id}")
+    public ResponseEntity<?> getInquiryPerMonth(@PathVariable String id) {
+        Sales sales = new Sales();
+        FranchiseVO franchiseVO = new FranchiseVO();
+        franchiseVO.setId(id);
+        sales.setFranchise(franchiseVO);
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getPerMonth(sales)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+
+    @GetMapping("sales/weeks/{id}")
+    public ResponseEntity<?> getInquiryPerWeeks(@PathVariable String id) {
+        Sales sales = new Sales();
+        FranchiseVO franchiseVO = new FranchiseVO();
+        franchiseVO.setId(id);
+        sales.setFranchise(franchiseVO);
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getPerWeeks(sales)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+
+    @GetMapping("sales/days/{id}")
+    public ResponseEntity<?> getInquiryPerDays(@PathVariable String id) {
+        Sales sales = new Sales();
+        FranchiseVO franchiseVO = new FranchiseVO();
+        franchiseVO.setId(id);
+        sales.setFranchise(franchiseVO);
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getPerDays(sales)));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -111,25 +200,22 @@ public class SalesApi {
         }
     }
 
-    @GetMapping("sales/days")
-    public ResponseEntity<?> getPerDays(@AuthenticationPrincipal FranchiseVO franchiseVO) {
-        Sales sales = new Sales();
-        if(franchiseVO == null) {
-            sales.setFranchise(franchise);
-        } else {
-            sales.setFranchise(franchiseVO);
-        }
+
+    @GetMapping("sell/days")
+    public ResponseEntity<?> getSellPerDays(@AuthenticationPrincipal FranchiseVO franchiseVO) {
         try {
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getPerDays(sales)));
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSellPerDays(franchise)));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
         }
     }
-    @GetMapping("sell/days")
-    public ResponseEntity<?> getSellPerDays(@AuthenticationPrincipal FranchiseVO franchiseVO) {
+    @GetMapping("sell/days/{id}")
+    public ResponseEntity<?> getSellPerDays(@PathVariable String id) {
         try {
+            FranchiseVO franchise = new FranchiseVO();
+            franchise.setId(id);
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSellPerDays(franchise)));
         } catch (Exception e){
             e.printStackTrace();

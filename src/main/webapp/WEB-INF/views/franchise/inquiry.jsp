@@ -49,7 +49,7 @@
                                     <span>${dept.contactNumber}</span>
                                 </a>
                                 <div>
-                                    <a href="/franchise/detail?id=${dept.id}" class="link-dark me-1">
+                                    <a href="/franchise/inquiry/sales?id=${dept.id}" class="link-dark me-1">
                                         <i class="bi bi-bar-chart-fill"></i>
                                     </a>
                                     <a href="/franchise/detail?id=${dept.id}" class="link-dark">
