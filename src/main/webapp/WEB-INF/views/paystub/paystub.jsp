@@ -25,27 +25,32 @@
                 <div class="row justify-content-between mb-5">
                     <div class="col-3">
                         <form>
-                            <label for="spending-date">월 선택</label>
-                            <input class="form-control" type="month" id="spending-date"/>
+                            <label for="paystub-year-month">월 선택</label>
+                            <input class="form-control" type="month" id="paystub-year-month" value="${paystub.yearMonth}"/>
                         </form>
                     </div>
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-6 shadow">
+                        <c:if test="${paystub.basePay ne null}">
                         <div class="row py-3">
-                            <h2 class="text-center">2024-02</h2>
-                            <h1 class="text-center">급여명세서</h1>
+                            <h2 class="text-center">${paystub.yearMonth}</h2>
+                            <h1 class="text-center">급여명세서 <c:if test="${not paystub.payed}">(예정)</c:if></h1>
                             <hr>
                             <p class="col-6 text-end fs-4">기본급 : </p>
-                            <p class="col-6 fs-4">2,146,000,000 원</p>
+                            <p class="col-6 fs-4">${paystub.basePayByString} 원</p>
+                            <c:if test="${paystub.bonusSum ne 0}">
                             <p class="col-6 text-end fs-4">상여금 : </p>
-                            <p class="col-6 fs-4">900,000 원</p>
-                            <p class="col-6 text-end fs-4">지출? : </p>
-                            <p class="col-6 fs-4">583,647 원</p>
+                            <p class="col-6 fs-4">${paystub.bonusSumByString} 원</p>
+                            </c:if>
                             <hr>
                             <div class="col-6 text-end fs-4">실지급액 : </div>
-                            <div class="col-6 fs-4">2,147,483,647 원</div>
+                            <div class="col-6 fs-4">${paystub.sum} 원</div>
                         </div>
+                        </c:if>
+                        <c:if test="${paystub.basePay eq null}">
+                            <div>기록이 없습니다</div>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -64,6 +69,10 @@
         const yearMonth = nowDate.getFullYear() + "-" + ((nowDate.getMonth() + 1) > 9 ? nowDate.getMonth() + 1 : '0' + (nowDate.getMonth() + 1));
         document.getElementById("spending-date").max = yearMonth;
     }
+
+    document.getElementById("paystub-year-month").addEventListener("change",event=>{
+        location.href = '?yearMonth=' + event.target.value;
+    })
 </script>
 </body>
 

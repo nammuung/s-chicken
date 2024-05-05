@@ -56,4 +56,8 @@ public interface EmployeeDAO {
     List<EmployeeVO> getNamesByIds(List<String> ids);
 
     List<String> getWholeIds();
+
+    PaystubVO getPaystub(PaystubVO paystubVO);
+
+	PaystubVO calcPaystub(PaystubVO paystubVO);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.common.util.PhoneNumberHyphenInserter;
 import com.groups.schicken.franchise.FranchiseMapper;
 
@@ -336,5 +337,24 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		EmployeeProfileVO profile = employeeDAO.getProfile(id);
 		profile.setPhoneNumber(PhoneNumberHyphenInserter.hyphenInsert(profile.getPhoneNumber()));
 		return profile;
+    }
+
+    public PaystubVO getPaystub(PaystubVO paystubVO) {
+		if(paystubVO.getYearMonth() == null){
+			paystubVO.setYearMonth(DateManager.getTodayDateTime("yyyy-MM"));
+		}
+
+		PaystubVO paystub = employeeDAO.getPaystub(paystubVO);
+
+		if(paystub == null){
+			paystub = employeeDAO.calcPaystub(paystubVO);
+			paystub.setPayed(false);
+		}
+
+		if(paystub.getYearMonth() == null){
+			paystub.setYearMonth(paystubVO.getYearMonth());
+		}
+
+		return paystub;
     }
 }
