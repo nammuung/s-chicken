@@ -303,9 +303,10 @@ public class ChatService {
     @Transactional
     public void insertJoinNotice(EmployeeVO sender, String chatroomId, String[] members) {
         List<EmployeeVO> employees = employeeDAO.getNamesByIds(Arrays.asList(members));
+        String sendDate = null;
 
         for (EmployeeVO employee : employees) {
-            String sendDate = DateManager.getTodayDateTime("yyyyMMddHHmmssSSS");
+            sendDate = DateManager.getTodayDateTime("yyyyMMddHHmmssSSS");
 
             ChatMessage noticeChat = ChatMessage.builder()
                     .id(createChatId(chatroomId, employee.getId(), sendDate))
@@ -319,6 +320,7 @@ public class ChatService {
             chatDAO.insertChat(noticeChat);
             template.convertAndSend("/sub/chat/" + chatroomId, noticeChat);
         }
+        if(sendDate != null) chatDAO.updateLastRead(sendDate, chatroomId, sender.getId());
     }
 
     @Transactional
