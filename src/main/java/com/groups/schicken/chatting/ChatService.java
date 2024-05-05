@@ -312,13 +312,14 @@ public class ChatService {
                     .id(createChatId(chatroomId, employee.getId(), sendDate))
                     .chatroomId(chatroomId)
                     .senderId(sender.getId())
-                    .type(ChattingType.Notice)
+                    .type(ChattingType.Join)
                     .sendDate(sendDate)
                     .content(sender.getName() + "님께서 " + employee.getName() + "님을 초대했습니다.")
                     .build();
 
             chatDAO.insertChat(noticeChat);
             template.convertAndSend("/sub/chat/" + chatroomId, noticeChat);
+            template.convertAndSend("/sub/chat/" + employee.getId(), noticeChat);
         }
         if(sendDate != null) chatDAO.updateLastRead(sendDate, chatroomId, sender.getId());
     }
@@ -339,7 +340,7 @@ public class ChatService {
                 .id(createChatId(chatroomId, employee.getId(), sendDate))
                 .chatroomId(chatroomId)
                 .senderId(employee.getId())
-                .type(ChattingType.Notice)
+                .type(ChattingType.Out)
                 .sendDate(sendDate)
                 .content(employee.getName() + "님께서 채팅방을 나가셨습니다.")
                 .build();

@@ -31,7 +31,7 @@ window.onload=()=>{
 function popupChattingPage(url){
     let attr = "_blank"
     let opt = {
-        width : 500,
+        width : 520,
         height : 800,
         top : 50,
         left : 100,

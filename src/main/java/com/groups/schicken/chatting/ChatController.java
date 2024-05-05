@@ -76,13 +76,12 @@ public class ChatController {
         return ResponseEntity.ok(list);
     }
 
-//
-//    @PostMapping("join/{chatroomId}")
-//    public ResponseEntity<Boolean> joinChatroom(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId){
-//        Boolean result = chatService.joinChatroom(employee.getId(), chatroomId);
-//
-//        return ResponseEntity.ok(result);
-//    }
+
+    @GetMapping("memberData/{chatroomId}")
+    public ResponseEntity<List<EmployeeProfileVO>> getMemberData(@PathVariable String chatroomId){
+        List<EmployeeProfileVO> memberData = chatService.getChatroomMemberData(chatroomId);
+        return ResponseEntity.ok(memberData);
+    }
 
     @GetMapping("chattings/{chatroomId}")
     public ResponseEntity<List<ChatMessage>> getMoreMessages(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId, String from, String direction){

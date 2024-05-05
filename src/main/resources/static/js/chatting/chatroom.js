@@ -1,4 +1,4 @@
-import {setWhenReceiveMessage, sendMessage, connectChatroom} from '/js/chatting/chatting.js';
+import {setWhenReceiveMessage, sendMessage, connectChatroom, disConnectChatroom} from '/js/chatting/chatting.js';
 
 const chattingSpace = document.getElementById("chatting-space");
 const chattingArea = document.getElementById("chatting-area");
@@ -90,6 +90,15 @@ document.querySelectorAll("[data-element-id=search-input]").forEach(el => el.add
     })
 )
 
+function refreshMemberData(){
+    fetch("/chatrooms/memberData/" + nowOpenPage)
+        .then(res => res.json())
+        .then(r => {
+            memberData = {};
+            r.forEach(member => memberData[member.id] = member);
+        });
+}
+
 function openChatting(event, type) {
     const info = event.target.dataset.chatroomInfo;
     if (info == null) {
@@ -157,7 +166,7 @@ async function chatroomRenderByData(chattingData) {
     chattingData.chatMessages.forEach(chatMessage => {
         let created;
         if(chatMessage.type === 'Message') created = appendChatting(chatMessage);
-        else if(chatMessage.type === 'Notice') created = appendNotice(chatMessage);
+        else if(chatMessage.type === 'Join'||chatMessage.type === 'Out') created = appendNotice(chatMessage);
 
         if (chattingData.lastReadTime === chatMessage.sendDate) {
             created.dataset.lastRead = "";
@@ -196,12 +205,12 @@ async function getChatting(from, direction) {
             if (direction === 'up') {
                 chattings.forEach(chatting => {
                     if(chatting.type === 'Message') prependChatting(chatting);
-                    else if(chatting.type === 'Notice') prependNotice(chatting);
+                    else if(chatting.type === 'Join'||chatting.type === 'Out') prependNotice(chatting);
                 });
             } else if (direction === 'down') {
                 chattings.forEach(chatting => {
                     if(chatting.type === 'Message') appendChatting(chatting);
-                    else if(chatting.type === 'Notice') appendNotice(chatting);
+                    else if(chatting.type === 'Join'||chatting.type === 'Out') appendNotice(chatting);
                 });
             }
             return chattings;
@@ -261,11 +270,28 @@ function isDiffMinute(date1, date2) {
 }
 
 function onGetChattingOne(data) {
+    if(data.type === 'Join'){
+        connectChatroom(data.chatroomId);
+
+        if(nowOpenPage === 'chatroom'){
+            document.getElementById("chatroom-list-btn").click();
+        } else {
+            chatroomListBtn.classList.add("get-message");
+        }
+        return;
+    }
     onGetMessage(data, [loginedId, nowOpenPage].sort().join(""));
 }
 
 function onGetMessage(data, nowpage = nowOpenPage) {
     if (nowpage === data.chatroomId) {
+        if(data.type === 'Out'){
+            if(memberData[data.senderId] != null) delete memberData[data.senderId];
+        }
+
+        if(data.type === 'Join'){
+            refreshMemberData();
+        }
         getChattingInChatroom(data);
         return;
     }
@@ -308,7 +334,7 @@ function updateChatroomListElement(target, data) {
 function getChattingInChatroom(data) {
     let created = null;
     if(data.type === 'Message') created = appendChatting(data);
-    else if(data.type === 'Notice') created = appendNotice(data);
+    else if(data.type === 'Join'||data.type === 'Out') created = appendNotice(data);
 
     if(created == null) return;
 
@@ -890,7 +916,7 @@ function submitInviteMember(){
         body: JSON.stringify(members)
     }).then(res => res.json())
         .then(r => {
-            r.forEach(member => memberData[member.id] = member)
+            console.log(r);
             finishMemberInvite();
         })
 }
@@ -904,6 +930,7 @@ function outChatroom(){
     }).then(res => {
         if(res.ok){
             console.log("ok!");
+            disConnectChatroom(nowOpenPage);
             chatroomInfoModal.hide();
             document.getElementById("chatroom-list-btn").click();
         }

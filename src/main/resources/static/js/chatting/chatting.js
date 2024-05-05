@@ -15,6 +15,10 @@ export function connectChatroom(chatroomId){
     mapping('chat/' + chatroomId, data => getMessageMany(data));
 }
 
+export function disConnectChatroom(chatroomId){
+    cutMapping('chat/' + chatroomId);
+}
+
 export function sendMessage(data) {
     data.senderId = loginedId;
     send(`chat/${data.pageType.toLowerCase()}/${data.chatroomId}`, data);
