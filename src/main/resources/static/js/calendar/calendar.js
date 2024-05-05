@@ -30,18 +30,13 @@
 
             eventAdd: function (obj) { // 이벤트가 추가되면 발생하는 이벤트
                 console.log(obj);
-                console.log("추가임");
+
             },
+
             eventChange: function (obj) { // 이벤트가 수정되면 발생하는 이벤트
-                console.log(obj);
-                console.log("수정임");
-                console.log(obj.event.start);
-                console.log(obj.event.end);
-                console.log(obj.event.content);
-                console.log(obj.event.title);
-                console.log(obj.event.id);
-                let startday =dayjs(obj.event.start).format('YYYY-MM-DDTHH:mm:ss');
-                let endday =dayjs(obj.event.end).format('YYYY-MM-DDTHH:mm:ss');
+
+                let startday = dayjs(obj.event.start).format('YYYY-MM-DDTHH:mm:ss');
+                let endday = dayjs(obj.event.end).format('YYYY-MM-DDTHH:mm:ss');
                 console.log(startday);
                 console.log(endday);
                 $.ajax({
@@ -62,41 +57,35 @@
                         console.error('수정 실패:', error);
                     }
                 });
+
+
             },
             eventRemove: function (obj) { // 이벤트가 삭제되면 발생하는 이벤트
-                console.log(obj);
-                console.log("삭제임");
-               $.ajax({
+                $.ajax({
                     url: '/calendarDelete',  // 서버 엔드포인트
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({ calendarId: obj.event.id }), // 삭제할 이벤트의 ID를 JSON 형태로 전송
-                    success: function(response) {
+                    success: function (response) {
                         console.log('삭제 성공:', response);
+                        alert("삭제 되었습니다.")
                         $('#exampleModal').modal('hide'); // 성공 시 모달 숨김
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.error('삭제 실패:', error);
                     }
                 });
-                
-            },
-            
-            eventClick: function (obj) {
-                console.log(obj)
-                console.log("클릭임");
-                console.log(obj.event.start);
 
+            },
+
+            eventClick: function (obj) {
                 // 이벤트가 공휴일이면 처리 중지
                 if (obj.event.id.toString().length > 10) {
-                obj.jsEvent.preventDefault();
+                    obj.jsEvent.preventDefault();
                     console.log("공휴일 클릭: 이벤트 처리 중지");
-					return;
-                    
-                    
-                    
+                    return;
                 }
-                
+
                 $.ajax({
                     url: '/detail',
                     type: 'GET',
@@ -106,29 +95,59 @@
 
                     },
                     success: function (response) {
-                        console.log('수정 성공:', response);
-                        console.log(response.id);
-                        console.log(response.title);
-                        console.log(response.content);
-                        console.log(response.share);
-                        console.log(response.start);
+
                         console.log(response.end);
-                         $('#title2').val(response.title);
-                            $('#content2').val(response.content);
-                            $('#share2').val(response.depname+"/"+response.cname+"/"+response.name);
+                        $('#title2').val(response.title);
+                        $('#content2').val(response.content);
+                        $('#share2').val(response.depname + "/" + response.cname + "/" + response.name);
 
-                            // Date formatting might be necessary depending on your backend's date format
-                            $('#start2').val(response.start);
-                            $('#end2').val(response.end);
+                        // Date formatting might be necessary depending on your backend's date format
+                        $('#start2').val(response.start);
+                        $('#end2').val(response.end);
 
-                            // Show the modal after setting the values
-                            $('#exampleModal').modal('show');
-                        
+                        // Show the modal after setting the values
+                        $('#exampleModal').modal('show');
+
+
+                        $('#updateButton').off('click').click(function () {
+                            console.log("aaaaaaa")
+                            let start2 = document.getElementById("start2").value;
+                            let end2 = document.getElementById("end2").value;
+                            const employeeId = document.getElementById("emid").value;
+                            let startday = dayjs(start2).format('YYYY-MM-DDTHH:mm:ss');
+                            let endday = dayjs(end2).format('YYYY-MM-DDTHH:mm:ss');
+                            let content2 = document.getElementById("content2").value;
+                            let title2 = document.getElementById("title2").value;
+                            $.ajax({
+                                url: '/calUpdate',  // 서버 엔드포인트
+                                type: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    calendarId: obj.event.id,
+                                    title: title2,
+                                    content: content2,
+                                    start: startday,
+                                    end: endday,
+                                    employeeId: employeeId.value
+                                }), // 삭제할 이벤트의 ID를 JSON 형태로 전송
+                                success: function (response) {
+                                    console.log('수정 성공:', response);
+                                    alert("수정 되었습니다.")
+                                    $('#exampleModal').modal('hide');
+                                    calendar.unselect();
+                                },
+                                error: function (error) {
+                                    console.error('수정 실패:', error);
+                                }
+
+                            });
+                        })
                     },
                     error: function (error) {
                         console.error('수정 실패:', error);
                     }
                 });
+
                 $('#deleteButton').click(function () {
                     console.log("click");
                     var selectedEvent = calendar.getEventById(obj.event.id);
@@ -138,12 +157,11 @@
                         console.error('선택된 이벤트가 존재하지 않습니다.');
                     }
                 });
-                
                 $('#exampleModal').modal('show');
                 calendar.unselect();
             },
             select: function (arg) {
-                
+
                 $('#eventModal').modal('show');
                 // 부트스트랩 모달 열기
                 var startDate = arg.start.toISOString().slice(0, 10); // 선택된 날짜의 날짜 부분만 추출
@@ -171,11 +189,11 @@
                     var minute = now.getMinutes().toString().padStart(2, '0'); // 분을 두 자리로 변환하고 앞에 0을 채움
                     return hour + ':' + minute; // 시간과 분을 합쳐서 반환
                 }
-                
 
-                
 
-                
+
+
+
 
 
                 // 모달에서 이벤트 제목 입력 후 저장 버튼 클릭 시
@@ -205,18 +223,10 @@
                         let start = document.getElementById("start").value;
                         let end = document.getElementById("end").value;
                         const employeeId = document.getElementById("emid").value;
-                        console.log(employeeId + "로그임");
-                        /* if (managerId && !managerId.value) {
-                            console.log("managerId.value가 비어있습니다.");
-                            managerId.value = employeeId; // managerId.value를 employeeId로 설정
-                        } */
 
-                        // 결과를 콘솔에 출력
+                        let startday = dayjs(start).format('YYYY-MM-DDTHH:mm:ss');
+                        let endday = dayjs(end).format('YYYY-MM-DDTHH:mm:ss');
 
-
-                        let startday =dayjs(start).format('YYYY-MM-DDTHH:mm:ss');
-                        let endday =dayjs(end).format('YYYY-MM-DDTHH:mm:ss');
-                        console.log(managerId.value + " 매니저");
                         $.ajax({
                             url: '/insert',
                             type: 'POST',
@@ -276,7 +286,6 @@
                 success: function (data) {
                     // 가져온 데이터를 풀캘린더에 추가
                     data.forEach(function (eventData) {
-                        console.log(eventData.id + "LLLLL123123123");
                         calendar.addEvent({
                             id: eventData.id, // 이벤트 ID
                             title: eventData.title, // 이벤트 제목
@@ -308,8 +317,8 @@ $(document).ready(function () {
             $('#end').val(getEndDateAllDay()); // 종료 시간을 23:59:59로 설정
         } else {
             // 종일 옵션이 해제되었을 때
-            var endDate = $('#end').val().slice(0, 10); 
-            return  $('#end').val(endDate + 'T' + getCurrentTime2());             
+            var endDate = $('#end').val().slice(0, 10);
+            return $('#end').val(endDate + 'T' + getCurrentTime2());
         }
     });
 
@@ -325,7 +334,7 @@ $(document).ready(function () {
         var minute = now.getMinutes().toString().padStart(2, '0'); // 분을 두 자리로 변환하고 앞에 0을 채움
         return hour + ':' + minute; // 시간과 분을 합쳐서 반환
     }
-    
+
     $(document).ready(function () {
         // 모달이 닫힐 때 입력 폼 초기화
         $('#eventModal').on('hidden.bs.modal', function () {
@@ -336,5 +345,6 @@ $(document).ready(function () {
             $('#managerName').val('');
         });
     });
-    
+
+
 });

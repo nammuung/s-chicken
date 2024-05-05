@@ -33,7 +33,12 @@ public class CalendarService {
 	  private CalendarDAO calendarDAO;
 	
 	  
-
+	public int insert2(CalendarVO calendarVO) throws Exception {
+		calendarDAO.insert(calendarVO);
+		  calendarVO.setCalendarId(calendarVO.getId());
+		int result = calendarDAO.insertuser(calendarVO);
+		return result;
+	}
 
 	  
 	public int insert(CalendarVO calendarVO) throws Exception {
@@ -45,24 +50,41 @@ public class CalendarService {
 
 	    // 삽입된 캘린더 이벤트의 ID를 CalendarVO에 설정
 	    calendarVO.setCalendarId(calendarVO.getId());
-
+	    if(calendarVO.getEmployeeId()==null) {
+	    	calendarVO.setEmployeeId(calendarVO.getShare());
+	    	calendarDAO.insertuser(calendarVO);
+	    }
 	    // Gson을 사용하여 JSON 문자열을 배열로 변환
 	    Gson gson = new Gson();
 	    String employeeIdJson = calendarVO.getEmployeeId();
 	    List<Map<String, String>> employeeIdList = gson.fromJson(employeeIdJson, new TypeToken<List<Map<String, String>>>() {}.getType());
 
 	    // 배열의 각 요소를 추출하여 인서트
-	    if(employeeIdList==null) {
-	    	calendarVO.setEmployeeId(calendarVO.getShare());
-	    	int result = calendarDAO.insertuser(calendarVO);
-	    }else {
+	    boolean shareExists = false;
+	    if (employeeIdList != null) {
+	        for (Map<String, String> employeeIdMap : employeeIdList) {
+	            String employeeIdValue = employeeIdMap.get("value");
+	            if (employeeIdValue.equals(calendarVO.getShare())) {
+	                shareExists = true;
+	                break;
+	            }
+	        }
+	    }
+
+	    if (!shareExists) {
+	        Map<String, String> shareMap = new HashMap<>();
+	        shareMap.put("value", calendarVO.getShare());
+	        employeeIdList.add(shareMap);
+	    }
+
 	    for (Map<String, String> employeeIdMap : employeeIdList) {
 	        String employeeIdValue = employeeIdMap.get("value");
 	        calendarVO.setEmployeeId(employeeIdValue);
 	        System.out.println(calendarVO.getCalendarId());
 	        int result = calendarDAO.insertuser(calendarVO);
 	    }
-	    }
+
+
 		
 		  // 부서 리스트를 조회하여 CalendarVO에 설정하고 인서트 
 	    List<CalendarVO> a = calendarDAO.departmentList(calendarVO);
@@ -106,6 +128,9 @@ public class CalendarService {
 		return calendarDAO.calendarDelete(calendarVO);
 	}
 	 
+	public int calUpdate (CalendarVO calendarVO)throws Exception{
+		return calendarDAO.calUpdate(calendarVO);
+	}
 	 
 	 
 }

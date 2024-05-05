@@ -12,6 +12,7 @@ public interface CalendarDAO {
 
 	
 	public int insert (CalendarVO calendarVO) throws Exception;
+	public int insert2 (CalendarVO calendarVO) throws Exception;
 	public int insertuser(CalendarVO calendarVO)throws Exception;
 	public int insertAllUser(List<CalendarVO> a)throws Exception;
 	public int depDelte(CalendarVO calendarVO)throws Exception;
@@ -23,4 +24,5 @@ public interface CalendarDAO {
 	public void depDelte(String employeeId);
 	public CalendarVO detail(CalendarVO calendarVO)throws Exception;
 	public int calendarDelete(CalendarVO calendarVO)throws Exception;
+	public int calUpdate(CalendarVO calendarVO)throws Exception;
 }

@@ -181,7 +181,20 @@ public class MainController {
     
 
 
-    
+    @PostMapping("calUpdate")
+    @ResponseBody
+    public String calUpdate(@RequestBody CalendarVO calendarVO)throws Exception{
+    	System.out.println(calendarVO.getCalendarId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String id = authentication.getName();
+        calendarVO.setEmployeeId(id);
+    	calendarService.calUpdate(calendarVO);
+        
+		calendarVO.setShare(id);
+        calendarVO.setUserYn(true);
+        int result = calendarService.insert2(calendarVO);
+    	return "성공";
+    }
     
     
     

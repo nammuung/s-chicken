@@ -217,21 +217,21 @@ value="${profile.name}">
 				  <div class="d-flex">
 					<div class="col-5 me-2">
 						<label for="start2" class="form-label"><b>시작</b></label>
-						<input id="start2" name="start" type="datetime-local" class="form-control mb-3" value="${detailMain.start}">
+						<input id="start2" name="start" type="datetime-local" class="form-control mb-3" >
 					</div>
 					<div class="col-5 ms-2 me-2">
 						<label for="end2" class="form-label"><b>종료</b></label>
-						<input id="end2" name="end" type="datetime-local" class="form-control mb-3 col-2" value="${detailMain.end}">
+						<input id="end2" name="end" type="datetime-local" class="form-control mb-3 col-2" >
 					</div>
 				</div>
 					<label for="title2" class="form-label"><b>제목</b></label>
-					<input type="text" id="title2" name="title" class="form-control mb-3" value="${detailMain.title}" >
+					<input type="text" id="title2" name="title" class="form-control mb-3"  >
 					<label for="content2" class="form-label"><b>내용</b></label>
-					<input type="text" id="content2" class="form-control mb-3" value="${detailMain.content}">
+					<input type="text" id="content2" class="form-control mb-3" >
 					<label for="share2" class="form-label"><b>공유자</b></label>
-					<input type="text" id="share2" name="share" class="form-control mb-3" disabled value="${detailMain.share}">
+					<input type="text" id="share2" name="share" class="form-control mb-3" disabled >
 					<div class="d-flex justify-content-end">
-					<button type="button" class="btn btn-primary" style="margin-right: 10px">저장</button>
+					<button type="button" id="updateButton" class="btn btn-primary" style="margin-right: 10px">저장</button>
 					<button type="button" id="deleteButton" class="btn btn-danger">삭제</button>
 					</div>
 				</form>

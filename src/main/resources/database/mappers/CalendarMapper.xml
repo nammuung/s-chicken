@@ -20,6 +20,21 @@
 		#{share}
 		)
 	</insert>
+	<insert id="insert2" parameterType="CalendarVO">
+		<selectKey resultType="Long" keyProperty="id" order="BEFORE">
+			SELECT nextval(seq5)
+		</selectKey>
+		insert into calendar
+		values
+		(
+		#{id},
+		#{start},
+		#{end},
+		#{title},
+		#{content},
+		#{share}
+		)
+	</insert>
 
 	<insert id="insertuser" parameterType="CalendarVO">
 		insert into calendar_emp (calendar_id, employee_id,user_yn)
@@ -62,12 +77,12 @@ where calendar.id = #{id}
 	<select id="calList" parameterType="CalendarVO" resultType="CalendarVO">
 		select * from calendar c 
 		inner join calendar_emp ce on c.id = ce.calendar_id 
-		where ce.employee_id =#{employeeId} and ce.user_yn =  1 and share = #{share}
+		where ce.employee_id =#{employeeId} and ce.user_yn =  1 and c.share = #{share}
 	</select>
 	<select id="share" parameterType="CalendarVO" resultType="CalendarVO">
 		select * from calendar c 
 		inner join calendar_emp ce on c.id = ce.calendar_id 
-		where ce.employee_id =#{employeeId} and ce.user_yn =  1 and share != #{share}
+		where ce.employee_id =#{employeeId} and ce.user_yn =  1 and c.share != #{share}
 	</select>
 
 
@@ -113,7 +128,7 @@ where calendar_id =#{calendarId} and employee_id =#{employeeId}
  </update>
 
 
-<delete id="deleteEmp" parameterType="CalendarVO">
+<delete id="calUpdate" parameterType="CalendarVO">
 delete from calendar_emp where calendar_id= #{calendarId} and employee_id = #{employeeId}
 </delete>
 
