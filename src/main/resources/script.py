@@ -343,27 +343,28 @@ def createDataa(franchiseId,current,count,maxPrice):
     return data
 # DataFrame 생성
 franchise = [
-#     1098,
-#     1101
-#             ,1104
-#             ,1107
-#             ,1110
-            1113
-            ,1116
-            ,1119,
-        1122
-        ,1125
-        ,1128
-        ,1131
-        ,1134
-        ,1137
-        ,1140
-        ,1143
+    # 1098,
+    # 1101
+    #         ,1104
+    #         ,1107
+    #         ,1110
+    #         1113
+    #         ,1116
+    #         ,1119,
+    #     1122
+    #     ,1125
+    #     1128
+    #     ,1131
+    #     ,1134
+    #     ,1137
+    #     ,1140
+        1143
+  ,1152
 ]
 temp =[
       ]
 result = []
-count = 1
+count = 144568
 for id in franchise:
     current = datetime.datetime(2024, 1, 1, 9)
     for i in range(180):

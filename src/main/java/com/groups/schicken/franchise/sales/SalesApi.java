@@ -42,23 +42,6 @@ public class SalesApi {
                     .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
         }
     }
-    @GetMapping("sales/{id}")
-    public ResponseEntity<?> getSales(@AuthenticationPrincipal FranchiseVO franchiseVO, @PathVariable Long id) {
-        Sales sales = new Sales();
-        if(franchiseVO == null) {
-            sales.setFranchise(franchise);
-        } else {
-            sales.setFranchise(franchiseVO);
-        }
-        sales.setId(id);
-        try {
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSales(sales)));
-        } catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
-        }
-    }
 
     @GetMapping("sales/month")
     public ResponseEntity<?> getPerMonth(@AuthenticationPrincipal FranchiseVO franchiseVO) {
@@ -94,6 +77,39 @@ public class SalesApi {
         }
     }
 
+    @GetMapping("sales/days/one")
+    public ResponseEntity<?> getSalesDays(@AuthenticationPrincipal FranchiseVO franchiseVO) {
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSalesPerDays(franchise)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+
+    @GetMapping("sales/month/one")
+    public ResponseEntity<?> getMonth(@AuthenticationPrincipal FranchiseVO franchiseVO) {
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSalesPerMonth(franchise)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+
+    @GetMapping("sales/weeks/one")
+    public ResponseEntity<?> getWeeks(@AuthenticationPrincipal FranchiseVO franchiseVO) {
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSalesPerWeeks(franchise)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+
     @GetMapping("sales/days")
     public ResponseEntity<?> getPerDays(@AuthenticationPrincipal FranchiseVO franchiseVO) {
         Sales sales = new Sales();
@@ -104,6 +120,36 @@ public class SalesApi {
         }
         try {
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getPerDays(sales)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+    @GetMapping("sell/days")
+    public ResponseEntity<?> getSellPerDays(@AuthenticationPrincipal FranchiseVO franchiseVO) {
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSellPerDays(franchise)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+    @GetMapping("sell/weeks")
+    public ResponseEntity<?> getSellPerWeeks(@AuthenticationPrincipal FranchiseVO franchiseVO) {
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSellPerWeeks(franchise)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+    @GetMapping("sell/month")
+    public ResponseEntity<?> getSellPerMonth(@AuthenticationPrincipal FranchiseVO franchiseVO) {
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSellPerMonth(franchise)));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

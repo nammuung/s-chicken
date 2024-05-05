@@ -9,9 +9,17 @@ export const getSalesList = async () => {
     }
 }
 
-export const getSales = async (id) => {
+export const getSalesDays = async () => {
     try {
-        const response = await defaultInstance.get('sales/'+id);
+        const response = await defaultInstance.get('sales/days/one');
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+export const getSellDays = async () => {
+    try {
+        const response = await defaultInstance.get('sell/days');
         return response.data;
     } catch (err) {
         console.log(err);

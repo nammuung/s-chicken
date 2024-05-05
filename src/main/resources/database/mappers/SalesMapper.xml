@@ -61,37 +61,121 @@
     </sql>
     <select id="getPerMonth">
         SELECT
-        fs.id, SUM(fs.price) as price, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m') salesDate
+            fs.id,
+            SUM(fs.price) as price,
+            fs.sales_date as salesDate
         FROM
-        franchise_sales fs
+            franchise_sales fs
         WHERE
-        fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
-        GROUP BY fs.franchise_id, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m')
-        ORDER BY fs.sales_date DESC
+            fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
+        GROUP BY
+            fs.franchise_id,
+            MONTH(fs.sales_date)
+        ORDER BY
+            fs.sales_date DESC
         LIMIT 0, 10
     </select>
     <select id="getPerWeeks">
         SELECT
-        fs.id, SUM(fs.price) as price, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d') salesDate
+            fs.id,
+            SUM(fs.price) price,
+            fs.sales_date salesDate
         FROM
-        franchise_sales fs
+            franchise_sales fs
         WHERE
-        fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
-        GROUP BY fs.franchise_id, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d')
-        ORDER BY fs.sales_date DESC
+            fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
+        GROUP BY
+            YEAR(fs.sales_date), WEEK(fs.sales_date)
+        ORDER BY
+            fs.sales_date DESC
         LIMIT 0, 10
     </select>
     <select id="getPerDays">
         SELECT
-        fs.id, SUM(fs.price) as price, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d') salesDate
+        fs.id,
+        SUM(fs.price) price,
+        fs.sales_date salesDate
         FROM
         franchise_sales fs
         WHERE
         fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
-        GROUP BY fs.franchise_id, DATE_FORMAT(STR_TO_DATE(fs.sales_date, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d')
+        GROUP BY
+            fs.franchise_id,
+            YEAR(fs.sales_date),
+            WEEK(fs.sales_date),
+            DAY(fs.sales_date)
         ORDER BY fs.sales_date DESC
         LIMIT 0, 10
     </select>
+
+    <select id="getSalesPerDays">
+        SELECT
+            today.total_sales totalSales,
+            today.total_sales - IFNULL(yesterday.total_sales, 0) increase
+        FROM
+            (
+            SELECT
+                SUM(fs.price) AS total_sales
+            FROM
+                franchise_sales fs
+            WHERE
+                fs.franchise_id = #{id} AND
+                DATE(fs.sales_date) = CURDATE()
+            GROUP BY
+                DAY(fs.sales_date)
+            ) AS today
+        LEFT JOIN
+            (
+            SELECT
+                SUM(fs.price) AS total_sales
+            FROM
+                franchise_sales fs
+            WHERE
+                fs.franchise_id = #{id} AND
+                DATE(fs.sales_date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+            GROUP BY
+                DAY(fs.sales_date)
+            ) AS yesterday
+        ON 1=1
+    </select>
+    <select id="getSellPerDays">
+        SELECT
+            today.total_sell totalSell,
+            today.total_sell - IFNULL(yesterday.total_sell, 0) increase
+        FROM
+            (
+                SELECT
+                    COUNT(d.sales_id) AS total_sell
+                FROM
+                    franchise_sales fs
+                LEFT JOIN
+                    sales_detail d
+                    ON fs.id = d.sales_id
+                WHERE
+                    fs.franchise_id = #{id} AND
+                    DATE(fs.sales_date) = CURDATE()
+                GROUP BY
+                    DAY(fs.sales_date)
+            ) AS today
+        LEFT JOIN
+            (
+                SELECT
+                    COUNT(d.sales_id) AS total_sell
+                FROM
+                franchise_sales fs
+                LEFT JOIN
+                    sales_detail d
+                    ON fs.id = d.sales_id
+                WHERE
+                    fs.franchise_id = #{id} AND
+                    DATE(fs.sales_date) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+                GROUP BY
+                    DAY(fs.sales_date)
+            ) AS yesterday
+        ON 1=1
+    </select>
+
+
     <select id="getSalesList" resultMap="getSalesMap">
         <include refid="getSalesSQL"/>
         WHERE
