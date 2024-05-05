@@ -44,6 +44,7 @@
                 채팅방<span class="badge bg-danger message-dot" style="padding: 6px;"> </span>
             </li>
             <li id="chatting-page-btn" class="d-none" data-bs-target="#main" data-bs-slide-to="2"></li>
+            <li id="invite-page-btn" class="d-none" data-bs-target="#main" data-bs-slide-to="0"></li>
         </ul>
     </div>
 </nav>
@@ -60,6 +61,11 @@
                             class="btn btn-outline-secondary btn-sm col-6 select-type-btn">취소
                     </button>
                     <button id="chatroom-create-btn" class="btn btn-primary btn-sm col-6 select-type-btn disabled">생성
+                    </button>
+                    <button id="member-invite-cancel-btn"
+                            class="btn btn-outline-secondary btn-sm col-6 invite-type-btn">취소
+                    </button>
+                    <button id="member-invite-submit-btn" class="btn btn-primary btn-sm col-6 invite-type-btn disabled">추가
                     </button>
                 </div>
                 <div id="selected-employee"
@@ -145,6 +151,7 @@
             <div id="chatting-space">
             </div>
 
+
             <%-- 채팅에서 여러가지 공유용 --%>
             <%--                <div class="row d-none">--%>
             <%--                    <div class="col-4 text-center fs-4">일정</div>--%>
@@ -172,7 +179,7 @@
                     </div>
                     <div class="text-start mt-3 d-flex justify-content-between">
                         <div class="fs-3 fw-bold">대화상대</div>
-                        <button class="btn btn-primary">대화상대 초대</button>
+                        <button id="member-invite-btn" class="btn btn-primary">대화상대 초대</button>
                     </div>
                     <div id="chatroom-members" class="my-2 chatroom-members">
                         <div class="d-flex gap-3 p-2 aaa" data-employee-search="201701211031">

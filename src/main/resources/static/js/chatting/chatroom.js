@@ -14,6 +14,9 @@ const chatroomInfoModalBtn = document.getElementById("chatroom-info-modal-btn");
 const chatroomInfoModal = new bootstrap.Modal(document.getElementById("chatroom-info-modal"));
 const chatroomTitle = document.getElementById("chatroom-title");
 const chatroomMembers = document.getElementById("chatroom-members");
+const memberInviteBtn = document.getElementById("member-invite-btn");
+const memberInviteCancelBtn = document.getElementById("member-invite-cancel-btn");
+const memberInviteSubmitBtn = document.getElementById("member-invite-submit-btn");
 
 let memberData = {};
 let lastChatting;
@@ -24,9 +27,11 @@ let downEnd;
 let oldTitle = "";
 
 let isCreateState = false;
+let isInviteState = false;
 
 let chatroomList = {};
 let selectedEmployees = {};
+let selectedEmployeesUncancel = {};
 
 let options = {
     threshold: 0,
@@ -103,6 +108,12 @@ function openChatting(event, type) {
         }
     }
 
+    if(type === 'One'){
+        chatroomInfoModalBtn.classList.add("d-none");
+    } else {
+        chatroomInfoModalBtn.classList.remove("d-none");
+    }
+
     console.log(targetId, type);
 
     pageChange();
@@ -145,7 +156,12 @@ async function chatroomRenderByData(chattingData) {
     document.getElementById("chatroom-name").innerText = chattingData.chatroomName;
     chattingData.members.forEach(member => memberData[member.id] = member);
     chattingData.chatMessages.forEach(chatMessage => {
-        const created = appendChatting(chatMessage);
+        let created;
+        console.log("in chatroomRender : ", chatMessage);
+        if(chatMessage.type === 'Message') created = appendChatting(chatMessage);
+        else if(chatMessage.type === 'Notice') created = appendNotice(chatMessage);
+
+        console.log("in chatroomRender created : ", created)
 
         if (chattingData.lastReadTime === chatMessage.sendDate) {
             created.dataset.lastRead = "";
@@ -181,13 +197,28 @@ async function getChatting(from, direction) {
     return fetch(`/chatrooms/chattings/${option}?from=${from}&direction=${direction}`)
         .then(res => res.json())
         .then(chattings => {
+            console.log("in getChatting : " , chattings);
+
             if (direction === 'up') {
-                chattings.forEach(chatting => prependChatting(chatting));
+                chattings.forEach(chatting => {
+                    if(chatting.type === 'Message') prependChatting(chatting);
+                    else if(chatting.type === 'Notice') prependNotice(chatting);
+                });
             } else if (direction === 'down') {
-                chattings.forEach(chatting => appendChatting(chatting));
+                chattings.forEach(chatting => {
+                    if(chatting.type === 'Message') appendChatting(chatting);
+                    else if(chatting.type === 'Notice') appendNotice(chatting);
+                });
             }
             return chattings;
         });
+}
+
+function prependNotice(data){
+    lastChatting = null;
+    const created = createNoticeChatting(data);
+    chattingSpace.prepend(created);
+    return created;
 }
 
 function prependChatting(data) {
@@ -203,6 +234,13 @@ function prependChatting(data) {
     return created
 }
 
+function appendNotice(data){
+    lastChatting = null;
+    const created = createNoticeChatting(data);
+    chattingSpace.append(created);
+    return created;
+}
+
 function appendChatting(data) {
     if (lastChatting == null || lastChatting.dataset.senderId !== data.senderId || (lastChatting.dataset.senderId === data.senderId && isDiffMinute(lastChatting.dataset.sendProfileDate, data.sendDate))) {
         lastChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
@@ -214,6 +252,14 @@ function appendChatting(data) {
     messageSpace.append(created);
 
     return created;
+}
+
+function createNoticeChatting(data){
+    const div = makeElement("div", {className : ["d-flex","justify-content-center","my-1"], dataset: {"sendDate": data.sendDate}});
+    const msgDiv = makeElement("div", {className : ["bg-schicken-light","py-1","px-3"], option : {"style" : "border-radius: 20px"}});
+    msgDiv.innerText = data.content;
+    div.append(msgDiv);
+    return div;
 }
 
 function isDiffMinute(date1, date2) {
@@ -266,7 +312,11 @@ function updateChatroomListElement(target, data) {
 }
 
 function getChattingInChatroom(data) {
-    const created = appendChatting(data);
+    let created = null;
+    if(data.type === 'Message') created = appendChatting(data);
+    else if(data.type === 'Notice') created = appendNotice(data);
+
+    if(created == null) return;
 
     if (downEnd) {
         chattingSpace.scrollTop = chattingSpace.scrollHeight;
@@ -302,7 +352,7 @@ function createChattingProfile(data, sendDate) {
     }
 
     let img = makeElement("img", {className: ["rounded-circle"], option: imgOption})
-    img.addEventListener("click", () => onProfileClick(data.id))
+    img.addEventListener("click", ()=>onProfileClick(data.id))
 
     div2.append(img);
     div.append(div2);
@@ -311,7 +361,7 @@ function createChattingProfile(data, sendDate) {
     let div4 = makeElement("div", {dataset: {"sendInfo": ""}});
     let span = makeElement("span", {className: ["me-2", "linkable", "text-black", "hovercursor"]});
     span.innerText = data.name;
-    span.addEventListener("click", () => onProfileClick(data.id))
+    span.addEventListener("click", ()=>onProfileClick(data.id))
     let span2 = makeElement("span", {className: ["small", "text-secondary"]});
     span2.innerText = chatDateFormat(sendDate);
 
@@ -496,6 +546,10 @@ function pageChange(to) {
         document.getElementById("chatroom-list-create-cancel-btn").click();
     }
 
+    if(isInviteState){
+        unsetInviteState()
+    }
+
     infinityScrollObserver.disconnect();
     downEndObserver.disconnect();
     [...document.getElementsByClassName("now-page")].forEach(e => e.classList.remove("now-page"));
@@ -575,14 +629,16 @@ function employeeSelectForm() {
 
 async function onProfileClick(event) {
     const target = event.target;
-    const empId = target.dataset.employeeSearch;
+    let empId = null;
+    if(target != null) empId = target.dataset.employeeSearch;
+    else empId = event;
 
     if (empId == null) {
         target.parentElement.click();
         return;
     }
 
-    if (isCreateState) {
+    if (isCreateState || isInviteState) {
         let empName = target.dataset.searchName;
         let src = target.querySelector("img.rounded-circle").src;
         addSelectedEmployeeList(empId, empName, src);
@@ -606,7 +662,8 @@ function selectEmployee(id, element) {
     selectedEmployeeDiv.prepend(selectedEmployees[id]);
 
     if (Object.keys(selectedEmployees).length > 0) {
-        $("#chatroom-create-btn").removeClass("disabled");
+        if(isCreateState) $("#chatroom-create-btn").removeClass("disabled");
+        if(isInviteState) $("#member-invite-submit-btn").removeClass("disabled");
     }
 }
 
@@ -614,7 +671,8 @@ function unSelectEmployee(id) {
     selectedEmployees[id].remove();
     delete selectedEmployees[id];
     if (Object.keys(selectedEmployees).length === 0) {
-        $("#chatroom-create-btn").addClass("disabled");
+        if(isCreateState) $("#chatroom-create-btn").addClass("disabled");
+        if(isInviteState) $("#member-invite-submit-btn").addClass("disabled");
     }
 }
 
@@ -625,16 +683,30 @@ function clearSelectElement() {
     }
 }
 
-function selectedDiv(id, name, src) {
+function selectEmployeeUncancelType(id, element){
+    selectedEmployeesUncancel[id] = element;
+    selectedEmployeeDiv.prepend(selectedEmployeesUncancel[id]);
+}
+
+function clearUncancelType(){
+    for (let key in selectedEmployeesUncancel) {
+        selectedEmployeesUncancel[key].remove();
+        delete selectedEmployeesUncancel[key];
+    }
+}
+
+function selectedDiv(id, name, src, canCancel = true) {
     const div = makeElement("div", {className: ["selected-member-item", "text-center"]});
     const img = makeElement("img", {className: ["rounded-circle"], option: {src: src, width: "55px", height: "55px"}});
     const span = makeElement("span", {className: ["ms-2"]});
     span.innerText = name;
+    div.append(img, span);
 
-    const indicator = makeElement("span", {className: ["indicator"], dataset: {"employeeId": id}});
-    indicator.innerText = 'x';
-
-    div.append(img, span, indicator);
+    if(canCancel) {
+        const indicator = makeElement("span", {className: ["indicator"], dataset: {"employeeId": id}});
+        indicator.innerText = 'x';
+        div.append(indicator);
+    }
 
     return div;
 }
@@ -749,6 +821,77 @@ function updateChatroomTitle(event){
         });
 }
 
+async function setInviteState(){
+    isInviteState = true;
+
+    const selected = $('#selected-employee');
+    selected.slideDown("fast", () => {
+        selected.parent().addClass("invite-state");
+        selected.addClass("d-flex");
+        $(".employee-list").addClass("short-list");
+        chatEmployeeList.querySelectorAll("[data-employee-search]").forEach(el =>{
+            if(memberData[el.dataset.employeeSearch] != null){
+                el.classList.add("already-selected");
+            }
+        });
+
+        for (let key in memberData) {
+            const member = memberData[key];
+            selectEmployeeUncancelType(member.id, selectedDiv(member.id, member.name, member.profileImg, false));
+        }
+    })
+}
+
+async function unsetInviteState(){
+    chatEmployeeList.querySelectorAll(".already-selected").forEach(el =>{
+        el.classList.remove("already-selected")
+    });
+
+    const selected = $('#selected-employee');
+    selected.parent().removeClass("invite-state");
+    selected.removeClass("d-flex");
+    selected.hide("fast");
+    $(".employee-list").removeClass("short-list");
+
+    clearSelectElement();
+    clearUncancelType();
+    isInviteState = false;
+}
+
+function onMemberInvite(){
+    setInviteState().then(()=>{
+        document.getElementById("invite-page-btn").click();
+        chatroomInfoModal.hide();
+    })
+
+}
+
+function finishMemberInvite(){
+    unsetInviteState().then(()=>{
+        document.getElementById("chatting-page-btn").click();
+    })
+}
+
+function submitInviteMember(){
+    const members = Object.keys(selectedEmployees);
+
+    if(members.length === 0){
+        alert("추가할 인원이 없습니다");
+        return;
+    }
+
+
+    fetch('/chatrooms/join/' + nowOpenPage, {
+        method: "post",
+        headers: {"Content-Type": "application/json;charset=utf-8"},
+        body: JSON.stringify(members)
+    }).then(res => res.json())
+        .then(r => {
+            r.forEach(member => memberData[member.id] = member)
+            finishMemberInvite();
+        })
+}
+
 setWhenReceiveMessage(onGetChattingOne, onGetMessage);
 
 sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
@@ -761,6 +904,9 @@ chatroomInfoModalBtn.addEventListener("click", onChatroomInfoModalOpen);
 chatroomTitle.addEventListener("keyup", isTitleChanged);
 chatroomTitle.nextElementSibling.addEventListener("click", updateChatroomTitle);
 chatroomMembers.addEventListener("click", onProfileClick);
+memberInviteBtn.addEventListener("click", onMemberInvite);
+memberInviteCancelBtn.addEventListener("click", finishMemberInvite);
+memberInviteSubmitBtn.addEventListener("click", submitInviteMember);
 document.getElementById("chatroom-list-create").addEventListener("click", employeeSelectForm);
 document.getElementById("chatroom-list-create-cancel-btn").addEventListener("click", employeeSelectForm);
 document.getElementById("chatroom-create-btn").addEventListener("click", createChatroom);

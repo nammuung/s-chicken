@@ -1,10 +1,14 @@
 package com.groups.schicken.chatting;
 
 import com.groups.schicken.Employee.EmployeeDAO;
+import com.groups.schicken.Employee.EmployeeProfileVO;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
+import com.groups.schicken.notification.Noticer;
+import com.groups.schicken.notification.NotificationType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +22,7 @@ import java.util.stream.Collectors;
 public class ChatService {
     private final ChatDAO chatDAO;
     private final EmployeeDAO employeeDAO;
+    private final SimpMessagingTemplate template;
 
     /*
 
@@ -98,6 +103,15 @@ public class ChatService {
         chatroom.setName(getChatroomName(chatroomId));
 
         return joinChatroom(id, chatroom);
+    }
+
+    @Transactional
+    public int joinChatroom(String chatroomId, String[] members) {
+        String joinDate = DateManager.getTodayDateTime("yyyyMMddHHmmssSSS");
+        String name = getChatroomName(chatroomId);
+        int result = chatDAO.insertMember(chatroomId, name, joinDate, members);
+
+        return result;
     }
 
 
@@ -192,12 +206,15 @@ public class ChatService {
      */
     public ChatMessage makeMessage(String chatroomId, String senderId, String content) {
         String sendDate = DateManager.getTodayDateTime("yyyyMMddHHmmssSSS");
-        String id = chatroomId + senderId + sendDate;
-        id = (new BigInteger(id)).toString(16);
+        String id = createChatId(chatroomId, senderId, sendDate);
 
         content = content.replaceAll("<","&lt;").replaceAll("\n", "<br>");
 
         return ChatMessage.of(id, chatroomId, senderId, sendDate, content);
+    }
+
+    private String createChatId(String chatroomId, String senderId, String sendDate){
+        return (new BigInteger(chatroomId + senderId + sendDate)).toString(16);
     }
 
     /**
@@ -276,5 +293,31 @@ public class ChatService {
         int result = chatDAO.updateTitle(employee.getId(), chatroom.getId(), chatroom.getName());
 
         return result == 1;
+    }
+
+
+    public List<EmployeeProfileVO> getChatroomMemberData(String chatroomId) {
+        return chatDAO.getMembersByChatroomId(chatroomId);
+    }
+
+    @Transactional
+    public void insertJoinNotice(EmployeeVO sender, String chatroomId, String[] members) {
+        List<EmployeeVO> employees = employeeDAO.getNamesByIds(Arrays.asList(members));
+
+        for (EmployeeVO employee : employees) {
+            String sendDate = DateManager.getTodayDateTime("yyyyMMddHHmmssSSS");
+
+            ChatMessage noticeChat = ChatMessage.builder()
+                    .id(createChatId(chatroomId, employee.getId(), sendDate))
+                    .chatroomId(chatroomId)
+                    .senderId(sender.getId())
+                    .type(ChattingType.Notice)
+                    .sendDate(sendDate)
+                    .content(sender.getName() + "님께서 " + employee.getName() + "님을 초대했습니다.")
+                    .build();
+
+            chatDAO.insertChat(noticeChat);
+            template.convertAndSend("/sub/chat/" + chatroomId, noticeChat);
+        }
     }
 }

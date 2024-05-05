@@ -132,6 +132,10 @@ button:active{
     display: none;
 }
 
+.hide-list.invite-state .selected-member-item{
+    display: block;
+}
+
 .unselect-type-btn{
     display: none;
 }
@@ -180,4 +184,20 @@ button:active{
     border-top:1px solid #7749F8;
     max-height: 600px;
     overflow: auto;
+}
+
+.invite-state .invite-type-btn{
+    display: block;
+}
+
+.invite-type-btn{
+    display: none;
+}
+
+.already-selected{
+    display: none !important;
+}
+
+.invite-state .unselect-type-btn{
+    display: none !important;
 }

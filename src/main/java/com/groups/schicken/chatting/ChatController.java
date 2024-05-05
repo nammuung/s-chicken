@@ -76,19 +76,35 @@ public class ChatController {
         return ResponseEntity.ok(list);
     }
 
-
-    @PostMapping("join/{chatroomId}")
-    public ResponseEntity<Boolean> joinChatroom(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId){
-        Boolean result = chatService.joinChatroom(employee.getId(), chatroomId);
-
-        return ResponseEntity.ok(result);
-    }
+//
+//    @PostMapping("join/{chatroomId}")
+//    public ResponseEntity<Boolean> joinChatroom(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId){
+//        Boolean result = chatService.joinChatroom(employee.getId(), chatroomId);
+//
+//        return ResponseEntity.ok(result);
+//    }
 
     @GetMapping("chattings/{chatroomId}")
     public ResponseEntity<List<ChatMessage>> getMoreMessages(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId, String from, String direction){
         List<ChatMessage> list = chatService.getChattingDataNext(employee.getId(), chatroomId, from,direction);
 
         return ResponseEntity.ok(list);
+    }
+
+    @PostMapping("join/{chatroomId}")
+    public ResponseEntity<List<EmployeeProfileVO>> inviteMembers(@AuthenticationPrincipal EmployeeVO employee, @RequestBody String[] members, @PathVariable String chatroomId){
+        try {
+            int result = chatService.joinChatroom(chatroomId, members);
+
+            if (result == members.length) {
+                chatService.insertJoinNotice(employee, chatroomId, members);
+
+                return ResponseEntity.ok(chatService.getChatroomMemberData(chatroomId));
+            }
+        } catch (Exception e){
+            log.error(e.getMessage());
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("updateTitle")

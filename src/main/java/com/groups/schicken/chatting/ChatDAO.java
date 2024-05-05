@@ -1,5 +1,6 @@
 package com.groups.schicken.chatting;
 
+import com.groups.schicken.Employee.EmployeeProfileVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -34,4 +35,8 @@ public interface ChatDAO {
     int updateLastReadById(String employeeId, String chatroomId, String chatId);
 
     int updateTitle(String empId, String chatroomId, String name);
+
+    int insertMember(String chatroomId,String name, String joinDate, String[] members);
+
+    List<EmployeeProfileVO> getMembersByChatroomId(String chatroomId);
 }
