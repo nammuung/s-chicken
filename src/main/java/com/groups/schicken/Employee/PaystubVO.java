@@ -1,6 +1,9 @@
 package com.groups.schicken.Employee;
 import com.groups.schicken.common.util.NumberFormatter;
+import com.groups.schicken.document.DocumentVO;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class PaystubVO {
@@ -9,6 +12,7 @@ public class PaystubVO {
     Long basePay;
     Long bonusSum;
     boolean payed = true;
+    List<DocumentVO> bonusReason;
 
     public String getSum(){
         return NumberFormatter.formatting(bonusSum + basePay);

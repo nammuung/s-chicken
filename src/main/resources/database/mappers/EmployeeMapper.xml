@@ -296,17 +296,28 @@ SELECT
 		WHERE employee_id=#{employeeId} AND payed_month=#{yearMonth}
 	</select>
 
-	<select id="calcPaystub">
+	<select id="calcPaystub" resultMap="calcPaystubResult">
 		SELECT
 			  e.id AS employee_id
 			, e.salary/12 AS base_pay
 			, substr(b.date, 1, 7) AS "year_month"
 			, sum(bonus) AS bonus_sum
+			, d.id AS "document_id"
+			, d.title AS "document_title"
 		FROM employee e
 			LEFT JOIN bonus b ON b.employee_id=e.id
+			LEFT JOIN document d ON d.id=b.document_id
 		WHERE e.id = #{employeeId} AND substr(b.date, 1, 7) = #{yearMonth}
 		GROUP BY e.id
 	</select>
+
+	<resultMap id="calcPaystubResult" type="PaystubVO" autoMapping="true">
+		<id property="employeeId" column="employee_id"/>
+		<collection property="bonusReason" javaType="List" ofType="DocumentVO">
+			<id column="document_id" property="id"/>
+			<result column="document_title" property="title"/>
+		</collection>
+	</resultMap>
 
 
 	<resultMap type="EmployeeVO" id="employeeDetails">

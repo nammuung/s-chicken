@@ -42,6 +42,32 @@
                             <c:if test="${paystub.bonusSum ne 0}">
                             <p class="col-6 text-end fs-4">상여금 : </p>
                             <p class="col-6 fs-4">${paystub.bonusSumByString} 원</p>
+                                <div class="col-12">
+                                    <div class="accordion" id="accordionExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button
+                                                        class="accordion-button collapsed"
+                                                        type="button"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseOne"
+                                                        aria-expanded="false"
+                                                        aria-controls="collapseOne">
+                                                    상여금 문서
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body" style="padding: 0">
+                                                    <ul class="list-group">
+                                                        <c:forEach items="${paystub.bonusReason}" var="r">
+                                                        <li data-document-id="${r.id}" class="list-group-item linkable text-black hovercursor">${r.title}</li>
+                                                        </c:forEach>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </c:if>
                             <hr>
                             <div class="col-6 text-end fs-4">실지급액 : </div>

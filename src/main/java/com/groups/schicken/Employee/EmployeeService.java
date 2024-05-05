@@ -348,6 +348,11 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
 		if(paystub == null){
 			paystub = employeeDAO.calcPaystub(paystubVO);
+
+			if(paystub == null){
+				paystub = new PaystubVO();
+			}
+
 			paystub.setPayed(false);
 		}
 
