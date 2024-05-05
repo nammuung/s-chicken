@@ -58,14 +58,19 @@
 									</div>
 
 
-									<div class="form-group mb-3">
+									<div class="form-group mb-3 col-6">
 										<label for="residentNumber" class="form-label"><b>생년월일</b></label>
 										<input id="residentNumber" name="residentNumber" type="date" class="form-control">
 									</div>
-									<div class="form-group mb-3">
+									<div class="form-group mb-3 col-6">
 										<label for="dateOfEmployment" class="form-label"><b>입사일</b></label>
 										<input id="dateOfEmployment"  name="dateOfEmployment" type="date" class="form-control">
 									</div>
+									<div class="form-group mb-3 col-11">
+										<label for="salary" class="form-label"><b>연봉</b></label>
+										<input id="salary"  name="salary" type="text" class="form-control" placeholder="만원 단위로 입력해주세요.">
+									</div>
+										<div class="col-1" style="margin-top: 38px; margin-left: -10px">만원</div>
 									<div class="form-group mb-3 col-4">
 										<label for="posId"  class="form-label"><b>직급</b></label> <select
 											class="form-select" id="posId" name="posId">

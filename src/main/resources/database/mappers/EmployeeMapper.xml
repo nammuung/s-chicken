@@ -49,7 +49,7 @@
 		#{address},
 		#{addressDetail}, #{postcode},
 		#{dateOfEmployment}, #{residentNumber},
-		10000, #{accountNumber}, #{bankName}, 1,
+		#{salary}, #{accountNumber}, #{bankName}, 1,
 		#{departmentId}, #{posId})
 	</insert>
 
