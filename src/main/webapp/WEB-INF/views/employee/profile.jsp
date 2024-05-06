@@ -183,10 +183,10 @@
 												<label for="profileImage"
 													class="col-md-4 col-lg-3 col-form-label">프로필</label>
 												<div class="col-md-8 col-lg-9">
-													<img src="/fileDown?id=${detail.file.id}" alt="Profile"
+													<img   id="previewImage" src="/fileDown?id=${detail.file.id}" alt="Profile"
 														onerror="this.onerror=null; this.src='/img/기본.jpg';">
 													<div class="pt-2">
-														<input type="file" id="fileInput" name="attach"
+														<input type="file" onchange="showUploadedPreview(this)" id="fileInput" name="attach"
 															style="display: none;" /> <a href="#"
 															class="btn btn-primary btn-sm"
 															title="Upload new profile image" id="uploadLink"> <i
@@ -556,6 +556,19 @@
 		var currentValue = parseInt(input.value, 10);
 		input.value = currentValue - 1;
 	}
+</script>
+<script>
+    function showUploadedPreview(input) {
+        const file = input.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const img = document.getElementById('previewImage');
+            img.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
 </script>
 
 </html>

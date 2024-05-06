@@ -73,32 +73,50 @@
 									<h1>결재목록</h1>
 									<table class="table text-center text-nowrap m-0">
 										<thead>
-										<tr>
-											<th style="width: 5%">no</th>
-											<th style="width: 65%">제목</th>
-											<th style="width: 10%">작성일</th>
-											<th style="width: 10%">등록자</th>
-											<th style="width: 10%">조회수</th>
-										</tr>
+									<tr>
+                                    <th style="width: 15%">문서번호</th>                                    
+                                    <th style="width: 40%">제목</th>
+                                    <th style="width: 10%">기안자</th>
+                                    <th style="width: 10%">문서종류</th>
+                                    <th style="width: 10%">상신일</th>
+                                    <th style="width: 5%">상태</th>
+                                </tr>
 										</thead>
 										<tbody>
-										<c:forEach items="${list}" var="vo" end="5">
-											<c:if test="${vo.sort eq 0}">
-												<tr id="important">
-													<input type="hidden" id="important_val" value="${vo.important}">
-													<td>${vo.id}</td>
-													<td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a>
-													</td>
-													<td>${vo.writeDate}</td>
-
-													<td>${vo.employeeVO.name}</td>
-
-													<td>${vo.hit}</td>
-												</tr>
-											</c:if>
-										</c:forEach>
-
-										</tbody>
+    <c:choose>
+        <c:when test="${empty dlist}">
+            <tr>
+                <td colspan="6">현재 진행중인 결재 내역이 존재 하지 않습니다.</td>
+            </tr>
+        </c:when>
+        <c:otherwise>
+            <c:forEach items="${dlist}" var="vo" end="5">
+                <c:if test="${vo.approvalVOs[0].rank ne 0}">                       		
+                    <tr>
+                        <td>${vo.id}</td>
+                        <c:if test="${vo.templateVO.tempName eq '상여신청서'}"> 
+                            <td class="text-start"><a href="./document/writenList/writenBonus?id=${vo.id}" onclick="openbonus(${vo.id})">${vo.title}</a></td>
+                        </c:if>
+                        <td>${vo.employeeVO.name}</td>
+                        <td>${vo.templateVO.tempName}</td>
+                        <td>${vo.writeDate}</td>
+                        <c:choose>
+                            <c:when test="${vo.status eq 0}">
+                                <td>진행중</td>
+                            </c:when>
+                            <c:when test="${vo.status eq 1}">
+                                <td>결재완료</td>
+                            </c:when>
+                            <c:when test="${vo.status eq 2}">
+                                <td>반려</td>
+                            </c:when>
+                        </c:choose>	                                    
+                    </tr>
+                </c:if>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
+</tbody>
 									</table>
 								</div>
 							</div>
@@ -140,8 +158,8 @@
 						<input type="text" id="title" class="form-control mb-3" placeholder="제목을 입력해주세요." >
 						<label for="content" class="form-label"><b>내용</b></label>
 						<input type="text" id="content" class="form-control mb-3" placeholder="내용을 입력해주세요.">
-						<label for="share" class="form-label"><b>공유자</b></label>
-						<input type="text" id="share" nanem="share" class="form-control mb-3" disabled
+						
+						<input type="hidden" id="share" nanem="share" class="form-control mb-3" disabled
 value="${profile.name}">
 						<input type="hidden" name="share" value="${profile.id}" id="emid" />
 
@@ -199,23 +217,22 @@ value="${profile.name}">
 				  <div class="d-flex">
 					<div class="col-5 me-2">
 						<label for="start2" class="form-label"><b>시작</b></label>
-						<input id="start2" name="start" type="datetime-local" class="form-control mb-3" value="${detailMain.start}">
+						<input id="start2" name="start" type="datetime-local" class="form-control mb-3" >
 					</div>
 					<div class="col-5 ms-2 me-2">
 						<label for="end2" class="form-label"><b>종료</b></label>
-						<input id="end2" name="end" type="datetime-local" class="form-control mb-3 col-2" value="${detailMain.end}">
+						<input id="end2" name="end" type="datetime-local" class="form-control mb-3 col-2" >
 					</div>
-						<input type="checkbox" value="" class="mt-3 me-1" id="alltime"><span style="margin-top: 40px;">종일</span>
 				</div>
 					<label for="title2" class="form-label"><b>제목</b></label>
-					<input type="text" id="title2" name="title" class="form-control mb-3" value="${detailMain.title}" >
+					<input type="text" id="title2" name="title" class="form-control mb-3"  >
 					<label for="content2" class="form-label"><b>내용</b></label>
-					<input type="text" id="content2" class="form-control mb-3" value="${detailMain.content}">
+					<input type="text" id="content2" class="form-control mb-3" >
 					<label for="share2" class="form-label"><b>공유자</b></label>
-					<input type="text" id="share2" name="share" class="form-control mb-3" disabled value="${detailMain.share}">
+					<input type="text" id="share2" name="share" class="form-control mb-3" disabled >
 					<div class="d-flex justify-content-end">
-					<button type="button" class="btn btn-primary" style="margin-right: 10px">저장</button>
-					<button type="button" class="btn btn-danger">삭제</button>
+					<button type="button" id="updateButton" class="btn btn-primary" style="margin-right: 10px">저장</button>
+					<button type="button" id="deleteButton" class="btn btn-danger">삭제</button>
 					</div>
 				</form>
 			  </div>

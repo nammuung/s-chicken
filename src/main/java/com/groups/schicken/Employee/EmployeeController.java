@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.auth.policy.Principal;
+import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.common.vo.Pager;
 
 import jakarta.servlet.http.HttpSession;
@@ -131,11 +132,9 @@ public class EmployeeController {
 
 	// 직원 정보 수정
 	@PostMapping("updateEmployee")
-	public String updateEmployee(Model model, EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id, @RequestParam(value = "fid", required = false)Long fid)throws Exception{
-		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-		    int result = employeeService.updateEmployee(employeeVO, attach, fid);
-		    
+	public String updateEmployee(Model model, HttpSession session,EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id, @RequestParam(value = "fid", required = false)Long fid)throws Exception{
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		int result = employeeService.updateEmployee(employeeVO, attach, fid);
 
 		    String msg = "수정을 실패 하였습니다.";
 		    String path = "./profile?id=" + id;
@@ -143,6 +142,7 @@ public class EmployeeController {
 		    if (result > 0) {
 		        msg = "수정을 성공 하였습니다.";
 		        path = "./profile?id=" + id;
+
 		    }
 
 		    model.addAttribute("msg", msg);
@@ -179,7 +179,7 @@ public class EmployeeController {
 
 	// 직원 상세정보
 	@GetMapping("profile")
-	public String userDetail(@AuthenticationPrincipal Principal principal,  EmployeeVO employeeVO, Model model)throws Exception{
+	public String userDetail(@AuthenticationPrincipal Principal principal,  HttpSession session,EmployeeVO employeeVO, Model model)throws Exception{
 		 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		    String id = auth.getName();
 		    model.addAttribute("id", id);
@@ -189,6 +189,7 @@ public class EmployeeController {
 		    }
 
 		employeeVO = employeeService.userDetail(employeeVO);
+	    session.setAttribute("details", employeeVO);
 		EmployeeProfileVO employeeProfileVO =  employeeService.getProfile(id);
 		model.addAttribute("detail", employeeVO);
 		model.addAttribute("profile", employeeProfileVO);
