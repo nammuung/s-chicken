@@ -18,7 +18,7 @@
 	<c:import url="../template/sidebar.jsp" />
 	<main id="main" class="main">
 		<div class="pagetitle">
-			<h1>Profile</h1>
+			<h1>프로필</h1>
 		</div>
 		<section class="section">
 			<section class="section profile">
@@ -48,19 +48,20 @@
 
 									<li class="nav-item">
 										<button class="nav-link active" data-bs-toggle="tab"
-											data-bs-target="#profile-overview">Detail</button>
+											data-bs-target="#profile-overview">상세내용</button>
 									</li>
 
 									<li class="nav-item">
 										<button class="nav-link" data-bs-toggle="tab"
-											data-bs-target="#profile-edit">Edit Profile</button>
+											data-bs-target="#profile-edit">수정</button>
 									</li>
-
+									<li class="nav-item">
+										<a href="/employee/paystub" class="nav-link">월급명세서</a>
+									</li>
 
 									<li class="nav-item">
 										<button class="nav-link" data-bs-toggle="tab"
-											data-bs-target="#profile-change-password">Change
-											Password</button>
+											data-bs-target="#profile-change-password">비밀번호 변경</button>
 									</li>
 									<li class="nav-item">
 										<form action="./employeeResetPassword" method="post"
