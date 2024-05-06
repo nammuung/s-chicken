@@ -116,13 +116,13 @@
                 , content
                 , ROW_NUMBER() over (partition by 1 ORDER BY send_date) AS rn
             FROM chat_message
-            WHERE chatroom_id=#{chatroomId}) cm
-        <if test="lastReadTime != null">
-        WHERE rn &lt;=<include refid="getLastReadRowNum"/>
-        </if>
-        <if test="lastReadTime == null">
-        WHERE rn &lt;=20
-        </if>
+            WHERE chatroom_id=#{chatroomId} AND send_date > #{joinDate}) cm
+            <if test="lastReadTime != null">
+            WHERE rn &lt;=<include refid="getLastReadRowNum"/>
+            </if>
+            <if test="lastReadTime == null">
+            WHERE rn &lt;=20
+            </if>
         ORDER BY send_date DESC
         LIMIT 20
     </select>
@@ -137,8 +137,13 @@
         FROM chat_message
         WHERE chatroom_id=#{chatroomId}
             AND send_date <if test="direction=='up'">&lt;#{from}</if><if test="direction=='down'">>#{from}</if>
+            AND send_date > #{joinDate}
         ORDER BY send_date <if test="direction=='up'">DESC</if>
         LIMIT 10
+    </select>
+
+    <select id="getJoinDate">
+        SELECT join_date FROM chat_member WHERE employee_id = #{employeeId} AND chatroom_id=#{chatroomId}
     </select>
 
     <insert id="createOneChatroom">

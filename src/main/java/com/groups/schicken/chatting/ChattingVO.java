@@ -12,6 +12,7 @@ public class ChattingVO {
     private ChatroomType type;
     private List<EmployeeProfileVO> members;
     private List<ChatMessage> chatMessages;
+    private String joinDate;
     private String lastReadTime;
     private Boolean end;
 

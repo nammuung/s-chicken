@@ -94,7 +94,7 @@
 															<tr>
 																<td>${vo.id}</td>
 																<c:if test="${vo.templateVO.tempName eq '상여신청서'}">
-																	<td class="text-start"><a href="./document/writenList/writenBonus?id=${vo.id}" onclick="openbonus(${vo.id})">${vo.title}</a></td>
+																	<td class="text-start"><a class="hovercursor" data-document-anchor="${vo.id}">${vo.title}</a></td>
 																</c:if>
 																<td>${vo.employeeVO.name}</td>
 																<td>${vo.templateVO.tempName}</td>
@@ -157,7 +157,7 @@
 						<input type="text" id="title" class="form-control mb-3" placeholder="제목을 입력해주세요." >
 						<label for="content" class="form-label"><b>내용</b></label>
 						<input type="text" id="content" class="form-control mb-3" placeholder="내용을 입력해주세요.">
-						
+
 						<input type="hidden" id="share" nanem="share" class="form-control mb-3" disabled
 value="${profile.name}">
 						<input type="hidden" name="share" value="${profile.id}" id="emid" />

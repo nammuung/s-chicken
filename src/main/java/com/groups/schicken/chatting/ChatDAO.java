@@ -26,9 +26,9 @@ public interface ChatDAO {
 
     int updateLastRead(String sendDate, String chatroomId, String employeeId);
 
-    List<ChatMessage> getChatMessageDataFirst(String chatroomId, String lastReadTime, String page);
+    List<ChatMessage> getChatMessageDataFirst(String chatroomId, String lastReadTime, String page, String joinDate);
 
-    List<ChatMessage> getChatMessageData(String chatroomId, String from, String direction);
+    List<ChatMessage> getChatMessageData(String chatroomId, String from, String direction, String joinDate);
 
     List<ChatMessage> getLastChatData(List<String> list);
 
@@ -41,4 +41,6 @@ public interface ChatDAO {
     List<EmployeeProfileVO> getMembersByChatroomId(String chatroomId);
 
     int outChatroom(String empId, String chatroomId);
+
+    String getJoinDate(String employeeId, String chatroomId);
 }
