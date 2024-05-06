@@ -83,7 +83,11 @@ public class DocumentService {
 	}
 	public List<DocumentVO> list(EmployeeVO employeeVO,DocumentVO documentVO,TemplateVO templateVO,Pager pager,String cate)throws Exception{
 		Map<String, Object> map = new HashMap<String,Object>();
-
+		
+		documentVO.setTemp(0);
+		
+		System.out.println(documentVO);
+		
 		map.put("documentVO", documentVO);
 		map.put("pager", pager);
 		map.put("category", cate);

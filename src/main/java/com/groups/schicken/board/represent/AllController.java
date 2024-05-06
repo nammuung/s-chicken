@@ -20,14 +20,14 @@ import com.groups.schicken.common.vo.Pager;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/전체/*")
+@RequestMapping("/all/*")
 public class AllController {
 	@Autowired
 	private RepresentService representService;
 	@ModelAttribute("board")
 	public String board() {
 		
-		return "전체";
+		return "all";
 	}
 	
 	@GetMapping("list")

@@ -104,7 +104,8 @@
 	                        </li>
 						</c:if>                      
 						<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="page">
-	                        <li class="page-item <c:if test="${pager.page == page}">active</c:if>"><a class="page-link" href="/document/document?page=${pager.page}&search=${pager.search}&kind=${pager.kind}">${page}</a></li>
+                            
+	                        <li class="page-item <c:if test='${pager.page == page}'>active</c:if>"><a class="page-link" href="/document/document?page=${pager.page}&search=${pager.search}&kind=${pager.kind}">${page}</a></li>
 	                    </c:forEach>                        
                         <c:if test="${!pager.last}">
 	                        <li class="page-item">

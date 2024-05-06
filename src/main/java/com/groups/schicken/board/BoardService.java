@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.vo.Pager;
 
 public interface BoardService {

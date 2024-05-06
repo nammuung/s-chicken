@@ -14,14 +14,8 @@
 	
 	<update id="impRank">
 		UPDATE represent
-		set rank =#{rank}
+		set rank =#{rank},important=#{important}
 		WHERE id=#{id}
-	</update>
-	
-	<update id="impUpdate">
-		UPDATE represent
-		set rank = 0 , important = 0
-		WHERE id=#{id}		
 	</update>
 	
 	<select id="impList">
@@ -46,7 +40,7 @@
 			LEFT JOIN employee emp ON emp.id =r.writer_id
 			WHERE r.is_deleted !=1
 			<include refid="search"/>
-			ORDER BY important DESC, id DESC
+			ORDER BY id DESC
 			LIMIT #{pager.startIndex},#{pager.perPage}
 	</select>
 	

@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Controller
-@RequestMapping("/대표/*")
+@RequestMapping("/represent/*")
 @Slf4j
 @RequiredArgsConstructor
 public class RepresentController {
@@ -34,7 +34,7 @@ public class RepresentController {
 	@ModelAttribute("board")
 	public String board() {
 
-		return "대표";
+		return "represent";
 	}
 
 
