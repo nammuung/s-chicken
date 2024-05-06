@@ -205,16 +205,16 @@ public class EmployeeController {
 		model.addAttribute("list", ar);
 		model.addAttribute("pager",pager);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication != null) {
-			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
-			if (!hasPersonnel) {
-			    String msg = "권한이 없습니다.";
-			    String path = "../";
-			    model.addAttribute("msg", msg);
-			    model.addAttribute("path", path);
-				return "employee/result";
-			}
-		}
+//		if(authentication != null) {
+//			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
+//			if (!hasPersonnel) {
+//			    String msg = "권한이 없습니다.";
+//			    String path = "../";
+//			    model.addAttribute("msg", msg);
+//			    model.addAttribute("path", path);
+//				return "employee/result";
+//			}
+//		}
 		return "employee/list";
 
 
@@ -227,16 +227,16 @@ public class EmployeeController {
 		model.addAttribute("list", ar);
 		model.addAttribute("pager",pager);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication != null) {
-			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
-			if (!hasPersonnel) {
-			    String msg = "권한이 없습니다.";
-			    String path = "../";
-			    model.addAttribute("msg", msg);
-			    model.addAttribute("path", path);
-				return "employee/result";
-			}
-		}
+//		if(authentication != null) {
+//			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
+//			if (!hasPersonnel) {
+//			    String msg = "권한이 없습니다.";
+//			    String path = "../";
+//			    model.addAttribute("msg", msg);
+//			    model.addAttribute("path", path);
+//				return "employee/result";
+//			}
+//		}
 		return "employee/isuserList";
 	}
 

@@ -52,9 +52,7 @@ public class SecurityConfig {
 						(authorizeRequests)->
 											authorizeRequests
 											.requestMatchers("/", "/login**", "/addDepartment/**").authenticated()
-//											.requestMatchers("/").permitAll()
-											.requestMatchers("employee/role").hasRole("ADMIN")
-											.requestMatchers("employee/list").hasRole("PERSONNEL_WRITER")
+											.requestMatchers("/").permitAll()
 											.anyRequest().permitAll()
 											)
 ////											.requestMatchers("/").permitAll()

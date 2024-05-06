@@ -39,7 +39,7 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	private Integer salary;
 	private String accountNumber;
 	private String bankName;
-	private Boolean isLeaved = false;
+	private Boolean isLeaved=true;
 	private Long departmentId;
 	private String posId;
 	private String posName; // 직급이름
