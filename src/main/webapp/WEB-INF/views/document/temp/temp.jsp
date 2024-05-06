@@ -81,7 +81,7 @@
                     <tr>
 
                         <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
-                            colspan="2" class=""> 급여신청서
+                            colspan="2" class=""> 상여금신청서
                             <div style="text-align: right;">
                                     <button type="button" id="modal_show" class="btn btn-primary">
                                         결재선지정

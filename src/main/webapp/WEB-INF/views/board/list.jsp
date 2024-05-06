@@ -18,10 +18,15 @@
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle" style="text-align: center;">
-        <h1>${board} 게시판</h1>
+        <h1>
+			<c:if test="${board eq 'all'}">전체</c:if>
+			<c:if test="${board eq 'represent'}">대표</c:if>
+			<c:if test="${board eq 'coc'}">경조사</c:if>
+			 게시판
+		</h1>
     </div>
     <section class="section">
-		<c:if test="${board ne '경조사'}">
+		<c:if test="${board ne 'coc'}">
 			<div class="row justify-content-center">
 				<div class="col-12">
 					<div class="card">

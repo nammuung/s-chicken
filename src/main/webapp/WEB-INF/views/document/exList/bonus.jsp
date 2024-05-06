@@ -107,7 +107,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" id="" name="tempName" style="text-align: center;" value="급여신청서" readonly>
+                                                <input type="text" class="form-control" id="" name="tempName" style="text-align: center;" value="상여금신청서" readonly>
                                             </div>
                                         </td>
                                     </tr>
