@@ -98,13 +98,17 @@
             fs.sales_date DESC
         LIMIT 0, 10
     </select>
-    <select id="getPerDays">
+    <select id="getPerDays" resultMap="getSalesMap">
         SELECT
         fs.id,
         SUM(fs.price) price,
-        fs.sales_date salesDate
+        fs.sales_date salesDate,
+        f.name franchise_name
         FROM
         franchise_sales fs
+        LEFT JOIN
+        franchise f
+        ON fs.franchise_id = f.id
         WHERE
         fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
         GROUP BY
@@ -115,7 +119,104 @@
         ORDER BY fs.sales_date DESC
         LIMIT 0, 10
     </select>
-
+    <select id="getPerDaysTotal" resultMap="getTotalMap">
+        SELECT
+        fs.id,
+        fs.franchise_id,
+        SUM(fs.price) price,
+        fs.sales_date salesDate,
+        f.name franchise_name
+        FROM
+        franchise_sales fs
+        LEFT JOIN
+        franchise f
+        ON fs.franchise_id = f.id
+        WHERE
+        DATE(fs.sales_date) = CURDATE() AND
+        fs.sales_date <![CDATA[<=]]> NOW()
+        GROUP BY
+        fs.franchise_id
+        ORDER BY
+        SUM(fs.price) DESC
+        LIMIT 0, 10
+    </select>
+    <select id="getPerWeeksTotal" resultMap="getTotalMap">
+        SELECT
+        fs.id,
+        fs.franchise_id,
+        SUM(fs.price) price,
+        fs.sales_date salesDate,
+        f.name franchise_name
+        FROM
+        franchise_sales fs
+        LEFT JOIN
+        franchise f
+        ON fs.franchise_id = f.id
+        WHERE
+        (fs.sales_date) BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW()
+        GROUP BY
+        fs.franchise_id,
+        YEAR(fs.sales_date),
+        MONTH(fs.sales_date),
+        WEEK(fs.sales_date)
+        ORDER BY
+        SUM(fs.price) DESC
+        LIMIT 0, 10
+    </select>
+    <select id="getPerMonthTotal" resultMap="getTotalMap">
+        SELECT
+        fs.id,
+        fs.franchise_id,
+        SUM(fs.price) price,
+        fs.sales_date salesDate,
+        f.name franchise_name
+        FROM
+        franchise_sales fs
+        LEFT JOIN
+        franchise f
+        ON fs.franchise_id = f.id
+        WHERE
+        DATE(fs.sales_date) BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()
+        GROUP BY
+        fs.franchise_id,
+        YEAR(fs.sales_date),
+        MONTH(fs.sales_date)
+        ORDER BY
+        SUM(fs.price) DESC
+        LIMIT 0, 10
+    </select>
+    <select id="getMenuTotal">
+        SELECT
+        COUNT(menu.id) totalSales,
+        menu.menu name
+        FROM
+            franchise_sales fs
+        LEFT JOIN
+            sales_detail detail
+            ON fs.id = detail.sales_id
+        LEFT JOIN
+            menu
+            ON detail.menu_id = menu.id
+        WHERE
+            DATE(fs.sales_date) BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()
+        GROUP BY
+        YEAR(fs.sales_date),
+        MONTH(fs.sales_date),
+        detail.menu_id
+        ORDER BY
+        COUNT(detail.menu_id) DESC
+        LIMIT 0, 10
+    </select>
+    <resultMap id="getTotalMap" type="Sales" autoMapping="true">
+        <id property="id" column="id"/>
+        <id property="franchise.id" column="franchise_id"/>
+        <association property="franchise" javaType="FranchiseVO" autoMapping="true" columnPrefix="franchise_"/>
+        <collection property="details" ofType="com.groups.schicken.franchise.sales.Sales$Detail" autoMapping="true" columnPrefix="detail_">
+            <id property="sales.id" column="sales_id"/>
+            <id property="menu.id" column="menu_id"/>
+            <association property="menu" javaType="Menu" autoMapping="true" columnPrefix="menu_"/>
+        </collection>
+    </resultMap>
     <select id="getSalesPerDays">
         SELECT
             today.total_sales totalSales,

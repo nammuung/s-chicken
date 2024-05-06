@@ -1,10 +1,13 @@
 package com.groups.schicken.franchise.sales;
 
 import com.groups.schicken.common.vo.Pager;
+import com.groups.schicken.franchise.FranchiseMapper;
 import com.groups.schicken.franchise.FranchiseVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SalesService {
     private final SalesMapper salesMapper;
+    private final FranchiseMapper franchiseMapper;
 
     public List<Sales> getSalesList(Sales sales, Pager pager) throws Exception {
         Map<String, Object> map = new HashMap<>();
@@ -53,5 +57,35 @@ public class SalesService {
     }
     public Map<String, Object> getSalesPerMonth(FranchiseVO franchiseVO) throws Exception {
         return salesMapper.getSalesPerMonth(franchiseVO);
+    }
+
+    public List<Sales> getPerMonthTotal() throws Exception {
+        return salesMapper.getPerMonthTotal();
+    }
+    public List<Sales> getPerWeeksTotal() throws Exception {
+        return salesMapper.getPerWeeksTotal();
+    }
+
+    public List<Sales> getPerDaysTotal() throws Exception {
+        return salesMapper.getPerDaysTotal();
+    }
+
+    public List<Map<String, Object>> getMenuTotal() throws Exception {
+        return salesMapper.getMenuTotal();
+    }
+
+    public List<List<Sales>> getSalesTotal(String type) throws Exception {
+        List<FranchiseVO> franchiseList = franchiseMapper.getFranchiseList(new Pager());
+        List<List<Sales>> salesList = new ArrayList<>();
+        for(FranchiseVO franchiseVO: franchiseList){
+            Sales sales = new Sales();
+            sales.setFranchise(franchiseVO);
+            switch (type) {
+                case "days" -> salesList.add(salesMapper.getPerDays(sales));
+                case "weeks" -> salesList.add(salesMapper.getPerWeeks(sales));
+                case "month" -> salesList.add(salesMapper.getPerMonth(sales));
+            }
+        }
+        return salesList;
     }
 }

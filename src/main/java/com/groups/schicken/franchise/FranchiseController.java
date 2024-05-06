@@ -94,5 +94,10 @@ public class FranchiseController {
         return "result";
     }
 
+    @GetMapping("/franchise/insight")
+    public String getFranchiseInsight(Model model,FranchiseVO franchiseVO) throws Exception {
+        return "franchise/insight";
+    }
+
 
 }

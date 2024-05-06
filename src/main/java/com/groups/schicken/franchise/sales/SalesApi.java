@@ -5,6 +5,7 @@ import com.groups.schicken.common.vo.ResultVO;
 import com.groups.schicken.erp.order.HeadOrderVO;
 import com.groups.schicken.franchise.FranchiseVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,51 @@ public class SalesApi {
     {
         franchise = new FranchiseVO();
         franchise.setId("1098");
+    }
+    @GetMapping("sales/menu/total")
+    public ResponseEntity<?> getMenuTotal() {
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getMenuTotal()));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+
+    @GetMapping("sales/days/total")
+    public ResponseEntity<?> getDayTotalSales(Pager pager) {
+        Sales sales = new Sales();
+        FranchiseVO franchiseVO = new FranchiseVO();
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getPerDaysTotal()));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+    @GetMapping("sales/weeks/total")
+    public ResponseEntity<?> getWeekTotalSales(Pager pager) {
+        Sales sales = new Sales();
+        FranchiseVO franchiseVO = new FranchiseVO();
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getPerWeeksTotal()));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+    @GetMapping("sales/month/total")
+    public ResponseEntity<?> getMonthTotalSales() {
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getPerMonthTotal()));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
     }
 
     @GetMapping("sales")
@@ -237,6 +283,18 @@ public class SalesApi {
     public ResponseEntity<?> getSellPerMonth(@AuthenticationPrincipal FranchiseVO franchiseVO) {
         try {
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSellPerMonth(franchise)));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ResultVO.res(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류", null));
+        }
+    }
+
+    @GetMapping("sales/total/{type}")
+    @Cacheable(key = "#type", cacheNames = "total")
+    public ResponseEntity<?> getSalesTotal(@PathVariable String type) {
+        try {
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), salesService.getSalesTotal(type)));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

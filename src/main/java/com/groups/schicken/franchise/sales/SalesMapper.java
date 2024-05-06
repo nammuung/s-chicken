@@ -26,4 +26,9 @@ public interface SalesMapper {
     Map<String, Object> getSalesPerWeeks(FranchiseVO franchiseVO) throws Exception;
     Map<String, Object> getSalesPerMonth(FranchiseVO franchiseVO) throws Exception;
 
+    List<Sales> getPerMonthTotal() throws Exception;
+    List<Sales> getPerWeeksTotal() throws Exception;
+    List<Sales> getPerDaysTotal() throws Exception;
+
+    List<Map<String, Object>> getMenuTotal() throws Exception;
 }

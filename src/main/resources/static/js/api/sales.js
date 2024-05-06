@@ -82,3 +82,49 @@ export const getSalesPerDays = async (id) => {
     }
 }
 
+export const getDaysTotal = async () => {
+    try {
+        const response = await defaultInstance.get('sales/days/total');
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const getWeeksTotal = async () => {
+    try {
+        const response = await defaultInstance.get('sales/weeks/total');
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
+export const getMonthTotal = async () => {
+    try {
+        const response = await defaultInstance.get('sales/month/total');
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const getMenuTotal = async () => {
+    try {
+        const response = await defaultInstance.get('sales/menu/total');
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export const getTotalSales = async (type) => {
+    try {
+        const response = await defaultInstance.get(`sales/total/${type}`);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+

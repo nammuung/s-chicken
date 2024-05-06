@@ -197,6 +197,11 @@
                 </li>
             </ul>
         </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/insight">
+                <i class="bi bi-person-raised-hand"></i><span>인사이트</span>
+            </a>
+        </li>
 
 
 		<li class="nav-heading">Pages</li>
