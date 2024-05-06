@@ -93,7 +93,8 @@ public class MainController {
 		employeeVO.setId(id);
         DocumentVO documentVO = new DocumentVO();
 		List<DocumentVO> dir = documentService.approvalList(employeeVO,pager,documentVO);
-		model.addAttribute("dlist", dir);
+        System.out.println("dir = " + dir);
+        model.addAttribute("dlist", dir);
         return "home";
     }
 

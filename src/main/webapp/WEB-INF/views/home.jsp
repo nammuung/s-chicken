@@ -81,8 +81,9 @@
 											</tr>
 										</thead>
 										<tbody>
+										${dlist.size()}
 											<c:choose>
-												<c:when test="${empty dlist}">
+												<c:when test="${dlist.size() == 0}">
 													<tr>
 														<td colspan="6">현재 진행중인 결재 내역이 존재 하지 않습니다.</td>
 													</tr>

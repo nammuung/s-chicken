@@ -190,7 +190,7 @@ public class EmployeeController {
 		    }
 
 		employeeVO = employeeService.userDetail(employeeVO);
-	    session.setAttribute("details", employeeVO);
+
 		EmployeeProfileVO employeeProfileVO =  employeeService.getProfile(id);
 		model.addAttribute("detail", employeeVO);
 		model.addAttribute("profile", employeeProfileVO);
