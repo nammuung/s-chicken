@@ -11,4 +11,6 @@ public interface OrganizationDAO {
     List<OrganizationVO> getOrgChart(String opt);
 
     OrganizationVO getEmployeeByEmployeeId(String empId);
+
+    List<ChattingEmployeeListVO> getChattingEmployeeList(String id);
 }

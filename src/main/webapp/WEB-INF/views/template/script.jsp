@@ -36,7 +36,6 @@
 <script src="/js/main.js"></script>
 
 <!-- WebSocket -->
-<script src="/js/websocket/websocketController.js" type="module"></script>
 <script src="/js/lib/switch.js"></script>
 
 <%--axios--%>
@@ -49,3 +48,7 @@
 
 <%--연차--%>
 <script type="module" src="/js/annual/annual.js"> </script>
+
+<%--DayJs--%>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<script src="/js/notification/notification.js" type="module"></script>

@@ -1,9 +1,11 @@
 package com.groups.schicken.erp.supplier;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.groups.schicken.Employee.EmployeeVO;
 import lombok.Data;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SupplierVO {
     private Long id;
     private String name;

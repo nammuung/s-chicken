@@ -61,8 +61,8 @@
                                 <div class="col-8">
                                     <select type="text" class="form-control form-select" id="addCategory" name="category.id">
                                         <option value="">선택</option>
-                                        <c:forEach items="${category}" var="item">
-                                            <option value="${item.id}">${item.name}</option>
+                                        <c:forEach items="${category}" var="dept">
+                                            <option value="${dept.id}">${dept.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -94,8 +94,8 @@
                                 <div class="col-8">
                                     <select type="text" class="form-control form-select" id="addUnit" name="unit.id">
                                         <option value="">선택</option>
-                                        <c:forEach items="${unit}" var="item">
-                                            <option value="${item.id}">${item.name}</option>
+                                        <c:forEach items="${unit}" var="dept">
+                                            <option value="${dept.id}">${dept.name}</option>
                                         </c:forEach>
                                     </select>
                                 </div>
@@ -126,7 +126,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="position-relative" style="height: 50vh">
+                <div class="position-relative" style="height: 400px">
                     <div class="tab-content pt-2">
                         <div class="tab-pane fade show active profile-overview" id="product-overview">
                             <form id="editForm" class="text-nowrap text-end">
@@ -139,8 +139,8 @@
                                             <div class="col-8">
                                                 <select type="text" class="form-control form-select" id="category" name="category.id">
                                                     <option value=""></option>
-                                                    <c:forEach items="${category}" var="item">
-                                                        <option value="${item.id}">${item.name}</option>
+                                                    <c:forEach items="${category}" var="dept">
+                                                        <option value="${dept.id}">${dept.name}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -174,8 +174,8 @@
                                             <div class="col-8">
                                                 <select type="text" class="form-control form-select" id="unit" name="unit.id">
                                                     <option value=""></option>
-                                                    <c:forEach items="${unit}" var="item">
-                                                        <option value="${item.id}">${item.name}</option>
+                                                    <c:forEach items="${unit}" var="dept">
+                                                        <option value="${dept.id}">${dept.name}</option>
                                                     </c:forEach>
                                                 </select>
                                             </div>
@@ -208,7 +208,7 @@
                             </div>
                         </div>
                         <div class="tab-pane fade profile-overview" id="supplier-overview">
-                            <div class="row overflow-auto" style="max-height: 50vh">
+                            <div class="row overflow-auto" style="max-height: 400px">
                                 <table class="table" id="supplierTable">
                                     <thead>
                                         <tr>

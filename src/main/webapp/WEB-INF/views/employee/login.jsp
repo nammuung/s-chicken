@@ -26,14 +26,17 @@
 							</div>
 							<form action="./login" method="post"
 								onsubmit="return markButtonClicked()">
-								<div class="btn-group" role="group"
-									aria-label="Basic radio toggle button group">
-									<input type="radio" class="btn-check" name="options-base"
-										id="emp" autocomplete="off" checked> <label
-										class="btn btn-outline-secondary" for="emp">그룹웨어</label> <input
-										type="radio" class="btn-check" name="options-base" id="fra"
-										autocomplete="off"> <label
-										class="btn btn-outline-secondary" for="fra">가맹점</label>
+								<div class="d-flex justify-content-center">
+
+									<div class="btn-group" role="group"
+										 aria-label="Basic radio toggle button group">
+										<input type="radio" class="btn-check" name="options-base"
+											   id="emp" autocomplete="off" checked> <label
+											class="btn btn-outline-secondary" for="emp">그룹웨어</label> <input
+											type="radio" class="btn-check" name="options-base" id="fra"
+											autocomplete="off"> <label
+											class="btn btn-outline-secondary" for="fra">가맹점</label>
+									</div>
 								</div>
 
 								<!-- id input -->

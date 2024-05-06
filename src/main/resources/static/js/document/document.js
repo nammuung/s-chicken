@@ -17,13 +17,6 @@ function screen(){
     return `width=${width}, height=${height}, left=${left}, top=${top}`;
 }
 
-function openPay() {
-    let options = screen();
-    // 문서의 상대 경로를 설정합니다.
-    console.log("??")
-    window.open(relativePath, '_blank', options);
-}
-
 function openbonus() {
 	let options = screen();
     let relativePath = '/document/exList/bonus'; // 문서의 상대 경로를 설정합니다.

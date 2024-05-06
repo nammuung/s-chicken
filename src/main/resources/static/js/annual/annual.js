@@ -64,17 +64,11 @@ function loadAnnualPage() {
 function validateForm() {
     var historyInput = document.getElementById('history').value.trim();
     var remainderAnnualInput = document.getElementById('remainderAnnual').value.trim();
-    var employeeIdInput = document.getElementById('managerId').value.trim(); 
 
     if (historyInput === "") {
         alert("제목을 입력하세요.");
         return false;
     }
-    if (employeeIdInput === "") {
-        alert("직원을 선택하세요.");
-        return false;
-    }
-   
     return true; 
 }
 	

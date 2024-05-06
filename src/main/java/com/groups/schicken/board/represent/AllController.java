@@ -17,6 +17,8 @@ import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.board.BoardVO;
 import com.groups.schicken.common.vo.Pager;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/all/*")
 public class AllController {
@@ -30,15 +32,19 @@ public class AllController {
 	
 	@GetMapping("list")
 	public String list(@AuthenticationPrincipal EmployeeVO employeeVO,BoardVO boardVO,Pager pager,Model model)throws Exception{
-		boardVO.setWriterId(employeeVO.getId());
+		//boardVO.setWriterId(employeeVO.getId());
 		List<BoardVO> ar = representService.allgetList(pager, boardVO);
 		
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
 		
+		System.out.println(pager);
+		
 		
 		return "board/list";
 	}
+		
+	
 	
 	@GetMapping("write")
 	public String write()throws Exception{

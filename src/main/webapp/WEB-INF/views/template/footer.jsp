@@ -17,16 +17,16 @@
                             <li class="list-group-item">
                                 <button id="note-message-send-form-btn" class="btn btn-primary w-100">쪽지 보내기</button>
                             </li>
-                            <li id="note-message-receive-box-btn" class="list-group-item text-center">
+                            <li id="note-message-receive-box-btn" class="list-group-item text-center hovercursor">
                                 <span>받은 쪽지함</span>
                             </li>
-                            <li id="note-message-save-box-btn" class="list-group-item text-center">
+                            <li id="note-message-save-box-btn" class="list-group-item text-center hovercursor">
                                 <span>쪽지 보관함</span>
                             </li>
-                            <li id="note-message-send-box-btn" class="list-group-item text-center">
+                            <li id="note-message-send-box-btn" class="list-group-item text-center hovercursor">
                                 <span>보낸 쪽지함</span>
                             </li>
-                            <li id="note-message-delete-box-btn" class="list-group-item text-center">
+                            <li id="note-message-delete-box-btn" class="list-group-item text-center hovercursor">
                                 <span>휴지통</span>
                             </li>
                         </ul>
@@ -39,21 +39,27 @@
     </div>
 </div>
 
-<div class="modal" tabindex="-1" id="filePreView-modal">
-    <div class="modal-dialog modal-md modal-dialog-centered">
+<div class="modal fade" tabindex="-1" id="namecard-modal">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <img src="" id="filePreView-img">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img data-profile-type="img" class="rounded-circle shadow w-50 mb-3">
+                    <h4 data-profile-type="departmentName" class="card-subtitle mb-2 text-muted"></h4>
+                    <h2 data-profile-type="name" class="card-title"></h2>
+                    <h4 data-profile-type="phoneNumber" class="card-text"></h4>
+                    <a data-profile-type="noteMessage" href="#" class="btn btn-primary">쪽지보내기</a>
+                    <a data-profile-type="chatting" href="#" class="btn btn-primary">채팅하기</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="modal modal-lg w-60" tabindex="-1" id="annual-modal" style="margin-left: 5%">
-    <div class="modal-dialog modal-dialog-centered">
-
-
-        <div class="modal-content" style="width: 80%;">
-
-            <!-- 모달 콘텐츠 영역 -->
+<div class="modal" tabindex="-1" id="filePreView-modal">
+    <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-content">
+            <img src="" id="filePreView-img">
         </div>
     </div>
 </div>

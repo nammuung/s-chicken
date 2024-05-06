@@ -51,9 +51,15 @@
                     <tr>
                         <td style="padding: 0px !important; border: 0px currentColor; border-image: none;text-align: right;font-weight: bold; vertical-align: middle;"
                         colspan="2" class="">
-                      
-                        
-                                                        
+                            <c:if test="${list[0].temp eq 1}">
+                                <div class="mb-2">
+                                    <button class="btn btn-primary">인쇄미리보기</button>
+                                    <button class="btn btn-primary" id="sangsin">상신</button>
+                                    <button class="btn btn-primary" type="button" id = "cancel">취소</button>
+                                </div>
+                                    <button class="btn btn-primary">불러오기</button>
+                                    <button class="btn btn-primary" id="updateSave">임시저장</button>
+                            </c:if>                          
                         </td>
                     </tr>
 
@@ -62,10 +68,19 @@
                         <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
                             colspan="2" class=""> 상여금신청서
                             <div style="text-align: right;">
+                            
+                            	
+								
+								<c:if test="${list[nowCount].approvalVOs[0].employeeId eq user.id and list[0].temp eq 0}">      
+                                	<button id="approval_btn" type="button" class="btn btn-primary">결재하기</button>
+                                	<button id="refuse_btn" type="button" class="btn btn-primary">반려하기</button>
+                                </c:if>
 
-                               
-                                <button id="approval_btn" type="button" class="btn btn-primary">결재하기</button>
-                        		
+                                <c:if test="${list[0].temp eq 1}">
+                                    <button type="button" id="modal_show" class="btn btn-primary">
+                                        결재선지정
+                                    </button>
+                                </c:if>
 
                             </div>
                         </td>
@@ -154,7 +169,7 @@
                                     <span class="sign_member_wrap">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank">${list[0].level}</span>
+                                                <span class="sign_rank">${list[0].codeVO.name}</span>
                                             </span>
                                             <span class="sign_date_wrap">
                                                 <span class="sign_date ">${list[0].employeeVO.name}</span>
@@ -213,7 +228,7 @@
 	                                    <span class="sign_member_wrap haveId" id="">
 	                                        <span class="sign_member">                                           
 	                                            <span class="sign_rank_wrap">
-	                                                <span class="sign_rank">${vo.level}</span>
+	                                                <span class="sign_rank">${vo.codeVO.name}</span>
 	                                            </span>
 	                                            <span class="sign_date_wrap">
 	                                                <span class="sign_date" data-id="${vo.employeeVO.id}">${vo.employeeVO.name}</span>
@@ -254,18 +269,7 @@
                             값넣기
                         </td>
                     </tr>
-
-                    <tr>
-                        <td
-                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
-                            참조 </td>
-                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
-                            colspan="5">
-
-                            값넣기
-                        </td>
-                    </tr>
-
+                   
                     <tr>
                         <td
                             style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
@@ -290,19 +294,122 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
-                            <div>${list[0].content }</div>
+                        <td style="background: rgb(255, 255, 255); text-align:center; padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+                            ${list[0].content}
                         </td>
                     </tr>
-
+                    <c:if test="${list[nowCount-1].approvalVOs[0].comment ne null}">
+	                     <tr>
+	                        <td style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;"
+	                            colspan="2">
+	                            반려사유
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+	                            <div>${list[nowCount-1].approvalVOs[0].comment}</div>
+	                        </td>
+	                    </tr>
+					</c:if>
                 </tbody>
             </table>
-   	</form>
-            <div>
+<!--             <div>
                 <label for="file">파일첨부하기</label><br>
             <input type="file" name="attach">
+            </div> -->            
+   	</form>
+
+        <!-- The Modal -->
+	<div class="modal" id="myModal">
+        <div class="modal-dialog modal-dialog-scrollable" id="modalContent">
+          <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header" >
+              <h4 class="modal-title">결재선지정</h4>
+              <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
             </div>
-    
+            <!-- Modal body -->
+            <div class="modal-body">
+              <!-- 모달 내용 시작 -->
+              <div class="container-fluid mmdd">
+                <div class="row mmdd">
+                  <div class="col-md-5 card mmdd">
+                      <div class="card-body">
+                      조직도
+                          <div id="note-message-org-chart"></div>
+                      </div>
+  
+                  </div>
+                  <div class="col-md-2 mmdd d-flex justify-content-center align-items-center flex-column">
+                      <div class="text-center">
+                          <button class="btn btn-primary btn-sm mb-3" id="addbtn"> >> </button>
+                      </div>
+                      <div class="text-center">
+                          <button class="btn btn-primary btn-sm mt-3" id="delbtn"> &lt;&lt; </button>
+                      </div>
+                  </div>
+                  <div class="col-md-5 mmdd">
+                    <div id="right-top" class="row ssdd" style="background-color: lightblue;">
+                        <div style="text-align: left;">결재자</div>
+  
+                        <div>
+                          <ul class="list-group" id="approval_List">
+  
+                          </ul>
+                        </div>
+  
+                        <div class="text-right mt-2 align-self-end">
+                            <div class="col-auto">
+                                <div class="mb-2">
+                                <button class="btn btn-primary btn-sm">저장하기</button>
+                                <button class="btn btn-primary btn-sm" id="register">등록하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="right-bottom" class="row ssdd" style="background-color: lightgreen;">
+                      <div style="text-align: left;">나의 결재목록</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- 모달 내용 끝 -->
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+<%--    	<c:forEach items="${list}" var="com">
+   		<c:forEach items="${com.approvalVOs}" var="get">
+    	<div>${get.comment}</div>
+    	</c:forEach>
+    </c:forEach>
+ --%>    
+<%--  		<c:if test="${list[nowCount-1].approvalVOs[0].comment ne null}">
+   			<div class="d-flex mb-2">					
+					<img width="50" height="50" src="/fileDown?id=${reply.fileVO.id}" alt="프로필" class="me-3">
+			
+				<div class="d-flex justify-content-between w-100">
+					<div class="d-flex">
+						<div class="me-3">
+							<div>${list[nowCount-1].employeeVO.name}</div>
+							<div>${list[nowCount-1].codeVO.name}</div>                                        
+						</div>
+						<div>							
+							<div data-text="area" data-id="" ></div>
+						</div>
+					</div>
+					<div class="d-flex align-items-center">
+						
+					</div>
+				</div>
+			</div>	 
+    	</c:if> --%>
+    	
         <p
             style="line-height: 150%; font-family: &quot;맑은 고딕&quot;; font-size: 10pt; margin-top: 0px; margin-bottom: 0px;">
             &nbsp;</p>

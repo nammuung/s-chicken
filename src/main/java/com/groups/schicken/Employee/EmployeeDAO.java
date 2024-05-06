@@ -9,9 +9,9 @@ import com.groups.schicken.common.vo.Pager;
 
 @Mapper
 public interface EmployeeDAO {
-	
+
 	// 직원 관련 ///////////////////////////////////////////////////
-	// 직원 상세정보 
+	// 직원 상세정보
 	public EmployeeVO getDetail(EmployeeVO employeeVO)throws Exception;
 	// 로그인
 	public int join(EmployeeVO employeeVO)throws Exception;
@@ -28,12 +28,12 @@ public interface EmployeeDAO {
 	// 퇴사자 인원 구하는 용도
 	public Long getTotalCount2(Pager pager)throws Exception;
 
-	
 
-	
+
+
 	//소셜 /////////////////////////////////////////////////
 	public int social (EmployeeVO employeeVO)throws Exception;
-	
+
 	//role ////////////////////////////////////////////////
 	public List<RoleVO> rolelist(RoleVO roleVO) throws Exception;
 	public List<RoleVO> role(EmployeeVO employeeVO) throws Exception;
@@ -41,16 +41,17 @@ public interface EmployeeDAO {
 	public int roleinsert(List<RoleVO> list)throws Exception;
 	public int addEmployeeRole(EmployeeVO employeeVO)throws Exception;
 
-	
+
 	// password ////////////////////////////////////////////
-	
+
 	// 패스워드 조회
 	public EmployeeVO passwordinfo (EmployeeVO employeeVO)throws Exception;
 	//email
 	public int password (EmployeeVO employeeVO)throws Exception;
 	//password 변경
 	public int passupdate(EmployeeVO employeeVO)throws Exception;
-	
-	
-	
+
+
+    EmployeeProfileVO getProfile(String id);
+    List<EmployeeVO> getNamesByIds(List<String> ids);
 }

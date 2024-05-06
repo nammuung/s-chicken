@@ -70,8 +70,8 @@ function drawNoteMessageTr(data, type){
             <div class="col-1 px-3 text-center form-check">
                 <input data-id="note-message-select" data-content="${data.id}" type="checkbox" class="form-check-input ${type === 'send' ? "d-none" : ""}" style="margin-left: 1em; margin-top: 0.5em">
             </div>
-            <div data-sender-id="${data.senderId}" class="col-3 px-3 text-center linkable text-black">${senderNameSetting(data.senderName)}</div>
-            <div data-content="${data.id}" class="col-5 px-3 text-center text-truncate linkable text-black">${contentSetForList(data.content)}</div>
+            <div onclick="onProfileClick('${data.senderId}')" data-sender-id="${data.senderId}" class="col-3 px-3 text-center linkable text-black hovercursor">${senderNameSetting(data.senderName)}</div>
+            <div data-content="${data.id}" class="col-5 px-3 text-center text-truncate linkable text-black hovercursor">${contentSetForList(data.content)}</div>
             <div class="col-1 px-3 text-center">
                 ${data.file == null ? "" : `<a href='/fileDown?id=${data.file}'><i class='fas fa-save fa-lg anchorable' style='color: #7749F8;margin-top: 0.5em'></i></a>`}
             </div>

@@ -157,7 +157,7 @@
 }
 
 .bg-schicken-light{
-    background-color: #C7A9FF !important;
+    background-color: #C7A9FF55 !important;
 }
 
 .h-500px{
@@ -176,6 +176,10 @@
 
 .bg-schicken-light-hover:hover{
   background-color: #C7A9FF !important;
+}
+
+.hovercursor:hover{
+  cursor: pointer !important;
 }
 
 /* 쪽지관련 */
@@ -266,15 +270,6 @@
 .btn-primary:hover {
   background-color: #5729E8!important;
   border-color: #5729E8!important;
-}
-
-.chatting-content{
-  max-height: 800px;
-  overflow-y: auto;
-}
-
-.chatting-content .d-flex{
-  gap : 2rem;
 }
 
 .w-22rem{

@@ -35,12 +35,12 @@
 
                     <div class="card-body pt-3" style="min-height: 10vh">
                         ${vo.content}
-<%--                        <sec:authorize access="hasAnyRole('ADMIN', 'FRANCHISE')">--%>
+                        <sec:authorize access="hasAnyRole('ROLE_FRANCHISE')">
                             <div class="d-flex justify-content-end">
                                 <a class="btn btn-primary me-1" href="./update?id=${vo.id}">수정</a>
                                 <button class="btn btn-outline-danger" id="deleteButton">삭제</button>
                             </div>
-<%--                        </sec:authorize>--%>
+                        </sec:authorize>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-<%--        <sec:authorize access="hasAnyRole('ADMIN','EMPLOYEE')">--%>
+        <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
         <c:if test="${vo.comment == null}">
             <div class="form-floating mb-3 position-relative" style="height: 10vh;" id="commentInputContainer">
                 <textarea maxlength="500" style="height: 100%; resize:none;" name="content" class="form-control" placeholder="Leave a comment here" id="content"></textarea>
@@ -80,7 +80,7 @@
                 <button class="btn btn-primary position-absolute end-0 bottom-0 mb-3 me-3" type="button" id="commentButton">답변하기</button>
             </div>
         </c:if>
-<%--        </sec:authorize>--%>
+        </sec:authorize>
         <c:if test="${vo.comment != null}">
         <div class="col-12">
             <div class="card">

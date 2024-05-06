@@ -1,0 +1,96 @@
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+main, nav{
+    height: calc(100vh);
+}
+
+main{
+    margin: 0 0 0 90px !important;
+    padding: 0 0 0 0 !important;
+    background-color: #F8F8FD;
+}
+
+main *{
+    font-family: 'Pretendard-Regular';
+}
+
+nav{
+    width: 90px;
+    position: fixed;
+    margin-top: 0 !important;
+    background-color: #FFF;
+    border-right: 1px solid #00000030;
+    left: 0;
+}
+
+section{
+    height: calc(100vh);
+    overflow: hidden;
+}
+
+.aaa:hover{
+    background-color: #7749F830;
+    cursor: pointer;
+}
+
+.accordion-item{
+    border: 0 !important;
+    border-top: 1px solid rgba(0,0,0,0.1) !important;
+    background-color: rgba(0,0,0,0);
+}
+
+.accordion-button{
+    background-color: rgba(0,0,0,0) !important;
+}
+
+.now-page{
+    border-right: 3px solid #7749F8 !important;
+    font-weight: bolder;
+}
+
+nav .list-group > li{
+    border: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: rgba(0,0,0,0);
+}
+
+nav .list-group > li:not(:first-child):hover{
+    background-color: #7749F830 !important;
+    cursor: pointer;
+}
+
+button:active{
+    border:0 !important;
+}
+
+.chatroom-title{
+    padding: 1rem 0 .25rem 0;
+    border-bottom: 1px solid #00000030;
+}
+
+#chatting-space{
+    height: calc(100vh - 147px);
+    overflow-y: auto;
+}
+
+.chatting-content{
+    width: calc(100vw - 185px);
+    min-width: 290px;
+    margin-left: 8px;
+}
+
+.chatting-profile-img{
+    width: 60px !important;
+    text-align: center;
+}
+
+.chatting-profile-img > img{
+    width: 55px !important;
+    height: 55px !important;
+}

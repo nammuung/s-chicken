@@ -16,4 +16,11 @@ public class ProductController {
         model.addAttribute("category", productService.getCategory());
         return "erp/product/product";
     }
+
+    @GetMapping("/products/stock")
+    public String getStockList(ProductVO productVO, Model model) throws Exception {
+        model.addAttribute("unit", productService.getUnit());
+        model.addAttribute("category", productService.getCategory());
+        return "erp/product/stock";
+    }
 }

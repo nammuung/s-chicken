@@ -12,7 +12,7 @@
                 , upper_id AS "parent"
                 , 'dept' AS "type"
                 , 1 AS depth
-                , d.sort
+                , CAST('0' as varchar(100)) AS "sort"
             FROM department d
             WHERE upper_id IS NULL
 
@@ -24,7 +24,7 @@
                 , dept.upper_id "parent"
                 , 'dept' AS "type"
                 , 1 + depth AS depth
-                , dept.sort#
+                , concat(OC.sort,'-' ,LPAD(LPAD(dept.sort,3,'0'), 4, '9')) AS sort
             FROM department dept
                 INNER JOIN OC ON dept.upper_id = OC.id AND OC.type = 'dept'
             WHERE dept.is_deleted = 0
@@ -50,12 +50,12 @@
                 , e.department_id "parent"
                 , 'person' AS "type"
                 , OC.depth + 1 AS depth
-                , 100 - CAST(code.id AS INTEGER) AS "sort"
+                , concat(OC.sort,'-', LPAD(100 - CAST(code.id AS INTEGER), 4 , '0')) AS "sort"
             FROM employee e
                 INNER JOIN OC ON e.department_id = OC.id
                 INNER JOIN code ON e.pos_id = code.id AND code.type_id = '300'
         ) uoc
-        ORDER BY uoc.depth, uoc.type desc, sort
+        ORDER BY sort
     </select>
 
     <select id="getEmployeesByDepartmentId" resultType="OrganizationVO">
@@ -85,4 +85,28 @@
             e.id = #{empId}
         ORDER BY sort desc
     </select>
+
+    <select id="getChattingEmployeeList" resultMap="ChattingEmployeesResult">
+        <include refid="hierarchical_query"></include>
+        SELECT
+              o.id
+            , o.text AS "name"
+            , e.id AS "employee_id"
+            , concat(c.name, ' ' , e.name) AS "employee_name"
+            , e.phone_number
+            , a.url AS "profile_img"
+        FROM OC o
+            LEFT JOIN employee e ON o.id = e.department_id AND e.id != #{id}
+            LEFT JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
+            LEFT JOIN attach a ON a.tbl_id = 1077 AND a.parent_id = e.id
+        ORDER BY o.sort, LPAD(c.id, 3, '0') DESC
+    </select>
+
+    <resultMap id="ChattingEmployeesResult" type="ChattingEmployeeListVO" autoMapping="true">
+        <id property="id" column="id"/>
+        <collection property="employees" javaType="List" ofType="EmployeeProfileVO" autoMapping="true">
+            <id property="id" column="employee_id"/>
+            <result property="name" column="employee_name"/>
+        </collection>
+    </resultMap>
 </mapper>

@@ -61,10 +61,15 @@
                 </div>
                  <div class="row justify-content-end p-3">
 		            <div class="col-auto">     
-		               <c:if test="${user.id eq vo.writerId}"> 	               	
+		                
+		                <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')"> 	               	
 			               	<a href="./update" id="update" class="btn btn-primary">수정하기</a>
+		               	</sec:authorize>
+		               	
+		               	
+		               	 <sec:authorize	access="hasAnyRole('ADMIN')">
 			               	<a href="./delete" id="del" class="btn btn-primary">삭제하기</a>
-		               	</c:if>
+			             </sec:authorize>
 		            </div>
 		        </div>
 		        <form id="frm" action="./update" method="get">
@@ -76,7 +81,7 @@
                 <div class="card">
                     <div class="card-body mt-3">
                         <div class="mb-3">
-                            <a href="/${board}/impList" class="link-body-emphasis">
+                            <a href="/${board}/list" class="link-body-emphasis">
                                 <i class="bi bi-list toggle-sidebar-btn button"></i>
                                 <span>목록</span>
                             </a>

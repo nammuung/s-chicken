@@ -29,16 +29,46 @@ fetch("/reply/list?parentId="+id,{
 	let replies = "";
 	console.log(r);
 	r.forEach(reply => {
-		if(login_id == reply.writerId){
+		if(login_id == reply.writerId && reply.fileVO==null){
 			replies += 
 			`
 				<div class="d-flex mb-2">
-					<img width="50" height="50" src="avatar.png" alt="프로필" class="me-3">
+					
+						<img width="50" height="50" src="/img/avatar.png" alt="프로필"  onerror="this.onerror=null; this.src='/img/기본.jpg';" class="me-3">
+					
 					<div class="d-flex justify-content-between w-100">
 						<div class="d-flex">
 							<div class="me-3">
 								<div>${reply.employeeVO.name}</div>
-								<div>영업3팀</div>                                        
+								<div>${reply.departmentVO.name}</div>                                        
+							</div>
+							<div>							
+								<div data-text="area" data-id="${reply.id}" >${reply.content}</div>
+							</div>
+						</div>
+						<div class="d-flex align-items-center">
+							<div>
+								<button data-btn-type="delete" type="button" class="btn btn-primary" data-delete="${reply.id}">삭제하기</button>
+								<button data-btn-type="modify" type="button" class="btn btn-primary" data-modify="${reply.id}">수정하기</button>
+								<button data-btn-type="realmodify" type="button" class="btn btn-primary" data-realmodify="${reply.id}" hidden>수정</button>
+							</div>
+							${reply.date}
+						</div>
+					</div>
+				</div>
+			`
+		} else if(login_id == reply.writerId && reply.fileVO != null){
+						replies += 
+			`
+				<div class="d-flex mb-2">
+					
+						<img width="50" height="50" src="/fileDown?id=${reply.fileVO.id}" alt="프로필" class="me-3">
+					
+					<div class="d-flex justify-content-between w-100">
+						<div class="d-flex">
+							<div class="me-3">
+								<div>${reply.employeeVO.name}</div>
+								<div>${reply.departmentVO.name}</div>                                        
 							</div>
 							<div>							
 								<div data-text="area" data-id="${reply.id}" >${reply.content}</div>
@@ -55,16 +85,17 @@ fetch("/reply/list?parentId="+id,{
 					</div>
 				</div>	  
 			`
-		} else {
+		} 
+		else if(login_id != reply.writerId && reply.fileVO == null) {
 			replies += 
 					`
 						<div class="d-flex mb-2">
-							<img width="50" height="50" src="avatar.png" alt="프로필" class="me-3">
+							<img width="50" height="50" src="/img/avatar.png" alt="프로필"  onerror="this.onerror=null; this.src='/img/기본.jpg';" class="me-3">
 							<div class="d-flex justify-content-between w-100">
 								<div class="d-flex">
 									<div class="me-3">
 										<div>${reply.employeeVO.name}</div>
-										<div>영업3팀</div>                                        
+										<div>${reply.departmentVO.name}</div>                                        
 									</div>
 									<div>							
 										<div data-text="area" data-id="${reply.id}" >${reply.content}</div>
@@ -74,7 +105,26 @@ fetch("/reply/list?parentId="+id,{
 							</div>
 						</div>	  
 					`
-		}		
+		}else{
+			replies += 
+					`
+						<div class="d-flex mb-2">
+							<img width="50" height="50" src="/fileDown?id=${reply.fileVO.id}" alt="프로필" class="me-3">
+							<div class="d-flex justify-content-between w-100">
+								<div class="d-flex">
+									<div class="me-3">
+										<div>${reply.employeeVO.name}</div>
+										<div>${reply.departmentVO.name}</div>                                        
+									</div>
+									<div>							
+										<div data-text="area" data-id="${reply.id}" >${reply.content}</div>
+									</div>
+								</div>
+								<div>${reply.date}</div>
+							</div>
+						</div>	  
+					`
+		}
 	});
 	
 
@@ -100,6 +150,8 @@ fetch("/reply/list?parentId="+id,{
 				const text = document.createElement("textarea")
 				text.setAttribute('id','text')
 				div.parentNode.replaceChild(text,div)
+				
+				
 
 				let modifyButton = document.querySelector("button[data-modify='" +hhard +"']");
 				let modifyReal = document.querySelector("button[data-realmodify='" +hhard +"']");			
@@ -107,7 +159,14 @@ fetch("/reply/list?parentId="+id,{
 				modifyReal.removeAttribute('hidden')
 				const text_id = document.getElementById('text')
 				
+				text_id.innerHTML = div.innerHTML
+				
 				modifyReal.addEventListener('click',()=>{
+					
+					if(text_id.value== ''){
+						alert("댓글 내용을 입력하세요");
+						return
+					}
 					console.log(text_id.value);
 					let data = {
 					'id' : hhard,
@@ -161,6 +220,11 @@ fetch("/reply/list?parentId="+id,{
 add_btn.addEventListener("click",(e)=>{
 	let dataid = e.target.getAttribute("data-id")
 	let writerId = e.target.getAttribute("data-writerId")
+	
+	if(replyText.value == ''){
+		alert("댓글내용을 입력하세요");
+		return
+	}
 	
 
 	let data = {

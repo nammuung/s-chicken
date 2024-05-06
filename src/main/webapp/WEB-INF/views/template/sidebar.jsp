@@ -7,10 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <aside id="sidebar" class="sidebar">
 	<ul class="sidebar-nav" id="sidebar-nav">
-		<li class="nav-item"><a class="nav-link " href="home.jsp"> <i
+    <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
+        <li class="nav-item"><a class="nav-link " href="home.jsp"> <i
 				class="bi bi-grid"></i> <span>대시보드</span>
 		</a></li>
 		<!-- End Dashboard Nav -->
@@ -64,7 +65,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/document/temp">
+                    <a href="/document/tempList">
                         <i class="bi bi-circle"></i><span>임시저장</span>
                     </a>
                 </li>
@@ -85,7 +86,7 @@
                 </a></li>
             </ul></li>
         <!-- End Tables Nav -->
-
+        <sec:authorize access="hasAnyRole('ADMIN','PERSONNEL_WRITER')">
         <li class="nav-item"><a class="nav-link collapsed"
                                 data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-bar-chart"></i><span>인사관리</span><i
@@ -95,16 +96,13 @@
                 data-bs-parent="#sidebar-nav">
                 <li><a href="/employee/list"> <i class="bi bi-circle"></i><span>직원목록</span>
                 </a></li>
-                <li><a href="/employee/isuserList"> <i class="bi bi-circle"></i><span>퇴사자
-							목록</span>
-                </a></li>
-                <li><a href="#" id="annual-link"> <!-- id 추가 --> <i
-                        class="bi bi-circle"></i><span>연차</span>
-                </a></li>
-
+                <li><a href="/employee/isuserList"> <i class="bi bi-circle"></i><span>퇴사자목록</span></a></li>
+                
+                <li><a href="/employee/role"> <i class="bi bi-circle"></i><span>권한</span></a></li>
+                <li><a href="/employee/join"> <i class="bi bi-circle"></i><span>직원등록</span></a></li>
             </ul></li>
         <!-- End Charts Nav -->
-
+        </sec:authorize>
         <li class="nav-item">
             <a class="nav-link <c:if test="${cookie.navToggle.value ne '#icons-nav'}">collapsed</c:if>" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-houses"></i><span>가맹점 관리</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -148,18 +146,38 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/order/head">
-                        <i class="bi bi-circle"></i><span>발주</span>
+                    <a href="/order/write">
+                        <i class="bi bi-circle"></i><span>발주서작성</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/order">
+                        <i class="bi bi-circle"></i><span>발주내역</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/order/sell">
+                        <i class="bi bi-circle"></i><span>구매요청</span>
                     </a>
                 </li>
                 <li>
                     <a href="/order/list">
-                        <i class="bi bi-circle"></i><span>발주리스트</span>
+                        <i class="bi bi-circle"></i><span>입고</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/order/sell">
+                        <i class="bi bi-circle"></i><span>출고</span>
                     </a>
                 </li>
                 <li>
                     <a href="/products">
                         <i class="bi bi-circle"></i><span>품목 관리</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/products/stock">
+                        <i class="bi bi-circle"></i><span>재고 관리</span>
                     </a>
                 </li>
                 <li>
@@ -188,20 +206,50 @@
 		</a></li>
 		<!-- End Profile Page Nav -->
 
-		<li class="nav-item"><a class="nav-link collapsed"
-			href="pages-faq.html"> <i class="bi bi-question-circle"></i> <span>F.A.Q</span>
-		</a></li>
-		<!-- End F.A.Q Page Nav -->
-
-		<li class="nav-item"><a class="nav-link collapsed"
-			href="pages-contact.html"> <i class="bi bi-envelope"></i> <span>메신저</span>
-		</a></li>
-		<!-- End Contact Page Nav -->
-
-		<li class="nav-item"><a class="nav-link collapsed"
-			href="pages-blank.html"> <i class="bi bi-file-earmark"></i> <span>쪽지함</span>
-		</a></li>
+    </sec:authorize>
+    <sec:authorize access="hasRole('ROLE_FRANCHISE')">
 		<!-- End Blank Page Nav -->
+        <li class="nav-heading">가맹점</li>
+        <li class="nav-item">
+            <a class="nav-link " href="/franchise/home">
+                <i class="bi bi-grid"></i><span>대시보드</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/order">
+                <i class="bi bi-box-seam"></i><span>발주서작성</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/order/list">
+                <i class="bi bi-box-seam"></i><span>발주내역</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/sells">
+                <i class="bi bi-bar-chart"></i><span>매출</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/qna/list">
+                <i class="bi bi-person-raised-hand"></i><span>QnA</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/faq/list">
+                <i class="bi bi-question-circle"></i><span>F.A.Q</span>
+            </a>
+        </li>
+        <sec:authorize access="isAuthenticated()">
+            <sec:authentication property="principal" var="user"/>
+            <li class="nav-item">
+            <a class="nav-link collapsed" href="/franchise/detail?id=${user.id}">
+                <i class="bi bi-person"></i><span>마이페이지</span>
+            </a>
+        </li>
+        </sec:authorize>
+
+    </sec:authorize>
 	</ul>
 </aside>
 
