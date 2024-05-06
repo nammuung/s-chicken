@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.sql.Timestamp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.LazyInitializationExcludeFilter;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +30,16 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class CalendarService {
-	
-	
+
+
 	  private static final int result = 0;
-	@Autowired 
+	@Autowired
 	  private CalendarDAO calendarDAO;
 	  @Autowired private Noticer noticer;
-	  
+    @Qualifier("eagerStompWebSocketHandlerMapping")
+    @Autowired
+    private LazyInitializationExcludeFilter eagerStompWebSocketHandlerMapping;
+
 	public int insert2(CalendarVO calendarVO) throws Exception {
 		calendarDAO.insert(calendarVO);
 		  calendarVO.setCalendarId(calendarVO.getId());
@@ -42,7 +47,7 @@ public class CalendarService {
 		return result;
 	}
 
-	  
+
 	public int insert(CalendarVO calendarVO) throws Exception {
 		System.out.println(calendarVO.getStart());
 		System.out.println(calendarVO.getEnd());
@@ -65,7 +70,9 @@ public class CalendarService {
 	    boolean shareExists = false;
 	    List<String> idList = new ArrayList<>(); // idList 초기화
 
-
+			//알림
+		System.out.println(employeeIdList);
+		if(employeeIdList != null){
 	        for (Map<String, String> employeeIdMap : employeeIdList) {
 	            String employeeIdValue = employeeIdMap.get("value");
 	            if (!employeeIdValue.equals(calendarVO.getShare())) { // share와 같은 값은 제외
@@ -79,17 +86,24 @@ public class CalendarService {
 
 	    for (Map<String, String> employeeIdMap : employeeIdList) {
 	        String employeeIdValue = employeeIdMap.get("value");
+			calendarVO.setEmployeeId(calendarVO.getShare());
 	        calendarVO.setEmployeeId(employeeIdValue);
 	        System.out.println(calendarVO.getCalendarId());
 	        int result = calendarDAO.insertuser(calendarVO);
 	    }
-
+		}
+		if(calendarVO.getEmployeeId()!=calendarVO.getShare()){
+			calendarVO.getCalendarId();
+			calendarVO.setEmployeeId(calendarVO.getShare());
+			calendarVO.setUserYn(true);
+			calendarDAO.insertuser(calendarVO);
+		}
 	    // idList를 CalendarVO의 idList에 설정
 	    calendarVO.setIdList(idList);
 
 
-		
-		  // 부서 리스트를 조회하여 CalendarVO에 설정하고 인서트 
+
+		  // 부서 리스트를 조회하여 CalendarVO에 설정하고 인서트
 	    List<CalendarVO> a = calendarDAO.departmentList(calendarVO);
 	    if (!a.isEmpty()) {
 	        List<String> departmentEmployeeIds = new ArrayList<>(); // 부서의 employeeId를 저장할 리스트 생성
@@ -113,14 +127,14 @@ public class CalendarService {
 
 	   // calendarDAO.depDelte(calendarVO);
 
-	    
+
 
 	    return result;
 	}
 
 
 	public int update (CalendarVO calendarVO)throws Exception{
-		
+
 		CalendarVO a = calendarDAO.info(calendarVO);
 		calendarVO.setContent(a.getContent());
 		calendarVO.setTitle(a.getTitle());
@@ -134,26 +148,26 @@ public class CalendarService {
 	}
 
 
-	  
+
 	 public List<CalendarVO> getList(CalendarVO calendarVO)throws Exception{
 		 return calendarDAO.calList(calendarVO);
 	 }
 	 public List<CalendarVO> share(CalendarVO calendarVO)throws Exception{
 		 return calendarDAO.share(calendarVO);
-	 } 
-	 
-	
+	 }
+
+
 	 public CalendarVO detail (CalendarVO calendarVO)throws Exception{
 		 return calendarDAO.detail(calendarVO);
 	 }
-	 
+
 	public int calendarDelete (CalendarVO calendarVO)throws Exception{
 		return calendarDAO.calendarDelete(calendarVO);
 	}
-	 
+
 	public int calUpdate (CalendarVO calendarVO)throws Exception{
 		return calendarDAO.calUpdate(calendarVO);
 	}
-	 
-	 
+
+
 }
