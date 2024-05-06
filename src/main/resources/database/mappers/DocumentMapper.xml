@@ -184,7 +184,7 @@
 	
 		<sql id="tempCount">
 			<choose>
-				<when test="documentVO.temp !=null and documentVO.temp =1">
+				<when test="documentVO.temp !=null and documentVO.temp == 1">
 					AND doc.temp=1
 				</when>
 			</choose>
