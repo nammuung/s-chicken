@@ -36,42 +36,30 @@
                     </div>
                     <div class="card-body pt-3">
                     ${vo.content}
-                    
-<!--                             <p style="line-height: 24px; font-size: 12pt; text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="font-family: '맑은 고딕'; letter-spacing: -0.25pt; font-size: 10pt;">회원 여러분들께 보다 나은 서비스를 제공해드리기 위해 시스템 점검 작업이 진행될 예정입니다.</span></span></p>
-                            <p style="line-height: 24px; font-size: 12pt; text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="font-size: 10pt;">&nbsp;</span></p>
-                            <p style="line-height: 24px; font-size: 12pt; text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="font-family: '맑은 고딕'; letter-spacing: -0.25pt; font-size: 10pt;">작업 시간 중에는 다나와 서비스 접속 및 이용이 일시 중단될 수 있니 점검 시간을 반드시 확인하여 주시기 바랍니다.<br><br></span></span></p>
-                            <p style="line-height: 28px; font-size: 12pt;"><span style="font-family: '맑은 고딕'; letter-spacing: -0.25pt;">◈ 일 시&nbsp;:&nbsp;</span><b><span style="font-family: '맑은 고딕'; color: red; letter-spacing: -0.25pt;"><span style="text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;">2024.&nbsp;03.&nbsp;20. (수</span></span></b><b><span style="font-family: '맑은 고딕'; color: red; letter-spacing: -0.25pt;">) 00:00 ~ 04:00 (약&nbsp;4시간)</span></b></p>
-                            <p style="line-height: 28px; font-size: 12pt; text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="font-family: '맑은 고딕'; letter-spacing: -0.25pt;">◈ 사 유&nbsp;: 서버 장비상태 점검</span></span></p>
-                            <p style="line-height: 28px; font-size: 12pt; text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="font-family: '맑은 고딕'; letter-spacing: -0.25pt;">◈ 영 향&nbsp;:&nbsp;</span><b><span style="font-family: '맑은 고딕'; color: red; letter-spacing: -0.25pt;">점검시간 중 전체 서비스&nbsp;1~2분&nbsp;중단(총&nbsp;2회)</span></b><b><span style="font-family: '맑은 고딕'; color: red;"></span></b></span></p>
-                            <p style="line-height: 28px; font-size: 12pt; text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="font-family: '맑은 고딕'; letter-spacing: -0.25pt;">※ 진행 상황에 따라 작업 완료 시간은 변경될 수 있습니다.</span></span></p>
-                            <p style="line-height: 28px; font-size: 12pt; text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="font-size: 10pt;">&nbsp;</span></p>
-                            <p style="line-height: 24px; font-size: 12pt; text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="text-shadow: transparent 0px 0px 0px, rgba(0, 0, 0, 0.68) 0px 0px 0px !important;"><span style="font-family: '맑은 고딕'; letter-spacing: -0.25pt;">더 나은 서비스를 이용하실 수 있도록 최선의 노력을 다하겠습니다.</span></span></p>
-                            <p style="line-height: 24px; font-size: 12pt;"><span style="font-size: 10pt;">&nbsp;</span></p>
-                            <p style="line-height: 24px; font-size: 12pt;"><span style="font-family: '맑은 고딕'; letter-spacing: -0.25pt;">감사합니다.&nbsp;</span></p></div> -->
                     </div>
-                    <div>      
-                    	<c:forEach items="${vo.fileVO}" var="file">
+
+                    <div class="d-flex justify-content-between p-3">
+                        <div>
                             <table>
-                    		    <tr>
-                                    <td> 첨부파일 : <a href="/fileDown?id=${file.id}">${file.originName}</a></td>
+                                <tr>
+                                    <td> 첨부파일 :
+                                        <c:forEach items="${vo.fileVO}" var="file">
+                                        <a href="/fileDown?id=${file.id}">${file.originName}</a>
+                                        </c:forEach>
+                                    </td>
                                 </tr>
                             </table>
-                    	</c:forEach>
+                        </div>
+                        <div>
+                            <sec:authorize	access="hasAnyRole('ADMIN')">
+                                <a href="./delete" id="del" class="btn btn-outline-danger">삭제</a>
+                            </sec:authorize>
+                            <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')">
+                                <a href="./update" id="update" class="btn btn-primary">수정</a>
+                            </sec:authorize>
+                        </div>
                     </div>
                 </div>
-                 <div class="row justify-content-end p-3">
-		            <div class="col-auto">     
-		                
-		                <sec:authorize access="hasAnyRole('ADMIN', 'PERSONNEL_WRITER')"> 	               	
-			               	<a href="./update" id="update" class="btn btn-primary">수정하기</a>
-		               	</sec:authorize>
-		               	
-		               	
-		               	 <sec:authorize	access="hasAnyRole('ADMIN')">
-			               	<a href="./delete" id="del" class="btn btn-primary">삭제하기</a>
-			             </sec:authorize>
-		            </div>
-		        </div>
 		        <form id="frm" action="./update" method="get">
 		        	<input type="text" id="id" name="id" value="${vo.id}" hidden>
 		        	<input type="text" id="title" name="title" value="${vo.title}" hidden>
