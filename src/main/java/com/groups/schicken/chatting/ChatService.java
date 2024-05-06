@@ -251,7 +251,9 @@ public class ChatService {
 
         if(page == null) page = "0";
 
-        List<ChatMessage> chatMessageData = chatDAO.getChatMessageDataFirst(chatroomId, chattingData.getLastReadTime(), page);
+        String joinDate = chatDAO.getJoinDate(employeeId, chatroomId);
+
+        List<ChatMessage> chatMessageData = chatDAO.getChatMessageDataFirst(chatroomId, chattingData.getLastReadTime(), page, joinDate);
         Collections.reverse(chatMessageData);
 
         chattingData.setChatMessages(chatMessageData);
@@ -272,7 +274,8 @@ public class ChatService {
      * @return
      */
     public List<ChatMessage> getChattingDataNext(String employeeId, String chatroomId, String from, String direction){
-        List<ChatMessage> chatMessageData = chatDAO.getChatMessageData(chatroomId, from, direction);
+        String joinDate = chatDAO.getJoinDate(employeeId, chatroomId);
+        List<ChatMessage> chatMessageData = chatDAO.getChatMessageData(chatroomId, from, direction, joinDate);
 
         if(!chatMessageData.isEmpty() && direction.equals("down")){
             chatDAO.updateLastRead(chatMessageData.get(chatMessageData.size()-1).getSendDate(), chatroomId, employeeId);
