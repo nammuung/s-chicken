@@ -356,6 +356,10 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 			paystub.setPayed(false);
 		}
 
+		if(paystub.getBonusSum() > 0){
+			paystub.setBonusReason(employeeDAO.getBonusDocument(paystub));
+		}
+
 		if(paystub.getYearMonth() == null){
 			paystub.setYearMonth(paystubVO.getYearMonth());
 		}

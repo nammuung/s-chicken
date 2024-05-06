@@ -2,6 +2,7 @@ package com.groups.schicken.Employee;
 
 import java.util.List;
 
+import com.groups.schicken.document.DocumentVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.groups.schicken.annual.AnnualVO;
@@ -60,4 +61,6 @@ public interface EmployeeDAO {
     PaystubVO getPaystub(PaystubVO paystubVO);
 
 	PaystubVO calcPaystub(PaystubVO paystubVO);
+
+    List<DocumentVO> getBonusDocument(PaystubVO paystub);
 }
