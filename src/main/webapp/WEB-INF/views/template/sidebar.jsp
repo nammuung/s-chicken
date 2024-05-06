@@ -59,11 +59,11 @@
                         <i class="bi bi-circle"></i><span>결재함</span>
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="/document/ref">
                         <i class="bi bi-circle"></i><span>참조함</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a href="/document/tempList">
                         <i class="bi bi-circle"></i><span>임시저장</span>

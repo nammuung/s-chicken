@@ -166,9 +166,13 @@ console.log("임시저장함")
 		fetch('/document/tempTotemp',{
 			method:"post",
 			body:formData,
-		}).then(r=>console.log(r))
-		.then(r=>{
-			alert("임시저장 되었습니다")	
+		}).then(r=>{
+			if(r.status==200){
+			alert("임시저장 되었습니다")
+			window.close("relativePath")
+			}else{
+				alert("오류 발생")
+			}
 		})
 	}
 	
@@ -176,10 +180,13 @@ console.log("임시저장함")
 		fetch('/document/temp',{
 			method:"post",
 			body:formData,
-		}).then(r=>console.log(r))
-		.then(r=>{
+		}).then(r=>{
+			if(r.status==200){
 			alert("불러오기가 임시저장 되었습니다")
-
+			window.close("relativePath")
+			}else{
+				alert("오류 발생")
+			}
 		})
 	}
 })
@@ -230,22 +237,28 @@ console.log("임시저장함")
 			fetch('/document/tempToSang',{
 				method:"post",
 				body:formData,
-			}).then(r=>console.log(r))
-			.then(r=>{
-				alert("임시저장이 상신 되었습니다")
-				
-			})
+			}).then(r=>{
+			if(r.status==200){
+			alert("임시저장이 상신 되었습니다")
+			window.close("relativePath")
+			}else{
+				alert("오류 발생")
+			}
+		})
 		}
 		//불러오기 상신하기
 		if(sangsin.dataset.temp == 0){			
 			fetch('/document/add',{
 				method:"post",
 				body:formData,
-			}).then(r=>console.log(r))
-			.then(r=>{
-				alert("불러오기가 상신 되었습니다")
-				window.close(relativePath);
-			})
+			}).then(r=>{
+			if(r.status==200){
+			alert("불러오기가 상신 되었습니다")
+			window.close("relativePath")
+			}else{
+				alert("오류 발생")
+			}
+		})
 			
 		}
 	})

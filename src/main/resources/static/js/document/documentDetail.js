@@ -33,6 +33,9 @@ import oc from "/js/orgChart/orgChart.js";
 	let resultArr=[];
  	let relativePath = '/document/pay/pay';
  	
+ 	const sign_name = document.querySelectorAll(".sign_name");
+ 	//클래스를 추가
+ 	
 
  	
 	 getSave.addEventListener("click",(e)=>{
@@ -419,7 +422,7 @@ function hyuga(){
 
 			for(let i = 1 ; i<3;i++){
 			
-			
+			approve[i].style.backgroundColor ='white';
 			approve[i].querySelector(".sign_rank").innerHTML ="";
 			approve[i].querySelector("#name").innerHTML ="";
 			rankArr=[zeroRank];
@@ -443,6 +446,11 @@ function hyuga(){
 			console.log(resultArr)
 			console.log(rankArr)
 			console.log(employeeArr)
+			}
+			for(let i = 0 ; i < approve.length ; i++){
+				if(approve[i].querySelector(".sign_rank").innerHTML ==""){
+					approve[i].style.backgroundColor = 'rgb(209, 208, 207)';
+				}
 			}
 
 

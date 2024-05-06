@@ -167,7 +167,7 @@
                                     <span class="sign_tit_wrap">
                                         <span class="sign_tit"><strong>결재선</strong></span>
                                     </span>
-
+                                <span class="check_null">
                                     <span class="sign_member_wrap">                                        
                                         <span class="sign_member">                                        
                                             <span class="sign_rank_wrap">
@@ -177,53 +177,57 @@
                                                 <span class="sign_date ">${list[0].employeeVO.name}</span>
                                             </span>
 
-                                            <span class="sign_wrap">
-                                                <span class="sign_name"><strong>ok</strong></span>
+                                            <span class="sign_wrap sign_good">
+                                                <span class="sign_name sign_string"><strong>${list[0].employeeVO.name}</strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
                                                 <span class="sign_date ">${list[0].writeDate}</span>
                                             </span>
                                         </span>
                                     </span>
-                                  
+                                </span>
                                     <c:if test="${list[2].id eq null}">
-                                    	<span class="sign_member_wrap" id="">                                        
-                                        <span class="sign_member">                                        
-                                            <span class="sign_rank_wrap">
-                                                <span class="sign_rank"></span>
+                                        <span class="sign_check_null">
+                                            <span class="sign_member_wrap">                                        
+                                                <span class="sign_member">                                        
+                                                    <span class="sign_rank_wrap">
+                                                        <span class="sign_rank"></span>
+                                                    </span>
+                                                    <span class="sign_date_wrap">
+                                                        <span class="sign_date "></span>
+                                                    </span>
+        
+                                                    <span class="sign_wrap">
+                                                        <span class="sign_name"><strong></strong></span>
+                                                    </span>
+                                                    <span class="sign_date_wrap">
+                                                        <span class="sign_date "></span>
+                                                    </span>
+                                                </span>
                                             </span>
-                                            <span class="sign_date_wrap">
-                                                <span class="sign_date "></span>
-                                            </span>
-
-                                            <span class="sign_wrap">
-                                                <span class="sign_name"><strong></strong></span>
-                                            </span>
-                                            <span class="sign_date_wrap">
-                                                <span class="sign_date " id=""></span>
-                                            </span>
-                                        </span>
-                                    </span>
+                                        </span> 
                                     </c:if>
                                     	<c:if test="${list[3].id eq null}">
-                                    		<span class="sign_member_wrap" id="">                                        
-                                        <span class="sign_member">                                        
-                                            <span class="sign_rank_wrap">
-                                                <span class="sign_rank"></span>
-                                            </span>
-                                            <span class="sign_date_wrap">
-                                                <span class="sign_date"></span>
-                                            </span>
-
-                                            <span class="sign_wrap">
-                                                <span class="sign_name"><strong></strong></span>
-                                            </span>
-                                            <span class="sign_date_wrap">
-                                                <span class="sign_date"></span>
-                                            </span>
-                                        </span>
-                                    </span>                                    	
-                                    	</c:if> 
+                                            <span class="sign_check_null">
+                                                <span class="sign_member_wrap">                                        
+                                                    <span class="sign_member">                                        
+                                                        <span class="sign_rank_wrap">
+                                                            <span class="sign_rank"></span>
+                                                        </span>
+                                                        <span class="sign_date_wrap">
+                                                            <span class="sign_date "></span>
+                                                        </span>
+            
+                                                        <span class="sign_wrap">
+                                                            <span class="sign_name"><strong></strong></span>
+                                                        </span>
+                                                        <span class="sign_date_wrap">
+                                                            <span class="sign_date "></span>
+                                                        </span>
+                                                    </span>
+                                                </span>
+                                            </span>                             	
+                                        </c:if> 
                                     
 
                                     <c:forEach items="${list}" begin="1" var="vo">
@@ -235,12 +239,15 @@
 	                                            <span class="sign_date_wrap">
 	                                                <span class="sign_date" data-id="${vo.employeeVO.id}">${vo.employeeVO.name}</span>
 	                                            </span>
-	
-	                                            <span class="sign_wrap">
-	                                                <span class="sign_name"><strong class="sign"></strong></span>
-	                                            </span>
-	                                            <span class="sign_date_wrap">
-	                                            	<c:forEach items="${vo.approvalVOs}" var="get">
+                                                <c:forEach items="${vo.approvalVOs}" var="get">
+                                                    
+                                                        <span class="sign_wrap sign_good">
+                                                            <c:if test="${get.result eq 1}">
+                                                                <span class="sign_name sign_string"><strong class="sign">${vo.employeeVO.name}</strong></span>
+                                                            </c:if>
+                                                        </span>
+                                                    
+	                                                    <span class="sign_date_wrap">	                                            	
 	                                                	<span class="sign_date date">${get.date}</span>
 	                                                </c:forEach>
 	                                            </span>
