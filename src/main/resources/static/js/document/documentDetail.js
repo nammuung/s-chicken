@@ -41,7 +41,6 @@ import oc from "/js/orgChart/orgChart.js";
 	 getSave.addEventListener("click",(e)=>{
 		 
 		 	approval_List.innerHTML =""
-		 	console.log(e.target)
 		 	arr = [];
 		 	
 			 if(e.target.tagName=='I'){
@@ -51,26 +50,24 @@ import oc from "/js/orgChart/orgChart.js";
 						employeeId:me.value,
 						title:e.target.dataset.title
 					}
-				console.log(data)
-				console.log(JSON.stringify(data))
-				
-				
+
 				if(isConfirmed){
 					fetch("/document/saveDel",{
 						method:'post',
 						body:JSON.stringify(data),
 						headers:{
-						"Content-Type" : "application/json"
+							"Content-Type" : "application/json"
 						}
-					}).then(r=>console.log(r))
-					.then(r=>{
-						console.log(e.target)
-						e.target.parentElement.parentElement.remove();
 					})
-			 	return			 
+						.then(r=>console.log(r))
+						.then(r=>{
+							console.log(e.target)
+							e.target.parentElement.parentElement.remove();
+						})
+			 		return
 				}
-		 }
-		 	
+		 	}
+		 	console.log(e.target)
 		 	console.log(e.target.dataset)
 			let data = {
 				employeeId:me.value,			
@@ -338,9 +335,7 @@ function hyuga(){
 		const active = document.querySelectorAll('#right-top .list-group-item');
 		const strDate = document.getElementById("strDate");
 		
-		console.log("세이브를 해보자")
-		console.log(arr)
-		
+
 		let title = prompt("제목을 입력하세요")
 		if(getSave.querySelectorAll("li").length ==3){
 			alert("나의 결재목록은 3개까지입니다")
@@ -371,8 +366,8 @@ function hyuga(){
 				console.log(r)
 				r.forEach(reply=>{
 						getSave.innerHTML +=
-							`<li class="list-group-item" data-title="${reply.title}">								    	 
-											   		<span style="line-height: 38px;">${reply.title}</span><button class="btn saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${reply.title}" ></i></button>									 
+							`<li class="list-group-item link-dark" data-title="${reply.title}" style="cursor: pointer;">								    	 
+											   		<span style="line-height: 38px;" data-title="${reply.title}">${reply.title}</span><button class="btn saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${reply.title}" ></i></button>									 
 									    </li>`
 					})
 			})

@@ -50,14 +50,13 @@
                         <td style="padding: 0px !important; border: 0px currentColor; border-image: none;text-align: right;font-weight: bold; vertical-align: middle;"
                         colspan="2" class="">
                             <div class="mb-2">
-                                <button class="btn btn-primary">인쇄미리보기</button>
                                 <button class="btn btn-primary" id="sangsin">상신</button>
                                 <button class="btn btn-primary" type="button" id = "cancel">취소</button>
+                                <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
+                                    불러오기
+                                </button>
+                                <button class="btn btn-primary" id="tempSave">임시저장</button>
                             </div>
-                            <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
-                                불러오기
-                            </button>
-                            <button class="btn btn-primary" id="tempSave">임시저장</button>
                         </td>
                     </tr>
 
@@ -261,7 +260,7 @@
                         <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
                             colspan="5">
 
-                            <input readonly type="text" class="form-control" data-id="" id="bonuspeo" style="width: 100%;">
+                            <input readonly type="text" class="form-control" data-id="" id="bonuspeo" style="width: 100%; background-color: white;">
                         </td>
                     </tr>
 
@@ -363,8 +362,8 @@
                                 <div class="list-item-container">
                                     <ol class="list-group" id="getSave">
                                         <c:forEach items="${title}" var="get">
-                                            <li class="list-group-item" data-title="${get.title}">
-                                                <span style="line-height: 38px;">${get.title}</span><button class="saveDel btn" style="float: right;"><i class="bi bi-trash-fill" data-title="${get.title}" ></i></button>
+                                            <li class="list-group-item" data-title="${get.title}" style="cursor: pointer;">
+                                                <span style="line-height: 38px;" data-title="${get.title}">${get.title}</span><button class="saveDel btn" style="float: right;"><i class="bi bi-trash-fill" data-title="${get.title}" ></i></button>
                                             </li>
                                         </c:forEach>
                                     </ol>
@@ -413,7 +412,7 @@
     </div>
 
     <div class="modal fade" id="bonusModal" tabindex="-1" aria-labelledby="bonusModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <!-- 모달 내용 -->
                 <div class="modal-header">

@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page import="java.util.Date" %>
 <%@page import="java.text.SimpleDateFormat"%>
-
 <!DOCTYPE html>
 <html>
 
@@ -297,8 +297,7 @@
                             금액 </td>
                         <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
                             colspan="5">
-
-                            ${list[0].bonusVO.bonus}
+                            <fmt:formatNumber value="${list[0].bonusVO.bonus}" pattern="#,###"/>원
                         </td>
                     </tr>
 
@@ -315,7 +314,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td style="background: rgb(255, 255, 255); text-align:center; padding: 5px; border: 1px solid black; border-image: none; height: 50px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
+                        <td style="background: rgb(255, 255, 255); display: flex; padding: 5px; border: 1px solid black; border-image: none; height: 50vh; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; ">
                             ${list[0].content}
                         </td>
                     </tr>
