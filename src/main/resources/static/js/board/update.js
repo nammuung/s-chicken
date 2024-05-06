@@ -94,7 +94,7 @@ console.log(sort.dataset.sort);
 		// .then(r => {
 			
 		// })
-	
+		
 		let data = {
 			'id' :  fileId , //fileId
 			'name':	name
@@ -106,7 +106,9 @@ console.log(sort.dataset.sort);
 			contentType:"application/json",
 			dataType : "JSON",
 			success : function(data){
-				console.log(data);
+				e.target.parentElement.remove();
+				alert("삭제 되었습니다");
+				
 			}
 				// data.text();
 	})
