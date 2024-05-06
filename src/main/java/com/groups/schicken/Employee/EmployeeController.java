@@ -259,10 +259,7 @@ public class EmployeeController {
 
 	// 권한 수정
 	@PostMapping("role")
-	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("rolId") String[] rolId , Model model)throws Exception {
-		System.out.println(departmentId);
-		System.out.println("rolId = " + Arrays.toString(rolId));
-
+	public String update(@RequestParam("departmentId") String departmentId, @RequestParam(value = "rolId", required = false) String[] rolId , Model model)throws Exception {
 		employeeService.rolecontrolle(departmentId, rolId);
 	    return "redirect:/employee/role";
 	}
