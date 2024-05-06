@@ -54,4 +54,6 @@ public interface EmployeeDAO {
 
     EmployeeProfileVO getProfile(String id);
     List<EmployeeVO> getNamesByIds(List<String> ids);
+
+    List<String> getWholeIds();
 }

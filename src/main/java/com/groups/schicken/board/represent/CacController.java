@@ -18,7 +18,7 @@ import com.groups.schicken.board.BoardVO;
 import com.groups.schicken.common.vo.Pager;
 
 @Controller
-@RequestMapping("/cac/*")
+@RequestMapping("/경조사/*")
 public class CacController {
 	@Autowired
 	private RepresentService representService;
@@ -26,7 +26,7 @@ public class CacController {
 	@ModelAttribute("board")
 	public String board() {
 		
-		return "cac";
+		return "경조사";
 	}
 	
 	@GetMapping("cacList")

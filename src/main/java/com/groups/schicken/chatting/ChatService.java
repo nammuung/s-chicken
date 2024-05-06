@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -82,6 +79,7 @@ public class ChatService {
      * @return DB에 insert가 성공시 true 그렇지 않으면 false
      */
     public Boolean joinChatroom(String id, ChatroomVO chatroom) {
+        chatroom.setJoinDate(DateManager.getTodayDateTime("yyyyMMddHHmmssSSS"));
         int result = chatDAO.joinChatroom(id, chatroom);
         return result == 1;
     }
@@ -107,7 +105,26 @@ public class ChatService {
      * employeeId로 해당 employee가 들어가 있는 채팅방 리스트를 가져온다
      */
     public List<ChatroomVO> getChatroomList(String employeeId) {
-        return chatDAO.getChatroomList(employeeId);
+        List<ChatroomVO> chatroomList = chatDAO.getChatroomList(employeeId);
+
+        List<ChatMessage> lastChatByChatrooms = chatDAO.getLastChatData(chatroomList.stream().map(ChatroomVO::getId).toList());
+
+        for (ChatroomVO chatroomVO : chatroomList) {
+            chatroomVO.setLastMessage(
+                    lastChatByChatrooms.stream()
+                            .filter(e->chatroomVO.getId().equals(e.getChatroomId()))
+                            .findAny()
+                            .orElse(ChatMessage.EMPTY_MESSAGE)
+            );
+        }
+
+        chatroomList.sort(
+                Comparator
+                        .comparing(chatroomVO -> ((ChatroomVO)chatroomVO).getLastMessage().getSendDate())
+                        .reversed()
+        );
+
+        return chatroomList;
     }
 
     /*
@@ -131,11 +148,17 @@ public class ChatService {
     }
 
     /**
-     * 메세지를 DB에 Insert
+     * 메세지를 DB에 Insert 후 해당 채팅을 읽음으로 표시
      */
+    @Transactional
     public Boolean insertMessage(ChatMessage message) {
         int result = chatDAO.insertChat(message);
-        return result == 1;
+
+        if (result == 1){
+            result += chatDAO.updateLastRead(message.getSendDate(), message.getChatroomId(), message.getSenderId());
+        }
+
+        return result >= 1;
     }
 
     private String makeOneChatroomId(List<String> list) {
@@ -159,13 +182,13 @@ public class ChatService {
 
         if(page == null) page = "0";
 
-        List<ChatMessage> chatMessageData = chatDAO.getChatMessageDataFirst(chatroomId, chattingData.getLastReadId(), page);
+        List<ChatMessage> chatMessageData = chatDAO.getChatMessageDataFirst(chatroomId, chattingData.getLastReadTime(), page);
         Collections.reverse(chatMessageData);
 
         chattingData.setChatMessages(chatMessageData);
 
         if(!chattingData.isLastReaded()){
-            chatDAO.updateLastRead(chattingData.getLastMessage().getId(), chatroomId, employeeId);
+            chatDAO.updateLastRead(chattingData.getLastMessage().getSendDate(), chatroomId, employeeId);
         }
 
         return chattingData;
@@ -175,9 +198,14 @@ public class ChatService {
         List<ChatMessage> chatMessageData = chatDAO.getChatMessageData(chatroomId, from, direction);
 
         if(!chatMessageData.isEmpty() && direction.equals("down")){
-            chatDAO.updateLastRead(chatMessageData.get(chatMessageData.size()-1).getId(), chatroomId, employeeId);
+            chatDAO.updateLastRead(chatMessageData.get(chatMessageData.size()-1).getSendDate(), chatroomId, employeeId);
         }
 
         return chatMessageData;
+    }
+
+    public Boolean readChatting(String employeeId, String chatroomId, String chatId) {
+        int result = chatDAO.updateLastReadById(employeeId, chatroomId, chatId);
+        return result == 1;
     }
 }

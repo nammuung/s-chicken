@@ -21,10 +21,10 @@
     <section class="section">
         <div class="row text-nowrap justify-content-center">
             <div class="col-xs-12 col-md-6">
-                <form class="search-form d-flex align-items-center mb-3" method="POST" action="#">
+                <!-- <form class="search-form d-flex align-items-center mb-3" method="POST" action="#">
                     <input type="text" name="query" placeholder="검색" title="Enter search keyword">
                     <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-                </form>
+                </form> -->
                 <div class="card">
                     <div class="card-body">
                         <table class="table text-center ">
@@ -34,17 +34,17 @@
                                     <th style="width: 70%">문서명</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody>                                
                                 <tr>
                                     <td>1</td>
                                     <td class="text-start">
-                                        <a href="#" onclick="openPay()">지출결의서</a>
+                                        <a href="#" onclick="openbonus()">상여금신청서</a>
                                     </td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>2</td>
                                     <td class="text-start">
-                                        <a href="#" onclick="openbonus()">상여금신청서</a>
+                                        <a href="#" onclick="openvaca()">휴가계획서</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -52,13 +52,8 @@
                                     <td class="text-start">
                                         <a href="#" onclick="openretire()">퇴사신청서</a>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td class="text-start">
-                                        <a href="#" onclick="openvaca()">휴가계획서</a>
-                                    </td>
-                                </tr>
+                                </tr> -->
+                                
                             </tbody>
                         </table>
                     </div>

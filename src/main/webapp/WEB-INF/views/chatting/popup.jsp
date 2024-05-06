@@ -34,11 +34,11 @@
                 <li class="list-group-item">
                     <img class="mb-2" src="/img/logo.png" alt="" height="30px">
                 </li>
-                <li id="employee-list-btn" class="list-group-item text-nowrap now-page" data-bs-target="#main" data-bs-slide-to="0">
+                <li id="employee-list-btn" data-page-name="employee" class="list-group-item text-nowrap now-page" data-bs-target="#main" data-bs-slide-to="0">
                     직원목록
                 </li>
-                <li id="chatroom-list-btn" class="list-group-item text-nowrap" data-bs-target="#main" data-bs-slide-to="1">
-                    채팅방
+                <li id="chatroom-list-btn" data-page-name="chatroom" class="list-group-item text-nowrap" data-bs-target="#main" data-bs-slide-to="1">
+                    채팅방<span class="badge bg-danger message-dot" style="padding: 6px;"> </span>
                 </li>
                 <li id="chatting-page-btn" class="d-none" data-bs-target="#main" data-bs-slide-to="2"></li>
             </ul>
@@ -54,10 +54,10 @@
                     </button>
                 </div>
                 <div>
-                    <input id="search-input" type="text" class="form-control" placeholder="직책, 이름으로 검색">
+                    <input data-element-id="search-input" data-target="[data-employee-search]" type="text" class="form-control" placeholder="직책, 이름으로 검색">
                 </div>
 
-                <div id="chat-employee-list" class="p-3 pt-0 accordion" style="height : 91%;overflow: auto">
+                <div id="chat-employee-list" class="p-3 pt-0 accordion" style="height:calc(100vh - 68px);overflow: auto">
                     <div class="d-flex gap-3 p-1 my-3">
                         <div>
                             <img class="rounded-circle" src="${myProfile.profileImg}" alt="" width="55px" height="55px">
@@ -84,12 +84,12 @@
                             <div id="collapse-${dept.id}" class="accordion-collapse collapse show">
                                 <div class="accordion-body" style="padding: 0;">
                                     <c:forEach items="${dept.employees}" var="emp">
-                                        <div class="d-flex gap-3 p-2 aaa" onclick="onProfileClick(${emp.id})" data-parent-id="accordion-${dept.id}" data-search-name="${emp.name}">
+                                        <div class="d-flex gap-3 p-2 aaa" onclick="onProfileClick(${emp.id})" data-employee-search data-parent-id="accordion-${dept.id}" data-search-name="${emp.name}">
                                             <div>
                                                 <img class="rounded-circle" src="${emp.profileImg}" alt="" width="50px" height="50px">
                                             </div>
                                             <div class="p-2">
-                                                <h4 style="font-family: 'Pretendard-Regular'">${emp.name}</h4>
+                                                <h4>${emp.name}</h4>
                                             </div>
                                         </div>
                                     </c:forEach>
@@ -100,7 +100,14 @@
                 </div>
             </section>
 
-            <section class="carousel-item"></section>
+            <section class="carousel-item">
+                <div>
+                    <input data-element-id="search-input" data-target="[data-chatroom-search]" type="text" class="form-control" placeholder="채팅방 이름으로 검색">
+                </div>
+                <div id="chatroom-list-space" class="py-2" style="height: calc(100vh - 38px); overflow-y: auto">
+
+                </div>
+            </section>
 
             <section class="carousel-item" data-now-open>
                 <div class="row justify-content-center chatroom-title">
@@ -123,7 +130,8 @@
 <%--                </div>--%>
 
                 <div class="input-group" style="height: 83px">
-                    <textarea id="chatting-area" class="form-control" style="height: 100%;" maxlength="1000"></textarea>
+                    <textarea id="chatting-area" class="form-control" style="height: 100%;" maxlength="300"></textarea>
+                    <div class="d-none" id="hidden-chatting-area"></div>
                     <button id="send-message-btn" class="btn btn-primary"><i class="far fa-paper-plane"></i></button>
                 </div>
             </section>
@@ -140,7 +148,7 @@
                         <h4 data-profile-type="departmentName" class="card-subtitle mb-2 text-muted"></h4>
                         <h2 data-profile-type="name" class="card-title"></h2>
                         <h4 data-profile-type="phoneNumber" class="card-text"></h4>
-                        <a data-profile-type="chatting" href="#" class="btn btn-primary w-50">채팅하기</a>
+                        <a data-chatroom-info data-profile-type="chatting" href="#" class="btn btn-primary w-50">채팅하기</a>
                     </div>
                 </div>
             </div>
@@ -172,6 +180,16 @@
             })
         namecardModal.show();
     }
+
+    window.addEventListener("DOMContentLoaded", ()=>{
+        let targetId = (new URLSearchParams(window.location.search)).get("target");
+        if(targetId == null) return;
+        if(document.querySelector("[data-logined-id]").dataset.loginedId === targetId) return;
+
+        let chatStartBtn = document.querySelector("a[data-profile-type=chatting]");
+        chatStartBtn.dataset.targetId = targetId;
+        chatStartBtn.click();
+    })
 </script>
 </body>
 

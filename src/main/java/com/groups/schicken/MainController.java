@@ -91,7 +91,8 @@ public class MainController {
 		model.addAttribute("list", ar);
 		model.addAttribute("pager", pager);
 		employeeVO.setId(id);
-		List<DocumentVO> dir = documentService.approvalList(employeeVO,pager);
+        DocumentVO documentVO = new DocumentVO();
+		List<DocumentVO> dir = documentService.approvalList(employeeVO,pager,documentVO);
 		model.addAttribute("dlist", dir);
         return "home";
     }

@@ -8,6 +8,7 @@
 
 const namecardModal = new bootstrap.Modal(document.getElementById("namecard-modal"));
 function onProfileClick(empId){
+  if(empId == '-1') return;
   fetch('/employee/getProfile?id=' + empId)
       .then(res=>res.json())
       .then(info=>{
@@ -18,11 +19,17 @@ function onProfileClick(empId){
               console.log(e.dataset, profileType)
               switch (profileType){
                 case 'img':
-                  e.setAttribute("src", info.profileImg == null ? '/img/기본.jpg' : info.profileImg);
-                  break;
-                case 'noteMessage':
+                  e.setAttribute("src", info.profileImg);
                   break;
                 case 'chatting':
+                  console.log(info.id, document.querySelector("[data-logined-id]")?.dataset.loginedId, info.id === document.querySelector("[data-logined-id]")?.dataset.loginedId)
+                  if(info.id === document.querySelector("[data-logined-id]")?.dataset.loginedId) {
+                    e.classList.add("d-none");
+                  } else {
+                    e.classList.remove("d-none");
+                  }
+                case 'noteMessage':
+                  e.dataset.targetEmployeeId = info.id;
                   break;
                 default:
                   e.innerText = info[profileType];
@@ -30,8 +37,6 @@ function onProfileClick(empId){
             })
         namecardModal.show();
       })
-
-
 }
 
 //김경모

@@ -1,8 +1,8 @@
 
 import oc from "/js/orgChart/orgChart.js";
-
+	console.log("휴가")
 	const myModal = new bootstrap.Modal(document.getElementById("myModal"))
-	const bonusModal = new bootstrap.Modal(document.getElementById("bonusModal"))
+	
 	
 	const me = document.getElementById("me");
 	
@@ -16,10 +16,11 @@ import oc from "/js/orgChart/orgChart.js";
 	const sangsin = document.getElementById("sangsin");
 	const tempSave = document.getElementById("tempSave");
 	const frm= document.querySelector("form");
-	const bonus_btn = document.getElementById("bonus_btn");
 	
-	const bonus =document.getElementById("bonus");
-	const bonuspeo = document.getElementById("bonuspeo");
+	const vacation = document.getElementById("vacation");
+	
+	
+
 	
 	const getSave = document.getElementById("getSave");
 	
@@ -32,9 +33,6 @@ import oc from "/js/orgChart/orgChart.js";
 	let rankArr=[];
 	let resultArr=[];
  	let relativePath = '/document/pay/pay';
- 	
- 	const sign_name = document.querySelectorAll(".sign_name");
- 	//클래스를 추가
  	
 
  	
@@ -138,7 +136,7 @@ import oc from "/js/orgChart/orgChart.js";
 		formData.append("employeeId",employeeArr)
 		formData.append("rank",rankArr)
 		formData.append("result",resultArr)
-		formData.append("bunusEmployeeId",bonuspeo.dataset.id)
+		
 		fetch('/document/temp',{
 			method:"post",
 			body:formData,
@@ -157,16 +155,21 @@ import oc from "/js/orgChart/orgChart.js";
 		
 		const formData = new FormData(frm);
 		formData.append("content", editor.getData())
+		console.log(vacation.value)
 		
-		if(bonus.value == ""){
-			alert("금액을 입력하세요")
-			
+		if(vacation.value =="선택하기"){
+			alert("휴가를 선택하세요");
 			return
-		}
-		
-		if(bonuspeo.value == ""){
-			alert("대상자를 입력하세요")
-			return
+		}else if(vacation.value =="yoen"){
+			if(vacStart.value =="" || vacLast.value ==""){
+				alert("휴가 시작일 종료일 필수")
+				return	
+			}
+		}else if(vacation.value =="ban"){
+			if(banStart.value ==""){
+				alert("반차일 선택하세요")
+				return
+			}	
 		}
 		
 		if(title.value ==""){
@@ -179,8 +182,7 @@ import oc from "/js/orgChart/orgChart.js";
 			return
 		}		
 		
-		
-		if(employeeArr[1]==undefined){
+		if(employeeArr[1]===""){
 			alert("결재자는 1명이상 입니다")
 			return
 		}
@@ -189,41 +191,81 @@ import oc from "/js/orgChart/orgChart.js";
 		formData.append("employeeId",employeeArr)
 		formData.append("rank",rankArr)
 		formData.append("result",resultArr)
-		formData.append("bunusEmployeeId",bonuspeo.dataset.id)
+
 		fetch('/document/add',{
 			method:"post",
 			body:formData,
-		}).then((res)=>{
-			console.log(res)
-			if(res.status ==200) {
-				alert("상신 되었습니다")
-				window.close(relativePath);	
-			}
-			
+		}).then(r=>console.log(r))
+		.then(r=>{
+			alert("상신 되었습니다")
+			//window.close(relativePath);
 		})
 	})
 	
 //	window.close(relativePath)
+		const yoen_sel = document.getElementById("yoen_sel");
+		const ban_sel = document.getElementById("ban_sel");	
+		
+		
+	function disable(id){
+		let target_ele = null;
+		if(id == "yoen_sel"){
+			target_ele = yoen_sel;
+		}
+		if(id == "ban_sel"){
+			target_ele = ban_sel;
+		}
+		if(target_ele !=null){
+			const disable = target_ele.getElementsByTagName("input");
+			
+			for(let i = 0 ; i <disable.length;i++){
+				disable[i].disabled=true;
+			}
+		}
+	}
 	
-function hyuga(){
+	function able(id){
+		let target_ele = null;
+		if(id == "yoen_sel"){
+			target_ele = yoen_sel;
+		}
+		if(id == "ban_sel"){
+			target_ele = ban_sel;
+		}
+		if(target_ele !=null){
+			const able = target_ele.getElementsByTagName("input");
+			
+			for(let i = 0 ; i <able.length;i++){
+				able[i].disabled=false;
+			}
+		}
+	}
+
     
-    const vacation = document.getElementById("vacation");
-    const yoen_sel = document.getElementById("yoen_sel");
-    const ban_sel = document.getElementById("ban_sel");
+    
+    vacation.addEventListener("change",()=>{
+		    const yoen_sel = document.getElementById("yoen_sel");
+		    const ban_sel = document.getElementById("ban_sel");		
+		
+		    if(vacation.value == "yoen"){
+				able("yoen_sel");
+				disable("ban_sel"); 
+		        yoen_sel.style.display="table-row";
+		        ban_sel.style.display="none";
+		    }else if (vacation.value == "ban"){
+				able("ban_sel");
+				disable("yoen_sel");
+		        ban_sel.style.display="table-row";
+		        yoen_sel.style.display="none";
+		    }else{
+				disable("yoen_sel");
+				disable("ban_sel"); 
+		        yoen_sel.style.display="none";
+		        ban_sel.style.display="none"
+		    }
+	})
 
-	const submit_all= document.querySelector("form");
 
-    if(vacation.value == "yoen"){        
-        yoen_sel.style.display="table-row";
-        ban_sel.style.display="none";
-    }else if (vacation.value == "ban"){
-        ban_sel.style.display="table-row";
-        yoen_sel.style.display="none";
-    }else{
-        yoen_sel.style.display="none";
-        ban_sel.style.display="none"
-    }
-}
 
   $(document).ready(function(){
     function adjustSize() {
@@ -258,17 +300,6 @@ function hyuga(){
 		console.log(data)
 	  }
 	  
-   	bonuspeo.addEventListener("click",(e)=>{
-		bonusModal.show();		
-	})
-	
-	bonus_btn.addEventListener("click",(e)=>{
-		console.log(getData)
-		bonuspeo.value = getData.name;
-		bonuspeo.dataset.id=getData.id;
-		bonusModal.hide();
-		
-	})
 	  
 	  add_btn.addEventListener("click",(e)=>{
 		
@@ -422,7 +453,7 @@ function hyuga(){
 
 			for(let i = 1 ; i<3;i++){
 			
-			approve[i].style.backgroundColor ='white';
+			
 			approve[i].querySelector(".sign_rank").innerHTML ="";
 			approve[i].querySelector("#name").innerHTML ="";
 			rankArr=[zeroRank];
@@ -446,11 +477,6 @@ function hyuga(){
 			console.log(resultArr)
 			console.log(rankArr)
 			console.log(employeeArr)
-			}
-			for(let i = 0 ; i < approve.length ; i++){
-				if(approve[i].querySelector(".sign_rank").innerHTML ==""){
-					approve[i].style.backgroundColor = 'rgb(209, 208, 207)';
-				}
 			}
 
 

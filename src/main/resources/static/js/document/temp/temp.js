@@ -2,21 +2,31 @@
 import oc from "/js/orgChart/orgChart.js";
 console.log("임시저장함")
 	const myModal = new bootstrap.Modal(document.getElementById("myModal"))
+	const bonusModal = new bootstrap.Modal(document.getElementById("bonusModal"))
 	
 	const me = document.getElementById("me");
 	
+	
 	const add_btn = document.getElementById("addbtn")
 	const approval_List = document.getElementById("approval_List");
+	const approve = document.querySelectorAll(".sign_member_wrap");	
 	const del_btn = document.getElementById("delbtn");
 	const register = document.getElementById("register");
 	const modal_show = document.getElementById("modal_show");
 	const sangsin = document.getElementById("sangsin");
-	const updateSave = document.getElementById("updateSave");
+	const tempSave = document.getElementById("tempSave");
 	const frm= document.querySelector("form");
-	const approve = document.querySelectorAll(".sign_member_wrap");		
+	const bonus_btn = document.getElementById("bonus_btn");
+	
+	const bonus =document.getElementById("bonus");
+	const bonuspeo = document.getElementById("bonuspeo");
+	
+	const getSave = document.getElementById("getSave");
+	
 	const cancel = document.getElementById("cancel");
 	
-		
+	const save_btn = document.getElementById("save_btn");
+	
 	let employeeArr =[];
 	let rankArr=[];
 	let resultArr=[];
@@ -25,12 +35,77 @@ console.log("임시저장함")
 	let getData;
 	let del_app;
 	
+	getSave.addEventListener("click",(e)=>{
+		 
+		 	approval_List.innerHTML =""
+		 	console.log(e.target)
+		 	arr = [];
+		 	
+			 if(e.target.tagName=='I'){
+				
+				 const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+				let data ={
+						employeeId:me.value,
+						title:e.target.dataset.title
+					}
+				console.log(data)
+				console.log(JSON.stringify(data))
+				
+				
+				if(isConfirmed){
+					fetch("/document/saveDel",{
+						method:'post',
+						body:JSON.stringify(data),
+						headers:{
+						"Content-Type" : "application/json"
+						}
+					}).then(r=>console.log(r))
+					.then(r=>{
+						console.log(e.target)
+						e.target.parentElement.parentElement.remove();
+					})
+			 	return			 
+				}
+		 }		 
+		 	
+		 	console.log(e.target.dataset)
+			let data = {
+				employeeId:me.value,			
+				title:e.target.dataset.title
+			}
+			console.log(data)
+			fetch("/document/tansferSave",{
+				method:'post',
+				body:JSON.stringify(data),
+				headers:{
+					"Content-Type" : "application/json"
+				}
+			}).then(r=>r.json())
+			.then(r => {
+				console.log(r);
+				r.forEach(reply=>{
+					
+					approval_List.innerHTML +=
+					`<li class="list-group-item" data-id="${reply.appId}" data-name="${reply.employee.name}" data-level="${reply.code.name}">
+					<i class="bi bi-arrow-down-up handle"></i>
+						${reply.code.name} ${reply.employee.name} 
+					</li>
+					`
+					let arr_id = `${reply.appId}`
+					
+					arr.push(arr_id);
+				})
+					console.log(arr)
+			})
+	 })
+	
 	
 	
 	window.onload = function() {
 		rankArr=[0];
 		employeeArr=[approve[0].querySelector(".sign_date").getAttribute("data-id")];
 		resultArr=[1];
+		console.log(approve.length)
     for (let i = 1; i < approve.length; i++) {
         const id = approve[i].querySelector(".sign_date").getAttribute("data-id");
         const get_level = approve[i].querySelector(".sign_date").getAttribute("data-level");
@@ -84,16 +159,20 @@ console.log("임시저장함")
 	formData.append("employeeId",employeeArr)
 	formData.append("rank",rankArr)
 	formData.append("result",resultArr)
+	formData.append("bunusEmployeeId",bonuspeo.dataset.id)
 	
 	if(updateSave.dataset.temp ==1){
 		
 		fetch('/document/tempTotemp',{
 			method:"post",
 			body:formData,
-		}).then(r=>console.log(r))
-		.then(r=>{
+		}).then(r=>{
+			if(r.status==200){
 			alert("임시저장 되었습니다")
-	
+			window.close("relativePath")
+			}else{
+				alert("오류 발생")
+			}
 		})
 	}
 	
@@ -101,10 +180,13 @@ console.log("임시저장함")
 		fetch('/document/temp',{
 			method:"post",
 			body:formData,
-		}).then(r=>console.log(r))
-		.then(r=>{
+		}).then(r=>{
+			if(r.status==200){
 			alert("불러오기가 임시저장 되었습니다")
-
+			window.close("relativePath")
+			}else{
+				alert("오류 발생")
+			}
 		})
 	}
 })
@@ -118,19 +200,36 @@ console.log("임시저장함")
 			const formData = new FormData(frm);
 			formData.append("content", editor.getData())		
 			
-			if(editor.getData()==""){
-				alert("사유를 입력하세요")
-				return
-			}		
+		if(bonus.value == ""){
+			alert("금액을 입력하세요")
 			
-			if(employeeArr[1]===undefined){
-				alert("결재자는 1명이상 입니다")
-				return
-			}		
+			return
+		}
+		console.log(bonuspeo.dataset.id)
+		if(bonuspeo.dataset.id == ""){
+			alert("대상자를 입력하세요")
+			return
+		}
+		
+		if(title.value ==""){
+			alert("제목을 입력하세요")
+			return
+		}
+		
+		if(editor.getData()==""){
+			alert("사유를 입력하세요")
+			return
+		}		
+		
+		if(employeeArr[1]===undefined){
+			alert("결재자는 1명이상 입니다")
+			return
+		}
 			
 			formData.append("employeeId",employeeArr)
 			formData.append("rank",rankArr)
 			formData.append("result",resultArr)
+			formData.append("bunusEmployeeId",bonuspeo.dataset.id)
 		
 		//임시저장 상신하기
 		if(sangsin.dataset.temp == 1){
@@ -138,22 +237,28 @@ console.log("임시저장함")
 			fetch('/document/tempToSang',{
 				method:"post",
 				body:formData,
-			}).then(r=>console.log(r))
-			.then(r=>{
-				alert("임시저장이 상신 되었습니다")
-				
-			})
+			}).then(r=>{
+			if(r.status==200){
+			alert("임시저장이 상신 되었습니다")
+			window.close("relativePath")
+			}else{
+				alert("오류 발생")
+			}
+		})
 		}
 		//불러오기 상신하기
 		if(sangsin.dataset.temp == 0){			
 			fetch('/document/add',{
 				method:"post",
 				body:formData,
-			}).then(r=>console.log(r))
-			.then(r=>{
-				alert("불러오기가 상신 되었습니다")
-				window.close(relativePath);
-			})
+			}).then(r=>{
+			if(r.status==200){
+			alert("불러오기가 상신 되었습니다")
+			window.close("relativePath")
+			}else{
+				alert("오류 발생")
+			}
+		})
 			
 		}
 	})
@@ -182,7 +287,7 @@ function hyuga(){
     function adjustSize() {
       var windowHeight = $(window).height();
       var windowWidth = $(window).width();
-      var modalWidth = windowWidth * 1; // 화면 너비의 50%
+      var modalWidth = windowWidth * 0.8; // 화면 너비의 50%
       var modalHeight = windowHeight * 0.8; // 화면 높이의 80%
       
       $('#modalContent').css('width', modalWidth);
@@ -202,18 +307,34 @@ function hyuga(){
   });
   
   oc.init("note-message-org-chart", onSelectOrgChart, 'person', false);
+  oc.init("note-message-org-chart2", onSelectOrgChart, 'person', false);
   
 
   //내가 직접 선택한 콜백함수
-  function onSelectOrgChart(data){
-	getData=data;
-  }
+	  function onSelectOrgChart(data){
+		getData=data;
+	  }
+  	
+	  
+   	bonuspeo.addEventListener("click",(e)=>{
+		bonusModal.show();		
+	})
+	
+	bonus_btn.addEventListener("click",(e)=>{
+		console.log(getData)
+		bonuspeo.value = getData.name;
+		bonuspeo.dataset.id=getData.id;
+		bonusModal.hide();
+		
+	})
+  
 	  add_btn.addEventListener("click",(e)=>{
+		console.log(getData)
+		console.log(arr)
 		
 		let fullName = getData.name.split(" ");
 		let level = fullName[0];
 		let selName = fullName[1];
-
 		
 		if(arr.length ==3){
 			alert("결제자는 3명까지 입니다")
@@ -264,6 +385,55 @@ function hyuga(){
 		
 		console.log(e.target.getAttribute("data-id"))
 		
+	})
+	
+	save_btn.addEventListener("click",()=>{
+		
+		const active = document.querySelectorAll('#right-top .list-group-item');
+		const strDate = document.getElementById("strDate");
+		
+		console.log("세이브를 해보자")
+		console.log(arr.length)
+		let title = prompt("제목을 입력하세요")
+		console.log(title)
+		console.log(getSave.querySelectorAll("li").length)
+		if(getSave.querySelectorAll("li").length ==3){
+			alert("나의 결재목록은 3개까지입니다")
+			return;
+		}
+		if(title != null && arr.length != 0){
+				getSave.innerHTML="";
+			let data = [];
+			for(let i = 0 ; i < arr.length ; i++){		
+				 data.push({
+					employeeId : me.value ,
+					appId : active[i].dataset.id,
+					title : title,
+					rank : i ,
+					date :strDate.value				
+				})
+			}
+			console.log(data);		
+			
+			fetch("/document/saveApp",{
+				method:'post',
+				body:JSON.stringify(data),			
+				headers:{
+					"Content-Type" : "application/json"
+				}
+			}).then(r=>r.json())
+			.then(r=>{
+				console.log(r)
+				r.forEach(reply=>{
+						getSave.innerHTML +=
+							`<li class="list-group-item" data-title="${reply.title}">								    	 
+											   		<span style="line-height: 38px;">${reply.title}</span><button class="btn saveDel" style="float: right;"><i class="bi bi-trash-fill" data-title="${reply.title}" ></i></button>									 
+									    </li>`
+					})
+			})
+		}else{
+			alert("제목 및 결재선라인을 확인하세요")
+		}		
 	})
 	
 	del_btn.addEventListener("click",()=>{

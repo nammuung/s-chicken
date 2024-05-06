@@ -20,19 +20,22 @@ import com.groups.schicken.common.vo.Pager;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping("/all/*")
+@RequestMapping("/전체/*")
 public class AllController {
 	@Autowired
 	private RepresentService representService;
 	@ModelAttribute("board")
 	public String board() {
 		
-		return "all";
+		return "전체";
 	}
 	
 	@GetMapping("list")
 	public String list(@AuthenticationPrincipal EmployeeVO employeeVO,BoardVO boardVO,Pager pager,Model model)throws Exception{
 		//boardVO.setWriterId(employeeVO.getId());
+		List<BoardVO> imp = representService.impList(boardVO);
+		model.addAttribute("imp", imp);
+		
 		List<BoardVO> ar = representService.allgetList(pager, boardVO);
 		
 		model.addAttribute("list", ar);

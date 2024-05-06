@@ -22,17 +22,17 @@
             </a>
             <ul id="components-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#components-nav'}">show</c:if>" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="/all/list">
+                    <a href="/전체/list">
                         <i class="bi bi-circle"></i><span>전체</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/represent/list">
+                    <a href="/대표/list">
                         <i class="bi bi-circle"></i><span>대표 공지</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/cac/cacList">
+                    <a href="/경조사/cacList">
                         <i class="bi bi-circle"></i><span>경조사 공지</span>
                     </a>
                 </li>
@@ -59,11 +59,11 @@
                         <i class="bi bi-circle"></i><span>결재함</span>
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="/document/ref">
                         <i class="bi bi-circle"></i><span>참조함</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a href="/document/tempList">
                         <i class="bi bi-circle"></i><span>임시저장</span>
