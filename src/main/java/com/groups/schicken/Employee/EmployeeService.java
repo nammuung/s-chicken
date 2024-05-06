@@ -1,9 +1,6 @@
 package com.groups.schicken.Employee;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.common.util.PhoneNumberHyphenInserter;
@@ -347,7 +344,10 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		PaystubVO paystub = employeeDAO.getPaystub(paystubVO);
 
 		if(paystub == null){
-			paystub = employeeDAO.calcPaystub(paystubVO);
+
+			if(paystubVO.getYearMonth().compareTo(DateManager.getTodayDateTime("yyyy-MM")) >= 0) {
+				paystub = employeeDAO.calcPaystub(paystubVO);
+			}
 
 			if(paystub == null){
 				paystub = new PaystubVO();

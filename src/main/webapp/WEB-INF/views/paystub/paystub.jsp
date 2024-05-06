@@ -74,7 +74,7 @@
                             <div class="col-6 fs-4">${paystub.sum} 원</div>
                         </div>
                         </c:if>
-                        <c:if test="${paystub.basePay eq null}">
+                        <c:if test="${paystub.basePay eq null or paystub.basePay eq 0}">
                             <div>기록이 없습니다</div>
                         </c:if>
                     </div>
