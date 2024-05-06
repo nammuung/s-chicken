@@ -55,24 +55,24 @@ import javax.management.Notification;
 @Slf4j
 public class MainController {
 
-	
-	
+
+
 	  @Autowired private CalendarService calendarService;
 	  @Autowired private RepresentService representService;
 	  @Autowired private EmployeeService employeeService;
 	  @Autowired private OrganizationService organizationService;
 	  @Autowired private Noticer noticer;
 	  @Autowired private DocumentService documentService;
-	  
+
 	/*
 	 * @GetMapping("/") public String test(@RequestParam("path")String path){ return
 	 * path; }
 	 */
 
-    
+
     @GetMapping("/")
     public String bordarList (Model model, String id)throws Exception{
-    	
+
 
     	EmployeeVO employeeVO = new EmployeeVO();
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -80,7 +80,7 @@ public class MainController {
 		EmployeeProfileVO employeeProfileVO = new EmployeeProfileVO();
 		employeeProfileVO.setId(id);
 		System.out.println(id);
-    	
+
     	EmployeeProfileVO profile = employeeService.getProfile(id);
 
     	BoardVO boardVO =new BoardVO();
@@ -97,7 +97,7 @@ public class MainController {
         return "home";
     }
 
-    
+
     @GetMapping("userlist")
     @ResponseBody
     public List<ChattingEmployeeListVO> main ()throws Exception{
@@ -106,8 +106,8 @@ public class MainController {
     	System.out.println(a+"f로그임");
 		return a;
     }
-    
-    
+
+
     @PostMapping("insert")
     @ResponseBody
     public String insert(@RequestBody CalendarVO calendarVO) throws Exception  {
@@ -117,25 +117,25 @@ public class MainController {
         String id = authentication.getName();
         calendarVO.setShare(id);
         System.out.println(calendarVO.getEmployeeId()+"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
-        
-        if (calendarVO.getEmployeeId() == null || calendarVO.getEmployeeId().isEmpty()) {
-            // employeeId가 null일 경우 share를 이용하여 JSON 배열 형태로 생성
-            String shareValue = calendarVO.getShare();
-            List<Map<String, String>> employeeIdList = new ArrayList<>();
-            Map<String, String> employeeIdMap = new HashMap<>();
-            employeeIdMap.put("value", shareValue);
-            employeeIdList.add(employeeIdMap);
 
-            // 생성된 JSON 배열 형태를 calendarVO의 employeeId에 설정
-            Gson gson = new Gson();
-            String employeeIdJson = gson.toJson(employeeIdList);
-            calendarVO.setEmployeeId(employeeIdJson);
-            System.out.println(calendarVO.getEmployeeId());
-          
-        }
-        
+//        if (calendarVO.getEmployeeId() == null || calendarVO.getEmployeeId().isEmpty()) {
+//            // employeeId가 null일 경우 share를 이용하여 JSON 배열 형태로 생성
+//            String shareValue = calendarVO.getShare();
+//            List<Map<String, String>> employeeIdList = new ArrayList<>();
+//            Map<String, String> employeeIdMap = new HashMap<>();
+//            employeeIdMap.put("value", shareValue);
+//            employeeIdList.add(employeeIdMap);
+//
+//            // 생성된 JSON 배열 형태를 calendarVO의 employeeId에 설정
+//            Gson gson = new Gson();
+//            String employeeIdJson = gson.toJson(employeeIdList);
+//            calendarVO.setEmployeeId(employeeIdJson);
+//            System.out.println(calendarVO.getEmployeeId());
+//
+//        }
+
         int result = calendarService.insert(calendarVO);
-        
+
         if (calendarVO.getIdList() != null && !calendarVO.getIdList().isEmpty()) {
         	System.out.println("여기탔어요!!!!!!!!!!");
         	System.out.println(calendarVO.getIdList());
@@ -154,11 +154,11 @@ public class MainController {
 		calendarVO.setCalendarId(calendarVO.getId());
     	calendarService.update(calendarVO);
     	return "업데이트 성공";
-    } 
+    }
 
 
- 
-    
+
+
     @GetMapping("list")
     @ResponseBody
     public List<CalendarVO> list (CalendarVO calendarVO)throws Exception{
@@ -179,22 +179,22 @@ public class MainController {
     	List<CalendarVO> ar = calendarService.share(calendarVO);
     	return ar;
     }
-    
-    
-    
+
+
+
     @GetMapping("detail")
     @ResponseBody
     public CalendarVO detail(CalendarVO calendarVO, Model model, HttpSession session,Long id)throws Exception{
-    	
+
     	calendarVO.setId(id);
     	 calendarService.detail(calendarVO);
-    	
+
     	model.addAttribute("detailMain", calendarVO);
 
     	return calendarService.detail(calendarVO);
     }
-    
-    
+
+
     @PostMapping("calendarDelete")
     @ResponseBody
     public String calendarDelete (@RequestBody CalendarVO calendarVO) throws Exception {
@@ -208,7 +208,7 @@ public class MainController {
         return "성공";
     }
 
-    
+
 
 
     @PostMapping("calUpdate")
@@ -219,14 +219,14 @@ public class MainController {
         String id = authentication.getName();
         calendarVO.setEmployeeId(id);
     	calendarService.calUpdate(calendarVO);
-        
+
 		calendarVO.setShare(id);
         calendarVO.setUserYn(true);
         int result = calendarService.insert2(calendarVO);
     	return "성공";
     }
-    
-    
-    
+
+
+
 
 }
