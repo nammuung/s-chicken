@@ -49,7 +49,7 @@
     </div>
 </nav>
 
-<main id="main" class="carousel slide">
+<main id="main" class="carousel slide" style="width: calc(100vw - 90px);">
     <div class="carousel-inner">
         <section class="carousel-item active">
             <div class="row justify-content-end hide-list">
