@@ -30,17 +30,17 @@
                     class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#components-nav'}">show</c:if>"
                     data-bs-parent="#sidebar-nav">
                     <li>
-                        <a href="/전체/list">
+                        <a href="/all/list">
                             <i class="bi bi-circle"></i><span>전체</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/대표/list">
+                        <a href="/represent/list">
                             <i class="bi bi-circle"></i><span>대표 공지</span>
                         </a>
                     </li>
                     <li>
-                        <a href="/경조사/cacList">
+                        <a href="/coc/cacList">
                             <i class="bi bi-circle"></i><span>경조사 공지</span>
                         </a>
                     </li>
