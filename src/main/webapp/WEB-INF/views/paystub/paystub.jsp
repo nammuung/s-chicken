@@ -89,17 +89,7 @@
 <c:import url="../template/footer.jsp"/>
 <!-- ======= Script ======= -->
 <c:import url="../template/script.jsp"/>
-<script>
-    window.onload = () => {
-        const nowDate = new Date();
-        const yearMonth = nowDate.getFullYear() + "-" + ((nowDate.getMonth() + 1) > 9 ? nowDate.getMonth() + 1 : '0' + (nowDate.getMonth() + 1));
-        document.getElementById("spending-date").max = yearMonth;
-    }
-
-    document.getElementById("paystub-year-month").addEventListener("change",event=>{
-        location.href = '?yearMonth=' + event.target.value;
-    })
-</script>
+<script src="/js/paystub/paystub.js"></script>
 </body>
 
 </html>

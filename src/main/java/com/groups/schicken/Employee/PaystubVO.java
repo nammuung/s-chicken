@@ -10,7 +10,7 @@ public class PaystubVO {
     String employeeId;
     String yearMonth;
     Long basePay;
-    Long bonusSum;
+    Long bonusSum = 0L;
     boolean payed = true;
     List<DocumentVO> bonusReason;
 
