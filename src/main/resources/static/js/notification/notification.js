@@ -34,8 +34,8 @@ let notificationByType = {
     NoteMessage : openNoteMessageByLink,
     Notice : openNoticePage,
     Document : openDocumentPopup,
-    DocumentAccept : openFinishDocument,
-    DocumentReject : openFinishDocument,
+    DocumentAccept : openDocumentPopup,
+    DocumentReject : openDocumentPopup,
     Calendar : openCalendar
 }
 
@@ -82,13 +82,6 @@ function openNoticePage(link){
 }
 
 function openDocumentPopup(link){
-    let options = screen();
-    let relativePath = '/document/writenList/writenBonus?id='+link; // 문서의 상대 경로를 설정합니다.
-
-    window.open(relativePath, '_blank', options);
-}
-
-function openFinishDocument(link){
     let options = screen();
     let relativePath = '/document/writenList/writenBonus?id='+link; // 문서의 상대 경로를 설정합니다.
 
