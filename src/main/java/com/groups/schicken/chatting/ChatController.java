@@ -6,6 +6,7 @@ import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.organization.ChattingEmployeeListVO;
 import com.groups.schicken.organization.OrganizationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/chatrooms/*")
 @RequiredArgsConstructor
+@Slf4j
 public class ChatController {
     private final ChatService chatService;
     private final OrganizationService organizationService;
@@ -53,6 +55,19 @@ public class ChatController {
         return ResponseEntity.ok(chattingVO);
     }
 
+    @PostMapping("create")
+    public ResponseEntity<ChattingVO> createChatroom(@AuthenticationPrincipal EmployeeVO employee, @RequestBody String[] members){
+        ChattingVO chattingVO;
+        try {
+            ChatroomVO chatroomVO = chatService.createManyChatroom(employee.getId(), members);
+            chattingVO = chatService.getChattingDataFirst(employee.getId(), chatroomVO.getId());
+        } catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(chattingVO);
+    }
+
     @GetMapping("list")
     public ResponseEntity<List<ChatroomVO>> getChatroomsList(@AuthenticationPrincipal EmployeeVO employee){
 
@@ -62,11 +77,10 @@ public class ChatController {
     }
 
 
-    @PostMapping("join/{chatroomId}")
-    public ResponseEntity<Boolean> joinChatroom(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId){
-        Boolean result = chatService.joinChatroom(employee.getId(), chatroomId);
-
-        return ResponseEntity.ok(result);
+    @GetMapping("memberData/{chatroomId}")
+    public ResponseEntity<List<EmployeeProfileVO>> getMemberData(@PathVariable String chatroomId){
+        List<EmployeeProfileVO> memberData = chatService.getChatroomMemberData(chatroomId);
+        return ResponseEntity.ok(memberData);
     }
 
     @GetMapping("chattings/{chatroomId}")
@@ -76,8 +90,48 @@ public class ChatController {
         return ResponseEntity.ok(list);
     }
 
+    @PostMapping("join/{chatroomId}")
+    public ResponseEntity<List<EmployeeProfileVO>> inviteMembers(@AuthenticationPrincipal EmployeeVO employee, @RequestBody String[] members, @PathVariable String chatroomId){
+        try {
+            int result = chatService.joinChatroom(chatroomId, members);
+
+            if (result == members.length) {
+                chatService.insertJoinNotice(employee, chatroomId, members);
+
+                return ResponseEntity.ok(chatService.getChatroomMemberData(chatroomId));
+            }
+        } catch (Exception e){
+            log.error(e.getMessage());
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping("updateTitle")
+    public ResponseEntity<Boolean> updateTitle(@AuthenticationPrincipal EmployeeVO employee, @RequestBody ChatroomVO chatroom){
+        try {
+            Boolean result = chatService.updateTitle(employee, chatroom);
+            return ResponseEntity.ok(result);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @PutMapping("readChatting")
     public ResponseEntity<Boolean> readChatting(@AuthenticationPrincipal EmployeeVO employee, @RequestBody ChatMessage message){
         return ResponseEntity.ok(chatService.readChatting(employee.getId(), message.getChatroomId(), message.getId()));
+    }
+
+    @DeleteMapping("out/{chatroomId}")
+    public ResponseEntity outChatroom(@AuthenticationPrincipal EmployeeVO employee, @PathVariable String chatroomId){
+        boolean result = chatService.outChatroom(employee.getId(), chatroomId);
+
+        if(result){
+            chatService.insertOutMessage(employee, chatroomId);
+
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 }

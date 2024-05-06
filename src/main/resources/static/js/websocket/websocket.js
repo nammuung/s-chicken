@@ -43,12 +43,8 @@ function addHandler(sub, handler, id){
 }
 
 async function deleteHandler(id) {
-    let bool = await subs[id].unsubscribe();
-
-    if (bool)
-        delete subs[id];
-    else
-        alert("unsubscribe fail");
+    await subs[id].unsubscribe();
+    delete subs[id];
 }
 
 function sendMessage(pub, message){

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -25,10 +26,12 @@
                 <div class="card-body">
                     <div id="org-chart"></div>
                 </div>
+                <sec:authorize access="hasRole('ADMIN')">
                 <div class="card-body align-self-end">
                     <button id="dept-add-btn" class="btn btn-primary dept-btn disabled">하위에 부서추가</button>
                     <button id="dept-mod-btn" class="btn btn-primary dept-btn disabled">부서수정</button>
                 </div>
+                </sec:authorize>
             </div>
         </div>
     </div>

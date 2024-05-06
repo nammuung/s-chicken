@@ -285,6 +285,51 @@ SELECT
 	</select>
 
 
+	<!-- 월급 명세서 관련 -->
+	<select id="getPaystub">
+		SELECT
+			  employee_id
+			, payed_month AS "year_month"
+			, base_pay
+			, bonus_sum
+		FROM salary
+		WHERE employee_id=#{employeeId} AND payed_month=#{yearMonth}
+	</select>
+
+	<select id="calcPaystub" resultMap="calcPaystubResult">
+		SELECT
+			  e.id AS employee_id
+			, e.salary/12 AS base_pay
+			, #{yearMonth} AS "year_month"
+			, sub.bonus_sum
+		FROM employee e
+			LEFT JOIN (
+				SELECT
+					  NVL(sum(bonus),0) AS "bonus_sum"
+					, employee_id
+				FROM bonus
+				WHERE substr(date, 1, 7) = #{yearMonth}
+				GROUP BY employee_id
+			) sub ON sub.employee_id = e.id
+		WHERE e.id = #{employeeId}
+	</select>
+
+	<select id="getBonusDocument">
+		SELECT
+			  id
+			, title
+		FROM document d
+			INNER JOIN bonus b ON b.document_id = d.id
+		WHERE b.employee_id=#{employeeId} AND substr(b.date, 1, 7) = #{yearMonth}
+	</select>
+
+	<resultMap id="calcPaystubResult" type="PaystubVO" autoMapping="true">
+		<id property="employeeId" column="employee_id"/>
+		<collection property="bonusReason" javaType="List" ofType="DocumentVO">
+			<id column="document_id" property="id"/>
+			<result column="document_title" property="title"/>
+		</collection>
+	</resultMap>
 
 
 	<resultMap type="EmployeeVO" id="employeeDetails">

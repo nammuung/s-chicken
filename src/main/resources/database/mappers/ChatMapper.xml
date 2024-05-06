@@ -77,6 +77,7 @@
         SELECT
               cr.id AS "chatroom_id"
             , cm.room_name AS "chatroom_name"
+            , cr.type
             , e.id AS "employee_id"
             , concat(c.name, ' ' , e.name) AS "name"
             , a.url AS "profile_img"
@@ -145,6 +146,14 @@
         VALUES (#{id}, #{type})
     </insert>
 
+    <insert id="createChatroom">
+        <selectKey resultType="String" order="BEFORE" keyProperty="id">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO chatroom (id, type, default_name)
+        VALUES (#{id}, #{type}, #{name})
+    </insert>
+
     <insert id="joinChatroom">
         INSERT INTO chat_member(chatroom_id, employee_id, room_name, join_date)
         VALUES (#{chatroom.id}, #{id}, #{chatroom.name}, #{chatroom.joinDate})
@@ -176,6 +185,36 @@
         )
         WHERE chatroom_id=#{chatroomId} AND employee_id=#{employeeId}
     </update>
+
+    <update id="updateTitle">
+        UPDATE chat_member
+        SET room_name = #{name}
+        WHERE chatroom_id = #{chatroomId} AND employee_id = #{empId}
+    </update>
+
+    <insert id="insertMember">
+        INSERT INTO chat_member(chatroom_id, employee_id, room_name, join_date)
+        <foreach collection="members" item="m" open="VALUES" separator=",">
+            (#{chatroomId}, #{m}, #{name}, #{joinDate})
+        </foreach>
+    </insert>
+
+    <select id="getMembersByChatroomId">
+        SELECT
+              e.id AS "id"
+            , concat(c.name, ' ' , e.name) AS "name"
+            , a.url AS "profile_img"
+        FROM chat_member cm
+            INNER JOIN employee e ON e.id = cm.employee_id
+            INNER JOIN code c ON c.id = e.pos_id AND c.type_id='300'
+            LEFT JOIN attach a ON a.parent_id = e.id AND a.tbl_id=1077
+        WHERE cm.chatroom_id=#{chatroomId}
+    </select>
+
+    <delete id="outChatroom">
+        DELETE FROM chat_member
+        WHERE employee_id=#{empId} AND chatroom_id = #{chatroomId}
+    </delete>
 
     <sql id="getLastReadRowNum">
         (SELECT (sub.r + 13)

@@ -1,10 +1,8 @@
 package com.groups.schicken.Employee;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
+import com.groups.schicken.common.util.DateManager;
 import com.groups.schicken.common.util.PhoneNumberHyphenInserter;
 import com.groups.schicken.franchise.FranchiseMapper;
 
@@ -336,5 +334,36 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 		EmployeeProfileVO profile = employeeDAO.getProfile(id);
 		profile.setPhoneNumber(PhoneNumberHyphenInserter.hyphenInsert(profile.getPhoneNumber()));
 		return profile;
+    }
+
+    public PaystubVO getPaystub(PaystubVO paystubVO) {
+		if(paystubVO.getYearMonth() == null){
+			paystubVO.setYearMonth(DateManager.getTodayDateTime("yyyy-MM"));
+		}
+
+		PaystubVO paystub = employeeDAO.getPaystub(paystubVO);
+
+		if(paystub == null){
+
+			if(paystubVO.getYearMonth().compareTo(DateManager.getTodayDateTime("yyyy-MM")) >= 0) {
+				paystub = employeeDAO.calcPaystub(paystubVO);
+			}
+
+			if(paystub == null){
+				paystub = new PaystubVO();
+			}
+
+			paystub.setPayed(false);
+		}
+
+		if(paystub.getBonusSum() > 0){
+			paystub.setBonusReason(employeeDAO.getBonusDocument(paystub));
+		}
+
+		if(paystub.getYearMonth() == null){
+			paystub.setYearMonth(paystubVO.getYearMonth());
+		}
+
+		return paystub;
     }
 }

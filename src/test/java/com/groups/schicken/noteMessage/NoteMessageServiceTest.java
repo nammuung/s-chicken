@@ -19,7 +19,7 @@ class NoteMessageServiceTest {
     NoteMessageService noteMessageService;
 
     @Test
-    void sendMessage() {
+    void sendMessage() throws Exception {
         String id = "20240402226";
         List<String> receivers = List.of("20160607230,20240409220".split(","));
 

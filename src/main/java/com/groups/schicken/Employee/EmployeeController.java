@@ -44,14 +44,14 @@ public class EmployeeController {
 		System.out.println(employeeVO.getId());
 		if (obj == null) {
 			log.info("============오브젝트 Null=================================");
-		    
+
 			return "employee/login";
 		}
 		SecurityContextImpl contextImpl = (SecurityContextImpl)obj;
 		String user = contextImpl.getAuthentication().getPrincipal().toString();
 
 		if(user.equals("anonymousUser")) {
-		    
+
 			return "employee/login";
 		}
 
@@ -135,6 +135,7 @@ public class EmployeeController {
 	public String updateEmployee(Model model, HttpSession session,EmployeeVO employeeVO, MultipartFile attach, @RequestParam("id") String id, @RequestParam(value = "fid", required = false)Long fid)throws Exception{
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		int result = employeeService.updateEmployee(employeeVO, attach, fid);
+
 
 		    String msg = "수정을 실패 하였습니다.";
 		    String path = "./profile?id=" + id;
@@ -302,6 +303,15 @@ public class EmployeeController {
 
 		return ResponseEntity.ok(profile);
 	}
-	
-	
+
+	@GetMapping("paystub")
+	public String getPaystub(@AuthenticationPrincipal EmployeeVO employee, PaystubVO paystubVO, Model modal){
+		log.info("paystub = {}" , paystubVO);
+
+		paystubVO.setEmployeeId(employee.getId());
+		paystubVO = employeeService.getPaystub(paystubVO);
+
+		modal.addAttribute("paystub", paystubVO);
+		return "paystub/paystub";
+	}
 }
