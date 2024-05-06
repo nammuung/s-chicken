@@ -81,7 +81,6 @@
 											</tr>
 										</thead>
 										<tbody>
-										${dlist.size()}
 											<c:choose>
 												<c:when test="${dlist.size() == 0}">
 													<tr>

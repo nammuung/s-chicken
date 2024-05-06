@@ -51,9 +51,14 @@ public class SecurityConfig {
 				.authorizeHttpRequests(
 						(authorizeRequests)->
 											authorizeRequests
-											.requestMatchers("/", "/login**", "/addDepartment/**").authenticated()
-											.requestMatchers("/").permitAll()
-											.anyRequest().permitAll()
+													.requestMatchers("/franchise/**").authenticated()
+													.requestMatchers("/document/**").authenticated()
+													.requestMatchers("/department/**").authenticated()
+													.requestMatchers("/organization/**").authenticated()
+													.requestMatchers("/franchise/**").authenticated()
+													.requestMatchers("/franchise/**").authenticated()
+													.requestMatchers("/").authenticated()
+													.anyRequest().permitAll()
 											)
 ////											.requestMatchers("/").permitAll()
 //											.requestMatchers("/employee/join2").permitAll()
