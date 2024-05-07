@@ -53,8 +53,8 @@
 													<tr id="important">
 														<input type="hidden" id="important_val" value="${vo.important}">
 														<td>${vo.id}</td>
-														<td class="text-start"><a
-																href="./all/detail?id=${vo.id}">${vo.title}</a></td>
+														<td class="text-start" style="max-width: 150px;text-overflow: ellipsis;overflow: hidden; white-space: nowrap;">
+															<a href="./all/detail?id=${vo.id}">${vo.title}</a></td>
 														<td>${vo.writeDate}</td>
 														<td>${vo.employeeVO.name}</td>
 														<td>${vo.hit}</td>
@@ -93,7 +93,12 @@
 															<tr>
 																<td>${vo.id}</td>
 																<c:if test="${vo.templateVO.tempName eq '상여신청서'}">
-																	<td class="text-start"><a class="hovercursor" data-document-anchor="${vo.id}">${vo.title}</a></td>
+																	<td class="text-start" style="max-width: 150px;text-overflow: ellipsis;overflow: hidden; white-space: nowrap;">
+																		<a class="hovercursor" data-document-anchor="${vo.id}"
+																		   >
+																				${vo.title}
+																		</a>
+																	</td>
 																</c:if>
 																<td>${vo.employeeVO.name}</td>
 																<td>${vo.templateVO.tempName}</td>

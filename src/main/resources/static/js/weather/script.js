@@ -10,7 +10,9 @@ async function loadWeather(){
     timeWeather.innerHTML = `
                 <div class="d-flex flex-column text-nowrap align-items-center now">
                     <span>지금</span>
-                    <img src="/img/weather/${result.weather[0].icon}.png" width="30" alt="icon"/>
+                    <div style="height: 32px;">
+                        <img src="/img/weather/${result.weather[0].icon}.png" width="30" alt="icon"/>
+                    </div>
                     <div>
                         <span class="">${Math.floor(result.main.temp)}°</span>
                     </div>
@@ -34,7 +36,9 @@ async function loadWeatherList(){
         innerHtml += `
                 <div class="d-flex flex-column text-nowrap align-items-center" data-index="${index}">
                     <span>${unixTo24Hour(data.dt)}</span>
-                    <img src="/img/weather/${data.weather[0].icon}.png" width="30" alt="icon"/>
+                    <div style="height: 32px;">
+                        <img src="/img/weather/${data.weather[0].icon}.png" width="30" alt="icon"/>
+                    </div>
                     <div>
                         <span class="">${Math.floor(data.main.temp)}°</span>
                     </div>
