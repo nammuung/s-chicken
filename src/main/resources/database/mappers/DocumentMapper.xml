@@ -187,6 +187,9 @@
 				<when test="documentVO.temp !=null and documentVO.temp == 1">
 					AND doc.temp=1
 				</when>
+				<otherwise>
+					AND doc.temp !=1
+				</otherwise>
 			</choose>
 		</sql>
 	

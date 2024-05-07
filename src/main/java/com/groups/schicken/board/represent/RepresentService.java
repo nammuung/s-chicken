@@ -175,6 +175,7 @@ public class RepresentService implements BoardService {
 				result = representDAO.impRank(vo2);
 			}
 		}else {
+			boardVO.setRank(0L);
 			result = representDAO.impRank(boardVO);
 		}
 
