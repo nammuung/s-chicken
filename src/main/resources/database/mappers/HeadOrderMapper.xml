@@ -113,7 +113,7 @@
             ON prd.category_id = cat.id
         <include refid="search"/>
         ORDER BY
-            ord.write_date desc
+            ord.write_date desc, order_detail.id asc
     </sql>
     <select id="getOrderList" resultMap="getOrderMap">
         <include refid="getOrderSQL"/>

@@ -93,7 +93,6 @@ public class FranchiseOrderService {
             }
             if(orderDetail.getStatus() == 2){
                 statusTemp = true;
-                break;
             }
         }
         if(statusTemp == null){

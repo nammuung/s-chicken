@@ -26,17 +26,23 @@
     </select>
 
     <insert id="addReceiveHistory">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT nextval(seq1)
+        </selectKey>
         INSERT INTO
             receive_history
-            (order_id, supplier_id, write_date, content)
+            (id, order_id, supplier_id, write_date, content)
         VALUES
-            (#{order.id},#{supplier.id}, #{writeDate}, #{content})
+            (#{id}, #{order.id},#{supplier.id}, #{writeDate}, #{content})
     </insert>
     <insert id="addReleaseHistory">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT nextval(seq1)
+        </selectKey>
         INSERT INTO
             release_history
-            (order_id, write_date, content)
+            (id, order_id, write_date, content)
         VALUES
-            (#{order.id}, #{writeDate}, #{content})
+            (#{id}, #{order.id}, #{writeDate}, #{content})
     </insert>
 </mapper>

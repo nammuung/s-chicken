@@ -63,9 +63,8 @@ const itemCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col}
 },false)
 const itemTableOptions = {
     data:[],
-    colHeaders : ['','ID','카테고리', '품명', '규격','단위', '계약단가', '수량', '공급가액'],
+    colHeaders : ['ID','카테고리', '품명', '규격','단위', '계약단가', '수량', '공급가액'],
     columns : [
-        {renderer:itemCheckboxRenderer},
         {data:"id"},
         {data:"item.product.category.name"},
         {data:"item.product.name", renderer:"html"},
@@ -75,7 +74,7 @@ const itemTableOptions = {
         {data:"quantity"},
         {data:"totalPrice"},
     ],
-    colWidths : scaleArrayToSum(Array(9),763),
+    colWidths : scaleArrayToSum(Array(9),763,true),
     height:"280",
 }
 const itemHot = handsontable(itemContainer, itemTableOptions);

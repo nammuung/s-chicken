@@ -16,14 +16,12 @@
 <!-- ======= Sidebar ======= -->
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1>조직도</h1>
-    </div>
 
     <div class="row justify-content-center">
-        <div class="col-6">
+        <h1 class="text-center m-3">조직도</h1>
+        <div class="col-4">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body" style="padding: 50px!important; min-width: 350px;">
                     <div id="org-chart"></div>
                 </div>
                 <sec:authorize access="hasRole('ADMIN')">

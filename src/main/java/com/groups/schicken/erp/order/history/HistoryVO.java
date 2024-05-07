@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class HistoryVO {
+    private Long id;
     private OrderVO order;
     private SupplierVO supplier;
     private String writeDate;
