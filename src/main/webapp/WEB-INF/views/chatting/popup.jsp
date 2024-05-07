@@ -70,7 +70,7 @@
                 </div>
                 <div id="selected-employee"
                      data-selected-employee
-                     style="display: none; height: 78px; overflow-x:auto">
+                     style="display: none; height: 90px; overflow-x:scroll">
                 </div>
             </div>
             <div>
