@@ -12,7 +12,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
         <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
             <li class="nav-item">
-                <a class="nav-link " href="home.jsp">
+                <a class="nav-link " href="/">
                     <i class="bi bi-grid"></i>
                     <span>대시보드</span>
                 </a>
@@ -286,6 +286,11 @@
             </sec:authorize>
 
         </sec:authorize>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/organization/orgChartPage">
+                    <i class="bi bi-diagram-2"></i><span>조직도</span>
+                </a>
+            </li>
     </ul>
 </aside>
 
