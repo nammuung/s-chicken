@@ -33,7 +33,7 @@
     <div>
         <ul class="list-group">
             <li class="list-group-item">
-                <img class="mb-2" src="/img/logo.png" alt="" height="30px">
+                <img class="mb-2" src="/img/slogo.png" alt="" height="60px">
             </li>
             <li id="employee-list-btn" data-page-name="employee" class="list-group-item text-nowrap now-page"
                 data-bs-target="#main" data-bs-slide-to="0">
