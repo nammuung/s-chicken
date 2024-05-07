@@ -177,34 +177,8 @@
                     </li>
                 </ul>
             </li>
-            </sec:authorize>
-            <sec:authorize access="hasAnyRole('ADMIN','PURCHASE')">
             <!-- End Icons Nav -->
-            <li class="nav-item">
-                <a class="nav-link <c:if test="${cookie.navToggle.value ne '#erp-nav'}">collapsed</c:if>"
-                   data-bs-target="#warehouse-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-arrow-down-up"></i><span>입·출고</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="warehouse-nav"
-                    class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#warehouse-nav'}">show</c:if>"
-                    data-bs-parent="#sidebar-nav">
-                    <li>
-                        <a href="/order/list">
-                            <i class="bi bi-circle"></i><span>입고</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/order/release">
-                            <i class="bi bi-circle"></i><span>출고</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/products/stock">
-                            <i class="bi bi-circle"></i><span>재고 관리</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+
             <li class="nav-item">
                 <a class="nav-link <c:if test="${cookie.navToggle.value ne '#erp-nav'}">collapsed</c:if>"
                    data-bs-target="#item-nav" data-bs-toggle="collapse" href="#">
@@ -232,16 +206,46 @@
                 </ul>
             </li>
             </sec:authorize>
-
-
+            <sec:authorize access="hasAnyRole('ADMIN','DELIVERY')">
+            <li class="nav-item">
+                <a class="nav-link <c:if test="${cookie.navToggle.value ne '#erp-nav'}">collapsed</c:if>"
+                   data-bs-target="#warehouse-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-arrow-down-up"></i><span>입·출고</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="warehouse-nav"
+                    class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#warehouse-nav'}">show</c:if>"
+                    data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/order/list">
+                            <i class="bi bi-circle"></i><span>입고</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/order/release">
+                            <i class="bi bi-circle"></i><span>출고</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/products/stock">
+                            <i class="bi bi-circle"></i><span>재고 관리</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            </sec:authorize>
             <li class="nav-heading">Pages</li>
 
-            <li class="nav-item"><a class="nav-link collapsed"
-                                    href="../employee/profile?id=${id}"> <i class="bi bi-person"></i>
-                <span>마이페이지</span>
-            </a></li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="../employee/profile?id=${id}"> <i class="bi bi-person"></i>
+                    <span>마이페이지</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/organization/orgChartPage">
+                    <i class="bi bi-diagram-2"></i><span>조직도</span>
+                </a>
+            </li>
             <!-- End Profile Page Nav -->
-
         </sec:authorize>
         <sec:authorize access="hasRole('ROLE_FRANCHISE')">
             <!-- End Blank Page Nav -->
@@ -286,11 +290,7 @@
             </sec:authorize>
 
         </sec:authorize>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/organization/orgChartPage">
-                    <i class="bi bi-diagram-2"></i><span>조직도</span>
-                </a>
-            </li>
+
     </ul>
 </aside>
 
