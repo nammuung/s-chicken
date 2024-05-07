@@ -20,8 +20,13 @@
 <main id="main" class="main">
 <sec:authentication property="principal" var="user"/>
 <div data-login-id="${user.id}"></div>
-    <div class="pagetitle">
-        <h1>${board} 공지</h1>
+    <div class="pagetitle" style="text-align: center;">
+        <h1>
+			<c:if test="${board eq 'all'}">전체</c:if>
+			<c:if test="${board eq 'represent'}">대표</c:if>
+			<c:if test="${board eq 'coc'}">경조사</c:if>
+			 게시판
+		</h1>
     </div>
     <section class="section">
         <div class="row">
