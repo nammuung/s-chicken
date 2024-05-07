@@ -67,13 +67,17 @@
             menu
             ON detail.menu_id = menu.id
     </sql>
-    <select id="getPerMonth">
+    <select id="getPerMonth" resultMap="getSalesMap">
         SELECT
             fs.id,
             SUM(fs.price) as price,
-            fs.sales_date as salesDate
+            fs.sales_date as salesDate,
+            f.name franchise_name
         FROM
             franchise_sales fs
+        LEFT JOIN
+        franchise f
+        ON fs.franchise_id = f.id
         WHERE
             fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
         GROUP BY
@@ -83,13 +87,17 @@
             fs.sales_date DESC
         LIMIT 0, 10
     </select>
-    <select id="getPerWeeks">
+    <select id="getPerWeeks" resultMap="getSalesMap">
         SELECT
             fs.id,
             SUM(fs.price) price,
-            fs.sales_date salesDate
+            fs.sales_date salesDate,
+            f.name franchise_name
         FROM
             franchise_sales fs
+        LEFT JOIN
+        franchise f
+        ON fs.franchise_id = f.id
         WHERE
             fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
         GROUP BY
