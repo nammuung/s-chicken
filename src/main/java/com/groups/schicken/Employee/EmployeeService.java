@@ -281,6 +281,8 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 				// 새 파일 업로드
 			}
 			fileManager.uploadFile(attach, file);
+
+			employeeVO.setFile(file);
 		}
 
         // 파일 첨부 여부와 상관없이 직원 정보를 업데이트

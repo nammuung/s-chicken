@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Data
 public class EmployeeVO  implements UserDetails, OAuth2User {
 
-	
+
 	private String id;
 	private String password;
 	private String name;
@@ -43,26 +43,26 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	private Long departmentId;
 	private String posId;
 	private String posName; // 직급이름
-	
+
 	private DepartmentVO department;
 	private CodeVO position;
-	
+
 
 	private AnnualVO annualVO;
-	
+
 
 	//소셜 Login
 	private SocialVO socialVO;
-	
+
 	private RoleVO roleVO;
-	
+
 	private FileVO file;
-	
+
 	private List<RoleVO> roleVOs;
-	
+
 	//OAuth2User, Token등 정보 저장
 	private Map<String, Object> attributes;
-	
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		//GrantedAuthority -> 현재 사용자가 가지고 있는 권한
@@ -106,9 +106,19 @@ public class EmployeeVO  implements UserDetails, OAuth2User {
 	}
 	@Override
 	public boolean isEnabled() {
-		
-		
+
+
 		return this.isLeaved;
 	}
 
+	public void setDiff(EmployeeVO other){
+		this.setPhoneNumber(other.getPhoneNumber());
+		this.setEmail(other.getEmail());
+		this.setDepartmentId(other.getDepartmentId());
+		this.setPosId(other.getPosId());
+		this.setBankName(other.getBankName());
+		this.setAccountNumber(other.getAccountNumber());
+		this.setAddress(other.getAddress());
+		this.setAddressDetail(other.getAddressDetail());
+	}
 }
