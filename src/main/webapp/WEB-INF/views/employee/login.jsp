@@ -15,9 +15,10 @@
 	<main id="main" class="main" style="margin-left: 0;">
 		<section class="section">
 			<div class="row justify-content-center">
-				<div class="col-4">
+				<div class="col-4" style="min-width: 360px;">
 					<div class="card">
 						<div class="card-body d-flex flex-column align-items-center">
+							<img src="/img/slogo.png" alt="logo" width="150">
 							<div class="p-3">
 								<h1>S치킨 그룹웨어</h1>
 								<div>
