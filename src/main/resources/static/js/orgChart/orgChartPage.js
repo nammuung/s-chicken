@@ -339,6 +339,8 @@ deptName.addEventListener("keyup",e=>{
     if(e.target.value.length === 0){
         deptSubmitBtn.classList.add("disabled");
         return;
+    } else if(!deptNumber.classList.contains("border-danger")) {
+        deptSubmitBtn.classList.remove("disabled");
     }
 
     const targetLi = document.getElementById("target-li");

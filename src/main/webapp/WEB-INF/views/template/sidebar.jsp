@@ -12,7 +12,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
         <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
             <li class="nav-item">
-                <a class="nav-link " href="home.jsp">
+                <a class="nav-link " href="/">
                     <i class="bi bi-grid"></i>
                     <span>대시보드</span>
                 </a>
@@ -101,7 +101,7 @@
             <%--                </a></li>--%>
             <%--            </ul></li>--%>
             <!-- End Tables Nav -->
-            <sec:authorize access="hasAnyRole('ADMIN','PERSONNEL_WRITER')">
+            <sec:authorize access="hasAnyRole('ADMIN','PERSONNEL_WRITER', 'PERSONNER_READER')">
                 <li class="nav-item"><a class="nav-link <c:if test="${cookie.navToggle.value ne '#chats-nav'}">collapsed</c:if>"
                                         data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-bar-chart"></i><span>인사관리</span><i
@@ -119,6 +119,7 @@
                 </li>
                 <!-- End Charts Nav -->
             </sec:authorize>
+            <sec:authorize access="hasAnyRole('ADMIN','FRANCHISE_MANAGER')">
             <li class="nav-item">
                 <a class="nav-link <c:if test="${cookie.navToggle.value ne '#icons-nav'}">collapsed</c:if>"
                    data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
@@ -154,6 +155,8 @@
                     </li>
                 </ul>
             </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyRole('ADMIN','PURCHASE')">
             <li class="nav-item">
                 <a class="nav-link <c:if test="${cookie.navToggle.value ne '#erp-nav'}">collapsed</c:if>"
                    data-bs-target="#sell-nav" data-bs-toggle="collapse" href="#">
@@ -172,13 +175,10 @@
                             <i class="bi bi-circle"></i><span>판매</span>
                         </a>
                     </li>
-<%--                    <li>--%>
-<%--                        <a href="/sales">--%>
-<%--                            <i class="bi bi-circle"></i><span>매출 관리</span>--%>
-<%--                        </a>--%>
-<%--                    </li>--%>
                 </ul>
             </li>
+            </sec:authorize>
+            <sec:authorize access="hasAnyRole('ADMIN','PURCHASE')">
             <!-- End Icons Nav -->
             <li class="nav-item">
                 <a class="nav-link <c:if test="${cookie.navToggle.value ne '#erp-nav'}">collapsed</c:if>"
@@ -231,7 +231,7 @@
                     </li>
                 </ul>
             </li>
-
+            </sec:authorize>
 
 
             <li class="nav-heading">Pages</li>
@@ -286,6 +286,11 @@
             </sec:authorize>
 
         </sec:authorize>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/organization/orgChartPage">
+                    <i class="bi bi-diagram-2"></i><span>조직도</span>
+                </a>
+            </li>
     </ul>
 </aside>
 

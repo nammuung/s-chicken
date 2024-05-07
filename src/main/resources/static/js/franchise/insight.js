@@ -246,13 +246,22 @@ async function handleFilterClick(event) {
     }
     const series = data.map(d => {
         return {
-            x: new Date(d.salesDate),
-            y: d.price
+            name: d[0].franchise.name,
+            data: d.map(s=>
+                s.price
+            )
         }
     });
+    const categories= data[0].map(d => d.salesDate)
     chart.updateSeries([{
-        data: series
+        series:series
     }]);
+    chart.updateOptions({
+        series:series,
+        xaxis: {
+            categories:categories
+        }
+    })
 }
 async function handleBarChartFilterClick(event) {
     event.preventDefault();

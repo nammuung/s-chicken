@@ -54,7 +54,7 @@
 														<input type="hidden" id="important_val" value="${vo.important}">
 														<td>${vo.id}</td>
 														<td class="text-start"><a
-																href="./전체/detail?id=${vo.id}">${vo.title}</a></td>
+																href="./all/detail?id=${vo.id}">${vo.title}</a></td>
 														<td>${vo.writeDate}</td>
 														<td>${vo.employeeVO.name}</td>
 														<td>${vo.hit}</td>

@@ -47,7 +47,10 @@
                         <div>
                             <table>
                                 <tr>
-                                    <td> 첨부파일 :
+                                    <td>
+                                        <c:if test="${vo.fileVO.size() != 0}">
+                                            첨부파일 :
+                                        </c:if>
                                         <c:forEach items="${vo.fileVO}" var="file">
                                         <a href="/fileDown?id=${file.id}">${file.originName}</a>
                                         </c:forEach>
@@ -107,19 +110,11 @@
                 <div class="card-header">
 
                     	<span class="card-title">댓글</span>
-
                 </div>
-                
-                <div id="reply-list-div" class="card-body mt-3">	
-                
-                    
-                
-                					
-                                  
+                <div id="reply-list-div" class="card-body mt-3">
                 </div>
                 <div class="card-footer">
                 	<h3 class="comment-reply-title"><span>Leave a comment</span></h3>
-						
 							<div class="row">
 								<input type="hidden" name="boardNum" value="${dto.boardNum}">
 								
