@@ -26,7 +26,7 @@
                         <b>검색</b>
                         <form>
                             <div class="mb-3 row">
-                                <label for="product" class="col-2 col-form-label">납품처</label>
+                                <label for="product" class="col-2 col-form-label">거래처</label>
                                 <div class="col-3">
                                     <input type="text" class="form-control" id="product" value="">
                                 </div>
@@ -73,11 +73,11 @@
                             <ul class="nav nav-tabs nav-tabs-bordered">
 
                                 <li class="nav-item">
-                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#supplier-overview">납품처 정보</button>
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#supplier-overview">거래처 정보</button>
                                 </li>
 
                                 <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">납품처 품목</button>
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">거래처 품목</button>
                                 </li>
 
 

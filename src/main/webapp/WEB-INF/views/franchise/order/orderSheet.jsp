@@ -133,7 +133,7 @@
 
     <div class="border border-black border-4 p-2 mt-3 w-100 d-flex justify-content-between">
         <span><b>금액 : ${koreanNumber} 정</b></span>
-        <span><b>( <fmt:formatNumber value="${total}" pattern="#,###"/>원 ) / VAT포함</b></span>
+        <span><b>( <fmt:formatNumber value="${total}" pattern="#,###"/>원 ) / VAT미포함</b></span>
     </div>
     <div class="w-100 mt-3">
         <table class="w-100 text-center">

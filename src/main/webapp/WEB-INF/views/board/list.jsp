@@ -18,9 +18,48 @@
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
     <div class="pagetitle" style="text-align: center;">
-        <h1>${board} 게시판</h1>
+        <h1>
+			<c:if test="${board eq 'all'}">전체</c:if>
+			<c:if test="${board eq 'represent'}">대표</c:if>
+			<c:if test="${board eq 'coc'}">경조사</c:if>
+			 게시판
+		</h1>
     </div>
     <section class="section">
+		<c:if test="${board ne 'coc'}">
+			<div class="row justify-content-center">
+				<div class="col-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-center p-3">
+								<h1><b>중요 공지</b></h1>
+							</div>
+							<div class="accordion accordion-flush" id="accordionFlushExample">
+								<c:forEach items="${imp}" var="dept" varStatus="status">
+									<div class="accordion-item ms-3 me-3 p-3" data-id="${dept.id}">
+										<h2 class="accordion-header">
+											<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse${status.index}" aria-expanded="false" aria-controls="flush-collapse${status.index}">
+												<b><i class="bi bi-arrows-vertical handle d-none me-3"></i></b>
+												<b># ${dept.title}</b>
+											</button>
+										</h2>
+										<div id="flush-collapse${status.index}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+											<div class="accordion-body">${dept.content}</div>
+											<div class="d-flex justify-content-end mb-3">
+												<a href="/${board}/detail?id=${dept.id}">
+													<span class="text-muted">자세히 보기</span>
+												</a>
+											</div>
+										</div>
+									</div>
+								</c:forEach>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</c:if>
+
         <div class="row justify-content-end p-3">
             <div class="col-auto">
 
@@ -52,42 +91,20 @@
 	                                <th style="width: 5%">조회수</th>
 	                            </tr>
                             </thead>
-                            <tbody>
-                            	
-	                            	<c:forEach items="${list}" var="vo" varStatus="status">
-	                            		
-				                            <tr id="important">
-                                                <input type="hidden" id="important_val" value="${vo.important}">
-                                                
-				                                <td>${vo.id}</td>
-				                                <td class="text-start"><a href="./detail?id=${vo.id}">
-				                                <c:if test="${status.index < 3 }">
-                                                	<span style="background:gray; color:white; padding:2px; border-radius:6px; font-size:12px;">중요</span>
-                                                </c:if>
-				                                	${vo.title}
-				                                	</a></td>
-				                                <td>${vo.writeDate}</td>
-				                                <td>${vo.employeeVO.name}</td>
-				                                <td>${vo.hit}</td>
-				                            </tr>
-			                            
-		                            </c:forEach>
-		                            
-<%-- 		                            <c:forEach items="${list}" var="vo">
-	                            		<c:if test="${vo.sort eq 0}">
-				                            <tr id="important">
-                                                <input type="hidden" id="important_val" value="${vo.important}">
-				                                <td>${vo.id}</td>
-				                                <td class="text-start"><a href="./detail?id=${vo.id}">${vo.title}</a></td>
-				                                <td>${vo.writeDate}</td>
-				                                
-				                                	<td>${vo.employeeVO.name}</td>
-				                                
-				                                <td>${vo.hit}</td>
-				                            </tr>
-			                            </c:if>
-		                            </c:forEach> --%>
-	                           
+                            <tbody>                            	
+	                            	<c:forEach items="${list}" var="vo">	                            		
+										<tr id="important">
+											<input type="hidden" id="important_val" value="${vo.important}">
+											
+											<td>${vo.id}</td>
+											<td class="text-start"><a href="./detail?id=${vo.id}">				                               
+												${vo.title}
+												</a></td>
+											<td>${vo.writeDate}</td>
+											<td>${vo.employeeVO.name}</td>
+											<td>${vo.hit}</td>
+										</tr>
+		                            </c:forEach> 
                             </tbody>
                         </table>
                     </div>

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -15,20 +16,20 @@
 <!-- ======= Sidebar ======= -->
 <c:import url="../template/sidebar.jsp"/>
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1>조직도</h1>
-    </div>
 
     <div class="row justify-content-center">
-        <div class="col-6">
+        <h1 class="text-center m-3">조직도</h1>
+        <div class="col-4">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body" style="padding: 50px!important; min-width: 350px;">
                     <div id="org-chart"></div>
                 </div>
+                <sec:authorize access="hasRole('ADMIN')">
                 <div class="card-body align-self-end">
                     <button id="dept-add-btn" class="btn btn-primary dept-btn disabled">하위에 부서추가</button>
                     <button id="dept-mod-btn" class="btn btn-primary dept-btn disabled">부서수정</button>
                 </div>
+                </sec:authorize>
             </div>
         </div>
     </div>

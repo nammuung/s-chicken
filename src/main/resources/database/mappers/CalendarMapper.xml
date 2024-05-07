@@ -20,6 +20,21 @@
 		#{share}
 		)
 	</insert>
+	<insert id="insert2" parameterType="CalendarVO">
+		<selectKey resultType="Long" keyProperty="id" order="BEFORE">
+			SELECT nextval(seq5)
+		</selectKey>
+		insert into calendar
+		values
+		(
+		#{id},
+		#{start},
+		#{end},
+		#{title},
+		#{content},
+		#{share}
+		)
+	</insert>
 
 	<insert id="insertuser" parameterType="CalendarVO">
 		insert into calendar_emp (calendar_id, employee_id,user_yn)
@@ -37,32 +52,41 @@
 </insert>
 
 
+<select id="detail"  parameterType="CalendarVO" resultType="CalendarVO">
+select  
+calendar.id,
+calendar.start,
+calendar.`end`,
+calendar.title,
+calendar.content,
+calendar.share,
+e.name ,
+d.name AS depname,
+c.name AS cname
+from calendar
+inner join employee e on calendar.share  = e.id 
+inner join department d on e.department_id = d.id 
+inner join code c on e.pos_id = c.id AND c.type_id = 300
+where calendar.id = #{id}
+</select>
 
 
 
-	<select id="calList" parameterType="CalendarVO"
-		resultType="CalendarVO">
-		select
-		calendar.id ,
-		calendar.`start` ,
-		calendar.`end` ,
-		calendar.title ,
-		ce.user_yn,
-		calendar.content ,
-		calendar.share,
-		ce.employee_id,
-		e.name
-		from calendar
-		inner join calendar_emp ce
-		on calendar.id = ce.calendar_id
-		inner join employee e
-		on ce.employee_id = e.id
-		inner join department d
-		on e.department_id = d.id
+
+
+	<select id="calList" parameterType="CalendarVO" resultType="CalendarVO">
+		select * from calendar c 
+		inner join calendar_emp ce on c.id = ce.calendar_id 
+		where ce.employee_id =#{employeeId} and ce.user_yn =  1 and c.share = #{share}
+	</select>
+	<select id="share" parameterType="CalendarVO" resultType="CalendarVO">
+		select * from calendar c 
+		inner join calendar_emp ce on c.id = ce.calendar_id 
+		where ce.employee_id =#{employeeId} and ce.user_yn =  1 and c.share != #{share}
 	</select>
 
 
-<select id="departmentList" parameterType="CalendarVO" resultType="CalendarVO">
+<select id="departmentList" resultType="CalendarVO">
 select 
 c.id AS calendar_id ,  
 e.id AS employee_id 
@@ -97,5 +121,27 @@ where e.id != #{share}
 	</update>
 
 
+<update id="calendarDelete" parameterType="CalendarVO">
+update calendar_emp SET 
+user_yn = 0
+where calendar_id =#{calendarId} and employee_id =#{employeeId}
+ </update>
 
+
+<delete id="calUpdate" parameterType="CalendarVO">
+delete from calendar_emp where calendar_id= #{calendarId} and employee_id = #{employeeId}
+</delete>
+
+<select id="info" resultType="CalendarVO" parameterType="CalendarVO">
+select * from 
+calendar c 
+inner join 
+calendar_emp ce 
+on 
+c.id = ce.calendar_id 
+where ce.calendar_id =#{calendarId} 
+and 
+ce.employee_id = #{employeeId}
+</select>
+		
 </mapper>

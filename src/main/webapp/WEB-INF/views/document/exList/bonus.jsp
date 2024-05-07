@@ -50,21 +50,20 @@
                         <td style="padding: 0px !important; border: 0px currentColor; border-image: none;text-align: right;font-weight: bold; vertical-align: middle;"
                         colspan="2" class="">
                             <div class="mb-2">
-                                <button class="btn btn-primary">인쇄미리보기</button>
                                 <button class="btn btn-primary" id="sangsin">상신</button>
                                 <button class="btn btn-primary" type="button" id = "cancel">취소</button>
+                                <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
+                                    불러오기
+                                </button>
+                                <button class="btn btn-primary" id="tempSave">임시저장</button>
                             </div>
-                            <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
-                                불러오기
-                            </button>
-                            <button class="btn btn-primary" id="tempSave">임시저장</button>
                         </td>
                     </tr>
 
                     <tr>
 
                         <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
-                            colspan="2" class=""> 급여신청서
+                            colspan="2" class=""> 상여금신청서
                             <div style="text-align: right;">
 
                                 <!-- Button to Open the Modal -->
@@ -92,7 +91,7 @@
                                 </colgroup>
 
                                 <tbody>
-                                    <tr>
+                                    <!-- <tr>
                                         <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
                                             문서번호
                                         </td>
@@ -101,14 +100,14 @@
                                                 <input type="text" id="strDate" class="form-control" value="<%=strDate %>" style="text-align: center;">
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                     <tr>
                                         <td style="background: rgb(221, 221, 221); padding: 5px; border: 1px solid black; border-image: none; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">
                                             문서종류
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" id="" name="tempName" style="text-align: center;" value="급여신청서" readonly>
+                                                <input type="text" class="form-control" id="" name="tempName" style="text-align: center;" value="상여금신청서" readonly>
                                             </div>
                                         </td>
                                     </tr>
@@ -118,7 +117,7 @@
                                         </td>
                                         <td style="background: rgb(255, 255, 255); padding: 0; border: 1px solid black; height: 24px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">
                                             <div style="width: 100%; text-align: center;">
-                                                <input type="text" class="form-control" name="writeDate" value="<%=strDate %>" readonly  style="text-align: center;">
+                                                <input type="text" class="form-control" id="strDate" name="writeDate" value="<%=strDate %>" readonly  style="text-align: center;">
                                             </div>
                                         </td>
                                     </tr>
@@ -169,7 +168,7 @@
                                             </span>
 
                                             <span class="sign_wrap">
-                                                <span class="sign_name"><strong>ok</strong></span>
+                                                <span class="sign_name"><strong></strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
                                                 <span class="sign_date " id=""><%=strDate %></span>
@@ -179,51 +178,51 @@
                                     <span class="sign_member_wrap nextdo">
                                         <span class="sign_member">                                            
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank">직급</span>
+                                                <span class="sign_rank"></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="name">이름</span>
+                                                <span class="sign_date " id="name"></span>
                                             </span>
 
                                             <span class="sign_wrap">
-                                                <span class="sign_name"><strong>서명</strong></span>
+                                                <span class="sign_name"><strong></strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date ">날짜</span>
+                                                <span class="sign_date "></span>
                                             </span>
                                         </span>
                                     </span>
                                     <span class="sign_member_wrap" id="">
                                         <span class="sign_member">                                            
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank">직급</span>
+                                                <span class="sign_rank"></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="name">이름</span>
+                                                <span class="sign_date " id="name"></span>
                                             </span>
 
                                             <span class="sign_wrap">
-                                                <span class="sign_name"><strong>서명</strong></span>
+                                                <span class="sign_name"><strong></strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="">날짜</span>
+                                                <span class="sign_date " id=""></span>
                                             </span>
                                         </span>
                                     </span>
                                     <span class="sign_member_wrap" id="">
                                         <span class="sign_member">                                           
                                             <span class="sign_rank_wrap">
-                                                <span class="sign_rank">직급</span>
+                                                <span class="sign_rank"></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="name">이름</span>
+                                                <span class="sign_date " id="name"></span>
                                             </span>
 
                                             <span class="sign_wrap">
-                                                <span class="sign_name"><strong>서명</strong></span>
+                                                <span class="sign_name"><strong></strong></span>
                                             </span>
                                             <span class="sign_date_wrap">
-                                                <span class="sign_date " id="">날짜</span>
+                                                <span class="sign_date " id=""></span>
                                             </span>
                                         </span>
                                     </span>
@@ -251,6 +250,28 @@
                             colspan="5">
 
                             <input type="text" class="form-control" id="title" name="title" style="width: 100%;">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            대상자 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
+
+                            <input readonly type="text" class="form-control" data-id="" id="bonuspeo" style="width: 100%; background-color: white;">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            금액 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
+
+                            <input type="text" class="form-control" id="bonus" name="bonus" style="width: 100%;">
                         </td>
                     </tr>
 
@@ -301,6 +322,7 @@
 	                </div>
 
 	            </div>
+                
 	            <div class="col-md-2 mmdd d-flex justify-content-center align-items-center flex-column">
                     <div class="text-center">
 				        <button class="btn btn-primary btn-sm mb-3" id="addbtn"> >> </button>
@@ -331,16 +353,17 @@
                           </div>
                       </div>
                   </div>
+                  
 	              <div id="right-bottom" class="row ssdd">
                       <div class="card">
                           <div class="card-body">
                               <div class="h5" style="text-align: left;">나의 결재목록</div>
 
                                 <div class="list-item-container">
-                                  <ol class="list-group" id="getSave">
+                                    <ol class="list-group" id="getSave">
                                         <c:forEach items="${title}" var="get">
-                                            <li class="list-group-item" data-title="${get.title}">
-                                                <span style="line-height: 38px;">${get.title}</span><button class="saveDel btn" style="float: right;"><i class="bi bi-trash-fill" data-title="${get.title}" ></i></button>
+                                            <li class="list-group-item" data-title="${get.title}" style="cursor: pointer;">
+                                                <span style="line-height: 38px;" data-title="${get.title}">${get.title}</span><button class="saveDel btn" style="float: right;"><i class="bi bi-trash-fill" data-title="${get.title}" ></i></button>
                                             </li>
                                         </c:forEach>
                                     </ol>
@@ -357,6 +380,7 @@
 	            </div>
 	          </div>
 	        </div>
+            </div>
 	        <!-- 모달 내용 끝 -->
 	      </div>
 	      <!-- Modal footer -->
@@ -380,6 +404,25 @@
                 </div>
                 <!-- 모달 footer (선택적) -->
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="bonusModal" tabindex="-1" aria-labelledby="bonusModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <!-- 모달 내용 -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bonusModalLabel">대상자</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="note-message-org-chart2"></div>
+                <!-- 모달 footer (선택적) -->
+                <div class="modal-footer">
+                    <button type="button" id="bonus_btn" class="btn btn-primary">지정하기</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                     
                 </div>

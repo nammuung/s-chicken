@@ -77,15 +77,15 @@
                     <ul class="pagination justify-content-center">
                     	<c:if test="${!pager.start}">
 	                        <li class="page-item disabled">
-	                            <a class="page-link" href="/document?page=${pager.startNum-1}&search=${pager.search}&kind=${pager.kind}" tabindex="-1" aria-disabled="true">이전</a>
+	                            <a class="page-link" href="/document/callList?page=${pager.startNum-1}&search=${pager.search}&kind=${pager.kind}" tabindex="-1" aria-disabled="true">이전</a>
 	                        </li>
 						</c:if>                      
 						<c:forEach begin="${pager.startNum}" end="${pager.lastNum}" var="page">
-	                        <li class="page-item <c:if test="${pager.page == page}">active</c:if>"><a class="page-link" href="/document/document?page=${pager.page}&search=${pager.search}&kind=${pager.kind}">${page}</a></li>
+	                        <li id="call_letgo" class="page-item <c:if test="${pager.page == page}">active</c:if>"><a class="page-link" href="#" data-page="${page}">${page}</a></li>
 	                    </c:forEach>                        
                         <c:if test="${!pager.last}">
 	                        <li class="page-item">
-	                            <a class="page-link" href="/document/document?page=${pager.lastNum-1}&search=${pager.search}&kind=${pager.kind}">다음</a>
+	                            <a class="page-link" href="/document/callList?page=${pager.lastNum-1}&search=${pager.search}&kind=${pager.kind}">다음</a>
 	                        </li>
                         </c:if>
                     </ul>

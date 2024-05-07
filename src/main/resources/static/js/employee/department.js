@@ -118,9 +118,10 @@ function validateForm() {
   var team = document.getElementById("team").value;
   var bankName = document.getElementById("bankName").value;
   var accountNumber = document.getElementById("accountNumber").value;
+  var salary = document.getElementById("salary").value;
 
   // 필수 입력 필드가 비어 있는지 확인
-  if (!name || !phoneNumber || !email || !postcode || !address || !addressDetail || !residentNumber || !dateOfEmployment || posId === "0" || department === "0" || team === "0" || bankName === "0" || !accountNumber) {
+  if (!salary || !name || !phoneNumber || !email || !postcode || !address || !addressDetail || !residentNumber || !dateOfEmployment || posId === "0" || department === "0" || team === "0" || bankName === "0" || !accountNumber) {
       // 필수 입력 필드 중 하나라도 비어 있는 경우 오류 메시지 표시 및 폼 제출 중지
       alert("모든 필수 항목을 입력해주세요.");
       return false;
@@ -133,6 +134,8 @@ function validateForm() {
       return false;
   }
 
+
+  
   // 휴대폰 번호에서 하이픈 제거
   phoneNumber = phoneNumber.replace(/-/g, '');
 
@@ -143,6 +146,8 @@ function validateForm() {
   document.getElementById("phoneNumber").value = phoneNumber;
   document.getElementById("accountNumber").value = accountNumber;
 
+  salary += '0000';
+  document.getElementById("salary").value = salary;
   // 모든 검증 통과 시 폼 제출 허용
   return true;
 }

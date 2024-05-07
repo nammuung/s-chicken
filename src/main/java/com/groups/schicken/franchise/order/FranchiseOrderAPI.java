@@ -26,7 +26,7 @@ public class FranchiseOrderAPI {
         franchiseVO.setId("1098");
     };
     @GetMapping("orders")
-    public ResponseEntity<?> getOrderList(@AuthenticationPrincipal FranchiseVO franchise ,FranchiseOrderVO franchiseOrderVO) throws Exception {
+    public ResponseEntity<?> getOrderList(@AuthenticationPrincipal FranchiseVO franchise ,FranchiseOrderVO franchiseOrderVO,  @RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate) throws Exception {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null) {
@@ -36,7 +36,11 @@ public class FranchiseOrderAPI {
                 }
             }
 //            if(franchiseVO == null) return ResponseEntity.badRequest().build();
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), franchiseOrderService.getOrderList(franchiseOrderVO)));
+            List<FranchiseOrderVO> list =franchiseOrderService.getOrderList(franchiseOrderVO);
+            if(startDate!=null && endDate != null){
+                list.removeIf(order -> order.getWriteDate().compareTo(startDate) < 0 || order.getWriteDate().compareTo(endDate) > 0);
+            }
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), list));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

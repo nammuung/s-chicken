@@ -33,6 +33,15 @@ export const updateFranchiseOrder = async (params) => {
     }
 }
 
+export const updateFranchiseOrderDetail = async (params) => {
+    try {
+        const response = await defaultInstance.put('franchise/orderDetails', params);
+        return response.data;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 export const addFranchiseOrder = async (params) => {
     try {
         const config = {headers:{"Content-Type": "application/json"}}

@@ -15,9 +15,10 @@
 	<main id="main" class="main" style="margin-left: 0;">
 		<section class="section">
 			<div class="row justify-content-center">
-				<div class="col-8">
+				<div class="col-4" style="min-width: 360px;">
 					<div class="card">
 						<div class="card-body d-flex flex-column align-items-center">
+							<img src="/img/slogo.png" alt="logo" width="150">
 							<div class="p-3">
 								<h1>S치킨 그룹웨어</h1>
 								<div>
@@ -74,14 +75,14 @@
 										<span style="padding-left: 2.5rem; padding-right: 2.5rem;">로그인</span>
 									</button>
 								</div>
-								<div class="mb-2">
-									<a href="/oauth2/authorization/kakao?prompt=login"> <img
-										width="300" src="/kakao_login.png" alt="카카오로그인버튼">
-									</a>
-								</div>
-								<div class="mb-2">
-									<img width="300" src="/naver_login.png" alt="네이버로그인버튼">
-								</div>
+<%--								<div class="mb-2">--%>
+<%--									<a href="/oauth2/authorization/kakao?prompt=login"> <img--%>
+<%--										width="300" src="/kakao_login.png" alt="카카오로그인버튼">--%>
+<%--									</a>--%>
+<%--								</div>--%>
+<%--								<div class="mb-2">--%>
+<%--									<img width="300" src="/naver_login.png" alt="네이버로그인버튼">--%>
+<%--								</div>--%>
 							</form>
 						</div>
 					</div>

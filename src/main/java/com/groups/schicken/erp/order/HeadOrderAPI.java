@@ -19,11 +19,13 @@ public class HeadOrderAPI {
     private final HeadOrderService headOrderService;
 
     @GetMapping("orders")
-    public ResponseEntity<?> getOrderList(HeadOrderVO headOrderVO) throws Exception {
+    public ResponseEntity<?> getOrderList(HeadOrderVO headOrderVO, @RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate) throws Exception {
         try {
-            List<HeadOrderVO> result = headOrderService.getOrderList(headOrderVO);
-            System.out.println("headOrderService.getOrderList(headOrderVO) = " + result + "길이"+ result.size());
-            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), headOrderService.getOrderList(headOrderVO)));
+            List<HeadOrderVO> list = headOrderService.getOrderList(headOrderVO);
+            if(startDate!=null && endDate != null){
+                list.removeIf(order -> order.getWriteDate().compareTo(startDate) < 0 || order.getWriteDate().compareTo(endDate) > 0);
+            }
+            return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), list));
         } catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -32,7 +34,6 @@ public class HeadOrderAPI {
     }
     @GetMapping("orders/sups")
     public ResponseEntity<?> getOrderSupList(HeadOrderVO headOrderVO) throws Exception {
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@Suppppppp");
         try {
             List<HeadOrderVO> result = headOrderService.getOrderSupList(headOrderVO);
             System.out.println("headOrderService.getOrderSupList(headOrderVO) = " + result + "길이"+ result.size());
@@ -48,7 +49,6 @@ public class HeadOrderAPI {
         HeadOrderVO headOrderVO = new HeadOrderVO();
         headOrderVO.setId(id);
         try {
-            System.out.println("오더 디테일 : "+ headOrderService.getOrder(headOrderVO));
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), headOrderService.getOrder(headOrderVO)));
         } catch (Exception e){
             e.printStackTrace();
@@ -64,7 +64,6 @@ public class HeadOrderAPI {
         supplierVO.setId(supplierId);
         headOrderVO.setSupplier(supplierVO);
         try {
-            System.out.println("오더 디테일 : "+ headOrderService.getOrder(headOrderVO));
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, HttpStatus.OK.toString(), headOrderService.getOrder(headOrderVO)));
         } catch (Exception e){
             e.printStackTrace();
@@ -77,7 +76,6 @@ public class HeadOrderAPI {
     @Transactional
     public ResponseEntity<?> addOrder(@AuthenticationPrincipal EmployeeVO employeeVO, @RequestBody HeadOrderVO headOrderVO) throws Exception {
         try {
-            System.out.println("employeeVO = " + employeeVO);
             headOrderVO.setEmployee(employeeVO);
             return ResponseEntity.ok(ResultVO.res(HttpStatus.OK, "발주서 작성 완료", headOrderService.addOrder(headOrderVO)));
         } catch (Exception e) {

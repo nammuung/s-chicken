@@ -51,11 +51,17 @@ public class SecurityConfig {
 				.authorizeHttpRequests(
 						(authorizeRequests)->
 											authorizeRequests
-											.requestMatchers("/", "/login**", "/addDepartment/**").authenticated()
-//											.requestMatchers("/").permitAll()
-											.requestMatchers("employee/role").hasRole("ADMIN")
-											.requestMatchers("employee/list").hasRole("PERSONNEL_WRITER")
-											.anyRequest().permitAll()
+													.requestMatchers("/franchise/**").authenticated()
+													.requestMatchers("/document/**").authenticated()
+													.requestMatchers("/department/**").authenticated()
+													.requestMatchers("/organization/**").authenticated()
+													.requestMatchers("/franchise/**").authenticated()
+													.requestMatchers("/franchise/**").authenticated()
+													.requestMatchers("/all/**").authenticated()
+													.requestMatchers("/represent/**").authenticated()
+													.requestMatchers("/coc/**").authenticated()
+													.requestMatchers("/").authenticated()
+													.anyRequest().permitAll()
 											)
 ////											.requestMatchers("/").permitAll()
 //											.requestMatchers("/employee/join2").permitAll()

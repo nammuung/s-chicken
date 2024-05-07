@@ -48,9 +48,21 @@ fetch("/reply/list?parentId="+id,{
 						</div>
 						<div class="d-flex align-items-center">
 							<div>
-								<button data-btn-type="delete" type="button" class="btn btn-primary" data-delete="${reply.id}">삭제하기</button>
-								<button data-btn-type="modify" type="button" class="btn btn-primary" data-modify="${reply.id}">수정하기</button>
-								<button data-btn-type="realmodify" type="button" class="btn btn-primary" data-realmodify="${reply.id}" hidden>수정</button>
+								<button data-btn-type="delete" type="button" class="btn btn-primary" data-delete="${reply.id}">
+									<i class="bi bi-trash3"  data-btn-type="delete" data-delete="${reply.id}"></i>
+								</button>								
+								
+								<div data-modify="${reply.id}">
+									<button data-btn-type="modify" type="button" data-modify="${reply.id}" class="btn btn-primary">
+										<i class="bi bi-pencil-square" data-btn-type="modify" data-modify="${reply.id}"></i>
+									</button>
+								</div>
+								<div style="display:none;" data-realmodify="${reply.id}">
+									<button data-btn-type="realmodify" type="button" class="btn btn-primary" data-realmodify="${reply.id}">
+										<i class="bi bi-pencil-square"></i>
+									</button>
+								</div>
+								
 							</div>
 							${reply.date}
 						</div>
@@ -71,14 +83,25 @@ fetch("/reply/list?parentId="+id,{
 								<div>${reply.departmentVO.name}</div>                                        
 							</div>
 							<div>							
-								<div data-text="area" data-id="${reply.id}" >${reply.content}</div>
+								<div data-text="area" data-id="${reply.id}">${reply.content}</div>
 							</div>
 						</div>
 						<div class="d-flex align-items-center">
 							<div>
-								<button data-btn-type="delete" type="button" class="btn btn-primary" data-delete="${reply.id}">삭제하기</button>
-								<button data-btn-type="modify" type="button" class="btn btn-primary" data-modify="${reply.id}">수정하기</button>
-								<button data-btn-type="realmodify" type="button" class="btn btn-primary" data-realmodify="${reply.id}" hidden>수정</button>
+								<button data-btn-type="delete" type="button" class="btn btn-primary" data-delete="${reply.id}">
+									<i class="bi bi-trash3"  data-btn-type="delete" data-delete="${reply.id}"></i>
+								</button>			
+								
+								<div data-modify="${reply.id}">
+									<button data-btn-type="modify" type="button" data-modify="${reply.id}" class="btn btn-primary">
+										<i class="bi bi-pencil-square" data-btn-type="modify" data-modify="${reply.id}"></i>
+									</button>
+								</div>
+								<div style="display:none;" data-realmodify="${reply.id}">
+									<button data-btn-type="realmodify" type="button" class="btn btn-primary" data-realmodify="${reply.id}">
+										<i class="bi bi-pencil-square"></i>
+									</button>
+								</div>
 							</div>
 							${reply.date}
 						</div>
@@ -98,7 +121,7 @@ fetch("/reply/list?parentId="+id,{
 										<div>${reply.departmentVO.name}</div>                                        
 									</div>
 									<div>							
-										<div data-text="area" data-id="${reply.id}" >${reply.content}</div>
+										<div data-text="area" data-id="${reply.id}">${reply.content}</div>
 									</div>
 								</div>
 								<div>${reply.date}</div>
@@ -133,19 +156,14 @@ fetch("/reply/list?parentId="+id,{
 	const re_reply =document.getElementById("reply-list-div");
 	re_reply.innerHTML = replies;
 	
-	re_reply.addEventListener("click", function(e){
-	
-		
-
-		if(e.target.tagName === 'BUTTON'){
+	re_reply.addEventListener("click", function(e){		
+		if(e.target.tagName === 'I' || e.target.tagName === 'BUTTON'){
 			let btnType = e.target.getAttribute("data-btn-type");
-			let content = e.target.getAttribute("data-content")
-
-			
 
 			if(btnType === 'modify'){
 				console.log("들어가니?")
 				hhard = e.target.getAttribute("data-modify");
+				console.log(hhard)
 				const div = document.querySelector("div[data-id='"+hhard+"']")
 				const text = document.createElement("textarea")
 				text.setAttribute('id','text')
@@ -153,10 +171,13 @@ fetch("/reply/list?parentId="+id,{
 				
 				
 
-				let modifyButton = document.querySelector("button[data-modify='" +hhard +"']");
-				let modifyReal = document.querySelector("button[data-realmodify='" +hhard +"']");			
-				modifyButton.setAttribute('hidden', 'true');
-				modifyReal.removeAttribute('hidden')
+				let modifyButton = document.querySelector("div[data-modify='" +hhard +"']");
+				
+				let modifyReal = document.querySelector("div[data-realmodify='" +hhard +"']");
+						
+				modifyButton.style.display='none';
+				modifyReal.style.display='block';
+				
 				const text_id = document.getElementById('text')
 				
 				text_id.innerHTML = div.innerHTML
@@ -172,17 +193,18 @@ fetch("/reply/list?parentId="+id,{
 					'id' : hhard,
 					'content': text_id.value
 				}
-					console.log(data)
+					let del_confirm = confirm("수정 하시겠습니까?")
+					if(del_confirm){
 					
 					
-					fetch("/reply/update",{
-					method:"post",
-					body:JSON.stringify(data),
-					headers:{
-						"content-type" :"application/json"
-					}
-				}).then(r=>window.location.reload())
-					
+						fetch("/reply/update",{
+						method:"post",
+						body:JSON.stringify(data),
+						headers:{
+							"content-type" :"application/json"
+						}
+					}).then(r=>window.location.reload())
+						}
 				})
 				
 
@@ -195,14 +217,17 @@ fetch("/reply/list?parentId="+id,{
 					'id' : hhard
 					//'content':div.inner
 				}
-
-				fetch("/reply/delete",{
-					method:'post',
-					body:JSON.stringify(data),
-					headers:{
-						"content-type" : "application/json"
-					}
-				}).then(r=>window.location.reload())
+				
+				let del_confirm=confirm("삭제 하시겠습니까?")
+				if(del_confirm){
+					fetch("/reply/delete",{
+						method:'post',
+						body:JSON.stringify(data),
+						headers:{
+							"content-type" : "application/json"
+						}
+					}).then(r=>window.location.reload())
+				}
 			}
 
 		}

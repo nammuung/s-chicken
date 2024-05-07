@@ -14,7 +14,7 @@
                 <label for="searchStatus" class="col-3 col-form-label text-nowrap">상태</label>
                 <div class="col-9">
                     <select id="searchStatus" class="form-select" name="status">
-                        <option value="5">전체</option>
+                        <option value="7">전체</option>
                         <option value="6">대기 + 진행</option>
                         <option value="1">대기</option>
                         <option value="2">진행</option>

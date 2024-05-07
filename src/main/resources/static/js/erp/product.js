@@ -1,6 +1,7 @@
 import {checkboxRenderer, handsontable, scaleArrayToSum} from "../lib/handsontable.js";
 import {addProduct, getProduct, getProductList, updateProduct} from "../api/product.js";
-import {getItemList} from "../api/item.js";
+import {addItem, getItemList} from "../api/item.js";
+import {getSupplierList} from "../api/supplier.js";
 
 sw.init()
 searchProduct()
@@ -14,7 +15,9 @@ async function searchProduct(){
     const formData = new FormData(productSearchForm);
     const result = await getProductList(formData);
     const data = result.data;
-    console.log(data)
+    const stringData = JSON.stringify(data);
+    const jsonData = JSON.parse(stringData);
+    exportHot.loadData(jsonData);
     data.forEach((object,index) => {
         data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
     })
@@ -141,7 +144,129 @@ editSubmitButton.addEventListener("click", async function(){
 })
 
 
-const exportPlugin = hot.getPlugin('exportFile');
+
+const supplierRegisterModalEl = document.getElementById("supplierRegister-modal")
+const supplierRegisterModal = new bootstrap.Modal(supplierRegisterModalEl);
+//거래처 검색
+const supplierSearchButton = document.getElementById("supplierSearchButton")
+supplierSearchButton.addEventListener("click", async function(){
+    const supplierSearchForm = document.getElementById("supplierSearchForm");
+    const formData = new FormData(supplierSearchForm);
+    const result = await getSupplierList(formData);
+    const data = result.data;
+    supplierHot.loadData(data);
+})
+
+//거래처 테이블 초기화
+const supplierContainer = document.getElementById("supplierContainer");
+let selectedSupplier = {}
+const supllierCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
+    if(checked){
+        selectedSupplier.id = instance.getDataAtCell(row,1);
+        selectedSupplier.name = instance.getDataAtCell(row,2);
+        sw.matchData({supplierName:selectedSupplier.name, supplierId: selectedSupplier.id})
+    } else {
+        selectedSupplier = {}
+    }
+    // addNameEventListener();
+})
+
+let supplierHot = null
+
+const regiButton = document.getElementById("regiButton")
+regiButton.addEventListener("click", async function(){
+    if(selectedRowId == null) {
+        alert("품목을 선택해 주세요.")
+        return;
+    }
+    await setDetailDataToRegisterModal(selectedRowId);
+    supplierRegisterModal.show();
+    const productProcessButton = document.querySelector("button[data-bs-target='#supplier-select']");
+    productProcessButton.click();
+    if(supplierHot == null){
+        const tableHeight = document.querySelector(".modal-body .position-relative").getBoundingClientRect().height- document.getElementById("supplierSearchContainer").getBoundingClientRect().height-document.getElementById("next")-document.getElementById("nextButton2").getBoundingClientRect().height -20
+        const supplierTableOptions = {
+            data:[],
+            colHeaders : ["","ID","거래처명","대표자명", "전화", "등록일", "등록자"],
+            columns : [
+                {renderer:supllierCheckboxRenderer},
+                {data:"id"},
+                {data:"name", renderer:"html"},
+                {data:"ownerName"},
+                {data:"contactNumber"},
+                {data:"contractDate"},
+                {data:"manager.name"}
+            ],
+            colWidths : scaleArrayToSum(Array(7),1130),
+            height:tableHeight,
+        }
+        supplierHot = handsontable(supplierContainer, supplierTableOptions);
+    }
+    supplierSearchButton.click()
+})
+
+async function setDetailDataToRegisterModal(id){
+    const result = await getProduct(id);
+    const data = result.data;
+    console.log(data)
+    sw.matchData({
+        productId: data.id,
+        productName: data.name,
+        productStandard: data.standard,
+        productUnitName: data.unit.name,
+        productSellPrice: data.sellPrice,
+    })
+}
+
+const itemTap = document.querySelector('button[data-bs-target="#item-select"]')
+const nextButton2 = document.getElementById("nextButton2")
+nextButton2.addEventListener("click", function(){
+    const bsTab = new bootstrap.Tab(itemTap)
+    bsTab.show()
+})
+
+//품목 추가
+const supplierSubmitButton = document.getElementById("supplierSubmitButton");
+supplierSubmitButton.addEventListener("click", async function(){
+    if(selectedSupplier != null){
+        if(!checkValidation()) {
+            alert("정보를 기입해주세요.")
+            return;
+        }
+        const supplierForm = document.getElementById("supplierForm");
+        const formData = new FormData(supplierForm);
+        const result = await addItem(formData);
+        supplierHot.clear();
+        alert(result.message);
+        if (result.status === "OK") {
+            supplierRegisterModal.hide()
+            supplierForm.reset();
+        }
+    }
+})
+const checkValidation = () => {
+    const inputs = [...document.querySelectorAll("#supplierForm input")]
+    const selects = [...document.querySelectorAll("#supplierForm select")]
+    let valid = true;
+    inputs.forEach(el => {
+        if(el.value == "" || el.value == undefined || el.value == null || el.value == 0){
+            valid = false;
+        }
+    })
+    selects.forEach(el => {
+        if(el.value == "" || el.value == undefined || el.value == null || el.value == 0){
+            valid = false;
+        }
+    })
+    return valid;
+}
+
+
+const exportHotContainer = document.createElement('div')
+const exportHot = handsontable(exportHotContainer, tableOptions)
+const exportPlugin = exportHot.getPlugin('exportFile');
+
+
 const exportButton = document.getElementById("exportButton");
 exportButton.addEventListener("click", function(){
     exportPlugin.downloadFile('csv', {

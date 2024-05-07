@@ -3,6 +3,7 @@ package com.groups.schicken.franchise;
 import com.groups.schicken.common.vo.MessageVO;
 import com.groups.schicken.common.vo.Pager;
 import com.groups.schicken.erp.product.ProductService;
+import com.groups.schicken.franchise.sales.SalesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +21,7 @@ import java.util.List;
 public class FranchiseController {
     private final FranchiseService franchiseService;
     private final ProductService productService;
+    private final SalesService salesService;
 
     @GetMapping("/franchise/home")
     public String getFranchiseHome(Model model, Pager pager) throws Exception {
@@ -32,6 +34,12 @@ public class FranchiseController {
         model.addAttribute("list", franchiseVOList);
         model.addAttribute("pager", pager);
         return "franchise/inquiry";
+    }
+
+    @GetMapping("/franchise/inquiry/sales")
+    public String getFranchiseInquirySales(Model model,FranchiseVO franchiseVO) throws Exception {
+        model.addAttribute("franchise", franchiseService.getFranchise(franchiseVO));
+        return "franchise/inquirySales";
     }
 
     @GetMapping("/franchise/detail")
@@ -84,6 +92,11 @@ public class FranchiseController {
             model.addAttribute("message", new MessageVO("초기화에 실패했습니다.","/franchise/detail?id="+franchiseVO.getId()));
         }
         return "result";
+    }
+
+    @GetMapping("/franchise/insight")
+    public String getFranchiseInsight(Model model,FranchiseVO franchiseVO) throws Exception {
+        return "franchise/insight";
     }
 
 

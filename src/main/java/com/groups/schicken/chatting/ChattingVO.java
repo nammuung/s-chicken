@@ -4,15 +4,16 @@ import com.groups.schicken.Employee.EmployeeProfileVO;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Optional;
 
 @Data
 public class ChattingVO {
     private String chatroomId;
     private String chatroomName;
+    private ChatroomType type;
     private List<EmployeeProfileVO> members;
     private List<ChatMessage> chatMessages;
-    private String lastReadId;
+    private String joinDate;
+    private String lastReadTime;
     private Boolean end;
 
     public ChatMessage getLastMessage(){
@@ -24,6 +25,6 @@ public class ChattingVO {
     public Boolean isLastReaded(){
         if(getLastMessage() == null) return true;
 
-        return getLastMessage().getId().equals(lastReadId);
+        return getLastMessage().getId().equals(lastReadTime);
     }
 }

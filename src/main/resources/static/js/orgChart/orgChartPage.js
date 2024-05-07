@@ -339,6 +339,8 @@ deptName.addEventListener("keyup",e=>{
     if(e.target.value.length === 0){
         deptSubmitBtn.classList.add("disabled");
         return;
+    } else if(!deptNumber.classList.contains("border-danger")) {
+        deptSubmitBtn.classList.remove("disabled");
     }
 
     const targetLi = document.getElementById("target-li");
@@ -386,10 +388,10 @@ deptNumber.addEventListener("keyup", e=>{
 })
 
 
-deptAddBtn.addEventListener("click",()=>onDeptBtnClick('add'))
-deptModBtn.addEventListener("click",()=>onDeptBtnClick('update'))
-deptSubmitBtn.addEventListener("click", ()=>callSubmitFunction());
-deptDelBtn.addEventListener("click", ()=>deptDelete());
+deptAddBtn?.addEventListener("click",()=>onDeptBtnClick('add'))
+deptModBtn?.addEventListener("click",()=>onDeptBtnClick('update'))
+deptSubmitBtn?.addEventListener("click", ()=>callSubmitFunction());
+deptDelBtn?.addEventListener("click", ()=>deptDelete());
 
 oc.init("org-chart", data=>ocCallbackFunction(data),'',true);
 getDepartmentData();

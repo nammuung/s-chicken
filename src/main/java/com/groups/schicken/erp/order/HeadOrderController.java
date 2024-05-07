@@ -32,4 +32,9 @@ public class HeadOrderController {
     public String sellList(Model model) {
         return "erp/order/sell";
     }
+
+    @GetMapping("/order/release")
+    public String release(Model model) {
+        return "erp/order/release";
+    }
 }

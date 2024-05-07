@@ -9,9 +9,11 @@ import {
     updateOrderDetail
 } from "../api/order.js";
 import {orderStatus, itemStatus, itemStatusToKR, orderStatusToKR} from "../util/orderStatus.js";
+import {getReceiveHistoryList} from "../api/history.js";
 let isChanged = {};
 const modifyButtons = document.getElementById('modifyButtons');
 const allCompleteButton = document.getElementById("allCompleteButton");
+const history = document.getElementById("history");
 const orderPreviewButton = document.getElementById("orderPreviewButton")
 
 
@@ -34,6 +36,7 @@ const orderContainer = document.getElementById('orderListContainer')
 const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col})=>{
     if(checked){
         orderPreviewButton.classList.remove("d-none")
+        history.classList.remove("d-none")
         selectedOrder = instance.getDataAtCell(row,1)
         searchDetail(selectedOrder)
         if(instance.getDataAtCell(row,2) == '진행'){
@@ -44,6 +47,7 @@ const orderCheckboxRenderer = checkboxRenderer(({checked, instance, td, row, col
     } else {
         selectedOrder = null;
         orderPreviewButton.classList.add("d-none")
+        history.classList.add("d-none")
         allCompleteButton.classList.add("d-none")
     }
 })
@@ -320,6 +324,26 @@ searchEndDate.addEventListener("change", function (e) {
         alert("시작일 앞의 날짜는 설정할 수 없습니다.")
         e.target.value=dayjs(searchStartDate.value).format("YYYY-MM-DD")
     }
+})
+
+//내역 모달
+const historyModalEl = document.getElementById("history-modal");
+const historyModal = new bootstrap.Modal(historyModalEl)
+history.addEventListener("click", async function(){
+    const historyListContainer = document.getElementById("historyListContainer");
+    const result = await getReceiveHistoryList(selectedOrder);
+    const data = result.data;
+    let tableHtml = "";
+    data.forEach(item => {
+        tableHtml += `
+            <tr>
+                <td>${item.content}</td>
+                <td>${item.writeDate}</td>
+            </tr>
+        `
+    })
+    historyListContainer.innerHTML = tableHtml;
+    historyModal.show();
 })
 
 // function addIdChangeEventListener(){

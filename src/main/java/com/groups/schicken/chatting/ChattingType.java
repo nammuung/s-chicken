@@ -1,5 +1,5 @@
 package com.groups.schicken.chatting;
 
 public enum ChattingType {
-    Message, Cancel
+    Message, Empty, Cancel, Join, Out
 }

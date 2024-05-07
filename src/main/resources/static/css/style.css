@@ -63,6 +63,69 @@
   background-color: #7749f8;
   color: white;
 }
+.weather-container {
+  margin: 20px;
+  height: 480px;
+  color: white;
+  border-radius: 30px;
+}
+.weather-container.day {
+  background: linear-gradient(
+          180deg,
+          rgba(0, 117, 255, 1) 0%,
+          rgba(149, 204, 255, 1) 100%
+  );
+  position: relative;
+}
+.weather-container.night {
+  background: linear-gradient(
+          180deg,
+          rgb(171, 134, 255) 0%,
+          rgb(55, 31, 169) 100%
+  );
+  position: relative;
+}
+
+.weather-container .weatherImage {
+  position: absolute;
+  left: 60px;
+  top: 20px;
+  z-index: 0;
+}
+.weather-container .nowInfo {
+  position: relative;
+  margin-top: 80px;
+  z-index: 55;
+}
+.weather-container .nowTemp {
+  font-size: 100px;
+  font-weight: 700;
+  line-height: 100px;
+}
+.weather-container .weatherBox {
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 23px;
+  height: 90px;
+}
+.weather-container .weatherBoxDetail {
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 23px;
+  height: 85px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+.weather-container .detailTitle{
+  font-size: 14px;
+}
+.weather-container #timeWeather > div:hover{
+  cursor: pointer;
+}
 /*--------------------------------------------------------------
 # Nmg
 --------------------------------------------------------------*/
@@ -180,6 +243,37 @@
 
 .hovercursor:hover{
   cursor: pointer !important;
+}
+
+/*캘린더*/
+/* 일요일 날짜 빨간색 */
+.fc-day-sun a {
+  color: red;
+  text-decoration: none;
+  /* 밑줄 제거 */
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none;
+  /* 밑줄 제거 */
+}
+
+/* 월요일부터 금요일까지의 날짜 검정색 */
+.fc-day-mon a,
+.fc-day-tue a,
+.fc-day-wed a,
+.fc-day-thu a,
+.fc-day-fri a {
+  color: black;
+  text-decoration: none;
+  /* 밑줄 제거 */
+}
+
+#calendar {
+  height: 480px;
+  /* 원하는 높이로 조정 */
 }
 
 /* 쪽지관련 */
@@ -637,7 +731,7 @@ h6 {
 }
 
 .logo img {
-  max-height: 26px;
+  max-height: 60px;
   margin-right: 6px;
 }
 

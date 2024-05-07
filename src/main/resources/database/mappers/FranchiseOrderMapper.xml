@@ -7,7 +7,7 @@
 <mapper namespace="com.groups.schicken.franchise.order.FranchiseOrderMapper">
     <sql id="search">
         <where>
-            <if test="status != null and status != 5 and status != 6">
+            <if test="status != null and status != 5 and status != 6 and status != 7">
                 ord.status = #{status}
             </if>
             <if test="status != null and status == 5">
@@ -15,6 +15,9 @@
             </if>
             <if test="status != null and status == 6">
                 AND ord.status IN (1,2)
+            </if>
+            <if test="status != null and status == 7">
+                AND ord.status IN (1,2,3,4)
             </if>
             <if test="id != null">
                 AND ord.id = #{id}
@@ -41,6 +44,9 @@
             </if>
             <if test="true">
                 AND ord.status != 7
+            </if>
+            <if test="comment != null">
+                AND ord.comment LIKE CONCAT('%',#{comment},'%')
             </if>
         </where>
     </sql>
@@ -91,11 +97,9 @@
             ON prd.category_id = cat.id
         <include refid="search"/>
         GROUP BY
-            prd.id,
-            cat.name,
-            unit.name
+            order_detail.id
         ORDER BY
-            ord.write_date desc
+            ord.write_date desc, order_detail.id asc
     </sql>
     <select id="getOrderList" resultMap="getOrderMap">
         <include refid="getOrderSQL"/>
@@ -182,20 +186,19 @@
     </update>
     <resultMap id="getOrderDetailMap" type="FranchiseOrderDetailVO" autoMapping="true">
         <id property="id" column="id"/>
-        <association property="item" javaType="ItemVO" autoMapping="true" columnPrefix="item_">
-            <association property="product" javaType="ProductVO" autoMapping="true" columnPrefix="product_"/>
-        </association>
+        <association property="product" javaType="ProductVO" autoMapping="true" columnPrefix="product_"/>
     </resultMap>
     <select id="getOrderDetail" resultMap="getOrderDetailMap">
         SELECT
-            oi.*
-            , i.product_id item_product_id
+            od.*
+            , prd.id product_id
+            , prd.name product_name
         FROM
-            franchise_order_detail oi
+            franchise_order_detail od
         LEFT JOIN
-            item i
-            ON oi.item_id = i.id
+            product prd
+            ON od.product_id = prd.id
         WHERE
-            oi.id = #{id}
+            od.id = #{id}
     </select>
 </mapper>

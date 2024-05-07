@@ -29,7 +29,7 @@
                 AND sup.name LIKE CONCAT('%',#{supplier.name},'%')
             </if>
             <if test="employee != null and employee.name != null">
-                AND emp.name LIKE CONCAT('%',#{employee.name},'%')
+                AND emp.employee_name LIKE CONCAT('%',#{employee.name},'%')
             </if>
             <if test="orderDetails != null and orderDetails[0].item != null">
                 AND (ord.id, sup.id) IN
@@ -51,6 +51,9 @@
             </if>
             <if test="orderDetails != null and orderDetails[0].id != null">
                  AND order_detail.id = orderDetails[0].id
+            </if>
+            <if test="comment != null">
+                AND ord.comment LIKE CONCAT('%',#{comment},'%')
             </if>
         </where>
     </sql>
@@ -110,7 +113,7 @@
             ON prd.category_id = cat.id
         <include refid="search"/>
         ORDER BY
-            ord.write_date desc
+            ord.write_date desc, order_detail.id asc
     </sql>
     <select id="getOrderList" resultMap="getOrderMap">
         <include refid="getOrderSQL"/>
@@ -220,11 +223,15 @@
         SELECT
             oi.*
             , i.product_id item_product_id
+            , prd.name item_product_name
         FROM
             head_order_detail oi
         LEFT JOIN
             item i
             ON oi.item_id = i.id
+        LEFT JOIN
+            product prd
+            ON i.product_id = prd.id
         WHERE
             oi.id = #{id}
     </select>

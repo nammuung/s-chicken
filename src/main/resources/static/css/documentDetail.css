@@ -114,9 +114,28 @@ width: 70px;
 padding: 4px;
 font-size: 12px
 }
+.sign_good{
+	text-align: center;
+	display: flex!important;
+	justify-content: center;
+	align-items: center;
+}
+.sign_string{
+	text-align: center;
+	color: red;
+	border: 3px solid red;
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    border-radius: 100%;
+    line-height: 45px;
+    transform: rotate(-45deg);
+}
 
 div.sign_type1 table.tb_sign_type1 tbody tr td table.sign_member tbody tr td span.sign_name {
 height: 36px
+
+
 }
 
 div.sign_type1 table.tb_sign_type1 tbody tr td table.sign_member tbody tr td span.arbitrary {

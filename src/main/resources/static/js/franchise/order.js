@@ -167,6 +167,11 @@ orderButton.addEventListener("click",  async function(){
         quantity.push(row[7]);
         datas.push(result.data);
     }
+    const comment = document.getElementById("comment")
+    if(!comment.value){
+        alert("내용 입력해 주세요.")
+        return;
+    }
     // const addOrderForm = document.getElementById("addOrderForm");
     const orderDetails = []
     datas.forEach((data,index) => {
@@ -174,11 +179,12 @@ orderButton.addEventListener("click",  async function(){
             product:{
                 id: data.id
             },
-            quantity: quantity[index]
+            quantity: quantity[index],
         })
     })
     const request = {
         orderDetails,
+        comment: comment.value
     }
     const result = await addFranchiseOrder(
         request

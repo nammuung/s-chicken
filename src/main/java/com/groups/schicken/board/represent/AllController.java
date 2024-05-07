@@ -33,6 +33,9 @@ public class AllController {
 	@GetMapping("list")
 	public String list(@AuthenticationPrincipal EmployeeVO employeeVO,BoardVO boardVO,Pager pager,Model model)throws Exception{
 		//boardVO.setWriterId(employeeVO.getId());
+		List<BoardVO> imp = representService.impList(boardVO);
+		model.addAttribute("imp", imp);
+		
 		List<BoardVO> ar = representService.allgetList(pager, boardVO);
 		
 		model.addAttribute("list", ar);
@@ -61,19 +64,23 @@ public class AllController {
 	}
 	
 	@GetMapping("detail")
-	public String detail(BoardVO boardVO,Model model)throws Exception{
+	public String detail(@AuthenticationPrincipal EmployeeVO employeeVO,BoardVO boardVO,Model model)throws Exception{
+		boardVO.setWriterId(employeeVO.getId());
+		System.out.println(boardVO.getSort()+"김범서");
+		int result = representService.hit(boardVO);
+
 		boardVO = representService.getDetail(boardVO);
-		
 		model.addAttribute("vo", boardVO);
 		
 		List<BoardVO> ar = representService.pastPage(boardVO);
 		System.out.println(ar);
 		model.addAttribute("move", ar);
-		
+
 		List<BoardVO> br = representService.nextPage(boardVO);
-		
+
 		model.addAttribute("next", br);
-		
+
+
 		return "board/detail";
 	}
 	

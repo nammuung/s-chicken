@@ -58,14 +58,19 @@
 									</div>
 
 
-									<div class="form-group mb-3">
+									<div class="form-group mb-3 col-6">
 										<label for="residentNumber" class="form-label"><b>생년월일</b></label>
 										<input id="residentNumber" name="residentNumber" type="date" class="form-control">
 									</div>
-									<div class="form-group mb-3">
+									<div class="form-group mb-3 col-6">
 										<label for="dateOfEmployment" class="form-label"><b>입사일</b></label>
 										<input id="dateOfEmployment"  name="dateOfEmployment" type="date" class="form-control">
 									</div>
+									<div class="form-group mb-3 col-11">
+										<label for="salary" class="form-label"><b>연봉</b></label>
+										<input id="salary"  name="salary" type="text" class="form-control" placeholder="만원 단위로 입력해주세요.">
+									</div>
+										<div class="col-1" style="margin-top: 38px; margin-left: -10px">만원</div>
 									<div class="form-group mb-3 col-4">
 										<label for="posId"  class="form-label"><b>직급</b></label> <select
 											class="form-select" id="posId" name="posId">
@@ -138,6 +143,28 @@
 	<script src="/js/employee/address.js"></script>
 	<script src="/js/employee/department.js"> </script>
 	<c:import url="../template/script.jsp" />
+	<script>
+    // 생년월일 입력 필드를 가져옴
+    const residentNumberInput = document.getElementById("residentNumber");
+
+    // 오늘 날짜를 구함
+    const today = new Date();
+
+    // 20년 전의 날짜를 계산하여 구함
+    const maxDate = new Date(today.getFullYear() - 20, today.getMonth(), today.getDate());
+
+    // 최대 날짜를 yyyy-mm-dd 형식으로 변환
+    const maxDateString = maxDate.toISOString().split('T')[0];
+
+    // 생년월일 입력 필드에 최대 날짜를 설정
+    residentNumberInput.setAttribute("max", maxDateString);
+
+    // 초기값을 20년 전으로 설정
+    //residentNumberInput.value = maxDateString;
+    
+    
+</script>
+	
 </body>
 
 </html>

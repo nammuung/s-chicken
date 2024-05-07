@@ -21,6 +21,9 @@ async function searchSupplier(){
     const formData = new FormData(searchForm);
     const result = await getSupplierList(formData);
     const data = result.data;
+    const stringData = JSON.stringify(data);
+    const jsonData = JSON.parse(stringData);
+    exportHot.loadData(jsonData);
     data.forEach((object,index) => {
         data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
     })
@@ -55,8 +58,9 @@ async function setDetailDataToEditModal(id) {
     const items = await getItemList(formData);
     const productTable = document.querySelector("#productTable tbody")
     productTable.innerHTML = ""
+    let innerHtml = ""
         items.data.forEach((item,index) => {
-        productTable.innerHTML += `
+            innerHtml += `
             <tr>
                 <td>
                     ${index+1}
@@ -68,6 +72,7 @@ async function setDetailDataToEditModal(id) {
             </tr>
         `
     })
+    await productTable.insertAdjacentHTML("beforebegin", innerHtml)
 }
 //name 이벤트 리스너 추가
 function addNameEventListener(){
@@ -138,3 +143,24 @@ addSubmitButton.addEventListener('click', async function () {
 })
 
 
+
+const exportHotContainer = document.createElement('div')
+const exportHot = handsontable(exportHotContainer, tableOptions)
+const exportPlugin = exportHot.getPlugin('exportFile');
+
+
+const exportButton = document.getElementById("exportButton");
+exportButton.addEventListener("click", function(){
+    exportPlugin.downloadFile('csv', {
+        bom: false,
+        columnDelimiter: ',',
+        columnHeaders: true,
+        exportHiddenColumns: true,
+        fileExtension: 'csv',
+        filename: '거래처_[YYYY]-[MM]-[DD]',
+        mimeType: 'text/csv',
+        rowDelimiter: '\r\n',
+        rowHeaders: false,
+        range:[0,1]
+    });
+})

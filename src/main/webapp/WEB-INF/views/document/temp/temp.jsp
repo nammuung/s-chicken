@@ -66,7 +66,7 @@
                             <c:if test="${list[0].temp eq 0}">
                                 <div class="mb-2">
                                     <button class="btn btn-primary">인쇄미리보기</button>
-                                    <button class="btn btn-primary" id="sangsin"data-temp=0>상신</button>
+                                    <button class="btn btn-primary" id="sangsin" data-temp=0>상신</button>
                                     <button class="btn btn-primary" type="button" id = "cancel">취소</button>
                                 </div>
                                     <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
@@ -81,7 +81,7 @@
                     <tr>
 
                         <td style="background: white; padding: 0px !important; border: 0px currentColor; border-image: none; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: middle;"
-                            colspan="2" class=""> 급여신청서
+                            colspan="2" class=""> 상여금신청서
                             <div style="text-align: right;">
                                     <button type="button" id="modal_show" class="btn btn-primary">
                                         결재선지정
@@ -97,7 +97,7 @@
 						<input type="hidden" value="${list[0].id}" name="id">						
 					</c:if>
 					
-					<input type="hidden" value="<%=strDate %>" name="date">
+					<input type="hidden" value="<%=strDate %>" id="strDate" name="date">
                     <input type="hidden" value="<%=strDate %>" name="WriteDate">
                     <input type="hidden" name="status" value="0">
                     <input type="hidden" name="templateId" value="1">
@@ -305,7 +305,27 @@
                         </td>
                     </tr>
 
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            대상자 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
+                            
+                            <input type="text" readonly class="form-control" value ="${list[0].bonusVO.codeVO.name} ${list[0].bonusVO.employeeVO.name}" data-id="${list[0].bonusVO.employeeId}" id="bonuspeo" style="width: 100%;">
+                        </td>
+                    </tr>
 
+                    <tr>
+                        <td
+                            style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bolder; vertical-align: middle;">
+                            금액 </td>
+                        <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
+                            colspan="5">
+                            <input type="text" class="form-control" value ="${list[0].bonusVO.bonus}" id="bonus" name="bonus" style="width: 100%;">
+                            
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <table
@@ -345,68 +365,94 @@
    	</form>
 
         <!-- The Modal -->
-	<div class="modal" id="myModal">
-        <div class="modal-dialog modal-dialog-scrollable" id="modalContent">
-          <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header" >
-              <h4 class="modal-title">결재선지정</h4>
-              <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-            </div>
-            <!-- Modal body -->
-            <div class="modal-body">
-              <!-- 모달 내용 시작 -->
-              <div class="container-fluid mmdd">
-                <div class="row mmdd">
-                  <div class="col-md-5 card mmdd">
-                      <div class="card-body">
-                      조직도
-                          <div id="note-message-org-chart"></div>
+        <div class="modal" id="myModal">
+            <div class="modal-dialog modal-dialog-scrollable" id="modalContent">
+              <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header" >
+                  <h4 class="modal-title">결재선지정</h4>
+                  <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                  <!-- 모달 내용 시작 -->
+                  <div class="container-fluid mmdd">
+                    <div class="row mmdd">
+                      <div class="col-md-5 card mmdd">
+                          <div class="card-body">
+                              <h5>조직도</h5>
+                              <div id="note-message-org-chart"></div>
+                          </div>
+      
                       </div>
-  
-                  </div>
-                  <div class="col-md-2 mmdd d-flex justify-content-center align-items-center flex-column">
-                      <div class="text-center">
-                          <button class="btn btn-primary btn-sm mb-3" id="addbtn"> >> </button>
+                      
+                      <div class="col-md-2 mmdd d-flex justify-content-center align-items-center flex-column">
+                          <div class="text-center">
+                              <button class="btn btn-primary btn-sm mb-3" id="addbtn"> >> </button>
+                          </div>
+                          <div class="text-center">
+                              <button class="btn btn-primary btn-sm mt-3" id="delbtn"> &lt;&lt; </button>
+                          </div>
                       </div>
-                      <div class="text-center">
-                          <button class="btn btn-primary btn-sm mt-3" id="delbtn"> &lt;&lt; </button>
-                      </div>
-                  </div>
-                  <div class="col-md-5 mmdd">
-                    <div id="right-top" class="row ssdd" style="background-color: lightblue;">
-                        <div style="text-align: left;">결재자</div>
-  
-                        <div>
-                          <ul class="list-group" id="approval_List">
-  
-                          </ul>
-                        </div>
-  
-                        <div class="text-right mt-2 align-self-end">
-                            <div class="col-auto">
-                                <div class="mb-2">
-                                <button class="btn btn-primary btn-sm">저장하기</button>
-                                <button class="btn btn-primary btn-sm" type="button" id="register">등록하기</button>
+                      <div class="col-md-5 mmdd">
+                        <div id="right-top" class="row ssdd">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="h5" style="text-align: left;">결재선 등록</div>
+      
+                                    <div>
+                                      <ul class="list-group" id="approval_List">
+      
+                                      </ul>
+                                    </div>
+                                    <div class="position-absolute end-0 bottom-0">
+                                        <div class="col-auto">
+                                            <div class="mb-2">
+                                                <button class="btn btn-outline-primary btn-sm" id="save_btn">결재선 저장</button>
+                                                <button class="btn btn-primary btn-sm" id="register">등록하기</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="right-bottom" class="row ssdd" style="background-color: lightgreen;">
-                      <div style="text-align: left;">나의 결재목록</div>
+                        
+                        <div id="right-bottom" class="row ssdd">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="h5" style="text-align: left;">나의 결재목록</div>
+      
+                                      <div class="list-item-container">
+                                        <ol class="list-group" id="getSave">
+                                              <c:forEach items="${title}" var="get">
+                                                  <li class="list-group-item" data-title="${get.title}">
+                                                      <span style="line-height: 38px;">${get.title}</span><button class="saveDel btn" style="float: right;"><i class="bi bi-trash-fill" data-title="${get.title}" ></i></button>
+                                                  </li>
+                                              </c:forEach>
+                                          </ol>
+                                      </div>
+      
+                                       <div class="text-right mt-2 align-self-end">
+                                            <div class="col-auto">
+      
+                                            </div>
+                                        </div>
+                                </div>
+                        </div>
+                        
+                      </div>
                     </div>
                   </div>
+                  </div>
+                  <!-- 모달 내용 끝 -->
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
               </div>
-              <!-- 모달 내용 끝 -->
-            </div>
-            <!-- Modal footer -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
-        </div>
-      </div>
       
       <!-- 불러오기 모달 -->
       <div class="modal fade" id="call" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -429,7 +475,25 @@
             </div>
         </div>
     </div>
-      
+    <!-- 대상자모달 -->
+    <div class="modal fade" id="bonusModal" tabindex="-1" aria-labelledby="bonusModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <!-- 모달 내용 -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bonusModalLabel">대상자</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="note-message-org-chart2"></div>
+                <!-- 모달 footer (선택적) -->
+                <div class="modal-footer">
+                    <button type="button" id="bonus_btn" class="btn btn-primary">지정하기</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
 
     	
         <p

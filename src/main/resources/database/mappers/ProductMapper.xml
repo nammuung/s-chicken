@@ -44,7 +44,7 @@
             c.name,
             uni.name
         ORDER BY
-            p.id
+            p.id*1
     </sql>
     <select id="getProduct" resultMap="getProductMap">
         <include refid="getProductSQL"/>

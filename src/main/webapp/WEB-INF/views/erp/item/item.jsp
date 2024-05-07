@@ -258,36 +258,6 @@
 <!-- ======= Script ======= -->
 <c:import url="../../template/script.jsp"/>
 <script src="/js/erp/item.js" type="module"></script>
-<script>
-    <%--window.onload = function() {--%>
-    <%--    const calculateMaxHeight = () => {--%>
-    <%--        // Select the target element whose max height you want to find--%>
-    <%--        const targetElement = document.querySelector('#targetElement');--%>
-
-    <%--        // Optionally, select other elements that might interfere--%>
-    <%--        const interferingElement = document.querySelector('#interferingElement');--%>
-
-    <%--        // Get the bounding client rectangle of the interfering element--%>
-    <%--        const interferingRect = interferingElement.getBoundingClientRect();--%>
-
-    <%--        // Calculate the maximum possible height--%>
-    <%--        const maxHeight = window.innerHeight - interferingRect.bottom;--%>
-
-    <%--        // Set the max-height of the target element (optional)--%>
-    <%--        targetElement.style.maxHeight = `${maxHeight}px`;--%>
-
-    <%--        console.log("Maximum height available for the target element: ", maxHeight);--%>
-    <%--        return maxHeight;--%>
-    <%--    };--%>
-
-    <%--    // Call the function to calculate max height--%>
-    <%--    calculateMaxHeight();--%>
-
-    <%--    // Optionally, recalculate on window resize--%>
-    <%--    window.onresize = calculateMaxHeight;--%>
-    <%--};--%>
-
-</script>
 </body>
 
 </html>

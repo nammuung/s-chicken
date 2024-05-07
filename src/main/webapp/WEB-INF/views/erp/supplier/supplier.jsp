@@ -18,7 +18,7 @@
 <main id="main" class="main">
     <section class="section erp ms-auto me-auto">
         <div class="pagetitle">
-            <h1>납품처 관리</h1>
+            <h1>거래처 관리</h1>
         </div>
         <div class="row">
             <div class="col">
@@ -50,7 +50,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">납품처 추가</h5>
+                <h5 class="modal-title">거래처 추가</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -59,7 +59,7 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="mb-3 row">
-                                <label for="addFormName" class="col-4 col-form-label">납품처명</label>
+                                <label for="addFormName" class="col-4 col-form-label">거래처명</label>
                                 <div class="col-8">
                                     <input type="text" class="form-control" id="addFormName" name="name" value="">
                                 </div>
@@ -150,7 +150,7 @@
                                         <input type="hidden" name="id" sw="value_id">
                                         <input type="hidden" name="managerId" sw="value_managerId">
                                         <div class="mb-3 row">
-                                            <label for="editName" class="col-4 col-form-label">납품처명</label>
+                                            <label for="editName" class="col-4 col-form-label">거래처명</label>
                                             <div class="col-8">
                                                 <input type="text" class="form-control" id="editName" name="name" sw="value_name">
                                             </div>
