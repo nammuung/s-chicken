@@ -21,6 +21,9 @@ async function searchSupplier(){
     const formData = new FormData(searchForm);
     const result = await getSupplierList(formData);
     const data = result.data;
+    const stringData = JSON.stringify(data);
+    const jsonData = JSON.parse(stringData);
+    exportHot.loadData(jsonData);
     data.forEach((object,index) => {
         data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
     })
@@ -140,3 +143,24 @@ addSubmitButton.addEventListener('click', async function () {
 })
 
 
+
+const exportHotContainer = document.createElement('div')
+const exportHot = handsontable(exportHotContainer, tableOptions)
+const exportPlugin = exportHot.getPlugin('exportFile');
+
+
+const exportButton = document.getElementById("exportButton");
+exportButton.addEventListener("click", function(){
+    exportPlugin.downloadFile('csv', {
+        bom: false,
+        columnDelimiter: ',',
+        columnHeaders: true,
+        exportHiddenColumns: true,
+        fileExtension: 'csv',
+        filename: '거래처_[YYYY]-[MM]-[DD]',
+        mimeType: 'text/csv',
+        rowDelimiter: '\r\n',
+        rowHeaders: false,
+        range:[0,1]
+    });
+})

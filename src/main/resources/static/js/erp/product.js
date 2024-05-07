@@ -15,7 +15,9 @@ async function searchProduct(){
     const formData = new FormData(productSearchForm);
     const result = await getProductList(formData);
     const data = result.data;
-    console.log(data)
+    const stringData = JSON.stringify(data);
+    const jsonData = JSON.parse(stringData);
+    exportHot.loadData(jsonData);
     data.forEach((object,index) => {
         data[index].name = `<a href="#" onclick="return false" data-id="${object.id}" class="detail">${object.name}</a>`
     })
@@ -142,22 +144,6 @@ editSubmitButton.addEventListener("click", async function(){
 })
 
 
-const exportPlugin = hot.getPlugin('exportFile');
-const exportButton = document.getElementById("exportButton");
-exportButton.addEventListener("click", function(){
-    exportPlugin.downloadFile('csv', {
-        bom: false,
-        columnDelimiter: ',',
-        columnHeaders: true,
-        exportHiddenColumns: true,
-        fileExtension: 'csv',
-        filename: '품목_[YYYY]-[MM]-[DD]',
-        mimeType: 'text/csv',
-        rowDelimiter: '\r\n',
-        rowHeaders: false,
-        range:[0,1]
-    });
-})
 
 const supplierRegisterModalEl = document.getElementById("supplierRegister-modal")
 const supplierRegisterModal = new bootstrap.Modal(supplierRegisterModalEl);
@@ -274,3 +260,25 @@ const checkValidation = () => {
     })
     return valid;
 }
+
+
+const exportHotContainer = document.createElement('div')
+const exportHot = handsontable(exportHotContainer, tableOptions)
+const exportPlugin = exportHot.getPlugin('exportFile');
+
+
+const exportButton = document.getElementById("exportButton");
+exportButton.addEventListener("click", function(){
+    exportPlugin.downloadFile('csv', {
+        bom: false,
+        columnDelimiter: ',',
+        columnHeaders: true,
+        exportHiddenColumns: true,
+        fileExtension: 'csv',
+        filename: '품목_[YYYY]-[MM]-[DD]',
+        mimeType: 'text/csv',
+        rowDelimiter: '\r\n',
+        rowHeaders: false,
+        range:[0,1]
+    });
+})

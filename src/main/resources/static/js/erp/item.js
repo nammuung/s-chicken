@@ -197,7 +197,7 @@ exportButton.addEventListener("click", function(){
         columnHeaders: true,
         exportHiddenColumns: true,
         fileExtension: 'csv',
-        filename: '품목_[YYYY]-[MM]-[DD]',
+        filename: '상품_[YYYY]-[MM]-[DD]',
         mimeType: 'text/csv',
         rowDelimiter: '\r\n',
         rowHeaders: false,
