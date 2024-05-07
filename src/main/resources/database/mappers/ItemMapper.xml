@@ -74,7 +74,7 @@
             code pos
             ON emp.pos_id = pos.id  AND  pos.type_id = '300'
         <include refid="search"/>
-        ORDER BY create_date
+        ORDER BY i.id
     </select>
 
     <select id="getItem" resultMap="getItemMap">
@@ -113,8 +113,6 @@
             ON emp.pos_id = pos.id  AND  pos.type_id = '300'
         WHERE
             i.id = #{id}
-        ORDER BY
-            create_date
     </select>
 
     <insert id="addItem">

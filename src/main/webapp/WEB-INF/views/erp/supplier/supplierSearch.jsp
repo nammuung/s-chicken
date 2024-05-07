@@ -5,7 +5,7 @@
     <form id="supplierSearchForm">
         <div class="mb-3 row">
             <div class="row col">
-                <label for="searchName" class="col-3 col-form-label text-nowrap">납품처</label>
+                <label for="searchName" class="col-3 col-form-label text-nowrap">거래처</label>
                 <div class="col-9">
                     <input type="text" class="form-control" id="searchName" name="name" value="">
                 </div>

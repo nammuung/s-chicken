@@ -226,7 +226,7 @@
 
                     <li>
                         <a href="/supplier">
-                            <i class="bi bi-circle"></i><span>납품처 관리</span>
+                            <i class="bi bi-circle"></i><span>거래처 관리</span>
                         </a>
                     </li>
                 </ul>

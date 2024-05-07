@@ -36,6 +36,7 @@
                             <div class="d-flex justify-content-start">
                                 <button id="" class="btn btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#register-modal"><i class="bi bi-database-add"></i>신규</button>
                                 <button id="editButton" class="btn btn-outline-primary me-1" ><i class="bi bi-pencil"></i>수정</button>
+                                <button id="regiButton" class="btn btn-outline-primary me-1"><i class="bi bi-house-add"></i>거래처</button>
                                 <button id="exportButton" class="btn btn-primary"><i class="bi bi-file-earmark-spreadsheet-fill"></i> 저장</button>
                             </div>
                         </div>
@@ -111,6 +112,106 @@
         </div>
     </div>
 </div>
+<div class="modal" tabindex="-1" id="supplierRegister-modal">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-nowrap">상품 추가</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="stepwizard mb-3" >
+                    <div class="nav stepwizard-row row">
+                        <div class="stepwizard-step col-4">
+                            <button type="button" class="btn btn-circle" data-bs-toggle="tab" data-bs-target="#supplier-select">2</button>
+                            <p>거래처</p>
+                        </div>
+                        <div class="stepwizard-step col-4">
+                            <button type="button" class="btn btn-circle" data-bs-toggle="tab" data-bs-target="#item-select">3</button>
+                            <p>상세</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="position-relative" style="height: 50vh">
+                    <div class="tab-content pt-2">
+                        <div class="tab-pane fade show active" id="supplier-select">
+                            <c:import url="../../erp/supplier/supplierSearch.jsp"/>
+                            <div style="box-shadow: 0 0 0 1px #ccc inset;">
+                                <div id="supplierContainer" class="overflow-auto mb-3"></div>
+                            </div>
+                            <div class="position-absolute end-0 bottom-0 nav">
+                                <button type="button" class="btn btn-primary" id="nextButton2">다음</button>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="item-select">
+                            <form id="supplierForm">
+                                <div id="itemContainer">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3 row">
+                                                <label for="addName" class="col-4 col-form-label">품목명</label>
+                                                <div class="col-8">
+                                                    <input type="hidden" class="form-control" name="product.id" sw="value_productId">
+                                                    <input type="text" disabled class="form-control" name="product.name" sw="value_productName">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="addName" class="col-4 col-form-label">규격</label>
+                                                <div class="col-8">
+                                                    <input type="text" disabled class="form-control"  sw="value_productStandard">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="addName" class="col-4 col-form-label">단위</label>
+                                                <div class="col-8">
+                                                    <input type="text" disabled class="form-control" sw="value_productUnitName">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="addStandard" class="col-4 col-form-label">거래처</label>
+                                                <div class="col-8">
+                                                    <input type="hidden" class="form-control" name="supplier.id" sw="value_supplierId">
+                                                    <input type="text" disabled class="form-control" name="supplier.name" sw="value_supplierName">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3 row">
+                                                <label for="" class="col-4 col-form-label">판매단가</label>
+                                                <div class="col-8">
+                                                    <input type="text" disabled class="form-control" sw="value_productSellPrice">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="editName" class="col-4 col-form-label">계약단가</label>
+                                                <div class="col-8">
+                                                    <input type="text" class="form-control" name="contractPrice">
+                                                </div>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="editOwnerName" class="col-4 col-form-label">최소구매수량</label>
+                                                <div class="col-8">
+                                                    <input type="text" class="form-control" name="minQuantity" value="1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="supplierSubmitButton">저장</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal" tabindex="-1" id="edit-modal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

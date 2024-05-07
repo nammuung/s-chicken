@@ -55,8 +55,9 @@ async function setDetailDataToEditModal(id) {
     const items = await getItemList(formData);
     const productTable = document.querySelector("#productTable tbody")
     productTable.innerHTML = ""
+    let innerHtml = ""
         items.data.forEach((item,index) => {
-        productTable.innerHTML += `
+            innerHtml += `
             <tr>
                 <td>
                     ${index+1}
@@ -68,6 +69,7 @@ async function setDetailDataToEditModal(id) {
             </tr>
         `
     })
+    await productTable.insertAdjacentHTML("beforebegin", innerHtml)
 }
 //name 이벤트 리스너 추가
 function addNameEventListener(){
