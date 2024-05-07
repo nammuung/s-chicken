@@ -78,7 +78,7 @@ function openNoteMessageByLink(link){
 }
 
 function openNoticePage(link){
-    location.href="/전체/detail?id=" + link;
+    location.href="/all/detail?id=" + link;
 }
 
 function openDocumentPopup(link) {
