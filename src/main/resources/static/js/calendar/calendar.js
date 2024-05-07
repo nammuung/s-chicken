@@ -51,6 +51,53 @@
                     }),
                     success: function (response) {
                         console.log('수정 성공:', response);
+                        calendar.removeAllEvents()
+                        const nextBtn = document.querySelector("#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > div > button.fc-next-button.fc-button.fc-button-primary")
+                        const prevBtn = document.querySelector("#calendar > div.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr > div:nth-child(1) > div > button.fc-prev-button.fc-button.fc-button-primary")
+                        nextBtn.click();
+                        prevBtn.click();
+                        $.ajax({
+                            url: 'http://localhost/share',
+                            type: 'GET',
+                            success: function (data) {
+                                // 가져온 데이터를 풀캘린더에 추가
+                                data.forEach(function (eventData) {
+                                    calendar.addEvent({
+                                        id: eventData.id, // 이벤트 ID
+                                        title: eventData.title, // 이벤트 제목
+                                        start: eventData.start, // 이벤트 시작 날짜
+                                        end: eventData.end,
+                                        color: 'purple',
+                                        backgroundColor: 'purple'
+                                        // 기타 이벤트 속성 등을 추가할 수 있습니다.
+                                    });
+                                });
+                            },
+                            error: function (error) {
+                                console.error('데이터를 가져오는 데 실패했습니다:', error);
+                            }
+                        });
+                        $.ajax({
+                            url: 'http://localhost/list',
+                            type: 'GET',
+                            success: function (data) {
+                                // 가져온 데이터를 풀캘린더에 추가
+                                data.forEach(function (eventData) {
+                                    console.log(eventData.id + "LLLLL");
+                                    calendar.addEvent({
+                                        id: eventData.id, // 이벤트 ID
+                                        title: eventData.title, // 이벤트 제목
+                                        start: eventData.start, // 이벤트 시작 날짜
+                                        end: eventData.end, // 이벤트 종료 날짜
+                                        // 기타 이벤트 속성 등을 추가할 수 있습니다.
+                                    });
+                                });
+                            },
+                            error: function (error) {
+                                console.error('데이터를 가져오는 데 실패했습니다:', error);
+                            }
+                        });
+                        calendar.render();
                     },
                     error: function (error) {
                         console.error('수정 실패:', error);

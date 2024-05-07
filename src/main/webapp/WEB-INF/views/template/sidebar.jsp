@@ -102,12 +102,12 @@
             <%--            </ul></li>--%>
             <!-- End Tables Nav -->
             <sec:authorize access="hasAnyRole('ADMIN','PERSONNEL_WRITER')">
-                <li class="nav-item"><a class="nav-link collapsed"
+                <li class="nav-item"><a class="nav-link <c:if test="${cookie.navToggle.value ne '#chats-nav'}">collapsed</c:if>"
                                         data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-bar-chart"></i><span>인사관리</span><i
                         class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                    <ul id="charts-nav" class="nav-content collapse "
+                    <ul id="charts-nav" class="nav-content collapse <c:if test="${cookie.navToggle.value eq '#charts-nav'}">show</c:if>"
                         data-bs-parent="#sidebar-nav">
                         <li><a href="/employee/list"> <i class="bi bi-circle"></i><span>직원목록</span>
                         </a></li>
@@ -172,11 +172,11 @@
                             <i class="bi bi-circle"></i><span>판매</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="/sales">
-                            <i class="bi bi-circle"></i><span>매출 관리</span>
-                        </a>
-                    </li>
+<%--                    <li>--%>
+<%--                        <a href="/sales">--%>
+<%--                            <i class="bi bi-circle"></i><span>매출 관리</span>--%>
+<%--                        </a>--%>
+<%--                    </li>--%>
                 </ul>
             </li>
             <!-- End Icons Nav -->

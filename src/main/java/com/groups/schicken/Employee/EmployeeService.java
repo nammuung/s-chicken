@@ -316,16 +316,15 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 
     //@Transactional
     public int rolecontrolle(String departmentId, String[] rolIds) throws Exception {
-    		List<RoleVO> list = new ArrayList<>();
-    		for(String rolId : rolIds) {
-    			list.add(RoleVO.ofs(departmentId, rolId));
-    			log.info("{} =      :",rolId);
-    		}
-
-            employeeDAO.roledelete(departmentId);
-          System.out.println(list);
-            employeeDAO.roleinsert(list);
-
+		employeeDAO.roledelete(departmentId);
+		List<RoleVO> list = new ArrayList<>();
+			if(rolIds != null) {
+				for(String rolId : rolIds) {
+					list.add(RoleVO.ofs(departmentId, rolId));
+					log.info("{} =      :",rolId);
+				}
+				employeeDAO.roleinsert(list);
+			}
             return 1;
     }
 

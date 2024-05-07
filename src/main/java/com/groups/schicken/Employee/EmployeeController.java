@@ -190,7 +190,7 @@ public class EmployeeController {
 		    }
 
 		employeeVO = employeeService.userDetail(employeeVO);
-	    session.setAttribute("details", employeeVO);
+
 		EmployeeProfileVO employeeProfileVO =  employeeService.getProfile(id);
 		model.addAttribute("detail", employeeVO);
 		model.addAttribute("profile", employeeProfileVO);
@@ -205,16 +205,16 @@ public class EmployeeController {
 		model.addAttribute("list", ar);
 		model.addAttribute("pager",pager);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication != null) {
-			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
-			if (!hasPersonnel) {
-			    String msg = "권한이 없습니다.";
-			    String path = "../";
-			    model.addAttribute("msg", msg);
-			    model.addAttribute("path", path);
-				return "employee/result";
-			}
-		}
+//		if(authentication != null) {
+//			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
+//			if (!hasPersonnel) {
+//			    String msg = "권한이 없습니다.";
+//			    String path = "../";
+//			    model.addAttribute("msg", msg);
+//			    model.addAttribute("path", path);
+//				return "employee/result";
+//			}
+//		}
 		return "employee/list";
 
 
@@ -227,16 +227,16 @@ public class EmployeeController {
 		model.addAttribute("list", ar);
 		model.addAttribute("pager",pager);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication != null) {
-			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
-			if (!hasPersonnel) {
-			    String msg = "권한이 없습니다.";
-			    String path = "../";
-			    model.addAttribute("msg", msg);
-			    model.addAttribute("path", path);
-				return "employee/result";
-			}
-		}
+//		if(authentication != null) {
+//			boolean hasPersonnel = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_PERSONNEL_WRITER"));
+//			if (!hasPersonnel) {
+//			    String msg = "권한이 없습니다.";
+//			    String path = "../";
+//			    model.addAttribute("msg", msg);
+//			    model.addAttribute("path", path);
+//				return "employee/result";
+//			}
+//		}
 		return "employee/isuserList";
 	}
 
@@ -259,10 +259,7 @@ public class EmployeeController {
 
 	// 권한 수정
 	@PostMapping("role")
-	public String update(@RequestParam("departmentId") String departmentId, @RequestParam("rolId") String[] rolId , Model model)throws Exception {
-		System.out.println(departmentId);
-		System.out.println("rolId = " + Arrays.toString(rolId));
-
+	public String update(@RequestParam("departmentId") String departmentId, @RequestParam(value = "rolId", required = false) String[] rolId , Model model)throws Exception {
 		employeeService.rolecontrolle(departmentId, rolId);
 	    return "redirect:/employee/role";
 	}

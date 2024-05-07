@@ -33,6 +33,10 @@ function appendNotificationList(noti) {
 let notificationByType = {
     NoteMessage : openNoteMessageByLink,
     Notice : openNoticePage,
+    Document : openDocumentPopup,
+    DocumentAccept : openDocumentPopup,
+    DocumentReject : openDocumentPopup,
+    Calendar : openCalendar
 }
 
 function onNotificationClick(event, isNoti){
@@ -74,9 +78,44 @@ function openNoteMessageByLink(link){
 }
 
 function openNoticePage(link){
-    location.href="/all/detail?id=" + link;
+    location.href="/전체/detail?id=" + link;
 }
 
+function openDocumentPopup(link) {
+    function screen() {
+        // 현재 화면의 너비와 높이를 가져옵니다.
+        let screenWidth = window.screen.width;
+        let screenHeight = window.screen.height;
+
+        // 창의 너비와 높이를 설정합니다.
+        let widthPercentage = 50; // 화면 너비의 50%
+        let heightPercentage = 100; // 화면 높이의 100%
+        let width = (screenWidth * widthPercentage) / 100;
+        let height = (screenHeight * heightPercentage) / 100;
+
+        // 창의 위치를 계산하여 화면 중앙에 위치시킵니다.
+        let left = (screenWidth - width) / 2;
+        let top = (screenHeight - height) / 2;
+
+        // 창의 크기와 위치를 설정합니다.
+        return `width=${width}, height=${height}, left=${left}, top=${top}`;
+    }
+
+    let options = screen();
+    let relativePath = '/document/writenList/writenBonus?id=' + link; // 문서의 상대 경로를 설정합니다.
+
+    window.open(relativePath, '_blank', options);
+}
+
+document.querySelectorAll("[data-document-anchor]").forEach(doc => {
+    doc.addEventListener("click", event => {
+        openDocumentPopup(event.target.dataset.documentAnchor);
+    })
+})
+
+function openCalendar(link){
+    location.href = link;
+}
 
 /* functions */
 function drawNotificationDropdownItem({id, title, content, time, type, link, isReaded}){

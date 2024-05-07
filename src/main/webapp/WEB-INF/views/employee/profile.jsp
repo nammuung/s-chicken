@@ -381,7 +381,7 @@
 											<div class="text-center">
 												<input type="hidden" value="${detail.file.id}" name="fid" />
 												<button type="submit" class="btn btn-primary"
-													onclick="enableFields()">Save Changes</button>
+													onclick="enableFields()">저장</button>
 											</div>
 										</form>
 										<!-- End Profile Edit Form -->
