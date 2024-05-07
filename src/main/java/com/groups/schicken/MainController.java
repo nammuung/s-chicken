@@ -116,6 +116,7 @@ public class MainController {
         calendarVO.setUserYn(true);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String id = authentication.getName();
+        EmployeeVO employee = (EmployeeVO) authentication.getPrincipal();
         calendarVO.setShare(id);
         System.out.println(calendarVO.getEmployeeId()+"zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
 
@@ -140,7 +141,7 @@ public class MainController {
         if (calendarVO.getIdList() != null && !calendarVO.getIdList().isEmpty()) {
         	System.out.println("여기탔어요!!!!!!!!!!");
         	System.out.println(calendarVO.getIdList());
-            noticer.sendNotice(calendarVO.getEmployeeId() + "일정이 등록되었습니다.", "/", NotificationType.Calendar, calendarVO.getIdList());
+            noticer.sendNotice(employee.getName() + "님의 일정이 공유되었습니다.", "/", NotificationType.Calendar, calendarVO.getIdList());
         }
 
         return "일정이 성공적으로 추가되었습니다.";
