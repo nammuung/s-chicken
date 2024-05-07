@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.weather.WeatherMapper">
+    <insert id="insertWeather">
+        INSERT INTO
+            weather
+            (
+            weather_id, weather_main, weather_description, weather_icon, base,
+            temp, feels_like, temp_min, temp_max, pressure, humidity,
+            sea_level, grnd_level, wind_speed, wind_deg, wind_gust,
+            clouds_all, rain_1h, rain_3h, snow_1h, snow_3h,
+            visibility, dt, timezone, city_id, city_name, cod
+            )
+        VALUES (
+                   #{weather[0].id}, #{weather[0].main}, #{weather[0].description}, #{weather[0].icon}, #{base},
+                   #{main.temp}, #{main.feels_like}, #{main.temp_min}, #{main.temp_max}, #{main.pressure}, #{main.humidity},
+                   #{main.sea_level}, #{main.grnd_level}, #{wind.speed}, #{wind.deg}, #{wind.gust},
+                   #{clouds.all}, #{rain.rain1h}, #{rain.rain3h}, #{snow.snow1h}, #{snow.snow3h},
+                   #{visibility}, #{dt}, #{timezone}, #{id}, #{name}, #{cod}
+               )
+    </insert>
+
+    <resultMap id="OpenWeatherMap" type="OpenWeather">
+        <id property="id" column="id" />
+        <result property="base" column="base" />
+        <result property="visibility" column="visibility" />
+        <result property="dt" column="dt" />
+        <result property="timezone" column="timezone" />
+        <result property="name" column="city_name" />
+        <result property="cod" column="cod" />
+        <association property="main" javaType="com.groups.schicken.weather.OpenWeather$Main">
+            <result property="temp" column="temp" />
+            <result property="feels_like" column="feels_like" />
+            <result property="temp_min" column="temp_min" />
+            <result property="temp_max" column="temp_max" />
+            <result property="pressure" column="pressure" />
+            <result property="humidity" column="humidity" />
+            <result property="sea_level" column="sea_level" />
+            <result property="grnd_level" column="grnd_level" />
+        </association>
+        <association property="wind" javaType="com.groups.schicken.weather.OpenWeather$Wind">
+            <result property="speed" column="wind_speed" />
+            <result property="deg" column="wind_deg" />
+            <result property="gust" column="wind_gust" />
+        </association>
+        <association property="clouds" javaType="com.groups.schicken.weather.OpenWeather$Clouds">
+            <result property="all" column="clouds_all" />
+        </association>
+        <association property="rain" javaType="com.groups.schicken.weather.OpenWeather$Rain">
+            <result property="rain1h" column="rain_1h" />
+            <result property="rain3h" column="rain_3h" />
+        </association>
+        <association property="snow" javaType="com.groups.schicken.weather.OpenWeather$Snow">
+            <result property="snow1h" column="snow_1h" />
+            <result property="snow3h" column="snow_3h" />
+        </association>
+        <collection property="weather" ofType="com.groups.schicken.weather.OpenWeather$Weather">
+            <id property="id" column="weather_id" />
+            <result property="main" column="weather_main" />
+            <result property="description" column="weather_description" />
+            <result property="icon" column="weather_icon" />
+        </collection>
+    </resultMap>
+
+    <select id="getWeatherList" resultMap="OpenWeatherMap">
+        SELECT
+            *
+        FROM
+            weather
+        WHERE
+            id in
+            (
+            SELECT MAX(id) as id FROM weather where dt <![CDATA[>]]> #{dt} GROUP BY
+            dt
+            )
+        ORDER BY
+            dt asc
+        LIMIT
+            0,6
+    </select>
+
+    <select id="getWeather" resultMap="OpenWeatherMap">
+        SELECT
+            *
+        FROM
+            weather
+        WHERE
+            dt <![CDATA[<=]]> ${dt}
+        ORDER BY dt desc
+        LIMIT 0,1
+    </select>
+</mapper>

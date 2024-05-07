@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.groups.schicken.franchise.order.FranchiseOrderMapper">
+    <sql id="search">
+        <where>
+            <if test="status != null and status != 5 and status != 6 and status != 7">
+                ord.status = #{status}
+            </if>
+            <if test="status != null and status == 5">
+                AND ord.status IN (0,1,2,3,4)
+            </if>
+            <if test="status != null and status == 6">
+                AND ord.status IN (1,2)
+            </if>
+            <if test="status != null and status == 7">
+                AND ord.status IN (1,2,3,4)
+            </if>
+            <if test="id != null">
+                AND ord.id = #{id}
+            </if>
+            <if test="franchise != null and franchise.name != null">
+                AND frn.name LIKE CONCAT('%',#{franchise.name},'%')
+            </if>
+            <if test="orderDetails != null and orderDetails[0].product != null">
+                AND (ord.id) IN
+                (
+                SELECT
+                    oi.order_id
+                FROM
+                    franchise_order_detail oi
+                LEFT JOIN
+                    product prd
+                    ON oi.product_id = prd.id
+                WHERE
+                    prd.name LIKE CONCAT('%',#{orderDetails[0].product.name},'%')
+                )
+            </if>
+            <if test="orderDetails != null and orderDetails[0].id != null">
+                 AND order_detail.id = orderDetails[0].id
+            </if>
+            <if test="true">
+                AND ord.status != 7
+            </if>
+            <if test="comment != null">
+                AND ord.comment LIKE CONCAT('%',#{comment},'%')
+            </if>
+        </where>
+    </sql>
+    <sql id="getOrderSQL">
+        SELECT
+            ord.*,
+            frn.name franchise_name,
+            frn.registration_number franchise_registrationNumber,
+            frn.owner_name franchise_ownerName,
+            frn.address franchise_address,
+            frn.address_detail franchise_addressDetail,
+            frn.contact_number franchise_contactNumber,
+            order_detail.id order_detail_id,
+            order_detail.order_id order_detail_order_id,
+            order_detail.quantity order_detail_quantity,
+            order_detail.deliver_quantity order_detail_deliver_quantity,
+            order_detail.status order_detail_status,
+            order_detail.price order_detail_price,
+            order_detail.comment order_detail_comment,
+            prd.id order_detail_product_id,
+            prd.name order_detail_product_name,
+            prd.standard order_detail_product_standard,
+            prd.sell_price order_detail_product_sell_price,
+            SUM(st.quantity) as order_detail_product_stock,
+            unit.id order_detail_product_unit_id,
+            unit.name order_detail_product_unit_name,
+            cat.id order_detail_product_category_id,
+            cat.name order_detail_product_category_name
+        FROM
+            franchise_order ord
+        LEFT JOIN
+            franchise frn
+            ON ord.franchise_id = frn.id
+        LEFT JOIN
+            franchise_order_detail order_detail
+            ON ord.id = order_detail.order_id
+        LEFT JOIN
+            product prd
+            ON order_detail.product_id = prd.id
+        LEFT JOIN
+            stock st
+            ON prd.id = st.product_id
+        LEFT JOIN
+            view_unit unit
+            ON prd.unit_id = unit.id
+        LEFT JOIN
+            view_category cat
+            ON prd.category_id = cat.id
+        <include refid="search"/>
+        GROUP BY
+            order_detail.id
+        ORDER BY
+            ord.write_date desc, order_detail.id asc
+    </sql>
+    <select id="getOrderList" resultMap="getOrderMap">
+        <include refid="getOrderSQL"/>
+    </select>
+    <resultMap id="getOrderMap" type="FranchiseOrderVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <id column="franchise_id" property="franchise.id"/>
+        <association property="franchise" javaType="FranchiseVO" columnPrefix="franchise_" autoMapping="true"/>
+        <collection property="orderDetails" javaType="List" ofType="FranchiseOrderDetailVO" columnPrefix="order_detail_" autoMapping="true">
+            <id column="id" property="id"/>
+            <association property="product" javaType="ProductVO" columnPrefix="product_" autoMapping="true">
+                <association property="unit" javaType="CodeVO" columnPrefix="unit_" autoMapping="true"/>
+                <association property="category" javaType="CodeVO" columnPrefix="category_" autoMapping="true"/>
+            </association>
+        </collection>
+    </resultMap>
+    <select id="getOrder" resultMap="getOrderMap">
+        <include refid="getOrderSQL"/>
+    </select>
+    <insert id="addOrder">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO
+            franchise_order
+            (id, franchise_id, status, address, write_date, price, comment)
+        VALUES
+            (#{id}, #{franchise.id}, 0, #{address}, #{writeDate}, #{price}, #{comment})
+    </insert>
+
+    <insert id="addOrderDetail">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO
+            franchise_order_detail
+            (id,order_id, product_id, quantity, deliver_quantity, status, comment, price)
+        VALUES
+            (#{id},#{order.id}, #{product.id}, #{quantity}, 0, 0, #{comment}, #{price})
+    </insert>
+    <select id="getId">
+        SELECT nextval(seq1)
+    </select>
+    <update id="updateOrder">
+        UPDATE
+            franchise_order
+        <set>
+            <if test="status != null">
+                status = #{status}
+            </if>
+            <if test="orderDate != null">
+                , order_date = #{orderDate}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="submitOrderDetail">
+        UPDATE
+            franchise_order_detail
+        <set>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </set>
+        WHERE order_id = #{orderId}
+    </update>
+    <update id="updateOrderDetail" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE
+                franchise_order_detail
+            <set>
+                <if test="item.status != null">
+                    status = #{item.status}
+                </if>
+                <if test="item.deliverQuantity != null">
+                    , deliver_quantity = #{item.deliverQuantity}
+                </if>
+                <if test="item.comment != null">
+                    , comment = #{item.comment}
+                </if>
+            </set>
+            WHERE id = #{item.id}
+        </foreach>
+    </update>
+    <resultMap id="getOrderDetailMap" type="FranchiseOrderDetailVO" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="product" javaType="ProductVO" autoMapping="true" columnPrefix="product_"/>
+    </resultMap>
+    <select id="getOrderDetail" resultMap="getOrderDetailMap">
+        SELECT
+            od.*
+            , prd.id product_id
+            , prd.name product_name
+        FROM
+            franchise_order_detail od
+        LEFT JOIN
+            product prd
+            ON od.product_id = prd.id
+        WHERE
+            od.id = #{id}
+    </select>
+</mapper>

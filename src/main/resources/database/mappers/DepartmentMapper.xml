@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.department.DepartmentDAO">
+    <insert id="addDepartment">
+        <selectKey resultType="Long" keyProperty="id" order="BEFORE">
+            SELECT nextval(seq4)
+        </selectKey>
+        INSERT INTO department(id, name, contact_number, sort, upper_id)
+        VALUES (#{id}, #{name}, #{contactNumber}, #{sort}, #{upperId})
+    </insert>
+
+    <select id="getDepartment" parameterType="DepartmentVO" resultType="DepartmentVO">
+        SELECT
+              d.id
+            , d.name
+            , d.contact_number
+            , d.upper_id
+            , d2.name AS "upper_name"
+        FROM department d
+            LEFT JOIN department d2 ON d.upper_id = d2.id
+        WHERE d.id=#{id}
+    </select>
+
+    <select id="getList">
+        SELECT
+              d.id
+            , d.name
+            , d.contact_number
+            , d.upper_id
+            , d.sort
+            , d2.name AS "upper_name"
+        FROM department d
+            LEFT JOIN department d2 ON d.upper_id = d2.id
+        WHERE d.is_deleted = 0
+    </select>
+
+    <select id="getListWithHierarchy">
+        <include refid="com.groups.schicken.organization.OrganizationDAO.hierarchical_query"></include>
+        SELECT
+              id
+            , depth AS sort
+        FROM OC
+    </select>
+
+    <select id="getLastSortByUpperId">
+        SELECT NVL(max(sort),-1)
+        FROM department
+        WHERE upper_id = #{upperId}
+    </select>
+
+    <select id="isContactNumber">
+        SELECT COUNT(*)
+        FROM department
+        WHERE contact_number = #{contactNumber} AND contact_number != #{except}
+    </select>
+
+    <update id="updateDepartment">
+        UPDATE department
+        SET
+            name = #{name},
+            upper_id = #{upperId},
+            contact_number = #{contactNumber},
+            sort = #{sort}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateDepartmentSort">
+        UPDATE department
+        SET sort = sort+1
+        WHERE upper_id = #{upperId} AND sort >= #{sort}
+    </update>
+
+    <select id="countChildren">
+        SELECT COUNT(*)
+        FROM department
+        WHERE
+            upper_id = #{id}
+            OR
+            id IN (
+                SELECT DISTINCT department_id
+                FROM employee
+                WHERE department_id = #{id}
+            )
+    </select>
+
+    <update id="deleteDepartment">
+        UPDATE department
+        SET name = 'deleted!'
+        WHERE id = #{id}
+    </update>
+</mapper>

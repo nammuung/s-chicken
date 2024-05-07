@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.board.reply.ReplyDAO">
+	
+	<select id="totalCount">
+		SELECT COUNT(*) FROM reply
+		WHERE parent_id=#{replyVO.parentId} 
+	</select>
+	
+	<select id="list" resultMap="replyResult">
+		SELECT r.*, 
+			emp.name employee_name,
+			emp.id	employee_id,
+			dep.name department_name,
+			att.id attach_id
+			
+			FROM reply r
+			
+			LEFT JOIN employee emp
+			ON emp.id = r.writer_id
+			
+			LEFT JOIN department dep
+			ON dep.id = emp.department_id
+			
+			LEFT JOIN attach att
+			ON att.tbl_id = 1077 AND att.parent_id = emp.id
+			
+			WHERE r.parent_id=#{replyVO.parentId}
+			ORDER BY id DESC
+			LIMIT #{pager.startIndex},#{pager.perPage}
+	</select>
+	
+	<resultMap type="ReplyVO" id="replyResult" autoMapping="true">
+		<association property="employeeVO" columnPrefix="employee_" autoMapping="true" javaType="EmployeeVO"/>
+		<association property="departmentVO" javaType="DepartmentVO" autoMapping="true" columnPrefix="department_"/>
+		<association property="fileVO" javaType="FileVO" autoMapping="true" columnPrefix="attach_"></association>
+	</resultMap>
+	
+	
+	
+	<insert id="add" keyProperty="id">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Long">
+			SELECT nextval(seq3)
+		</selectKey>
+		INSERT INTO reply VALUES
+		(#{id},#{content},#{date},#{profile},#{writerId},#{parentId})
+	</insert>
+
+	<update id="update">
+		UPDATE reply
+		SET content=#{content}
+		WHERE id=#{id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM reply
+		WHERE id=#{id}
+	</delete>
+</mapper>

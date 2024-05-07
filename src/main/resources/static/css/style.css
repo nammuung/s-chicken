@@ -6,15 +6,372 @@
 * License: https://bootstrapmade.com/license/
 */
 
+
+/*kgm*/
+.erp {
+  width: 1200px!important;
+}
+.stepwizard-step p {
+  margin-top: 10px;
+}
+
+.stepwizard-row {
+  display: table-row;
+}
+
+
+.stepwizard {
+  display: table;
+  width: 100%;
+  position: relative;
+}
+
+.stepwizard-step button[disabled] {
+  opacity: 1 !important;
+  filter: alpha(opacity=100) !important;
+}
+
+.stepwizard-row:before {
+  top: 14px;
+  bottom: 0;
+  position: absolute;
+  content: " ";
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;
+  z-order: 0;
+}
+
+.stepwizard-step {
+  display: table-cell;
+  text-align: center;
+  position: relative;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+  background-color: white;
+  border-color:#7749f8
+}
+.btn-circle.active {
+  background-color: #7749f8;
+  color: white;
+}
+.weather-container {
+  margin: 20px;
+  height: 480px;
+  color: white;
+  border-radius: 30px;
+}
+.weather-container.day {
+  background: linear-gradient(
+          180deg,
+          rgba(0, 117, 255, 1) 0%,
+          rgba(149, 204, 255, 1) 100%
+  );
+  position: relative;
+}
+.weather-container.night {
+  background: linear-gradient(
+          180deg,
+          rgb(171, 134, 255) 0%,
+          rgb(55, 31, 169) 100%
+  );
+  position: relative;
+}
+
+.weather-container .weatherImage {
+  position: absolute;
+  left: 60px;
+  top: 20px;
+  z-index: 0;
+}
+.weather-container .nowInfo {
+  position: relative;
+  margin-top: 80px;
+  z-index: 55;
+}
+.weather-container .nowTemp {
+  font-size: 100px;
+  font-weight: 700;
+  line-height: 100px;
+}
+.weather-container .weatherBox {
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 23px;
+  height: 90px;
+}
+.weather-container .weatherBoxDetail {
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.38);
+  border-radius: 23px;
+  height: 85px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+.weather-container .detailTitle{
+  font-size: 14px;
+}
+.weather-container #timeWeather > div:hover{
+  cursor: pointer;
+}
+/*--------------------------------------------------------------
+# Nmg
+--------------------------------------------------------------*/
+.title {
+	font-weight: bold;
+	color: #7749f8;
+	font-size: 250%;
+	margin-left: 37px
+}
+.mintitle {
+	font-weight: bold;
+	color: #7749f8;
+	font-size: 160%;
+	margin-left: 41px;
+	margin-bottom: 0px;
+}
+.facilityday{
+	margin-left: 30px;
+	margin-top: 18px;
+	margin-bottom: 1px;
+	font-size: 120%;
+	font-weight: bold;
+}
+.announcement{
+	margin-left: 100px;
+	margin-right: 67px;
+	font-size: 100%;
+	font-weight: bold;
+}
+.facility{
+	font-weight: bold;
+	margin-left: 60px;
+	margin-top: 25px;
+}
+
+/*facilityList CSS*/
+.title_1 {
+	font-weight: bold;
+	color: #7749f8;
+	font-size: x-large
+}
+
+.image_1 {
+	width: 100%;
+	max-height: 200px;
+	object-fit: cover;
+}
+
+.mintitle_1 {
+	color: gray;
+}
+
+.iconAll{
+	background-color: #7749f8;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+}
+.listcheckbox{
+	background-color: #7749f8;
+	border-top-left-radius: 40px 40px;
+	border-top-right-radius: 40px 40px;
+	border-bottom-right-radius: 40px 40px;
+	border-bottom-left-radius: 40px 40px;
+	margin-right: 5px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	color: white;
+}
+
+.listcheckbox2{
+	border: 1px solid black;
+	color: black;
+	border-top-left-radius: 40px 40px;
+	border-top-right-radius: 40px 40px;
+	border-bottom-right-radius: 40px 40px;
+	border-bottom-left-radius: 40px 40px;
+	margin-right: 5px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+.facilitySpan{
+	margin-top: 5px;
+}
+
+.bg-schicken{
+    background-color: #7749f8 !important;
+}
+
+.bg-schicken-light{
+    background-color: #C7A9FF55 !important;
+}
+
+.h-500px{
+  height: 500px !important;
+  overflow-y: auto !important;
+}
+
+.h-620px{
+  height: 620px !important;
+  overflow-y: auto !important;
+}
+
+.anchorable{
+  cursor: pointer;
+}
+
+.bg-schicken-light-hover:hover{
+  background-color: #C7A9FF !important;
+}
+
+.hovercursor:hover{
+  cursor: pointer !important;
+}
+
+/*캘린더*/
+/* 일요일 날짜 빨간색 */
+.fc-day-sun a {
+  color: red;
+  text-decoration: none;
+  /* 밑줄 제거 */
+}
+
+/* 토요일 날짜 파란색 */
+.fc-day-sat a {
+  color: blue;
+  text-decoration: none;
+  /* 밑줄 제거 */
+}
+
+/* 월요일부터 금요일까지의 날짜 검정색 */
+.fc-day-mon a,
+.fc-day-tue a,
+.fc-day-wed a,
+.fc-day-thu a,
+.fc-day-fri a {
+  color: black;
+  text-decoration: none;
+  /* 밑줄 제거 */
+}
+
+#calendar {
+  height: 480px;
+  /* 원하는 높이로 조정 */
+}
+
+/* 쪽지관련 */
+
+.note-message-content .note-message-list > .list-group-item{
+  padding: 1rem 0 1rem 0;
+}
+
+.note-message-list > .list-group-item:hover > span{
+  color : #7749F8!important;
+}
+
+.note-message-content .selected {
+  border : 1px #7746f8 solid
+}
+
+.note-message-content.wrap-container{
+  position: relative !important;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.note-message-content #note-message-write-page{
+  position: absolute;
+  width: 100%;
+  height: 500px;
+  left: 100%;
+  transition: left 0.5s cubic-bezier(.25,0.1,.25,1);
+}
+
+.note-message-content #note-message-select-page{
+  position: absolute;
+  width: 100%;
+  height: 500px;
+  transition: left 0.5s cubic-bezier(.25,0.1,.25,1);
+}
+
+.note-message-content button#note-message-select-complete-btn:target ~ div#note-message-write-page{
+  left : 0;
+}
+
+.note-message-content #note-message-back-select-btn:target ~ div#note-message-select-page{
+  left : 0;
+}
+
+.note-message-content .note-message-receiver-item{
+  margin: 0.25rem;
+  border: 1px #7749F8 solid;
+  border-radius: 0.375rem;
+  min-width: 177px;
+}
+
+#note-message-textarea{
+  max-height: 401px;
+  overflow-y: auto;
+}
+
+.note-message-content .ellipsis{
+  max-width: 475px;
+}
+
+.note-message-content .note-message-from h5{
+  display: inline-block;
+  padding-top: 0.25em;
+  border-top:solid #000 1px;
+}
+
+.border-schicken{
+  border-color : #7749F888 !important;
+}
+
+#note-message-pagination .now-page{
+  background-color: #7749F8;
+  color:white;
+}
+
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
 /* Your custom primary color */
 .btn-primary,
-.btn-primary:hover,
 .btn-primary:focus {
   background-color: #7749F8!important;
   border-color: #7749F8!important;
+}
+
+.btn-primary:hover {
+  background-color: #5729E8!important;
+  border-color: #5729E8!important;
+}
+
+.w-22rem{
+  width: 22rem!important;
+}
+
+.readed{
+  background-color: #F0F0F0;
 }
 
 :root {
@@ -374,7 +731,7 @@ h6 {
 }
 
 .logo img {
-  max-height: 26px;
+  max-height: 60px;
   margin-right: 6px;
 }
 
@@ -505,6 +862,9 @@ h6 {
 
 .header-nav .notifications {
   inset: 8px -15px auto auto !important;
+  max-height: 430px;
+  overflow-y: auto;
+  padding-left: 0;
 }
 
 .header-nav .notifications .notification-item {
@@ -531,9 +891,58 @@ h6 {
   color: #919191;
 }
 
-.header-nav .notifications .notification-item:hover {
-  background-color: #f6f9ff;
+/*123456*/
+.chatroom-item:hover{
+  background-color : #E6E9ff!important;
 }
+
+.linkable{
+  color : #00ceff;
+}
+
+small.linkable{
+  color: #555
+}
+
+.notifications .linkable{
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.linkable:hover{
+  color : #7749F8!important;
+}
+
+.linkable:hover > small.linkable{
+  color : #7749F8!important;
+}
+
+.notifications {
+  inset: 8px -15px auto auto !important;
+  padding-left: 0;
+}
+
+.notifications .notification-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 10px;
+  transition: 0.3s;
+}
+
+.notifications .notification-item h4 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.notifications .notification-item p {
+  font-size: 18px;
+  color: #333;
+}
+
+.notifications .notification-item:hover {
+  background-color: #E6E9ff;
+}
+/*123456*/
 
 .header-nav .messages {
   inset: 8px -15px auto auto !important;

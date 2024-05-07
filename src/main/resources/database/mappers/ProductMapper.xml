@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.erp.product.ProductMapper">
+    <resultMap id="getProductMap" type="ProductVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <association property="category" javaType="CodeVO" columnPrefix="category_" autoMapping="true"/>
+        <association property="unit" javaType="CodeVO" columnPrefix="unit_" autoMapping="true"/>
+    </resultMap>
+    <select id="getCategory">
+        SELECT
+            *
+        FROM
+            view_category
+    </select>
+    <select id="getUnit">
+        SELECT
+            *
+        FROM
+            view_unit
+    </select>
+    <sql id="getProductSQL">
+        SELECT
+            p.*,
+            c.name category_name,
+            uni.name unit_name,
+            SUM(st.quantity) as stock
+        FROM
+            product p
+        LEFT JOIN
+            view_category c
+            ON p.category_id = c.id
+        LEFT JOIN
+            view_unit uni
+            ON p.unit_id = uni.id
+        LEFT JOIN
+            stock st
+            ON p.id = st.product_id
+        <include refid="search"/>
+        GROUP BY
+            p.id,
+            c.name,
+            uni.name
+        ORDER BY
+            p.id*1
+    </sql>
+    <select id="getProduct" resultMap="getProductMap">
+        <include refid="getProductSQL"/>
+    </select>
+    <select id="getProductList" resultMap="getProductMap">
+        <include refid="getProductSQL"/>
+    </select>
+    <sql id="search">
+        <where>
+            <if test='id != null'>
+                p.id = #{id}
+            </if>
+            <if test='name != null'>
+                AND p.name LIKE concat('%',#{name},'%')
+            </if>
+            <if test='standard != null'>
+                AND p.standard LIKE concat('%',#{standard},'%')
+            </if>
+            <if test='category != null and category.id != null'>
+                AND p.category_id = #{category.id}
+            </if>
+        </where>
+    </sql>
+
+    <insert id="addProduct">
+        <selectKey order="BEFORE" keyProperty="id" resultType="String">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO
+            product
+            (id, name, category_id, standard, unit_id, sell_price)
+        VALUES
+            (#{id}, #{name}, #{category.id}, #{standard}, #{unit.id}, #{sellPrice})
+    </insert>
+    <update id="updateProduct">
+        UPDATE
+            product
+        <set>
+            <if test="name != null">
+                 name = #{name}
+            </if>
+            <if test="category != null">
+                ,category_id = #{category.id}
+            </if>
+            <if test="standard != null">
+                ,standard = #{standard}
+            </if>
+            <if test="unit != null">
+                ,unit_id = #{unit.id}
+            </if>
+            <if test="sellPrice != null">
+                ,sell_price = #{sellPrice}
+            </if>
+        </set>
+        WHERE
+            id = #{id}
+    </update>
+</mapper>

@@ -7,22 +7,36 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <header id="header" class="header fixed-top d-flex align-items-center">
 
+    <sec:authorize access="isAuthenticated()">
+        <sec:authentication property="principal" var="logined"/>
+        <div data-logined-id="${logined.id}"></div>
+    </sec:authorize>
+
     <div class="d-flex align-items-center justify-content-between">
-        <a href="/" class="logo d-flex align-items-center">
-            <img src="/img/logo.png" alt="">
-            <span class="d-none d-lg-block"> Chicken </span>
-        </a>
+        <sec:authorize access="hasRole('ROLE_FRANCHISE')">
+            <a href="/franchise/home" class="logo d-flex align-items-center">
+                <img src="/img/slogo.png" alt="">
+                <span class="d-none d-lg-block"> Chicken </span>
+            </a>
+        </sec:authorize>
+        <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
+            <a href="/" class="logo d-flex align-items-center">
+                <img src="/img/slogo.png" alt="">
+                <span class="d-none d-lg-block"> Chicken </span>
+            </a>
+        </sec:authorize>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="search-bar">
-        <form class="search-form d-flex align-items-center" method="POST" action="#">
-            <input type="text" name="query" placeholder="검색" title="Enter search keyword">
-            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
-        </form>
-    </div><!-- End Search Bar -->
+<%--    <div class="search-bar">--%>
+<%--        <form class="search-form d-flex align-items-center" method="POST" action="#">--%>
+<%--            <input type="text" name="query" placeholder="검색" title="Enter search keyword">--%>
+<%--            <button type="submit" title="Search"><i class="bi bi-search"></i></button>--%>
+<%--        </form>--%>
+<%--    </div><!-- End Search Bar -->--%>
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
@@ -32,204 +46,105 @@
                     <i class="bi bi-search"></i>
                 </a>
             </li><!-- End Search Icon-->
-
+            <sec:authorize access="!hasRole('ROLE_FRANCHISE')">
+            <!-- 알림 드롭다운 -->
             <li class="nav-item dropdown">
-
-                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                <a id="notification-icon" class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                     <i class="bi bi-bell"></i>
-                    <span class="badge bg-primary badge-number">4</span>
+                    <span id="notification-badge" class="badge bg-danger badge-number d-none" style="padding: 5px;"> </span>
                 </a><!-- End Notification Icon -->
 
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
-                    <li class="dropdown-header">
-                        You have 4 new notifications
-                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="notification-item">
-                        <i class="bi bi-exclamation-circle text-warning"></i>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow w-22rem">
+                    <ul id="schicken-notification-list" class="notifications">
                         <div>
-                            <h4>Lorem Ipsum</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
-                            <p>30 min. ago</p>
+                            <li data-no-notification class="notification-item">
+                                <div>
+                                    <h4></h4>
+                                    <p>모든 알림을 읽었습니다.</p>
+                                    <p></p>
+                                </div>
+                            </li>
+                            <li data-no-notification><hr class="dropdown-divider"></li>
                         </div>
-                    </li>
+                    </ul>
+                    <div id="notification-list-footer" class="dropdown-footer border-top border-1 p-0">
+                        <a href="/notificationPage" class="d-block w-100 p-2">
+                            모든 알림 보기
+                        </a>
+                    </div>
 
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="notification-item">
-                        <i class="bi bi-x-circle text-danger"></i>
-                        <div>
-                            <h4>Atque rerum nesciunt</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
-                            <p>1 hr. ago</p>
-                        </div>
-                    </li>
-
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="notification-item">
-                        <i class="bi bi-check-circle text-success"></i>
-                        <div>
-                            <h4>Sit rerum fuga</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
-                            <p>2 hrs. ago</p>
-                        </div>
-                    </li>
-
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="notification-item">
-                        <i class="bi bi-info-circle text-primary"></i>
-                        <div>
-                            <h4>Dicta reprehenderit</h4>
-                            <p>Quae dolorem earum veritatis oditseno</p>
-                            <p>4 hrs. ago</p>
-                        </div>
-                    </li>
-
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li class="dropdown-footer">
-                        <a href="#">Show all notifications</a>
-                    </li>
-
-                </ul><!-- End Notification Dropdown Items -->
+                </div><!-- End Notification Dropdown Items -->
 
             </li><!-- End Notification Nav -->
 
+            <!-- 채팅 드롭다운 -->
             <li class="nav-item dropdown">
-
-                <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+                <a id="chatting-popup-btn" class="nav-link nav-icon" href="#">
                     <i class="bi bi-chat-left-text"></i>
-                    <span class="badge bg-success badge-number">3</span>
                 </a><!-- End Messages Icon -->
-
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-                    <li class="dropdown-header">
-                        You have 3 new messages
-                        <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="message-item">
-                        <a href="#">
-                            <img src="/img/messages-1.jpg" alt="" class="rounded-circle">
-                            <div>
-                                <h4>Maria Hudson</h4>
-                                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                <p>4 hrs. ago</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="message-item">
-                        <a href="#">
-                            <img src="/img/messages-2.jpg" alt="" class="rounded-circle">
-                            <div>
-                                <h4>Anna Nelson</h4>
-                                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                <p>6 hrs. ago</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="message-item">
-                        <a href="#">
-                            <img src="/img/messages-3.jpg" alt="" class="rounded-circle">
-                            <div>
-                                <h4>David Muldon</h4>
-                                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                <p>8 hrs. ago</p>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li class="dropdown-footer">
-                        <a href="#">Show all messages</a>
-                    </li>
-
-                </ul><!-- End Messages Dropdown Items -->
-
             </li><!-- End Messages Nav -->
+
+            <!-- 쪽지 창 -->
+            <li class="nav-item dropdown">
+                <a id="note-message-nav"  class="nav-link nav-icon" href="#">
+                    <i class="bi bi-envelope-paper"></i>
+                </a><!-- End Messages Icon -->
+            </li><!-- End NoteMessages Nav -->
 
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                     <img src="/fileDown?id=${details.file.id}" alt="Profile" onerror="this.onerror=null; this.src='/img/기본.jpg';" class="rounded-circle">
+                    <span class="d-none d-md-block dropdown-toggle ps-2">
+                    ${details.name}</span>
                 </a><!-- End Profile Iamge Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+
                     <li class="dropdown-header">
-                        <h6>Kevin Anderson</h6>
-                        <span>Web Designer</span>
+                        <img width="50" height="50" src="/fileDown?id=${details.file.id}" alt="Profile"
+									class="rounded-circle"
+									onerror="this.onerror=null; this.src='/img/기본.jpg';">
+                       <h6>부서 : ${details.department.name}</h6>
+                       <h6>직급 : ${details.position.name}</h6>
+
                     </li>
+
                     <li>
                         <hr class="dropdown-divider">
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                        <a class="dropdown-item d-flex align-items-center" href="../employee/profile?id=${id}">
                             <i class="bi bi-person"></i>
-                            <span>My Profile</span>
+                            <span>마이페이지</span>
                         </a>
                     </li>
+
+
                     <li>
                         <hr class="dropdown-divider">
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                            <i class="bi bi-gear"></i>
-                            <span>Account Settings</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                            <i class="bi bi-question-circle"></i>
-                            <span>Need Help?</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" href="/employee/logout">
                             <i class="bi bi-box-arrow-right"></i>
-                            <span>Sign Out</span>
+                            <span>로그아웃</span>
                         </a>
                     </li>
 
                 </ul><!-- End Profile Dropdown Items -->
             </li><!-- End Profile Nav -->
-
+            </sec:authorize>
+            <sec:authorize access="hasRole('ROLE_FRANCHISE')">
+                <!-- 쪽지 창 -->
+                <li class="nav-item">
+                    <a class="nav-link nav-icon" href="/employee/logout">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>로그아웃</span>
+                    </a><!-- End Messages Icon -->
+                </li><!-- End NoteMessages Nav -->
+            </sec:authorize>
         </ul>
     </nav><!-- End Icons Navigation -->
 

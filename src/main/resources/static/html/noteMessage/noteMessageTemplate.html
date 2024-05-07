@@ -1,0 +1,124 @@
+<!-- 쪽지 메인페이지 -->
+<div class="note-message-content">
+    <div class="d-flex">
+        <div id="note-message-btn-div" class="d-flex flex-grow-1">
+        </div>
+        <h3 id="note-message-list-title" class="w-25 text-center"></h3>
+        <div style="width: 36%!important;"> </div>
+        <span class="ms-auto close" data-bs-dismiss="modal" aria-label="Close" style="font-size: x-large">&times;</span>
+    </div>
+    <div class="row pt-3">
+        <b class="col-1 border-2 border-schicken border-bottom text-center"></b>
+        <b class="col-3 border-2 border-schicken border-bottom text-center">보낸사람</b>
+        <b class="col-5 border-2 border-schicken border-bottom text-center">내용</b>
+        <b class="col-1 border-2 border-schicken border-bottom text-center">파일</b>
+        <b class="col-2 border-2 border-schicken border-bottom text-center">수신날짜</b>
+        <div class="col-12">
+            <div id="note-message-datas" class="row">
+                <div class="text-center">쪽지가 없습니다.</div>
+            </div>
+        </div>
+        <div class="col-12">
+            <nav class="mt-2">
+                <ul id="note-message-pagination" class="pagination justify-content-center">
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+^^^^^^^^^^
+<!-- 쪽지 보내기페이지 -->
+<div class="note-message-content wrap-container">
+    <div class="row pages" id="note-message-select-page">
+        <div class="col-12">
+            <div class="row border-bottom border-1">
+                <div class="col-5 border-end border-1 p-3 h-500px">
+                    <div id="note-message-org-chart"></div>
+                </div>
+                <div class="col-2 position-relative">
+                    <div class="position-absolute" style="top:50%;left: 50%; margin-top: -50px; margin-left: -20px">
+                        <button id="add-receivers-btn" class="btn btn-primary btn-sm mb-1"> 추가</button>
+                        <hr>
+                        <button id="remove-receivers-btn" class="btn btn-outline-secondary btn-sm mt-1"> 삭제</button>
+                    </div>
+                </div>
+                <div class="col-5 border-start border-1 p-3 h-500px">
+                    <ul id="note-message-selected-list" class="list-group">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a href="#note-message-write-page" id="note-message-select-complete-btn" class="btn btn-primary disabled">선택완료</a>
+        </div>
+    </div>
+    <div class="row pages" id="note-message-write-page">
+        <form id="note-message-form" enctype="multipart/form-data">
+            <div class="row py-2">
+                <div class="col-2 text-center py-2">받는 사람</div>
+                <div class="col-8 py-2">
+                    <div id="note-message-receivers-list"
+                         class="d-flex flex-row flex-nowrap overflow-auto py-2 form-control">
+
+                    </div>
+                    <input type="hidden" id="note-message-receiver-input" name="receivers">
+                </div>
+                <div class="col-2 py-2">
+                    <a id="note-message-back-select-btn" href="#note-message-select-page"
+                       class="btn btn-outline-secondary btn-sm w-100">받는 사람 수정</a>
+                </div>
+
+                <div class="col-2 text-center py-2">내용</div>
+                <div class="col-10 py-2">
+                    <div class="form-floating">
+                        <textarea class="form-control" name="content" placeholder="내용을 입력하세요" id="note-message-textarea"
+                                  maxlength="1000" style="height: 380px"></textarea>
+                        <label for="note-message-textarea">최대 1000자 까지만 입력가능합니다. (현재 <span
+                                id="note-message-content-count">0</span>/1000 자)</label>
+                    </div>
+                </div>
+
+                <div class="col-2 text-center py-2">파일 첨부</div>
+                <div class="col-10 py-2">
+                    <input class="form-control" type="file" name="attach">
+                </div>
+
+                <div class="py-2 text-center">
+                    <button type="button" id="note-message-submit-btn" class="btn btn-primary w-50 disabled">쪽지 보내기
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+^^^^^^^^^^
+<!-- 쪽지 확인페이지 -->
+<div class="note-message-content p-3">
+    <div class="row justify-content-center">
+        <div class="col-9">
+            <div class="row">
+                <div class="col-12">
+                    <p><a id="note-message-back-list" href="#">< 뒤로가기</a></p>
+                </div>
+                <h4 id="note-message-detail-title" class="col-12">
+                </h4>
+                <div id="note-message-from" class="col-5 note-message-from"></div>
+                <div class="col-3"></div>
+                <div id="note-message-date" class="col-4 text-end"></div>
+                <div class="col-12 mt-2">
+                    <textarea class="d-none" id="note-message-editor"></textarea>
+                </div>
+                <div id="note-message-attach" class="col-12"></div>
+                <div class="col-12 mt-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <button id="note-message-reply-btn" class="btn btn-primary w-100"> 답장 </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

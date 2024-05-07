@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.notification.NotificationDAO">
+    <insert id="insertNotification">
+        <selectKey resultType="String" order="BEFORE" keyProperty="notification.id" >
+            SELECT nextval(seq2)
+        </selectKey>
+        INSERT INTO notification (id, receiver_id, content, time, type, link)
+        <foreach collection="receivers" item="receiver" open="VALUES " separator=",">
+            (#{notification.id}, #{receiver}, #{notification.content}, #{notification.time}, #{notification.type}, #{notification.link})
+        </foreach>
+    </insert>
+
+    <select id="getNotifications">
+        SELECT
+              id
+            , content
+            , time
+            , link
+            , type
+            , is_readed
+        FROM
+            notification
+        WHERE
+            receiver_id=#{employee.id}
+        <if test="read != null">
+            AND is_readed=#{read}
+        </if>
+        ORDER BY time DESC
+        LIMIT ${pager.startIndex}, ${pager.perPage}
+    </select>
+
+    <update id="readNotification">
+        UPDATE notification
+        SET
+            is_readed=1
+        WHERE
+            receiver_id=#{employee.id} AND id=#{notification.id}
+    </update>
+
+    <update id="readAll">
+        UPDATE notification
+        SET is_readed=1
+        WHERE receiver_id=#{employeeId}
+    </update>
+</mapper>

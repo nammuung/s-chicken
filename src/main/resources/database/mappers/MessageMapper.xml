@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.noteMessage.NoteMessageDAO">
+    <insert id="addMessage">
+        <selectKey resultType="Long" keyProperty="id" order="BEFORE">
+            SELECT nextval(seq5)
+        </selectKey>
+        INSERT INTO note_message(id, sender_id, content)
+        VALUES(#{id}, #{senderId}, #{content})
+    </insert>
+
+    <insert id="addReceivers">
+        INSERT INTO note_receiver(note_id, receiver_id)
+        <foreach collection="receivers" item="i" open="VALUES " separator=",">
+            (#{id}, #{i})
+        </foreach>
+    </insert>
+
+    <select id="getTotalCount">
+        SELECT COUNT(DISTINCT note_id)
+        FROM note_receiver
+        WHERE receiver_id=#{employee.id} AND box_type=#{type}
+    </select>
+
+    <select id="getList">
+        SELECT
+              nm.id
+            , nm.sender_id
+            , concat(d.name,' ',c.name,' ',e.name) AS "sender_name"
+            , nm.content
+            , nm.date
+            , a.id AS "file"
+        FROM note_message nm
+            INNER JOIN note_receiver nr ON nr.note_id = nm.id
+            INNER JOIN employee e ON e.id = nm.sender_id
+            INNER JOIN department d ON d.id = e.department_id
+            INNER JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
+            LEFT JOIN attach a ON a.tbl_id='104' AND a.parent_id=nm.id
+        WHERE receiver_id=#{employee.id} AND box_type=#{type}
+        ORDER BY nm.date desc
+        LIMIT ${pager.startIndex}, ${pager.perPage}
+    </select>
+
+    <select id="getSendList">
+        SELECT
+              nm.id
+            , IF(nr.count = 0 , nr.receiver_id , -1) AS "sender_id"
+            , nm.content
+            , nm.date
+            , concat(nr.name , ' ' , IF(nr.count = 0 , '' , concat('외 ', nr.count, '명'))) AS "sender_name"
+            , a.id AS "file"
+        FROM note_message nm
+            INNER JOIN (
+                SELECT
+                      nr.note_id
+                    , nr.receiver_id
+                    , max(concat(d.name , ' ' , c.name , ' ' , e.name)) AS "name"
+                    , count(*)-1 AS "count"
+                FROM employee e
+                    INNER JOIN department d ON e.department_id = d.id
+                    INNER JOIN code c ON c.id = e.pos_id AND c.type_id = 300
+                    INNER JOIN note_receiver nr ON nr.receiver_id = e.id
+                GROUP BY nr.note_id
+            ) nr ON nr.note_id = nm.id
+        LEFT JOIN attach a ON a.tbl_id='104' AND a.parent_id=nm.id
+        WHERE sender_id=#{employee.id}
+        ORDER BY nm.date desc
+        LIMIT ${pager.startIndex}, ${pager.perPage}
+    </select>
+
+    <select id="getMessage">
+        SELECT
+              nm.id
+            , nm.sender_id
+            , concat(d.name,' ',c.name,' ',e.name) AS "sender_name"
+            , nm.content
+            , nm.date
+            , a.id AS "file"
+            , a.origin_name AS "filename"
+        FROM note_message nm
+            INNER JOIN employee e ON e.id = nm.sender_id
+            INNER JOIN department d ON d.id = e.department_id
+            INNER JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
+            LEFT JOIN attach a ON a.tbl_id='104' AND a.parent_id=nm.id
+        WHERE nm.id = #{id}
+    </select>
+
+    <select id="getMessageWithReceivers" resultMap="getMessageWithReceiversResult">
+        SELECT
+              nm.id
+            , nm.content
+            , nm.date
+            , a.id AS "file"
+            , a.origin_name AS "filename"
+            , e.id AS "receivers_id"
+            , concat(d.name, ' ', c.name, ' ', e.name) AS "receivers_name"
+        FROM note_message nm
+            INNER JOIN note_receiver nr ON nr.note_id = nm.id
+            INNER JOIN employee e ON e.id = nr.receiver_id
+            INNER JOIN department d ON d.id = e.department_id
+            INNER JOIN code c ON c.id = e.pos_id AND c.type_id = '300'
+            LEFT JOIN attach a ON a.tbl_id='104' AND a.parent_id=nr.note_id
+        WHERE nm.id = #{id};
+    </select>
+
+    <resultMap id="getMessageWithReceiversResult" type="NoteMessageVO" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="receiversVO" column="receivers" javaType="List" ofType="EmployeeVO">
+            <id column="receivers_id" property="id"/>
+            <result column="receivers_name" property="name"/>
+        </collection>
+    </resultMap>
+
+    <update id="moveBox">
+        UPDATE note_receiver
+        SET box_type=#{to}
+        WHERE receiver_id=${id} AND note_id IN
+        <foreach collection="messages" separator="," open="(" close=")" item="message">
+            #{message}
+        </foreach>
+    </update>
+</mapper>

@@ -9,6 +9,7 @@ build/
 !**/src/test/**/build/
 
 ### STS ###
+.metadata
 .apt_generated
 .classpath
 .factorypath
@@ -38,3 +39,4 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/firebaseKey.json

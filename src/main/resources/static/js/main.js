@@ -6,6 +6,96 @@
 * License: https://bootstrapmade.com/license/
 */
 
+const namecardModal = new bootstrap.Modal(document.getElementById("namecard-modal"));
+function onProfileClick(empId){
+  if(empId == '-1') return;
+  fetch('/employee/getProfile?id=' + empId)
+      .then(res=>res.json())
+      .then(info=>{
+        console.log("info = ", info)
+        document.querySelectorAll("[data-profile-type]")
+            .forEach(e => {
+              let profileType = e.dataset.profileType;
+              console.log(e.dataset, profileType)
+              switch (profileType){
+                case 'img':
+                  e.setAttribute("src", info.profileImg);
+                  break;
+                case 'chatting':
+                  console.log(info.id, document.querySelector("[data-logined-id]")?.dataset.loginedId, info.id === document.querySelector("[data-logined-id]")?.dataset.loginedId)
+                  if(info.id === document.querySelector("[data-logined-id]")?.dataset.loginedId) {
+                    e.classList.add("d-none");
+                  } else {
+                    e.classList.remove("d-none");
+                  }
+                case 'noteMessage':
+                  e.dataset.targetEmployeeId = info.id;
+                  break;
+                default:
+                  e.innerText = info[profileType];
+              }
+            })
+        namecardModal.show();
+      })
+}
+
+//김경모
+var deleteCookie = function(name) {
+  document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;path=/;';
+}
+
+//사이드 네비게이션 열림, 닫힘 저장
+$('.nav-link').click(function () {
+  if(!$(this).hasClass("collapsed")){
+    document.cookie = "navToggle="+$(this).data("bs-target")+"; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT"
+  } else {
+    deleteCookie("navToggle")
+  }
+});
+//     애니메이션
+const animateCSS = (element, animation, prefix = 'animate__') =>
+    // We create a Promise and return it
+    new Promise((resolve, reject) => {
+      const animationName = `${prefix}${animation}`;
+      let node
+      if(typeof element === 'string'){
+        node = document.querySelector(element);
+      } else {
+        node = element
+      }
+
+      node.classList.add(`${prefix}animated`, animationName);
+
+      // When the animation ends, we clean the classes and resolve the Promise
+      function handleAnimationEnd(event) {
+        event.stopPropagation();
+        node.classList.remove(`${prefix}animated`, animationName);
+        resolve('Animation ended');
+      }
+
+      node.addEventListener('animationend', handleAnimationEnd, {once: true});
+    });
+//데이터의 키값이랑 같은 엘리먼트 아이디 찾아서 set
+function dataSetterWithId(datas){
+  for(let key of Object.keys(datas)){
+    const element = document.getElementById(key);
+    try {
+      element.value = datas[key];
+    } catch (err){
+      console.log(err);
+    }
+  }
+}
+//화면상의 아이디가 설정된 모든 데이터 get
+function dataGetterWithId(){
+  const elementsWithId = document.querySelectorAll("[id]");
+  const data = {};
+  elementsWithId.forEach(element=>{
+    if(element.value) data[element.id] = element.value;
+  })
+  return data;
+}
+
 (function() {
   "use strict";
 
@@ -33,7 +123,7 @@
   }
 
   /**
-   * Easy on scroll event listener 
+   * Easy on scroll event listener
    */
   const onscroll = (el, listener) => {
     el.addEventListener('scroll', listener)

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.erp.supplier.SupplierMapper">
+    <resultMap id="getSupplierMap" type="SupplierVO" autoMapping="true">
+        <id property="id" column="id"/>
+        <association property="manager" javaType="EmployeeVO" columnPrefix="manager_" autoMapping="true"/>
+    </resultMap>
+    <select id="getSupplierList" resultMap="getSupplierMap">
+        SELECT
+            s.*,
+            emp.name manager_name
+        FROM
+            supplier s
+        LEFT JOIN
+            employee emp
+            ON emp.id = s.manager_id
+        <include refid="search"/>
+        ORDER BY
+            s.id
+    </select>
+    <select id="getSupplier" resultMap="getSupplierMap">
+        SELECT
+            s.*,
+            emp.name manager_name
+        FROM
+            supplier s
+        LEFT JOIN
+            employee emp
+            ON emp.id = s.manager_id
+        WHERE
+            s.id = #{id}
+    </select>
+    <insert id="addSupplier">
+        <selectKey keyProperty="id" order="BEFORE" resultType="Long">
+            SELECT nextval(seq1)
+        </selectKey>
+        INSERT INTO
+            supplier
+            (id, name, owner_name, address, address_detail, contact_number, registration_number, email, contract_date, manager_id)
+        VALUES
+            (#{id}, #{name}, #{ownerName}, #{address}, #{addressDetail}, #{contactNumber}, #{registrationNumber}, #{email}, #{contractDate}, #{manager.id})
+    </insert>
+    <update id="updateSupplier">
+        UPDATE
+            supplier
+        <set>
+            <if test="name != null">
+                , name = #{name}
+            </if>
+            <if test="ownerName != null">
+                , owner_name = #{ownerName}
+            </if>
+            <if test="address != null">
+                , address = #{address}
+            </if>
+            <if test="addressDetail != null">
+                , address_detail = #{addressDetail}
+            </if>
+            <if test="contactNumber != null">
+                , contact_number = #{contactNumber}
+            </if>
+            <if test="email != null">
+                , email = #{email}
+            </if>
+            <if test="manager != null and manager.id != null">
+                , manager_id = #{manager.id}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <sql id="search">
+        <where>
+            <if test='name != null'>
+                AND s.name LIKE concat('%',#{name},'%')
+            </if>
+            <if test='manager != null and manager.name != null'>
+                AND s.manager_id IN (SELECT id FROM employee WHERE name LIKE CONCAT('%', #{manager.name}, '%'))
+            </if>
+        </where>
+    </sql>
+</mapper>

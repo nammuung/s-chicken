@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.groups.schicken.document.DocumentDAO">
+	
+	<sql id="categori">
+		<choose>
+			<when test="category != null and category.equals('category0')">AND doc.status='0'</when>
+			<when test="category != null and category.equals('category1')">AND doc.status='2'</when>
+			<when test="category != null and category.equals('category2')">AND doc.status='1'</when>
+		</choose>
+	</sql>
+
+  	<sql id="search">
+		<choose>
+			<when test="pager.kind != null and pager.kind.equals('1')">AND doc.title LIKE CONCAT('%',#{pager.search},'%')</when>
+			<when test="pager.kind != null and pager.kind.equals('2')">AND tem.temp_Name LIKE CONCAT('%',#{pager.search},'%')</when>
+			<when test="pager.kind != null and pager.kind.equals('3')">AND doc.content LIKE CONCAT('%',#{pager.search},'%')</when>
+			<otherwise>AND(doc.title LIKE CONCAT('%',#{pager.search},'%') OR doc.content LIKE CONCAT('%',#{pager.search},'%'))</otherwise>
+		</choose>		
+	</sql>
+
+	<select id="getEx" resultMap="employeeResult">
+		SELECT emp.id,
+			emp.name,
+			d.name departmant_name,
+			c.name code_name
+			
+			FROM employee emp
+			LEFT JOIN department d ON emp.department_id=d.id
+			INNER join code c on c.id=emp.pos_id and c.type_id =300
+			WHERE emp.id=#{id}
+	</select>
+	
+	<resultMap type="employeeVO" id="employeeResult" autoMapping="true">
+		<association property="department" autoMapping="true" javaType="DepartmentVO" columnPrefix="departmant_"/>
+		<association property="position" javaType="CodeVO" autoMapping="true" columnPrefix="code_"/>		
+	</resultMap>
+	
+	<!-- 결재선 저장 라인 가져오기 -->
+	<select id="getTitle">
+		SELECT distinct title FROM saveapp
+		where employee_id=#{id}
+	</select>
+	
+	<select id="getApp" resultMap="getAppresult">
+		SELECT sa.app_id,
+				emp.name person,
+				c.name
+		 FROM saveapp sa
+			INNER JOIN employee emp ON emp.id = sa.app_id			
+			INNER JOIN code c ON c.id=emp.pos_id and c.type_id = 300 
+		where employee_id=#{employeeId} and title=#{title}
+	</select>
+	
+	<resultMap type="saveappVO" id="getAppresult" autoMapping="true">
+		<association property="employee" javaType="EmployeeVO" autoMapping="true">
+			<result column="person" property="name"/>
+		</association>
+		<association property="code" javaType="codeVO" autoMapping="true"/>
+	</resultMap>
+	
+	
+	
+	<resultMap id="allListResult" type="DocumentVO" autoMapping="true">
+		<association property="templateVO" javaType="TemplateVO" autoMapping="true"/>
+		<association property="employeeVO" javaType="EmployeeVO" autoMapping="true" columnPrefix="employee_"/>
+		<association property="department" javaType="DepartmentVO" autoMapping="true" columnPrefix="department_"/>
+		<association property="codeVO" javaType="CodeVO" autoMapping="true" columnPrefix="code_"/>
+		<association property="bonusVO" javaType="BonusVO" autoMapping="true" columnPrefix="bonus_">
+			<association property="employeeVO" javaType="EmployeeVO" autoMapping="true" columnPrefix="emp_"/>
+			<association property="codeVO" javaType="CodeVO" autoMapping="true" columnPrefix="code_"/>
+		</association>
+		<collection property="approvalVOs" javaType="List" ofType="ApprovalVO" autoMapping="true"/>
+	</resultMap>
+	
+	<select id="getDetail" resultMap="allListResult">
+		SELECT doc.*,
+		tem.*,		
+		app.*,	
+		e.name employee_name,
+		e.id employee_id,
+		b.employee_id bonus_employee_id,
+		b.bonus bonus_bonus,
+		emp.name bonus_emp_name,
+		code.name bonus_code_name,
+		d.name department_name,
+		c.name code_name	
+		FROM document doc
+		inner JOIN template tem ON doc.template_id = tem.temp_id
+		inner JOIN approval app ON app.document_id = doc.id		
+		left JOIN employee e ON e.id=app.employee_id 		
+		left JOIN bonus b ON b.document_id = doc.id
+		left JOIN employee emp ON b.employee_id = emp.id
+		left JOIN code code ON code.id=emp.pos_id and code.type_id=300		
+		LEFT JOIN department d on d.id=e.department_id 
+		LEFT JOIN code c on c.id=e.pos_id and c.type_id =300		
+		WHERE doc.id=#{id} 
+		ORDER BY app.rank
+	</select>
+	
+	<select id="nextRank">
+		select employee_id,document_id from approval a
+		WHERE document_id = #{documentId} and rank &gt; #{rank}
+		order by rank limit 1
+	</select>
+	
+	<!-- DepartmentVO department;
+		CodeVO position; -->
+
+	<update id="resultUpdate">
+		UPDATE approval
+		SET result=1 , date=#{date}
+		WHERE document_id=#{documentId} AND employee_id=#{employeeId}
+	</update>
+	
+	<update id="statusUpdate">
+		UPDATE document d
+		INNER JOIN <include refid="totalResult"/> ON sub.document_id=d.id
+		SET status=1
+		WHERE sub.total = d.count		
+	</update>
+	<update id="bonusResultUpdate">
+		UPDATE bonus
+		INNER JOIN document d ON d.id = bonus.document_id
+		set date=#{date}		
+		WHERE d.status=1 AND d.id=#{documentId}
+	</update>
+	
+	<update id="refuseUpdate">
+		UPDATE approval
+		SET result=2 , date=#{date} ,comment=#{comment}
+		WHERE document_id=#{documentId}	AND employee_id=#{employeeId}		
+	</update>
+	<update id="statusRefuse">
+		UPDATE document d
+		INNER JOIN approval a ON a.document_id=d.id
+		SET status=2
+		WHERE a.result=2 
+	</update>
+	
+	
+	
+	<sql id="totalResult">
+		(SELECT count(*) AS "total",document_id FROM approval a 
+			where document_id =#{documentId} and result=1
+			group by document_id
+			) sub
+	</sql>
+	
+		<sql id="countCheck">
+		(SELECT 
+			COUNT(*) AS "count123",document_id
+			FROM approval
+			WHERE result =1
+			GROUP BY document_id) sub
+	</sql>
+	
+
+	
+
+	<select id="approvalList" resultMap="allListResult">
+		SELECT 
+			doc.id,
+			doc.title,
+			doc.write_date,
+			doc.status,
+			a.*,
+			sub.count123,
+			tem.*,
+			emp.name employee_name,
+			emp.id employee_id
+		FROM document doc
+		LEFT JOIN approval a ON a.document_id = doc.id
+		LEFT JOIN employee emp ON doc.writer_id=emp.id
+		LEFT JOIN template tem ON tem.temp_id=doc.template_id
+		INNER JOIN <include refid="countCheck"/> ON sub.document_id=doc.id
+		WHERE a.employee_id=#{employeeVO.id} AND a.rank BETWEEN 0 and sub.count123 <include refid="search"/>
+		ORDER BY doc.id DESC
+		LIMIT #{pager.startIndex},#{pager.perPage}
+	</select>
+	
+		<sql id="tempCount">
+			<choose>
+				<when test="documentVO.temp !=null and documentVO.temp == 1">
+					AND doc.temp=1
+				</when>
+				<otherwise>
+					AND doc.temp !=1
+				</otherwise>
+			</choose>
+		</sql>
+	
+	<select id="allTotalCount" parameterType="Map" resultType="Long">
+		SELECT COUNT(id) FROM document doc
+		WHERE doc.writer_id=#{documentVO.writerId} <include refid="tempCount"/>
+	</select>
+
+
+	
+	<select id="allList" resultMap="allListResult">
+		SELECT doc.*,
+		tem.*		
+		FROM document doc
+		LEFT JOIN template tem ON doc.template_id = tem.temp_id		
+		WHERE doc.temp=0 AND doc.writer_id=#{documentVO.writerId} <include refid="search"/> <include refid="categori"/>
+		ORDER BY id DESC
+		LIMIT #{pager.startIndex},#{pager.perPage}
+	</select>
+	
+	<select id="tempList" resultMap="allListResult">
+		SELECT doc.*,
+		tem.*		
+		FROM document doc
+		LEFT JOIN template tem ON doc.template_id = tem.temp_id		
+		WHERE doc.temp=1 <include refid="search"/>
+		ORDER BY id DESC
+		LIMIT #{pager.startIndex},#{pager.perPage}
+	</select>
+	
+	
+	
+	<insert id="add" keyProperty="id">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Long">
+			SELECT nextval(seq3)
+		</selectKey>
+		INSERT INTO document
+		VALUES(#{id},#{title},#{content},#{start},#{end},#{writeDate},#{status},#{templateId},#{writerId},#{temp},#{count},#{vacSort})
+	</insert>
+	
+	<insert id="bonusAdd">
+		INSERT INTO bonus
+		VALUES(#{documentId},#{bonus},#{date},#{employeeId})
+	</insert>
+	
+	<insert id="appAdd">
+		INSERT INTO approval
+		VALUES(#{documentId},#{employeeId},#{rank},#{result},#{date},#{comment})
+	</insert>
+	
+	<update id="tempTosang">
+		UPDATE document
+		SET id=#{id}, title = #{title}, content = #{content}, start = #{start},  end = #{end},  write_date = #{writeDate},  status = #{status}, template_id = #{templateId},
+    			writer_id = #{writerId}, temp = #{temp}, count = #{count}
+    	WHERE id=#{id}
+	</update>
+	
+	<delete id="tempToappDel">
+		DELETE FROM approval
+		WHERE document_id=#{documentId}
+	</delete>
+	
+	<insert id="tempToappAdd">
+		INSERT INTO approval
+		VALUES(#{documentId},#{employeeId},#{rank},#{result},#{date},#{comment})		
+	</insert>
+
+	<update id="tempBonus">
+		UPDATE bonus
+		SET employee_id=#{employeeId},document_id=#{documentId},bonus=#{bonus},date=#{date}
+		WHERE document_id=#{documentId}
+	</update>
+	
+
+	
+	<insert id="appSave">
+		<selectKey keyProperty="id" order="BEFORE" resultType="Long">
+			SELECT NEXTVAL(seq3)
+		</selectKey>
+		INSERT INTO saveapp
+		VALUES (#{id},#{employeeId},#{appId},#{title},#{rank},#{date})
+	</insert>
+	
+	<delete id="appDel">
+		DELETE FROM saveapp
+		WHERE employee_id=#{employeeId} AND title=#{title}
+	</delete>
+
+</mapper>
+
+
+
+
