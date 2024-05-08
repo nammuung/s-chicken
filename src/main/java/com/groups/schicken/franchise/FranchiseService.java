@@ -32,14 +32,19 @@ public class FranchiseService {
     public int addFranchise(FranchiseVO franchiseVO, MultipartFile[] attach) throws Exception {
         int result = 0;
 
-        FileVO file = new FileVO();
-        file.setTblId("101");
-        if(!fileManager.uploadFile(attach[0], file)) return 0;
-        System.out.println("file = " + file);
-        franchiseVO.getContract().setId(file.getId());
-        if(!fileManager.uploadFile(attach[1], file)) return 0;
-        System.out.println("file = " + file);
-        franchiseVO.getRegister().setId(file.getId());
+        FileVO contract = new FileVO();
+        FileVO register = new FileVO();
+        contract.setTblId("101");
+        register.setTblId("101");
+        if(!fileManager.uploadFile(attach[0], contract)) return 0;
+        System.out.println("file = " + contract);
+
+        franchiseVO.setContract(contract);
+//        franchiseVO.getContract().setId(file.getId());
+        if(!fileManager.uploadFile(attach[1], register)) return 0;
+        System.out.println("file = " + register);
+        franchiseVO.setRegister(register);
+//        franchiseVO.getRegister().setId(file.getId());
 
         franchiseVO.setPassword(passwordEncoder.encode(franchiseVO.getEmail()));//초기 비밀번호는 이메일
         result += franchiseMapper.addFranchise(franchiseVO);

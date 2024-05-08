@@ -55,7 +55,8 @@ const sw = {
                 const data = el.getAttribute("sw")
                 const func = data.slice(0,data.indexOf('_'))
                 const value = data.slice(data.indexOf('_')+1)
-                const id = crypto.randomUUID();
+                var array = new Uint32Array(10);
+                const id = window.crypto.getRandomValues(array);
                 el.setAttribute("sid", id);
                 if(this.vElement[value] === undefined){
                     this.vElement[value] = [];

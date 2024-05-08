@@ -59,7 +59,7 @@
                             </div>
                             <label for="managerId" class="form-label"><b>담당자</b></label>
                             <div class="form-group mb-3 d-flex">
-                                <input id="managerId" name="managerId" type="hidden" class="form-control me-1">
+                                <input id="managerId" name="manager.id" type="hidden" class="form-control me-1">
                                 <input id="managerName"  type="text" class="form-control me-1" readonly required>
                                 <input type="button" id="searchButton" value="담당자 조회" class="btn btn-primary">
                             </div>

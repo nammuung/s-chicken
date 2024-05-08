@@ -57,7 +57,7 @@
                         nextBtn.click();
                         prevBtn.click();
                         $.ajax({
-                            url: 'http://localhost/share',
+                            url: '/share',
                             type: 'GET',
                             success: function (data) {
                                 // 가져온 데이터를 풀캘린더에 추가
@@ -78,7 +78,7 @@
                             }
                         });
                         $.ajax({
-                            url: 'http://localhost/list',
+                            url: '/list',
                             type: 'GET',
                             success: function (data) {
                                 // 가져온 데이터를 풀캘린더에 추가
@@ -303,7 +303,7 @@
         $(document).ready(function () {
             // 서버에서 데이터를 가져오는 AJAX 요청
             $.ajax({
-                url: 'http://localhost/list',
+                url: '/list',
                 type: 'GET',
                 success: function (data) {
                     // 가져온 데이터를 풀캘린더에 추가
@@ -327,7 +327,7 @@
         $(document).ready(function () {
             // 서버에서 데이터를 가져오는 AJAX 요청
             $.ajax({
-                url: 'http://localhost/share',
+                url: '/share',
                 type: 'GET',
                 success: function (data) {
                     // 가져온 데이터를 풀캘린더에 추가

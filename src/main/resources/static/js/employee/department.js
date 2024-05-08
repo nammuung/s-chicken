@@ -1,5 +1,5 @@
 // 조직도 받아오는 url
-const url = 'http://localhost:80/department/list';
+const url = '/department/list';
 
 fetch(url)
   .then(response => {

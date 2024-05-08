@@ -53,26 +53,28 @@
                         colspan="2" class="">
                             <c:if test="${list[0].temp eq 1}">
                                 <div class="mb-2">
-                                    <button class="btn btn-primary">인쇄미리보기</button>
+                                    <!-- <button class="btn btn-primary">인쇄미리보기</button> -->
                                     <button class="btn btn-primary" id="sangsin" data-temp=1>상신</button>
                                     <button class="btn btn-primary" type="button" id = "cancel">취소</button>
-                                </div>
+                                
                                     <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
 		                                불러오기
 		                            </button>
                                     <button class="btn btn-primary" id="updateSave" data-temp=1>임시저장</button>
+                                 </div>
                             </c:if>
                             
                             <c:if test="${list[0].temp eq 0}">
                                 <div class="mb-2">
-                                    <button class="btn btn-primary">인쇄미리보기</button>
+                                    
                                     <button class="btn btn-primary" id="sangsin" data-temp=0>상신</button>
                                     <button class="btn btn-primary" type="button" id = "cancel">취소</button>
-                                </div>
+                                
                                     <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
 		                                불러오기
 		                            </button>
                                     <button class="btn btn-primary" id="updateSave" data-temp=0>임시저장</button>
+                                  </div>
                             </c:if>
                             
                         </td>
@@ -312,7 +314,7 @@
                         <td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; border-image: none; height: 10px; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;"
                             colspan="5">
                             
-                            <input type="text" readonly class="form-control" value ="${list[0].bonusVO.codeVO.name} ${list[0].bonusVO.employeeVO.name}" data-id="${list[0].bonusVO.employeeId}" id="bonuspeo" style="width: 100%;">
+                            <input type="text" readonly class="form-control" style="background-color: white;" value ="${list[0].bonusVO.codeVO.name} ${list[0].bonusVO.employeeVO.name}" data-id="${list[0].bonusVO.employeeId}" id="bonuspeo" style="width: 100%;">
                         </td>
                     </tr>
 
