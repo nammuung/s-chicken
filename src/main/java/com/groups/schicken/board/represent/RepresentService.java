@@ -197,7 +197,6 @@ public class RepresentService implements BoardService {
 			result = intresult;
 		}
 
-
 		return result;
 	}
 
