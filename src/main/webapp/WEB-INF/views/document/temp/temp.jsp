@@ -66,14 +66,15 @@
                             
                             <c:if test="${list[0].temp eq 0}">
                                 <div class="mb-2">
-                                    <button class="btn btn-primary">인쇄미리보기</button>
+                                    
                                     <button class="btn btn-primary" id="sangsin" data-temp=0>상신</button>
                                     <button class="btn btn-primary" type="button" id = "cancel">취소</button>
-                                </div>
+                                
                                     <button type="button" id="callModalButton" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#call">
 		                                불러오기
 		                            </button>
                                     <button class="btn btn-primary" id="updateSave" data-temp=0>임시저장</button>
+                                  </div>
                             </c:if>
                             
                         </td>
