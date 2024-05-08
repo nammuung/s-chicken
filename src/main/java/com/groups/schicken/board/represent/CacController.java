@@ -29,7 +29,7 @@ public class CacController {
 		return "coc";
 	}
 	
-	@GetMapping("cacList")
+	@GetMapping("list")
 	public String cacList(@AuthenticationPrincipal EmployeeVO employeeVO,BoardVO boardVO,Pager pager,Model model) throws Exception{
 		//boardVO.setWriterId(employeeVO.getId());
 		System.out.println(boardVO.getWriterId());

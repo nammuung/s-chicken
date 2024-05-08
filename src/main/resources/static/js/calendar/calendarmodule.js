@@ -73,7 +73,7 @@ const searchButton = document.getElementById("searchButton");
 			const idName = [];
 
 
-			fetch('http://localhost/userlist', {
+			fetch('/userlist', {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

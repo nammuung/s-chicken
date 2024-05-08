@@ -65,12 +65,13 @@
                                 </li>
                                 </c:if>
                                 </sec:authorize>
-
+                                <c:if test="${detail.id eq emp.id}">
                                 <li class="nav-item">
                                     <button class="nav-link" data-bs-toggle="tab"
                                             data-bs-target="#profile-change-password">비밀번호 변경
                                     </button>
                                 </li>
+                                </c:if>
                                 <li class="nav-item">
                                     <form action="./employeeResetPassword" method="post"
                                           id="reset">

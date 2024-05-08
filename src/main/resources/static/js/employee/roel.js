@@ -1,5 +1,5 @@
 // 조직도 받아오는 url
-const url = 'http://localhost:80/department/list';
+const url = '/department/list';
 
 fetch(url)
   .then(response => {
@@ -31,7 +31,7 @@ fetch(url)
     departmentSelect.addEventListener('change', function() {
         const selectedDepartmentId = parseInt(this.value); 
         console.log(selectedDepartmentId);
-        const url2 = `http://localhost/employee/roles?id=${selectedDepartmentId}`;
+        const url2 = `/employee/roles?id=${selectedDepartmentId}`;
         fetch(url2)
         .then(response => {
             console.log(response);

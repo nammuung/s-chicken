@@ -40,7 +40,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="/coc/cacList">
+                        <a href="/coc/list">
                             <i class="bi bi-circle"></i><span>경조사 공지</span>
                         </a>
                     </li>

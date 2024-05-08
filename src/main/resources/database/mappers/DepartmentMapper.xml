@@ -88,7 +88,7 @@
 
     <update id="deleteDepartment">
         UPDATE department
-        SET name = 'deleted!'
+        SET name = 'deleted!', is_deleted = 1
         WHERE id = #{id}
     </update>
 </mapper>
