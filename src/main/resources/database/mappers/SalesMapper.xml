@@ -79,7 +79,7 @@
         franchise f
         ON fs.franchise_id = f.id
         WHERE
-            fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
+            fs.franchise_id = #{franchise.id} and DATE(fs.sales_date) &lt; now()
         GROUP BY
             fs.franchise_id,
             MONTH(fs.sales_date)
@@ -99,7 +99,7 @@
         franchise f
         ON fs.franchise_id = f.id
         WHERE
-            fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
+            fs.franchise_id = #{franchise.id} and DATE(fs.sales_date) &lt; now()
         GROUP BY
             YEAR(fs.sales_date), WEEK(fs.sales_date)
         ORDER BY
@@ -118,7 +118,7 @@
         franchise f
         ON fs.franchise_id = f.id
         WHERE
-        fs.franchise_id = #{franchise.id} and fs.sales_date &lt; now()
+        fs.franchise_id = #{franchise.id} and DATE(fs.sales_date) &lt; now()
         GROUP BY
             fs.franchise_id,
             YEAR(fs.sales_date),
@@ -141,7 +141,7 @@
         ON fs.franchise_id = f.id
         WHERE
         DATE(fs.sales_date) = CURDATE() AND
-        fs.sales_date <![CDATA[<=]]> NOW()
+        DATE(fs.sales_date) <![CDATA[<=]]> NOW()
         GROUP BY
         fs.franchise_id
         ORDER BY
@@ -161,7 +161,7 @@
         franchise f
         ON fs.franchise_id = f.id
         WHERE
-        (fs.sales_date) BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW()
+        DATE(fs.sales_date) BETWEEN DATE_ADD(NOW(), INTERVAL -1 WEEK) AND NOW()
         GROUP BY
         fs.franchise_id,
         YEAR(fs.sales_date),
