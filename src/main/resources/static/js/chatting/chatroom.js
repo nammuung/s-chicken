@@ -783,6 +783,7 @@ function createChatroom() {
             pageChange();
             nowOpenPage = r.chatroomId;
             nowPageType = 'Many';
+            chatroomInfoModalBtn.classList.remove("d-none");
             document.getElementById("chatting-page-btn").click();
 
             chatroomRenderByData(r).then(() => {
