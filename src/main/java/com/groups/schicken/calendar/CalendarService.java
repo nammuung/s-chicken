@@ -1,30 +1,18 @@
 package com.groups.schicken.calendar;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.sql.Timestamp;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.LazyInitializationExcludeFilter;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.groups.schicken.Employee.EmployeeVO;
-import com.groups.schicken.annual.AnnualService;
 import com.groups.schicken.notification.Noticer;
-import com.groups.schicken.notification.NotificationType;
-import com.nimbusds.jose.shaded.gson.Gson;
-import com.nimbusds.jose.shaded.gson.reflect.TypeToken;
 
-import io.micrometer.observation.Observation.Event;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

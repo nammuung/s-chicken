@@ -110,18 +110,11 @@ public class SecurityConfig {
 								.expiredUrl("/expired")
 
 				)//sessionManagement 끝
-				.oauth2Login(
-						(oauth2Login)-> 
-							oauth2Login.userInfoEndpoint(
-									(ue)->ue.userService(employeeService)
-							)
-				)//oauth2Login 끝부분
-				
-				
-				;	
-		
-		
-		
+
+				;
+
+
+
 		return security.build();
 	}
 

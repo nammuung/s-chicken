@@ -13,34 +13,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.groups.schicken.franchise.FranchiseVO;
-import com.groups.schicken.annual.AnnualVO;
 import com.groups.schicken.common.util.FileManager;
 import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.common.vo.Pager;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 @Transactional(rollbackFor = Exception.class)  //error 났을때 rollbac설정
-public class EmployeeService extends DefaultOAuth2UserService implements UserDetailsService {
+public class EmployeeService implements UserDetailsService {
 
 	@Autowired
 	private EmployeeDAO employeeDAO;
@@ -144,61 +133,6 @@ public class EmployeeService extends DefaultOAuth2UserService implements UserDet
 	public List<RoleVO> role (EmployeeVO employeeVO)throws Exception{
 		return employeeDAO.role(employeeVO);
 	}
-
-
-
-
-	// 소셜 로그인
-	@Override
-	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
-		ClientRegistration clientRegistration = userRequest.getClientRegistration();  // 인가 서버에서 클라이언트의 정보를 가져와 매핑시킴
-
-		OAuth2User user = super.loadUser(userRequest); //loadUser메서드 호출하여 userRequest요청에 대한 정보를  OAuth2User 객체에 담음
-		String email = user.getAttribute("email");
-		log.info("Client ID == > {}", clientRegistration.getClientId());
-		log.info("Client Name == > {}", clientRegistration.getClientName());
-		log.info("Client email == > {}", clientRegistration.getScopes());
-		log.info("Client email == > {}", clientRegistration.getScopes());
-
-
-
-		SocialVO socialVO = new SocialVO();
-		EmployeeVO employeeVO = new EmployeeVO();
-		socialVO.setId(clientRegistration.getClientId());
-		socialVO.setKind(clientRegistration.getClientName());
-		if(clientRegistration.getClientName().equals("Kakao")) {
-
-			try {
-				user = this.kakao(user);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
-		return user;
-	}
-
-
-
-	// Kakao
-	private OAuth2User kakao(OAuth2User oAuth2User)throws Exception{
-		Map<String, Object> map = oAuth2User.getAttribute("properties");
-		EmployeeVO employeeVO = new EmployeeVO();
-		// 사용자 이름을 꺼내옴
-
-		employeeVO.setId(oAuth2User.getName());
-		employeeVO.setAttributes(oAuth2User.getAttributes());
-
-
-		return employeeVO;
-
-
-
-
-	}
-
-
-
 
 	 // 임시 비밀번호 생성 메서드
     private String generateTempPassword() {

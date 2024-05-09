@@ -3,14 +3,13 @@ package com.groups.schicken.weather;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -66,9 +65,9 @@ public class WeatherService {
             System.out.println("urlBuilder.toString() = " + urlBuilder.toString());
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.getForEntity(urlBuilder.toString(), String.class);
-            JSONParser parser = new JSONParser();
-            JSONObject data = (JSONObject) parser.parse(response.getBody());
-            JSONArray list = (JSONArray) data.get("list");
+            JsonParser parser = new JsonParser();
+            JsonObject data = (JsonObject) parser.parse(response.getBody());
+            JsonArray list = (JsonArray) data.get("list");
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 

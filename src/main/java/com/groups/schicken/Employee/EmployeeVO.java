@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.groups.schicken.common.vo.FileVO;
 import com.groups.schicken.department.DepartmentVO;
@@ -23,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 //@ToString
 @Slf4j
 @Data
-public class EmployeeVO  implements UserDetails, OAuth2User {
+public class EmployeeVO  implements UserDetails {
 
 
 	private String id;
