@@ -238,7 +238,7 @@
             WHERE
                 fs.franchise_id = #{id} AND
                 DATE(fs.sales_date) = CURDATE() AND
-                fs.sales_date <![CDATA[<=]]> NOW()
+                DATE(fs.sales_date) <![CDATA[<=]]> NOW()
             GROUP BY
                 DAY(fs.sales_date)
             ) AS today
@@ -272,7 +272,7 @@
                 WHERE
                     fs.franchise_id = #{id} AND
                     DATE(fs.sales_date) = CURDATE() AND
-                    fs.sales_date <![CDATA[<=]]> NOW()
+                    DATE(fs.sales_date) <![CDATA[<=]]> NOW()
                 GROUP BY
                     DAY(fs.sales_date)
             ) AS today
