@@ -1,10 +1,10 @@
 import "/js/websocket/stompClient.js";
 
 let waitting = [];
-
+const host = window.location.host;
 let subs = {};
 const stompClient = new StompJs.Client({
-    brokerURL : 'ws://192.168.7.11/ws',
+    brokerURL : "ws://"+ host +'/ws',
     debug : str => console.log(str),
     reconnectDelay : 5000,
     heartbeatIncoming : 4000,
