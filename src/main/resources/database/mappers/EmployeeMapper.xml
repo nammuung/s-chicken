@@ -323,6 +323,22 @@ SELECT
 		WHERE b.employee_id=#{employeeId} AND substr(b.date, 1, 7) = #{yearMonth}
 	</select>
 
+	<insert id="updatePaystub">
+		INSERT INTO salary
+		SELECT
+			  (SELECT nextval(seq3)) AS id
+			, e.id AS employee_id
+			, e.salary/12 AS base_pay
+			, sum(b.bonus) AS bonus_num
+			, #{yearMonth} AS payed_month
+		FROM employee e
+			INNER JOIN bonus b on e.id = b.employee_id
+		WHERE   substr(b.date, 1, 7) = #{yearMonth}
+			AND e.date_of_employment = #{today}
+			AND e.is_leaved = 1
+		GROUP BY e.id
+	</insert>
+
 	<resultMap id="calcPaystubResult" type="PaystubVO" autoMapping="true">
 		<id property="employeeId" column="employee_id"/>
 		<collection property="bonusReason" javaType="List" ofType="DocumentVO">
