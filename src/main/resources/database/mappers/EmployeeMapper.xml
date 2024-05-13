@@ -333,9 +333,9 @@ SELECT
 			, #{yearMonth} AS payed_month
 		FROM employee e
 			INNER JOIN bonus b on e.id = b.employee_id
-		WHERE   substr(b.date, 1, 7) = #{yearMonth}
+		WHERE   e.is_leaved = 1
 			AND e.date_of_employment = #{today}
-			AND e.is_leaved = 1
+			AND substr(b.date, 1, 7) BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND DATE_SUB(CURDATE(), INTERVAL 1 DAY)
 		GROUP BY e.id
 	</insert>
 
