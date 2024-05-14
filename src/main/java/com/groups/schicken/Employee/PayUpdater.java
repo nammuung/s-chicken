@@ -15,17 +15,18 @@ public class PayUpdater {
 
     private final EmployeeDAO employeeDAO;
 
-    @Scheduled(cron = "1 0 10 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "1 0 10 25 * *", zone = "Asia/Seoul")
     public void updatePaystub(){
-        String yearMonth = DateManager.getTodayDateTime("yyyy-MM");
-        String today = DateManager.getTodayDate();
+        String yearMonth = DateManager.getTodayDateTime("yyyy-MM-dd");
+        updatePaystub(yearMonth);
+    }
 
+    public void updatePaystub(String date){
         try {
-            int result = employeeDAO.updatePaystub(yearMonth, today);
+            int result = employeeDAO.updatePaystub(date);
             log.info("{}명의 데이터가 Salary 테이블에 추가 되었습니다.", result);
         } catch (Exception e){
             log.error(e.getMessage());
         }
-
     }
 }

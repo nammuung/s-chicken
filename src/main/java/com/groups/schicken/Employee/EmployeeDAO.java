@@ -6,6 +6,7 @@ import com.groups.schicken.document.DocumentVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.groups.schicken.common.vo.Pager;
+import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface EmployeeDAO {
@@ -63,5 +64,8 @@ public interface EmployeeDAO {
 
     List<DocumentVO> getBonusDocument(PaystubVO paystub);
 
-    int updatePaystub(String yearMonth, String today);
+    int updatePaystub(String yearMonth);
+
+	@Select("SELECT distinct e.date_of_employment FROM employee e")
+	String[] getEmployeeDates();
 }

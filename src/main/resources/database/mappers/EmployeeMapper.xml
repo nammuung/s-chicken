@@ -307,8 +307,8 @@ SELECT
 				SELECT
 					  NVL(sum(bonus),0) AS "bonus_sum"
 					, employee_id
-				FROM bonus
-				WHERE substr(date, 1, 7) = #{yearMonth}
+				FROM bonus b
+				WHERE substr(date_sub(b.date, interval -1 month), 1, 7) = #{yearMonth}
 				GROUP BY employee_id
 			) sub ON sub.employee_id = e.id
 		WHERE e.id = #{employeeId}
@@ -320,22 +320,27 @@ SELECT
 			, title
 		FROM document d
 			INNER JOIN bonus b ON b.document_id = d.id
-		WHERE b.employee_id=#{employeeId} AND substr(b.date, 1, 7) = #{yearMonth}
+		WHERE b.employee_id=#{employeeId}
+		AND substr(date_sub(b.date, interval -1 month), 1, 7) = #{yearMonth}
 	</select>
 
 	<insert id="updatePaystub">
 		INSERT INTO salary
 		SELECT
-			  (SELECT nextval(seq3)) AS id
+			  nextval(seq3) AS id
 			, e.id AS employee_id
 			, e.salary/12 AS base_pay
-			, sum(b.bonus) AS bonus_num
+			, NVL(sum(b.bonus),0) AS bonus_num
 			, #{yearMonth} AS payed_month
 		FROM employee e
-			INNER JOIN bonus b on e.id = b.employee_id
+			LEFT JOIN (
+				select
+					  employee_id
+					, bonus
+				from bonus
+				where substr(DATE_SUB(date, INTERVAL -1 MONTH), 1, 7) = #{yearMonth}
+			) b on e.id = b.employee_id
 		WHERE   e.is_leaved = 1
-			AND e.date_of_employment = #{today}
-			AND substr(b.date, 1, 7) BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND DATE_SUB(CURDATE(), INTERVAL 1 DAY)
 		GROUP BY e.id
 	</insert>
 
