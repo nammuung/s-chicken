@@ -167,6 +167,7 @@ async function chatroomRenderByData(chattingData) {
         let created;
         if(chatMessage.type === 'Message') created = appendChatting(chatMessage);
         else if(chatMessage.type === 'Join'||chatMessage.type === 'Out') created = appendNotice(chatMessage);
+        else if(chatMessage.type === 'File') created = appendFile(chatMessage);
 
         if (chattingData.lastReadTime === chatMessage.sendDate) {
             created.dataset.lastRead = "";
@@ -206,15 +207,30 @@ async function getChatting(from, direction) {
                 chattings.forEach(chatting => {
                     if(chatting.type === 'Message') prependChatting(chatting);
                     else if(chatting.type === 'Join'||chatting.type === 'Out') prependNotice(chatting);
+                    else if(chatting.type === 'File') prependFile(chatting);
                 });
             } else if (direction === 'down') {
                 chattings.forEach(chatting => {
                     if(chatting.type === 'Message') appendChatting(chatting);
                     else if(chatting.type === 'Join'||chatting.type === 'Out') appendNotice(chatting);
+                    else if(chatting.type === 'File') appendFile(chatting);
                 });
             }
             return chattings;
         });
+}
+
+function prependFile(data){
+    if (beginChatting == null || beginChatting.dataset.senderId !== data.senderId || (beginChatting.dataset.senderId === data.senderId && isDiffMinute(beginChatting.dataset.sendProfileDate, data.sendDate))) {
+        beginChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
+        chattingSpace.prepend(beginChatting);
+    }
+
+    const messageSpace = beginChatting.querySelector(".chatting-message-space");
+    const created = createFileMessage(data.content, data.sendDate, data.senderId);
+    messageSpace.prepend(created);
+
+    return created
 }
 
 function prependNotice(data){
@@ -237,6 +253,19 @@ function prependChatting(data) {
     return created
 }
 
+function appendFile(data){
+    if (lastChatting == null || lastChatting.dataset.senderId !== data.senderId || (lastChatting.dataset.senderId === data.senderId && isDiffMinute(lastChatting.dataset.sendProfileDate, data.sendDate))) {
+        lastChatting = createChattingProfile(memberData[data.senderId], data.sendDate);
+        chattingSpace.append(lastChatting);
+    }
+
+    const messageSpace = lastChatting.querySelector(".chatting-message-space");
+    const created = createFileMessage(data.content, data.sendDate, data.senderId);
+    messageSpace.append(created);
+
+    return created;
+}
+
 function appendNotice(data){
     lastChatting = null;
     const created = createNoticeChatting(data);
@@ -255,6 +284,80 @@ function appendChatting(data) {
     messageSpace.append(created);
 
     return created;
+}
+
+function createFileInfo(file){
+    let created = null;
+    console.log(file);
+    if(['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'].includes(file.extension)){
+        const div = makeElement("div", {option:{style : "max-height:500px"}});
+        const img = makeElement("img", {option:{src : file.url, width: 283}});
+
+        div.append(img);
+        created = div;
+    } else {
+        const div = makeElement("div", {className : ["d-flex"], option: {style:"max-width:282px; min-width:100px; gap:7px"}});
+        const nameDiv = makeElement("div", {className : [ "text-center", "text-truncate"]});
+        nameDiv.innerText = file.originName + "." + file.extension;
+
+        div.append(nameDiv);
+        created = div;
+    }
+    if(created == null){
+        return null;
+    }
+
+    const downloadDiv = makeElement("div", {className : ["col-auto", "text-center"],dataset : {"fileId" : file.id}});
+    const downloadIcon = makeElement("i", {className: ["fas", "fa-download"]});
+    downloadDiv.append(downloadIcon);
+    created.append(downloadDiv);
+    downloadDiv.addEventListener("click", downloadFile);
+    return created;
+}
+
+function downloadFile(event){
+    const fileId = event.target.dataset.fileId;
+    if(fileId == null){
+        event.target.parentElement.click();
+        return;
+    }
+
+    location.href = "/fileDown?id="+fileId;
+}
+
+function createFileMessage(content, sendDate, senderId){
+    let classNames = ["mt-1", "p-2", "rounded-3", "text-break", "d-inline-block"];
+    classNames.push(senderId === loginedId ? "bg-schicken-light-reverse" : "bg-schicken-light")
+    let div = makeElement("div", {className: classNames})
+    let spinner = spinnerComponent();
+    div.append(spinner);
+
+    loadingFile(content, spinner);
+
+    let div2 = makeElement("div", {dataset: {"sendMessage": "", "sendDate": sendDate}});
+    div2.append(div);
+
+    return div2;
+}
+
+function spinnerComponent(){
+    let div = makeElement("div", {className : ["spinner-border"] , option : {role : "status"}});
+    let span = makeElement("span", {className : ["visually-hidden"]});
+
+    span.innerText = "Loading...";
+
+    div.append(span);
+    return div;
+}
+
+function loadingFile(content, spinner){
+    fetch("/files/" + content)
+        .then(res=>res.json())
+        .then(r => {
+            const div = spinner.parentElement;
+            div.append(createFileInfo(r));
+            spinner.remove();
+        })
 }
 
 function createNoticeChatting(data){
@@ -335,6 +438,7 @@ function getChattingInChatroom(data) {
     let created = null;
     if(data.type === 'Message') created = appendChatting(data);
     else if(data.type === 'Join'||data.type === 'Out') created = appendNotice(data);
+    else if(data.type === 'File') created = appendFile(data);
 
     if(created == null) return;
 

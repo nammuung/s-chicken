@@ -360,6 +360,9 @@ public class ChatService {
         FileVO file = new FileVO();
         file.setTblId("105");
         file.setParentId(0L);
+
+        System.out.println("file = " + file);
+
         fileManager.uploadFile(attach, file);
 
         ChatMessage fileMessage = ChatMessage.builder()
@@ -368,7 +371,7 @@ public class ChatService {
                 .senderId(employeeId)
                 .type(ChattingType.File)
                 .sendDate(sendDate)
-                .content(file.getUrl())
+                .content(String.valueOf(file.getId()))
                 .build();
 
         int result = chatDAO.insertChat(fileMessage);
