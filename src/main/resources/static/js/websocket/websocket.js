@@ -1,7 +1,7 @@
 import "/js/websocket/stompClient.js";
 
 let waitting = [];
-
+const host = window.location.host;
 let subs = {};
 const host = window.location.host;
 
