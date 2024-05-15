@@ -142,23 +142,9 @@
                     <i id="chatroom-info-modal-btn" class="fas fa-bars hovercursor"></i>
                 </div>
             </div>
-            <%-- 채팅 공지용 --%>
-            <%--                <div class="border-bottom row py-3">--%>
-            <%--                    <div class="col-1 ps-3"><i class="bi bi-megaphone-fill"></i></div>--%>
-            <%--                    <h2 class="col-10 text-center">이 채팅방의 공지입니다이 채팅방의 공지입니다이 채팅방의 공지입니다이 채팅방의 공지입니다이 채팅방의 공지입니다</h2>--%>
-            <%--                    <div class="col-1"></div>--%>
-            <%--                </div>--%>
+            <div id="drop-area"></div>
             <div id="chatting-space">
             </div>
-
-
-            <%-- 채팅에서 여러가지 공유용 --%>
-            <%--                <div class="row d-none">--%>
-            <%--                    <div class="col-4 text-center fs-4">일정</div>--%>
-            <%--                    <div class="col-4 text-center fs-4">파일</div>--%>
-            <%--                    <div class="col-4 text-center fs-4">사진</div>--%>
-            <%--                </div>--%>
-
             <div class="input-group" style="height: 83px">
                 <textarea id="chatting-area" class="form-control" style="height: 100%;" maxlength="300"></textarea>
                 <div class="d-none" id="hidden-chatting-area"></div>

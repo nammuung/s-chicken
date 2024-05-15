@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -133,5 +134,23 @@ public class ChatController {
         }
 
         return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("files/{chatroomId}")
+    public ResponseEntity<String> sendFiles(@AuthenticationPrincipal EmployeeVO employee, MultipartFile attach, @PathVariable String chatroomId){
+        if(attach.isEmpty()){
+            log.info("파일 없음");
+            return ResponseEntity.badRequest().build();
+        }
+
+        try {
+            chatService.sendFile(employee.getId(), chatroomId, attach);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
+
+        return ResponseEntity.ok().build();
     }
 }

@@ -4,13 +4,14 @@ import com.groups.schicken.Employee.EmployeeDAO;
 import com.groups.schicken.Employee.EmployeeProfileVO;
 import com.groups.schicken.Employee.EmployeeVO;
 import com.groups.schicken.common.util.DateManager;
-import com.groups.schicken.notification.Noticer;
-import com.groups.schicken.notification.NotificationType;
+import com.groups.schicken.common.util.FileManager;
+import com.groups.schicken.common.vo.FileVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -23,6 +24,7 @@ public class ChatService {
     private final ChatDAO chatDAO;
     private final EmployeeDAO employeeDAO;
     private final SimpMessagingTemplate template;
+    private final FileManager fileManager;
 
     /*
 
@@ -322,7 +324,6 @@ public class ChatService {
 
             chatDAO.insertChat(noticeChat);
             template.convertAndSend("/sub/chat/" + chatroomId, noticeChat);
-            template.convertAndSend("/sub/chat/" + employee.getId(), noticeChat);
         }
         if(sendDate != null) chatDAO.updateLastRead(sendDate, chatroomId, sender.getId());
     }
@@ -350,5 +351,33 @@ public class ChatService {
 
         chatDAO.insertChat(noticeChat);
         template.convertAndSend("/sub/chat/" + chatroomId, noticeChat);
+    }
+
+    @Transactional
+    public void sendFile(String employeeId, String chatroomId, MultipartFile attach) throws Exception {
+        String sendDate = DateManager.getTodayDateTime("yyyyMMddHHmmssSSS");
+
+        FileVO file = new FileVO();
+        file.setTblId("105");
+        file.setParentId(0L);
+        fileManager.uploadFile(attach, file);
+
+        ChatMessage fileMessage = ChatMessage.builder()
+                .id(createChatId(chatroomId, employeeId, sendDate))
+                .chatroomId(chatroomId)
+                .senderId(employeeId)
+                .type(ChattingType.File)
+                .sendDate(sendDate)
+                .content(file.getUrl())
+                .build();
+
+        int result = chatDAO.insertChat(fileMessage);
+
+        if(result < 1){
+            throw new RuntimeException("chatting insert fail");
+        }
+
+        template.convertAndSend("/sub/chat/" + chatroomId, fileMessage);
+        template.convertAndSend("/sub/chat/" + employeeId, fileMessage);
     }
 }

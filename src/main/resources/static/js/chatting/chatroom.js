@@ -938,6 +938,55 @@ function outChatroom(){
     })
 }
 
+function onFileDrop(event){
+    event.preventDefault();
+
+    console.log(event);
+
+    const dt = event.dataTransfer;
+    const file = dt.files;
+
+    let chatroomId = null;
+    if(nowPageType === 'One'){
+        chatroomId = [loginedId, nowOpenPage].sort().join("");
+    }
+
+    if(nowPageType === 'Many'){
+        chatroomId = nowOpenPage;
+    }
+
+    fileSend(file, chatroomId);
+}
+
+function fileSend(file, chatroomId){
+    if(chatroomId == null) return;
+
+    const formData = new FormData();
+    formData.append("attach", file[0]);
+
+    fetch("/chatrooms/files/" + chatroomId, {
+        method : "post",
+        body : formData
+    }).then(res =>{
+        if(!res.ok){
+            alert("파일 전송 실패");
+        }
+    });
+}
+
+function highlight(e) {
+    document.getElementById("drop-area").classList.add("drag-over")
+}
+
+function unhighlight(e) {
+    document.getElementById("drop-area").classList.remove("drag-over")
+}
+
+function preventDefaults(e){
+    e.preventDefault();
+    e.stopPropagation();
+}
+
 setWhenReceiveMessage(onGetChattingOne, onGetMessage);
 
 sendMessageBtn.addEventListener("click", onSendMessageBtnClick);
@@ -954,6 +1003,17 @@ memberInviteBtn.addEventListener("click", onMemberInvite);
 memberInviteCancelBtn.addEventListener("click", finishMemberInvite);
 memberInviteSubmitBtn.addEventListener("click", submitInviteMember);
 chatroomOutBtn.addEventListener("click", outChatroom);
+document.getElementById("drop-area").addEventListener("drop", onFileDrop, false);
+['dragenter', 'dragover'].forEach(eventName => {
+    chattingSpace.addEventListener(eventName, highlight, false)
+});
+['dragleave', 'drop'].forEach(eventName => {
+    document.getElementById("drop-area").addEventListener(eventName, unhighlight, false)
+});
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    document.getElementById("drop-area").addEventListener(eventName, preventDefaults, false)
+    chattingSpace.addEventListener(eventName, preventDefaults, false)
+});
 document.getElementById("chatroom-list-create").addEventListener("click", employeeSelectForm);
 document.getElementById("chatroom-list-create-cancel-btn").addEventListener("click", employeeSelectForm);
 document.getElementById("chatroom-create-btn").addEventListener("click", createChatroom);

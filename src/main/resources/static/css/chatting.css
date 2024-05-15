@@ -201,3 +201,16 @@ button:active{
 .invite-state .unselect-type-btn{
     display: none !important;
 }
+
+#drop-area{
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: #00000090;
+    position: absolute;
+}
+
+#drop-area.drag-over{
+    display: block;
+    z-index: 30;
+}
